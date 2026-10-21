@@ -134,3 +134,121 @@ def test_invalid_email_validation(client):
     body = res.json()
     assert body["success"] is False
     assert body["error_code"] == "VALIDATION_ERROR"
+
+
+def test_delete_personal_info(client):
+    """Test deleting personal info removes the record and allows re-creation."""
+    user_id = client.post("/api/users", json={}).json()["data"]["id"]
+    client.post(
+        f"/api/users/{user_id}/personal-info",
+        json={"full_name": "Temporary Profile", "city": "Lahore"}
+    )
+
+    # Delete personal info
+    del_res = client.delete(f"/api/users/{user_id}/personal-info")
+    assert del_res.status_code == 200
+    assert del_res.json()["success"] is True
+
+    # Verify subsequent GET returns 404
+    get_res = client.get(f"/api/users/{user_id}/personal-info")
+    assert get_res.status_code == 404
+    assert get_res.json()["error_code"] == "PERSONAL_INFO_NOT_FOUND"
+
+    # Verify a new profile can be created now
+    create_res = client.post(
+        f"/api/users/{user_id}/personal-info",
+        json={"full_name": "New Recreated Profile"}
+    )
+    assert create_res.status_code == 201
+
+
+def test_delete_user_cascades(client):
+    """Test deleting user cascades deletion to personal info and experiences."""
+    user_id = client.post("/api/users", json={}).json()["data"]["id"]
+    client.post(
+        f"/api/users/{user_id}/personal-info",
+        json={"full_name": "Cascade User"}
+    )
+    client.post(
+        f"/api/users/{user_id}/experiences",
+        json={"company": "Test Corp", "job_title": "Dev", "start_date": "2024-01-01"}
+    )
+
+    # Delete user
+    del_res = client.delete(f"/api/users/{user_id}")
+    assert del_res.status_code == 200
+    assert del_res.json()["success"] is True
+
+    # Verify user no longer exists
+    assert client.get(f"/api/users/{user_id}").status_code == 404
+    assert client.get(f"/api/users/{user_id}/personal-info").status_code == 404
+    assert client.get(f"/api/users/{user_id}/experiences").status_code == 404
+
+
+def test_update_personal_info_null_full_name_fails(client):
+    """Test updating personal info with null full_name fails with 422 validation error."""
+    user_id = client.post("/api/users", json={}).json()["data"]["id"]
+    client.post(
+        f"/api/users/{user_id}/personal-info",
+        json={"full_name": "Valid Name"}
+    )
+
+    update_res = client.put(
+        f"/api/users/{user_id}/personal-info",
+        json={"full_name": None}
+    )
+    assert update_res.status_code == 422
+    assert update_res.json()["error_code"] == "VALIDATION_ERROR"
+
+
+def test_get_user_profile(client):
+    """Test retrieving full aggregated profile with personal info and experiences."""
+    user_id = client.post("/api/users", json={}).json()["data"]["id"]
+    client.post(
+        f"/api/users/{user_id}/personal-info",
+        json={"full_name": "Full Profile User", "university": "FAST NUCES"}
+    )
+    client.post(
+        f"/api/users/{user_id}/experiences",
+        json={"company": "Company A", "job_title": "Engineer", "start_date": "2024-01-01"}
+    )
+
+    profile_res = client.get(f"/api/users/{user_id}/profile")
+    assert profile_res.status_code == 200
+    data = profile_res.json()["data"]
+    assert data["user"]["id"] == user_id
+    assert data["personal_info"]["full_name"] == "Full Profile User"
+    assert len(data["experiences"]) == 1
+    assert data["experiences"][0]["company"] == "Company A"
+
+
+def test_create_and_get_personal_info_with_gender_and_photos(client):
+    """Test creating and updating personal information with gender and base64 photos."""
+    user_id = client.post("/api/users", json={}).json()["data"]["id"]
+
+    photo_uri = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="
+    cnic_uri = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+
+    payload = {
+        "full_name": "Ayesha Khan",
+        "gender": "Female",
+        "profile_photo": photo_uri,
+        "cnic_photo": cnic_uri
+    }
+    create_res = client.post(f"/api/users/{user_id}/personal-info", json=payload)
+    assert create_res.status_code == 201
+    created_info = create_res.json()["data"]
+    assert created_info["gender"] == "Female"
+    assert created_info["profile_photo"] == photo_uri
+    assert created_info["cnic_photo"] == cnic_uri
+
+    # Verify update
+    update_res = client.put(
+        f"/api/users/{user_id}/personal-info",
+        json={"gender": "Other"}
+    )
+    assert update_res.status_code == 200
+    assert update_res.json()["data"]["gender"] == "Other"
+    assert update_res.json()["data"]["profile_photo"] == photo_uri
+
+

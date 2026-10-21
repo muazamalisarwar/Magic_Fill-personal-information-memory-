@@ -1,0 +1,36 @@
+---
+interface Props {
+  logo: string;
+  step?: string;
+  title: string;
+  content: string;
+}
+const { logo, step, title, content } = Astro.props;
+---
+
+<div class="neu-card p-8 xl:p-10 flex flex-col items-center text-center relative overflow-hidden group h-full">
+  <!-- Step number badge -->
+  {step && (
+    <div class="neu-pill px-4 py-1.5 mb-6 text-[11px] font-extrabold uppercase tracking-widest text-[#6C63FF] font-display">
+      Step {step}
+    </div>
+  )}
+
+  <!-- Step Inset Deep Icon Well -->
+  <div class="neu-icon-well size-20 mb-6 group-hover:scale-105 transition-transform duration-300">
+    <img src={logo} alt={`${title} icon`} class="size-10 object-contain" width="40" height="40" />
+  </div>
+
+  <!-- Title -->
+  <h3 class="text-xl font-bold font-display text-[#3D4852] group-hover:text-[#6C63FF] transition-colors leading-snug mb-3">
+    {title}
+  </h3>
+
+  <!-- Neumorphic Inset Accent Notch -->
+  <div class="neu-inset-sm h-1 w-12 rounded-full my-2 bg-transparent"></div>
+
+  <!-- Content -->
+  <p class="font-body text-[#6B7280] text-sm leading-relaxed max-w-sm mt-2">
+    {content}
+  </p>
+</div>

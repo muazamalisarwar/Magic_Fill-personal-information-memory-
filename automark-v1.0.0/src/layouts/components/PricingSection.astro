@@ -1,0 +1,115 @@
+---
+import PricingCard from "./PricingCard.astro";
+import { getListPage } from "@/lib/contentParser.astro";
+import type { Pricing } from "@/types";
+
+interface Props {
+  /** Override the section title HTML */
+  title?: string;
+  /** Override the section description */
+  content?: string;
+  isHome?: boolean;
+}
+
+const { title, content, isHome = true } = Astro.props;
+
+const pricingEntry = await getListPage("pricing", "-index");
+const pricingData: Pricing = pricingEntry.data;
+
+const sectionTitle = title ?? pricingData.page_header?.title ?? "";
+const sectionContent = content ?? pricingData.page_header?.content ?? "";
+---
+
+<section class="section relative overflow-hidden py-24" id="pricing">
+  <div class="container">
+    <div class="section-container">
+      {
+        isHome && (
+          <div class="section-intro centralize text-center mb-16">
+            <div class="neu-pill px-4 py-1.5 mb-4 text-xs font-bold text-[#6C63FF] tracking-wider uppercase font-display">
+              Transparent Pricing
+            </div>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-[#3D4852] hasHighlight mb-4" set:html={sectionTitle} />
+            {sectionContent && <p class="font-body text-[#6B7280] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">{sectionContent}</p>}
+          </div>
+        )
+      }
+      <div class="section-content text-center">
+        <!-- Neumorphic Pricing Cycle Toggle -->
+        <div class="inline-flex items-center justify-center mb-14">
+          <div class="neu-inset-sm p-1.5 rounded-full inline-flex items-center gap-1">
+            <input
+              type="checkbox"
+              data-pricing-toggle
+              id="pricing-toggle"
+              class="hidden"
+            />
+            <label
+              for="pricing-toggle"
+              id="lblToggleMonthly"
+              class="neu-btn-secondary px-6 py-2 text-xs font-bold rounded-full cursor-pointer transition-all active"
+            >
+              {pricingData.toggler?.monthly_label ?? "Monthly"}
+            </label>
+            <label
+              for="pricing-toggle"
+              id="lblToggleYearly"
+              class="px-6 py-2 text-xs font-bold text-[#6B7280] hover:text-[#3D4852] rounded-full cursor-pointer transition-all"
+            >
+              {pricingData.toggler?.yearly_label ?? "Yearly"}
+              <span class="ml-1 text-[10px] text-[#38B2AC] font-mono font-bold">(Save 20%)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-8 relative z-10 text-left">
+          {
+            pricingData.plans.map((plan) => (
+              <PricingCard
+                price={plan.price}
+                yearly_price={plan.yearly_price}
+                title={plan.title}
+                is_featured={plan.is_featured}
+                offer_text={plan.offer_text}
+                button={plan.button}
+                description={plan.description}
+                features={plan.features}
+              />
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", () => {
+    const toggle = document.getElementById("pricing-toggle");
+    const lblMonthly = document.getElementById("lblToggleMonthly");
+    const lblYearly = document.getElementById("lblToggleYearly");
+    const monthlyTags = document.querySelectorAll("[data-price-tag-monthly]");
+    const yearlyTags = document.querySelectorAll("[data-price-tag-yearly]");
+
+    if (toggle && lblMonthly && lblYearly) {
+      toggle.addEventListener("change", () => {
+        const isYearly = toggle.checked;
+        if (isYearly) {
+          lblMonthly.classList.remove("neu-btn-secondary", "active");
+          lblMonthly.classList.add("text-[#6B7280]");
+          lblYearly.classList.add("neu-btn-secondary", "active");
+          lblYearly.classList.remove("text-[#6B7280]");
+          monthlyTags.forEach(el => el.classList.add("opacity-0"));
+          yearlyTags.forEach(el => el.classList.remove("opacity-0"));
+        } else {
+          lblYearly.classList.remove("neu-btn-secondary", "active");
+          lblYearly.classList.add("text-[#6B7280]");
+          lblMonthly.classList.add("neu-btn-secondary", "active");
+          lblMonthly.classList.remove("text-[#6B7280]");
+          yearlyTags.forEach(el => el.classList.add("opacity-0"));
+          monthlyTags.forEach(el => el.classList.remove("opacity-0"));
+        }
+      });
+    }
+  });
+</script>

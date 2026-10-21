@@ -73,3 +73,19 @@ def update_personal_info(
     db.commit()
     db.refresh(personal_info)
     return personal_info
+
+
+def delete_personal_info(db: Session, user_id: int) -> None:
+    """
+    Delete personal information for the specified user ID.
+    Raises UserNotFoundException if user doesn't exist,
+    or PersonalInfoNotFoundException if personal info hasn't been created yet.
+    """
+    get_user_by_id(db, user_id=user_id)
+
+    personal_info = db.query(PersonalInfo).filter(PersonalInfo.user_id == user_id).first()
+    if not personal_info:
+        raise PersonalInfoNotFoundException(user_id=user_id)
+
+    db.delete(personal_info)
+    db.commit()

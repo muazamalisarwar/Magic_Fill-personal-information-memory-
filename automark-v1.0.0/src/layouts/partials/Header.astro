@@ -1,0 +1,430 @@
+---
+import Logo from "@/components/Logo.astro";
+import config from "@/config/config.json";
+import menu from "@/config/menu.json";
+
+export interface ChildNavigationLink {
+  name: string;
+  url: string;
+}
+
+export interface NavigationLink {
+  name: string;
+  url: string;
+  hasChildren?: boolean;
+  children?: ChildNavigationLink[];
+}
+
+const { main }: { main: NavigationLink[] } = menu;
+const { settings } = config;
+const { pathname } = Astro.url;
+---
+
+<header
+  class={`header z-50 w-full transition-all duration-300 ${settings.sticky_header ? "fixed top-0" : ""} bg-white/90 dark:bg-[#0B0F19]/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-white/10 shadow-xs dark:shadow-none`}
+>
+  <nav class="navbar max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-30 flex items-center justify-between h-20">
+    <!-- Logo -->
+    <div class="flex items-center shrink-0">
+      <Logo />
+    </div>
+
+    <!-- 1. PUBLIC MARKETING MENU (Visible ONLY when Logged Out) -->
+    <ul
+      id="publicNavMenu"
+      class="navbar-nav hidden lg:flex items-center gap-x-2"
+    >
+      {
+        main.map((item) => (
+          <li class="nav-item">
+            <a
+              href={item.url}
+              class={`text-xs font-bold tracking-tight uppercase px-4 py-2.5 rounded-xl transition-all duration-200 cursor-pointer ${
+                (pathname === `${item.url}/` || pathname === item.url)
+                  ? "bg-[#6C63FF]/15 text-[#6C63FF] font-extrabold"
+                  : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10"
+              }`}
+            >
+              {item.name}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <!-- 2. AUTHENTICATED PLATFORM MENU (Visible ONLY when Logged In) -->
+    <ul
+      id="authNavMenu"
+      class="navbar-nav hidden items-center gap-x-2"
+    >
+      <li class="nav-item">
+        <a
+          href="/memory"
+          class={`text-xs font-bold px-3.5 py-2.5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+            pathname === "/memory" || pathname === "/memory/"
+              ? "bg-[#6C63FF]/15 text-[#6C63FF] font-extrabold"
+              : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10"
+          }`}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+          <span>Memory Vault</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a
+          href="/dashboard"
+          class={`text-xs font-bold px-3.5 py-2.5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+            pathname === "/dashboard" || pathname === "/dashboard/"
+              ? "bg-[#6C63FF]/15 text-[#6C63FF] font-extrabold"
+              : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10"
+          }`}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          <span>Dashboard</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a
+          href="/extract"
+          class={`text-xs font-bold px-3.5 py-2.5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+            pathname === "/extract" || pathname === "/extract/"
+              ? "bg-[#6C63FF]/15 text-[#6C63FF] font-extrabold"
+              : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10"
+          }`}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <span>AI Extraction</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a
+          href="/playground"
+          class={`text-xs font-bold px-3.5 py-2.5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+            pathname === "/playground" || pathname === "/playground/"
+              ? "bg-emerald-500/15 text-emerald-500 font-extrabold"
+              : "text-slate-600 dark:text-slate-300 hover:text-emerald-500 hover:bg-slate-100 dark:hover:bg-white/10"
+          }`}
+        >
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Simulator</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a
+          href="/extension"
+          class={`text-xs font-bold px-3.5 py-2.5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+            pathname === "/extension" || pathname === "/extension/"
+              ? "bg-[#6C63FF]/15 text-[#6C63FF] font-extrabold"
+              : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10"
+          }`}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+          <span>Extension</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- 3. RIGHT CONTROLS: Theme Toggle & Auth Buttons -->
+    <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
+      <!-- Active Dark / Light Theme Toggle Button -->
+      <button
+        type="button"
+        id="themeToggleBtn"
+        class="size-10 rounded-2xl flex items-center justify-center transition-all bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 border border-slate-300 dark:border-white/10 text-slate-700 dark:text-white cursor-pointer shadow-xs hover:scale-105 active:scale-95"
+        title="Toggle Dark / Light Theme"
+        aria-label="Toggle Theme"
+      >
+        <!-- Sun icon (shown in dark theme) -->
+        <svg id="themeIconSun" class="w-4 h-4 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="5" stroke-width="2"></circle>
+          <line x1="12" y1="1" x2="12" y2="3" stroke-width="2" stroke-linecap="round"></line>
+          <line x1="12" y1="21" x2="12" y2="23" stroke-width="2" stroke-linecap="round"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke-width="2" stroke-linecap="round"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke-width="2" stroke-linecap="round"></line>
+          <line x1="1" y1="12" x2="3" y2="12" stroke-width="2" stroke-linecap="round"></line>
+          <line x1="21" y1="12" x2="23" y2="12" stroke-width="2" stroke-linecap="round"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke-width="2" stroke-linecap="round"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke-width="2" stroke-linecap="round"></line>
+        </svg>
+        <!-- Moon icon (shown in light theme) -->
+        <svg id="themeIconMoon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </button>
+
+      <!-- Logged Out Actions -->
+      <div id="headerLoggedOutArea" class="flex items-center gap-2.5">
+        <a
+          href="/login"
+          id="btnHeaderSignIn"
+          class="h-10 px-4.5 text-xs font-bold rounded-2xl cursor-pointer bg-white hover:bg-slate-50 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-300 dark:border-white/15 text-slate-800 dark:text-white transition-all shadow-xs flex items-center justify-center"
+        >
+          Sign In
+        </a>
+        <a
+          href="/register"
+          id="btnHeaderGetStarted"
+          class="h-10 px-5 text-xs font-bold rounded-2xl cursor-pointer bg-gradient-to-r from-[#6C63FF] via-indigo-600 to-violet-600 hover:opacity-95 text-white transition-all shadow-md shadow-[#6C63FF]/25 flex items-center justify-center"
+        >
+          Get Started
+        </a>
+      </div>
+
+      <!-- Logged In Actions -->
+      <div id="headerLoggedInArea" class="hidden items-center gap-2.5">
+        <!-- User profile pill -->
+        <a
+          href="/dashboard"
+          class="h-10 px-4 rounded-2xl flex items-center gap-2 text-xs font-bold bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-300 dark:border-white/10 text-slate-800 dark:text-white shadow-xs"
+          title="Go to Dashboard"
+        >
+          <span class="size-2 rounded-full bg-[#38B2AC]"></span>
+          <span id="headerUserDisplayName" class="truncate max-w-28 font-bold text-slate-900 dark:text-white">Ali</span>
+        </a>
+
+        <!-- Sign Out button -->
+        <button
+          type="button"
+          id="btnHeaderSignOut"
+          class="h-10 px-4 rounded-2xl text-xs font-bold text-rose-500 hover:text-rose-600 bg-rose-500/10 hover:bg-rose-500/20 transition-all cursor-pointer"
+          title="Sign Out"
+        >
+          Sign Out
+        </button>
+      </div>
+
+      <!-- Mobile Hamburger Button -->
+      <button
+        type="button"
+        id="mobileNavToggleBtn"
+        class="lg:hidden size-10 rounded-2xl flex items-center justify-center text-slate-800 dark:text-white bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 border border-slate-300 dark:border-white/10"
+        aria-label="Toggle navigation"
+      >
+        <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- 4. MOBILE SLIDEOUT DRAWER -->
+  <div id="mobileDrawerBackdrop" class="fixed inset-0 z-40 bg-black/40 backdrop-blur-xs hidden lg:hidden"></div>
+  <div
+    id="mobileDrawer"
+    class="fixed inset-y-0 right-0 z-50 w-72 bg-white dark:bg-[#0B0F19] border-l border-slate-200 dark:border-white/10 p-6 shadow-2xl transform translate-x-full transition-transform duration-300 lg:hidden flex flex-col justify-between"
+  >
+    <div>
+      <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-white/10 mb-6">
+        <span class="text-xs font-extrabold uppercase tracking-wider text-[#6C63FF] font-display">Magic Fill</span>
+        <button type="button" id="mobileDrawerCloseBtn" class="size-8 rounded-xl flex items-center justify-center text-lg font-bold text-slate-700 dark:text-white bg-slate-100 dark:bg-white/10">&times;</button>
+      </div>
+
+      <!-- Mobile Logged Out Links -->
+      <div id="mobileLoggedOutLinks" class="flex flex-col gap-2">
+        <a href="/features" class="px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">Features</a>
+        <a href="/integrations" class="px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">Supported Portals</a>
+        <a href="/pricing" class="px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">Pricing</a>
+        <a href="/about" class="px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">How It Works</a>
+        <a href="/playground" class="px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">Form Simulator</a>
+        <a href="/contact" class="px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">Contact</a>
+      </div>
+
+      <!-- Mobile Logged In Links -->
+      <div id="mobileLoggedInLinks" class="hidden flex-col gap-2">
+        <a href="/dashboard" class="px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">Dashboard</a>
+        <a href="/memory" class="px-4 py-2.5 text-xs font-bold text-[#6C63FF] bg-[#6C63FF]/10 rounded-xl">Memory Vault</a>
+        <a href="/extract" class="px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">AI Extraction</a>
+        <a href="/playground" class="px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">Live Simulator</a>
+        <a href="/extension" class="px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">Extension Setup</a>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer Bottom Actions -->
+    <div class="pt-4 border-t border-slate-200 dark:border-white/10 space-y-2.5">
+      <div id="mobileDrawerLoggedOutBtns" class="flex flex-col gap-2">
+        <a href="/login" class="w-full text-center py-2.5 text-xs font-bold text-slate-800 dark:text-white bg-slate-100 dark:bg-white/10 rounded-xl">Sign In</a>
+        <a href="/register" class="w-full text-center py-2.5 text-xs font-bold text-white bg-gradient-to-r from-[#6C63FF] to-indigo-600 rounded-xl">Get Started</a>
+      </div>
+      <div id="mobileDrawerLoggedInBtns" class="hidden flex-col gap-2">
+        <button type="button" id="mobileDrawerSignOutBtn" class="w-full text-center py-2.5 text-xs font-bold text-rose-500 bg-rose-500/10 rounded-xl">Sign Out</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Synchronous Client Controller for Theme & Auth State -->
+  <script is:inline>
+    (function () {
+      // 1. Theme Management (Dark / White Theme)
+      const THEME_KEY = "magic_fill_theme";
+      const savedTheme = localStorage.getItem(THEME_KEY) || "dark";
+
+      function applyTheme(theme) {
+        if (theme === "light") {
+          document.documentElement.classList.add("light-theme");
+          document.documentElement.setAttribute("data-theme", "light");
+          const sun = document.getElementById("themeIconSun");
+          const moon = document.getElementById("themeIconMoon");
+          if (sun) sun.classList.add("hidden");
+          if (moon) moon.classList.remove("hidden");
+        } else {
+          document.documentElement.classList.remove("light-theme");
+          document.documentElement.setAttribute("data-theme", "dark");
+          const sun = document.getElementById("themeIconSun");
+          const moon = document.getElementById("themeIconMoon");
+          if (sun) sun.classList.remove("hidden");
+          if (moon) moon.classList.add("hidden");
+        }
+      }
+
+      applyTheme(savedTheme);
+
+      // 2. Authentication State Synchronization
+      function syncHeader() {
+        const token = localStorage.getItem("magic_fill_token");
+        const rawUser = localStorage.getItem("magic_fill_user");
+        let user = null;
+        try { if (rawUser) user = JSON.parse(rawUser); } catch(e) {}
+
+        const publicMenu = document.getElementById("publicNavMenu");
+        const authMenu = document.getElementById("authNavMenu");
+        const loggedOutArea = document.getElementById("headerLoggedOutArea");
+        const loggedInArea = document.getElementById("headerLoggedInArea");
+        const userDisplay = document.getElementById("headerUserDisplayName");
+
+        const mobileLoggedOut = document.getElementById("mobileLoggedOutLinks");
+        const mobileLoggedIn = document.getElementById("mobileLoggedInLinks");
+        const mobileLoggedOutBtns = document.getElementById("mobileDrawerLoggedOutBtns");
+        const mobileLoggedInBtns = document.getElementById("mobileDrawerLoggedInBtns");
+
+        if (token) {
+          // USER IS LOGGED IN: Show ONLY authenticated platform menu
+          if (publicMenu) {
+            publicMenu.classList.remove("active-desktop-menu");
+            publicMenu.classList.add("hidden");
+          }
+          if (authMenu) {
+            authMenu.classList.add("active-desktop-menu");
+            authMenu.classList.remove("hidden");
+          }
+          if (loggedOutArea) loggedOutArea.classList.add("hidden");
+          if (loggedInArea) {
+            loggedInArea.classList.remove("hidden");
+            loggedInArea.classList.add("flex");
+          }
+
+          // Mobile Drawer: Show ONLY authenticated vault links, hide public links!
+          if (mobileLoggedOut) mobileLoggedOut.classList.add("hidden");
+          if (mobileLoggedIn) {
+            mobileLoggedIn.classList.remove("hidden");
+            mobileLoggedIn.classList.add("flex");
+          }
+          if (mobileLoggedOutBtns) mobileLoggedOutBtns.classList.add("hidden");
+          if (mobileLoggedInBtns) {
+            mobileLoggedInBtns.classList.remove("hidden");
+            mobileLoggedInBtns.classList.add("flex");
+          }
+
+          const name = (user && (user.full_name || user.email)) || "Vault Active";
+          const shortName = name.split(" ")[0] || name;
+          if (userDisplay) userDisplay.textContent = shortName;
+        } else {
+          // USER IS LOGGED OUT: Show public marketing menu
+          if (publicMenu) {
+            publicMenu.classList.add("active-desktop-menu");
+            publicMenu.classList.remove("hidden");
+          }
+          if (authMenu) {
+            authMenu.classList.remove("active-desktop-menu");
+            authMenu.classList.add("hidden");
+          }
+          if (loggedOutArea) {
+            loggedOutArea.classList.remove("hidden");
+            loggedOutArea.classList.add("flex");
+          }
+          if (loggedInArea) {
+            loggedInArea.classList.add("hidden");
+            loggedInArea.classList.remove("flex");
+          }
+
+          // Mobile Drawer: Show public marketing links
+          if (mobileLoggedOut) {
+            mobileLoggedOut.classList.remove("hidden");
+            mobileLoggedOut.classList.add("flex");
+          }
+          if (mobileLoggedIn) {
+            mobileLoggedIn.classList.add("hidden");
+            mobileLoggedIn.classList.remove("flex");
+          }
+          if (mobileLoggedOutBtns) {
+            mobileLoggedOutBtns.classList.remove("hidden");
+            mobileLoggedOutBtns.classList.add("flex");
+          }
+          if (mobileLoggedInBtns) {
+            mobileLoggedInBtns.classList.add("hidden");
+            mobileLoggedInBtns.classList.remove("flex");
+          }
+        }
+      }
+
+      function handleSignOut() {
+        localStorage.removeItem("magic_fill_token");
+        localStorage.removeItem("magic_fill_user");
+        window.location.href = "/login";
+      }
+
+      function initHeader() {
+        applyTheme(localStorage.getItem(THEME_KEY) || "dark");
+        syncHeader();
+
+        // Theme Toggle Click
+        const themeBtn = document.getElementById("themeToggleBtn");
+        if (themeBtn) {
+          themeBtn.addEventListener("click", () => {
+            const current = document.documentElement.getAttribute("data-theme") || "dark";
+            const next = current === "light" ? "dark" : "light";
+            localStorage.setItem(THEME_KEY, next);
+            applyTheme(next);
+            window.dispatchEvent(new CustomEvent("themechange", { detail: { theme: next } }));
+          });
+        }
+
+        // Sign Out Clicks
+        const signOutBtn = document.getElementById("btnHeaderSignOut");
+        if (signOutBtn) signOutBtn.addEventListener("click", handleSignOut);
+        const mobileSignOut = document.getElementById("mobileDrawerSignOutBtn");
+        if (mobileSignOut) mobileSignOut.addEventListener("click", handleSignOut);
+
+        // Mobile Drawer Toggle
+        const toggleBtn = document.getElementById("mobileNavToggleBtn");
+        const drawer = document.getElementById("mobileDrawer");
+        const backdrop = document.getElementById("mobileDrawerBackdrop");
+        const closeBtn = document.getElementById("mobileDrawerCloseBtn");
+
+        function openDrawer() {
+          if (drawer) drawer.classList.remove("translate-x-full");
+          if (backdrop) backdrop.classList.remove("hidden");
+        }
+        function closeDrawer() {
+          if (drawer) drawer.classList.add("translate-x-full");
+          if (backdrop) backdrop.classList.add("hidden");
+        }
+
+        if (toggleBtn) toggleBtn.addEventListener("click", openDrawer);
+        if (closeBtn) closeBtn.addEventListener("click", closeDrawer);
+        if (backdrop) backdrop.addEventListener("click", closeDrawer);
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initHeader);
+      } else {
+        initHeader();
+      }
+
+      window.addEventListener("storage", syncHeader);
+    })();
+  </script>
+</header>

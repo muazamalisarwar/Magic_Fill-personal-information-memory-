@@ -1,0 +1,56 @@
+---
+interface Props {
+  class?: string;
+  showBadge?: boolean;
+}
+
+const { class: className = "", showBadge = false } = Astro.props;
+---
+
+<a
+  href="/"
+  class={`group inline-flex items-center select-none transition-transform duration-200 hover:scale-[1.03] ${className}`}
+  aria-label="Magic Fill — Home"
+>
+  <!-- Light Mode Brand Logo -->
+  <img
+    src="/images/for_light_mode.png"
+    alt="Magic Fill — Fill Forms With Magic"
+    class="magic-fill-logo-light h-11 sm:h-12 w-auto object-contain"
+    width="168"
+    height="120"
+    loading="eager"
+  />
+
+  <!-- Dark Mode Brand Logo -->
+  <img
+    src="/images/for_dark_mode.png"
+    alt="Magic Fill — Fill Forms With Magic"
+    class="magic-fill-logo-dark h-11 sm:h-12 w-auto object-contain"
+    width="168"
+    height="120"
+    loading="eager"
+  />
+</a>
+
+<style>
+  /* Default: Dark Theme (Show Dark Logo, Hide Light Logo) */
+  .magic-fill-logo-light {
+    display: none !important;
+  }
+  .magic-fill-logo-dark {
+    display: block !important;
+  }
+
+  /* Neumorphic & Light Theme: Show light logo on cool grey #E0E5EC */
+  :global([data-theme="neumorphic"]) .magic-fill-logo-light,
+  :global([data-theme="light"]) .magic-fill-logo-light,
+  :global(html.light-theme) .magic-fill-logo-light {
+    display: block !important;
+  }
+  :global([data-theme="neumorphic"]) .magic-fill-logo-dark,
+  :global([data-theme="light"]) .magic-fill-logo-dark,
+  :global(html.light-theme) .magic-fill-logo-dark {
+    display: none !important;
+  }
+</style>

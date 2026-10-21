@@ -1,6 +1,6 @@
 from datetime import date, datetime
-from typing import Optional
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from typing import Optional, Any
+from pydantic import BaseModel, ConfigDict, Field, model_validator, field_validator
 
 
 class ExperienceBase(BaseModel):
@@ -66,6 +66,13 @@ class ExperienceUpdate(BaseModel):
     skills: Optional[str] = Field(None, max_length=500)
 
     model_config = ConfigDict(extra="forbid")
+
+    @field_validator("company", "job_title", "start_date")
+    @classmethod
+    def validate_non_nullable_fields(cls, v: Any) -> Any:
+        if v is None:
+            raise ValueError("Field cannot be null if provided")
+        return v
 
     @model_validator(mode="after")
     def validate_dates(self) -> "ExperienceUpdate":

@@ -139,3 +139,50 @@ def test_non_existent_experience(client):
     update_res = client.put("/api/experiences/99999", json={"company": "New Corp"})
     assert update_res.status_code == 404
     assert update_res.json()["error_code"] == "EXPERIENCE_NOT_FOUND"
+
+
+def test_delete_experience(client):
+    """Test deleting an experience removes the record."""
+    user_id = client.post("/api/users", json={}).json()["data"]["id"]
+    exp_payload = {
+        "company": "To Delete Corp",
+        "job_title": "Temporary Role",
+        "start_date": "2024-01-01"
+    }
+    exp_res = client.post(f"/api/users/{user_id}/experiences", json=exp_payload)
+    exp_id = exp_res.json()["data"]["id"]
+
+    # Delete experience
+    del_res = client.delete(f"/api/experiences/{exp_id}")
+    assert del_res.status_code == 200
+    assert del_res.json()["success"] is True
+
+    # Verify subsequent GET returns 404
+    get_res = client.get(f"/api/experiences/{exp_id}")
+    assert get_res.status_code == 404
+    assert get_res.json()["error_code"] == "EXPERIENCE_NOT_FOUND"
+
+
+def test_delete_non_existent_experience(client):
+    """Test deleting a non-existent experience returns 404."""
+    del_res = client.delete("/api/experiences/99999")
+    assert del_res.status_code == 404
+    assert del_res.json()["error_code"] == "EXPERIENCE_NOT_FOUND"
+
+
+def test_update_experience_null_company_fails(client):
+    """Test updating experience with null company fails with 422 validation error."""
+    user_id = client.post("/api/users", json={}).json()["data"]["id"]
+    exp_res = client.post(
+        f"/api/users/{user_id}/experiences",
+        json={"company": "Valid Corp", "job_title": "Developer", "start_date": "2024-01-01"}
+    )
+    exp_id = exp_res.json()["data"]["id"]
+
+    update_res = client.put(
+        f"/api/experiences/{exp_id}",
+        json={"company": None}
+    )
+    assert update_res.status_code == 422
+    assert update_res.json()["error_code"] == "VALIDATION_ERROR"
+

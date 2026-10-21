@@ -1,0 +1,35 @@
+---
+import ImageMod from "@/layouts/components/ImageMod.astro";
+interface Props {
+  logo: string;
+  title: string;
+  list?: string[];
+}
+const { logo, title, list } = Astro.props;
+---
+
+<div class="neu-card p-8 group relative flex flex-col justify-between h-full">
+  <div>
+    <!-- Inset Deep Icon Well -->
+    <div class="neu-icon-well size-16 mb-6 group-hover:scale-105 transition-transform duration-300">
+      <ImageMod src={logo} alt={`${title} icon`} class="size-8 object-contain" />
+    </div>
+
+    <!-- Card Title -->
+    <h3 class="text-xl font-bold font-display text-[#3D4852] group-hover:text-[#6C63FF] transition-colors leading-snug mb-4">
+      {title}
+    </h3>
+
+    <!-- Feature Checklist -->
+    <ul class="space-y-3 font-body text-sm text-[#6B7280] leading-relaxed">
+      {list?.map((item) => (
+        <li class="flex items-start gap-2.5">
+          <span class="neu-inset-sm size-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 text-[#38B2AC] text-xs font-bold">
+            ✓
+          </span>
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>

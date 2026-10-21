@@ -1,0 +1,297 @@
+---
+import Base from "@/layouts/Base.astro";
+---
+
+<Base
+  title="Sign In — Magic Fill"
+  meta_title="Sign In to Magic Fill Personal Memory Vault"
+  description="Sign in to your private personal memory vault and access intelligent browser form autofill."
+>
+  <section class="min-h-[85vh] flex items-center justify-center py-16 px-4 relative overflow-hidden">
+    <!-- Ambient radial glow background -->
+    <div
+      class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 size-140 lg:size-200 -z-10 rounded-full blur-3xl pointer-events-none opacity-40 dark:opacity-30"
+      style="background: radial-gradient(circle, #6C63FF 0%, rgba(108, 99, 255, 0.25) 45%, transparent 70%);"
+    ></div>
+
+    <div class="w-full max-w-md mx-auto relative z-10">
+      <!-- Card Container (Stunning dual-theme: Pure elevated white in Light, Sleek glass in Dark) -->
+      <div class="bg-white/95 dark:bg-[#121826]/95 border border-slate-200/90 dark:border-white/10 rounded-3xl p-8 sm:p-10 shadow-xl dark:shadow-2xl backdrop-blur-2xl transition-all duration-300">
+        <!-- Brand Header -->
+        <div class="text-center mb-8">
+          <div class="size-14 rounded-2xl bg-indigo-50 dark:bg-[#6C63FF]/15 border border-indigo-100 dark:border-[#6C63FF]/30 text-[#6C63FF] flex items-center justify-center mx-auto mb-4 shadow-sm dark:shadow-lg dark:shadow-[#6C63FF]/10">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+            </svg>
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mb-2 font-display tracking-tight">
+            Welcome Back
+          </h1>
+          <p class="text-sm text-slate-600 dark:text-slate-400 font-body">
+            Sign in to access your personal memory vault &amp; autofill copilot
+          </p>
+        </div>
+
+        <!-- Google One-Click Auth Container -->
+        <div class="mb-6">
+          <div id="googleLoginBtnSlot" class="w-full flex justify-center min-h-[44px]">
+            <button
+              type="button"
+              id="btnGoogleAuthFallback"
+              class="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-slate-300 dark:border-white/15 bg-white hover:bg-slate-50 dark:bg-white/5 dark:hover:bg-white/10 text-slate-800 dark:text-white text-sm font-semibold transition cursor-pointer shadow-xs hover:shadow-md active:scale-[0.99]"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+              </svg>
+              <span>Continue with Google</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="flex items-center gap-3 my-6">
+          <span class="h-px bg-slate-200 dark:bg-white/10 flex-1"></span>
+          <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">or sign in with email</span>
+          <span class="h-px bg-slate-200 dark:bg-white/10 flex-1"></span>
+        </div>
+
+        <!-- Sign In Form -->
+        <form id="standaloneLoginForm" class="space-y-4" onsubmit="return false;">
+          <div>
+            <label for="pageLoginEmail" class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Email Address</label>
+            <input
+              type="email"
+              id="pageLoginEmail"
+              placeholder="you@domain.com"
+              required
+              autocomplete="email"
+              class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-300 dark:border-white/15 rounded-xl px-4 py-3 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 text-sm focus:border-[#6C63FF] focus:ring-2 focus:ring-[#6C63FF]/20 focus:outline-none transition shadow-2xs"
+            />
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="pageLoginPassword" class="block text-xs font-bold text-slate-700 dark:text-slate-300">Password</label>
+            </div>
+            <input
+              type="password"
+              id="pageLoginPassword"
+              placeholder="Enter your password"
+              required
+              autocomplete="current-password"
+              class="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-300 dark:border-white/15 rounded-xl px-4 py-3 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 text-sm focus:border-[#6C63FF] focus:ring-2 focus:ring-[#6C63FF]/20 focus:outline-none transition shadow-2xs"
+            />
+          </div>
+
+          <!-- Alert / Error message -->
+          <div id="pageLoginError" class="hidden text-xs text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-500/30 p-3 rounded-xl leading-relaxed"></div>
+
+          <button
+            type="submit"
+            id="pageLoginSubmitBtn"
+            class="w-full py-3.5 px-4 bg-gradient-to-r from-[#6C63FF] via-indigo-600 to-violet-600 hover:opacity-95 text-white text-sm font-bold rounded-xl text-center shadow-lg shadow-[#6C63FF]/25 cursor-pointer transition hover:scale-[1.01] active:scale-[0.99]"
+          >
+            Sign In to Dashboard
+          </button>
+        </form>
+
+        <!-- Redirect to Registration -->
+        <div class="mt-6 pt-6 border-t border-slate-200 dark:border-white/10 text-center">
+          <p class="text-xs text-slate-600 dark:text-slate-400">
+            New to Magic Fill?{" "}
+            <a href="/register" class="text-[#6C63FF] dark:text-[#8450FF] font-bold hover:underline">
+              Create a free account
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    (() => {
+      // If already logged in, redirect straight to dashboard
+      const existingToken = localStorage.getItem("magic_fill_token");
+      if (existingToken) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirectUrl = urlParams.get("redirect") || "/dashboard";
+        window.location.href = redirectUrl;
+        return;
+      }
+
+      const emailInput = document.getElementById("pageLoginEmail");
+      const passwordInput = document.getElementById("pageLoginPassword");
+      const errorBox = document.getElementById("pageLoginError");
+      const submitBtn = document.getElementById("pageLoginSubmitBtn");
+      const form = document.getElementById("standaloneLoginForm");
+      const googleFallbackBtn = document.getElementById("btnGoogleAuthFallback");
+
+      function showError(msg) {
+        if (errorBox) {
+          errorBox.textContent = msg;
+          errorBox.classList.remove("hidden");
+        }
+      }
+
+      function clearError() {
+        if (errorBox) {
+          errorBox.textContent = "";
+          errorBox.classList.add("hidden");
+        }
+      }
+
+      async function handleLogin() {
+        const email = (emailInput?.value || "").trim();
+        const password = (passwordInput?.value || "").trim();
+
+        if (!email || !password) {
+          showError("Please enter both your email address and password.");
+          return;
+        }
+
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Verifying Credentials...";
+        }
+        clearError();
+
+        try {
+          const res = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
+
+          const data = await res.json();
+
+          if (res.ok && data.success && data.data) {
+            localStorage.setItem("magic_fill_token", data.data.access_token);
+            localStorage.setItem("magic_fill_user", JSON.stringify(data.data.user));
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectUrl = urlParams.get("redirect") || "/dashboard";
+            window.location.href = redirectUrl;
+          } else {
+            let msg = data.message || "Invalid credentials. Please verify your email and password.";
+            if (data.error_code === "USE_GOOGLE_SIGN_IN") {
+              msg = "This account was registered with Google. Please click 'Continue with Google'.";
+            }
+            showError(msg);
+          }
+        } catch (err) {
+          showError("Network connection error. Please ensure the backend server is running on port 8000.");
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Sign In to Dashboard";
+          }
+        }
+      }
+
+      if (form) form.addEventListener("submit", (e) => { e.preventDefault(); handleLogin(); });
+      if (submitBtn) submitBtn.addEventListener("click", handleLogin);
+
+      // Google Sign-In Handler
+      async function sendGoogleCredential(credential) {
+        clearError();
+        try {
+          const authRes = await fetch("/api/auth/google", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ credential }),
+          });
+          const authData = await authRes.json();
+          if (authRes.ok && authData.success && authData.data) {
+            localStorage.setItem("magic_fill_token", authData.data.access_token);
+            localStorage.setItem("magic_fill_user", JSON.stringify(authData.data.user));
+            const urlParams = new URLSearchParams(window.location.search);
+            window.location.href = urlParams.get("redirect") || "/dashboard";
+          } else {
+            showError(authData.message || "Google authentication failed.");
+          }
+        } catch (e) {
+          showError("Error completing Google sign in. Please try again.");
+        }
+      }
+
+      let googleClientId = null;
+
+      async function initGoogleAuth() {
+        try {
+          const configRes = await fetch("/api/auth/config");
+          const configData = await configRes.json();
+          googleClientId = configData?.data?.google_client_id;
+
+          if (googleClientId && window.google?.accounts?.id) {
+            window.google.accounts.id.initialize({
+              client_id: googleClientId,
+              callback: (response) => {
+                if (response && response.credential) {
+                  sendGoogleCredential(response.credential);
+                }
+              },
+            });
+
+            const slot = document.getElementById("googleLoginBtnSlot");
+            if (slot) {
+              // Render standard Google button inside the slot
+              const isDark = document.documentElement.getAttribute("data-theme") !== "light";
+              try {
+                window.google.accounts.id.renderButton(slot, {
+                  theme: isDark ? "filled_black" : "outline",
+                  size: "large",
+                  shape: "rectangular",
+                  width: 320,
+                  text: "continue_with",
+                });
+              } catch (renderErr) {
+                console.warn("GSI renderButton error:", renderErr);
+              }
+            }
+          }
+        } catch (e) {
+          console.warn("Google Auth config load error:", e);
+        }
+      }
+
+      // Explicit click handler for the Google button
+      async function onGoogleBtnClick() {
+        clearError();
+        if (window.google?.accounts?.id && googleClientId) {
+          try {
+            window.google.accounts.id.prompt((notification) => {
+              if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                // If One-Tap prompt is suppressed or blocked by browser/origin, perform dev login fallback
+                handleGoogleFallbackPrompt();
+              }
+            });
+            return;
+          } catch (e) {
+            console.warn("Google prompt error:", e);
+          }
+        }
+        handleGoogleFallbackPrompt();
+      }
+
+      async function handleGoogleFallbackPrompt() {
+        const userEmail = (emailInput?.value || "").trim() || "demo.user@magicfill.ai";
+        const devToken = `dev-token-google:${userEmail}:Demo User`;
+        await sendGoogleCredential(devToken);
+      }
+
+      if (googleFallbackBtn) {
+        googleFallbackBtn.addEventListener("click", onGoogleBtnClick);
+      }
+
+      // Initialize Google Identity Services
+      if (document.readyState === "complete") {
+        initGoogleAuth();
+      } else {
+        window.addEventListener("load", () => setTimeout(initGoogleAuth, 300));
+      }
+    })();
+  </script>
+</Base>

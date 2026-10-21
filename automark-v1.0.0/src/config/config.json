@@ -1,0 +1,40 @@
+{
+  "site": {
+    "title": "Magic Fill",
+    "base_url": "http://localhost:8000",
+    "base_path": "/",
+    "trailing_slash": false,
+    "favicon": "/images/favicon.png",
+    "logo": "/images/for_dark_mode.png",
+    "logo_light": "/images/for_light_mode.png",
+    "logo_width": "168",
+    "logo_height": "50",
+    "logo_text": "Magic Fill"
+  },
+  "settings": {
+    "sticky_header": true
+  },
+  "params": {
+    "contact_form_action": "#",
+    "checklist_form_action": "#",
+    "apply_form_action": "#",
+    "copyright": "Copyright &copy; 2026 <strong>Magic Fill</strong>. All Rights Reserved.",
+    "footer_tagline": "AI-Powered Personal Memory & Intelligent Form Autofill Platform.",
+    "footer_email": "support@magicfill.ai",
+    "footer_phone": "+1 (800) 624-4234"
+  },
+  "navigation_button": {
+    "enable": true,
+    "label": "Get Started",
+    "link": "/register"
+  },
+  "google_tag_manager": {
+    "enable": false,
+    "gtm_id": "GTM-XXXXXX"
+  },
+  "metadata": {
+    "meta_author": "Magic Fill",
+    "meta_image": "/images/og-image.png",
+    "meta_description": "AI-Powered Personal Memory & Intelligent Form Autofill Platform. Zero copy-pasting, instant field matching on Workday, Greenhouse, Lever, and all web forms."
+  }
+}

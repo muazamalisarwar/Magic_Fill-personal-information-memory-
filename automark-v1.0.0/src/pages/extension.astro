@@ -1,0 +1,321 @@
+---
+import Base from "@/layouts/Base.astro";
+---
+
+<Base
+  title="Browser Extension Setup - Magic Fill"
+  meta_title="Connect Magic Fill Chrome Extension"
+  description="Connect the Magic Fill intelligent autofill browser extension to your personal memory vault in seconds."
+>
+  <section class="pt-32 pb-24 relative overflow-hidden min-h-screen">
+    <!-- Background glow accents -->
+    <div class="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-gradient-to-tr from-purple-600/15 via-indigo-600/10 to-transparent blur-[140px] rounded-full"></div>
+    <div class="pointer-events-none absolute bottom-10 right-10 w-[450px] h-[450px] bg-emerald-500/10 blur-[120px] rounded-full"></div>
+
+    <div class="container mx-auto px-4 max-w-6xl relative z-10">
+      <!-- Top Breadcrumb / Navigation -->
+      <div class="flex items-center justify-between mb-8 pb-4 border-b border-white/5">
+        <div class="flex items-center gap-3">
+          <a href="/dashboard" class="text-xs uppercase tracking-wider text-purple-400 hover:text-purple-300 font-semibold flex items-center gap-1.5 transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Dashboard
+          </a>
+          <span class="text-white/20">/</span>
+          <span class="text-xs uppercase tracking-wider text-white/50">Extension Setup</span>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <a href="/playground" class="px-3.5 py-1.5 rounded-lg text-xs font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Open Form Simulator
+          </a>
+          <a href="/memory" class="px-3.5 py-1.5 rounded-lg text-xs font-medium text-purple-300 bg-purple-500/10 border border-purple-500/20 hover:bg-purple-500/20 transition-all">
+            View Memory Vault
+          </a>
+        </div>
+      </div>
+
+      <!-- Hero Header -->
+      <div class="text-center max-w-3xl mx-auto mb-14">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-purple-500/10 text-purple-300 border border-purple-500/20 mb-4">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          Magic Fill AI Browser Integration
+        </div>
+        <h1 class="text-3xl md:text-5xl font-bold tracking-tight text-white mb-4">
+          Connect Your Browser Extension
+        </h1>
+        <p class="text-base md:text-lg text-white/60 leading-relaxed">
+          Link your browser in 30 seconds to enable intelligent autofill across any job portal, university application, or government form.
+        </p>
+      </div>
+
+      <!-- Main 2-Column Content -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left: Quick Pairing Card (Hero Action) -->
+        <div class="lg:col-span-5 bg-gradient-to-b from-white/[0.07] to-white/[0.02] border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
+          <div class="absolute -top-24 -right-24 w-48 h-48 bg-purple-500/20 blur-3xl rounded-full pointer-events-none"></div>
+
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-lg font-semibold text-white">Instant Pairing Code</h2>
+              <p class="text-xs text-white/50">One-time single-use cryptographic token</p>
+            </div>
+          </div>
+
+          <p class="text-xs text-white/70 mb-6 leading-relaxed">
+            Click the button below to generate a secure, 6-character link code valid for 5 minutes. Enter this code into your extension popup to link it to your account without sharing passwords.
+          </p>
+
+          <!-- Pairing Code Display Area -->
+          <div id="codeContainer" class="bg-black/40 border border-white/10 rounded-xl p-5 mb-5 text-center hidden">
+            <p class="text-xs uppercase tracking-wider text-purple-300 font-semibold mb-2">Your 6-Character Pairing Code</p>
+            <div class="flex items-center justify-center gap-2 mb-3">
+              <span id="pairingCodeDisplay" class="font-mono text-3xl md:text-4xl font-extrabold tracking-widest text-emerald-400 select-all">------</span>
+              <button id="copyCodeBtn" title="Copy code" class="p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white/80 hover:text-white transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+              </button>
+            </div>
+            <div class="flex items-center justify-between text-[11px] text-white/40">
+              <span id="countdownText">Expires in 05:00</span>
+              <span class="text-emerald-400 font-medium">Ready to pair</span>
+            </div>
+            <div class="w-full bg-white/10 rounded-full h-1 mt-2 overflow-hidden">
+              <div id="countdownBar" class="bg-gradient-to-r from-emerald-500 to-purple-500 h-1 w-full transition-all duration-1000"></div>
+            </div>
+          </div>
+
+          <!-- Action Button -->
+          <button
+            id="generateCodeBtn"
+            class="w-full py-3.5 px-4 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 hover:from-purple-500 hover:to-indigo-500 shadow-lg shadow-purple-600/30 transition-all flex items-center justify-center gap-2"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            <span id="btnLabel">Generate New Link Code</span>
+          </button>
+
+          <!-- Direct instructions -->
+          <div class="mt-6 pt-5 border-t border-white/5 space-y-2.5">
+            <div class="flex items-start gap-2.5 text-xs text-white/60">
+              <span class="w-5 h-5 rounded-full bg-purple-500/20 text-purple-300 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">1</span>
+              <span>Click the <strong>Magic Fill</strong> puzzle icon in your browser toolbar.</span>
+            </div>
+            <div class="flex items-start gap-2.5 text-xs text-white/60">
+              <span class="w-5 h-5 rounded-full bg-purple-500/20 text-purple-300 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">2</span>
+              <span>Paste or type your 6-character code into the popup.</span>
+            </div>
+            <div class="flex items-start gap-2.5 text-xs text-white/60">
+              <span class="w-5 h-5 rounded-full bg-purple-500/20 text-purple-300 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">3</span>
+              <span>Click <strong>Link Account</strong>. Your personal vault syncs immediately!</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Step-by-Step Installation Guide -->
+        <div class="lg:col-span-7 space-y-6">
+          
+          <!-- Installation Steps Card -->
+          <div class="bg-gradient-to-b from-white/[0.05] to-white/[0.02] border border-white/10 rounded-2xl p-6 md:p-8 backdrop-blur-xl">
+            <h2 class="text-xl font-bold text-white mb-2 flex items-center gap-2.5">
+              <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Step-by-Step Installation (Chrome, Edge, Brave)
+            </h2>
+            <p class="text-xs text-white/60 mb-6">
+              Magic Fill runs locally with zero third-party data tracking. Install the unpacked developer package in seconds.
+            </p>
+
+            <div class="space-y-4">
+              <!-- Step A -->
+              <div class="flex gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-purple-500/20 transition-colors">
+                <div class="w-7 h-7 rounded-lg bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 flex items-center justify-center font-bold text-xs shrink-0">
+                  A
+                </div>
+                <div>
+                  <h3 class="text-sm font-semibold text-white mb-1">Open Extensions Manager</h3>
+                  <p class="text-xs text-white/60 leading-relaxed mb-2">
+                    Navigate to <code class="px-1.5 py-0.5 rounded bg-black/40 text-purple-300 border border-white/10 font-mono text-[11px]">chrome://extensions</code> in Chrome or Brave, or <code class="px-1.5 py-0.5 rounded bg-black/40 text-purple-300 border border-white/10 font-mono text-[11px]">edge://extensions</code> in Microsoft Edge.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Step B -->
+              <div class="flex gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-purple-500/20 transition-colors">
+                <div class="w-7 h-7 rounded-lg bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 flex items-center justify-center font-bold text-xs shrink-0">
+                  B
+                </div>
+                <div>
+                  <h3 class="text-sm font-semibold text-white mb-1">Enable "Developer Mode"</h3>
+                  <p class="text-xs text-white/60 leading-relaxed">
+                    Toggle the <strong>Developer mode</strong> switch at the top right of the extensions dashboard.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Step C -->
+              <div class="flex gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-purple-500/20 transition-colors">
+                <div class="w-7 h-7 rounded-lg bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 flex items-center justify-center font-bold text-xs shrink-0">
+                  C
+                </div>
+                <div>
+                  <h3 class="text-sm font-semibold text-white mb-1">Click "Load Unpacked"</h3>
+                  <p class="text-xs text-white/60 leading-relaxed mb-2">
+                    Click the <strong>Load unpacked</strong> button at the top left, and select the <code class="px-1.5 py-0.5 rounded bg-black/40 text-emerald-400 border border-white/10 font-mono text-[11px]">extension</code> folder located inside your Magic Fill project directory:
+                  </p>
+                  <div class="p-2.5 rounded-lg bg-black/50 border border-white/10 font-mono text-xs text-white/70 flex items-center justify-between select-all">
+                    <span>Magic_Fill/extension</span>
+                    <span class="text-[10px] text-white/40 uppercase tracking-wider font-sans">Folder Path</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step D -->
+              <div class="flex gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-purple-500/20 transition-colors">
+                <div class="w-7 h-7 rounded-lg bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 flex items-center justify-center font-bold text-xs shrink-0">
+                  D
+                </div>
+                <div>
+                  <h3 class="text-sm font-semibold text-white mb-1">Pin to Toolbar</h3>
+                  <p class="text-xs text-white/60 leading-relaxed">
+                    Click the Puzzle Piece icon on your browser toolbar and pin <strong>Magic Fill</strong> for instant access.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature Highlights & Hotkeys -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            
+            <div class="p-5 rounded-xl bg-white/[0.03] border border-white/5">
+              <div class="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center mb-3">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                </svg>
+              </div>
+              <h3 class="text-sm font-semibold text-white mb-1">Visual Field Status</h3>
+              <p class="text-xs text-white/60 leading-relaxed">
+                Form inputs glow <span class="text-emerald-400 font-medium">green</span> when Magic Fill has stored data, and <span class="text-rose-400 font-medium">red</span> when data is missing.
+              </p>
+            </div>
+
+            <div class="p-5 rounded-xl bg-white/[0.03] border border-white/5">
+              <div class="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center mb-3">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <h3 class="text-sm font-semibold text-white mb-1">Consent-Based Learning</h3>
+              <p class="text-xs text-white/60 leading-relaxed">
+                When you fill or edit a new field, Magic Fill pops up a confirmation prompt before saving anything to your vault.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Client-side Pairing Script -->
+  <script is:inline>
+    document.addEventListener("DOMContentLoaded", () => {
+      const token = localStorage.getItem("magic_fill_token");
+      if (!token) {
+        window.location.href = "/login?redirect=/extension";
+        return;
+      }
+
+      const generateBtn = document.getElementById("generateCodeBtn");
+      const btnLabel = document.getElementById("btnLabel");
+      const codeContainer = document.getElementById("codeContainer");
+      const codeDisplay = document.getElementById("pairingCodeDisplay");
+      const countdownText = document.getElementById("countdownText");
+      const countdownBar = document.getElementById("countdownBar");
+      const copyBtn = document.getElementById("copyCodeBtn");
+
+      let timerInterval = null;
+
+      generateBtn.addEventListener("click", async () => {
+        try {
+          btnLabel.textContent = "Generating...";
+          generateBtn.disabled = true;
+
+          const res = await fetch("/api/auth/extension/create-code", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+            }
+          });
+
+          const data = await res.json();
+          if (res.ok && data.success && data.data) {
+            const code = data.data.code;
+            let remaining = data.data.expires_in_seconds || 300;
+            const total = remaining;
+
+            codeDisplay.textContent = code;
+            codeContainer.classList.remove("hidden");
+            btnLabel.textContent = "Regenerate Link Code";
+            generateBtn.disabled = false;
+
+            if (timerInterval) clearInterval(timerInterval);
+
+            timerInterval = setInterval(() => {
+              remaining--;
+              if (remaining <= 0) {
+                clearInterval(timerInterval);
+                codeDisplay.textContent = "EXPIRED";
+                countdownText.textContent = "Code expired. Please regenerate.";
+                countdownBar.style.width = "0%";
+              } else {
+                const mins = String(Math.floor(remaining / 60)).padStart(2, '0');
+                const secs = String(remaining % 60).padStart(2, '0');
+                countdownText.textContent = `Expires in ${mins}:${secs}`;
+                const pct = (remaining / total) * 100;
+                countdownBar.style.width = `${pct}%`;
+              }
+            }, 1000);
+          } else {
+            alert(data.message || "Failed to generate pairing code. Please sign in again.");
+            if (res.status === 401) {
+              localStorage.removeItem("magic_fill_token");
+              window.location.href = "/login";
+            }
+          }
+        } catch (err) {
+          console.error(err);
+          alert("Network error while generating pairing code.");
+        } finally {
+          generateBtn.disabled = false;
+        }
+      });
+
+      copyBtn.addEventListener("click", () => {
+        const code = codeDisplay.textContent;
+        if (code && code !== "------" && code !== "EXPIRED") {
+          navigator.clipboard.writeText(code).then(() => {
+            alert("Pairing code copied to clipboard!");
+          });
+        }
+      });
+    });
+  </script>
+</Base>

@@ -1,0 +1,37 @@
+---
+import { getListPage } from "@/lib/contentParser.astro";
+import type { CtaSection } from "@/types";
+
+const ctaEntry = await getListPage("ctaSection", "call-to-action");
+const ctaData: CtaSection = ctaEntry.data;
+if (!ctaData.enable) return;
+---
+
+<section class="section py-24 relative overflow-hidden">
+  <div class="container max-w-6xl">
+    <div class="neu-card p-12 sm:p-20 text-center relative overflow-hidden">
+      <!-- Tactile Background Depth Rings -->
+      <div class="absolute -right-16 -top-16 size-72 neu-circle-inset opacity-40 pointer-events-none"></div>
+      <div class="absolute -left-16 -bottom-16 size-80 neu-circle-extruded opacity-40 pointer-events-none"></div>
+
+      <div class="relative z-10 flex flex-col items-center">
+        <div class="neu-pill px-4 py-1.5 mb-6 text-xs font-bold text-[#6C63FF] tracking-wider uppercase font-display">
+          {ctaData.badge || "Start In 60 Seconds"}
+        </div>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-[#3D4852] hasHighlight mb-6 max-w-3xl leading-tight" set:html={ctaData.title} />
+        <p class="font-body text-[#6B7280] text-base sm:text-lg max-w-2xl leading-relaxed mb-10">{ctaData.description}</p>
+        {
+          ctaData.button && ctaData.button.enable && ctaData.button.link && (
+            <a
+              href={ctaData.button.link}
+              class="neu-btn-primary py-4 px-10 text-sm font-bold rounded-2xl cursor-pointer shadow-xl flex items-center gap-2.5"
+            >
+              <span>{ctaData.button.label}</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,277 @@
+---
+// Live Interactive Form Autofill Simulator for Magic Fill (Neumorphism Design System)
+---
+
+<section id="live-simulator" class="section relative overflow-hidden py-24">
+  <div class="container">
+    <div class="section-container">
+      <div class="section-intro centralize text-center mb-16">
+        <div class="neu-pill px-4 py-1.5 mb-4 text-xs font-bold text-[#6C63FF] tracking-wider uppercase">
+          Interactive Live Playground
+        </div>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-[#3D4852] hasHighlight mb-4">
+          Experience Instant <strong>1-Click Form Autofill</strong>
+        </h2>
+        <p class="font-body text-[#6B7280] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+          Test our intelligent form copilot live on this simulated enterprise application. Watch how Magic Fill maps and completes complex fields with 100% semantic accuracy.
+        </p>
+      </div>
+
+      <div class="section-content max-w-4xl mx-auto">
+        <!-- Simulator Card Container -->
+        <div class="neu-card p-6 sm:p-10 relative overflow-hidden">
+          <!-- Top portal simulation bar -->
+          <div class="flex items-center justify-between pb-6 mb-8 flex-wrap gap-4 border-b border-transparent">
+            <div class="flex items-center gap-3">
+              <div class="flex gap-1.5">
+                <span class="size-3 rounded-full bg-rose-400"></span>
+                <span class="size-3 rounded-full bg-amber-400"></span>
+                <span class="size-3 rounded-full bg-[#38B2AC]"></span>
+              </div>
+              <!-- Inset Browser Address Well -->
+              <div class="neu-inset-sm rounded-xl px-3.5 py-1.5 text-xs text-[#3D4852] font-mono flex items-center gap-2">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <span>careers.techcorp.global/apply/senior-engineer</span>
+              </div>
+            </div>
+
+            <!-- Simulator Actions -->
+            <div class="flex items-center gap-3">
+              <button
+                type="button"
+                id="btnSimulateAutofill"
+                class="neu-btn-primary py-2.5 px-5 text-xs font-bold rounded-2xl cursor-pointer"
+              >
+                <span>✨</span>
+                <span>Test 1-Click Autofill</span>
+              </button>
+              <button
+                type="button"
+                id="btnClearSimForm"
+                class="neu-btn-secondary py-2.5 px-4 text-xs font-bold rounded-2xl cursor-pointer"
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+
+          <!-- Status Banner (Hidden initially) -->
+          <div id="simAutofillSuccess" class="hidden mb-6 p-4 rounded-2xl neu-inset-sm text-[#38B2AC] text-sm flex items-center justify-between transition-all duration-300">
+            <div class="flex items-center gap-2.5 font-bold">
+              <span class="size-5 rounded-full bg-[#38B2AC]/20 text-[#38B2AC] grid place-items-center text-xs">✓</span>
+              <span>7 fields filled in 0.14s — 100% semantic confidence across all ATS fields.</span>
+            </div>
+            <span class="neu-pill px-3 py-1 text-xs text-[#38B2AC] font-mono font-bold">Zero Errors</span>
+          </div>
+
+          <!-- Simulated Application Form -->
+          <form id="simulatedJobForm" class="grid sm:grid-cols-2 gap-6" onsubmit="return false;">
+            <!-- Full Name -->
+            <div class="relative">
+              <label for="simName" class="block text-xs font-bold text-[#3D4852] mb-2 font-display">
+                Legal Full Name <span class="text-[#6C63FF]">*</span>
+              </label>
+              <input
+                type="text"
+                id="simName"
+                placeholder="e.g. Alex Morgan"
+                class="w-full neu-input text-sm"
+              />
+              <span id="badge-simName" class="hidden absolute right-3 top-9 text-xs text-[#38B2AC] neu-pill px-2.5 py-0.5 font-mono font-bold">
+                ✓ 99.9%
+              </span>
+            </div>
+
+            <!-- Email Address -->
+            <div class="relative">
+              <label for="simEmail" class="block text-xs font-bold text-[#3D4852] mb-2 font-display">
+                Work Email Address <span class="text-[#6C63FF]">*</span>
+              </label>
+              <input
+                type="email"
+                id="simEmail"
+                placeholder="alex.morgan@domain.com"
+                class="w-full neu-input text-sm"
+              />
+              <span id="badge-simEmail" class="hidden absolute right-3 top-9 text-xs text-[#38B2AC] neu-pill px-2.5 py-0.5 font-mono font-bold">
+                ✓ 100%
+              </span>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="relative">
+              <label for="simPhone" class="block text-xs font-bold text-[#3D4852] mb-2 font-display">
+                Primary Phone Number <span class="text-[#6C63FF]">*</span>
+              </label>
+              <input
+                type="tel"
+                id="simPhone"
+                placeholder="+1 (555) 349-2041"
+                class="w-full neu-input text-sm"
+              />
+              <span id="badge-simPhone" class="hidden absolute right-3 top-9 text-xs text-[#38B2AC] neu-pill px-2.5 py-0.5 font-mono font-bold">
+                ✓ 99.8%
+              </span>
+            </div>
+
+            <!-- Highest Degree & Major -->
+            <div class="relative">
+              <label for="simEducation" class="block text-xs font-bold text-[#3D4852] mb-2 font-display">
+                Highest Degree &amp; Major <span class="text-[#6C63FF]">*</span>
+              </label>
+              <input
+                type="text"
+                id="simEducation"
+                placeholder="M.S. in Computer Science — Stanford University"
+                class="w-full neu-input text-sm"
+              />
+              <span id="badge-simEducation" class="hidden absolute right-3 top-9 text-xs text-[#38B2AC] neu-pill px-2.5 py-0.5 font-mono font-bold">
+                ✓ 99.7%
+              </span>
+            </div>
+
+            <!-- Recent Experience -->
+            <div class="relative sm:col-span-2">
+              <label for="simExperience" class="block text-xs font-bold text-[#3D4852] mb-2 font-display">
+                Current / Most Recent Role &amp; Organization <span class="text-[#6C63FF]">*</span>
+              </label>
+              <input
+                type="text"
+                id="simExperience"
+                placeholder="Staff Distributed Systems Architect at Stripe (2022 – Present)"
+                class="w-full neu-input text-sm"
+              />
+              <span id="badge-simExperience" class="hidden absolute right-3 top-9 text-xs text-[#38B2AC] neu-pill px-2.5 py-0.5 font-mono font-bold">
+                ✓ 100%
+              </span>
+            </div>
+
+            <!-- Portfolio / GitHub URL -->
+            <div class="relative">
+              <label for="simPortfolio" class="block text-xs font-bold text-[#3D4852] mb-2 font-display">
+                Portfolio or GitHub Profile URL
+              </label>
+              <input
+                type="url"
+                id="simPortfolio"
+                placeholder="https://github.com/alexmorgan-dev"
+                class="w-full neu-input text-sm"
+              />
+              <span id="badge-simPortfolio" class="hidden absolute right-3 top-9 text-xs text-[#38B2AC] neu-pill px-2.5 py-0.5 font-mono font-bold">
+                ✓ 99.9%
+              </span>
+            </div>
+
+            <!-- LinkedIn Profile -->
+            <div class="relative">
+              <label for="simLinkedin" class="block text-xs font-bold text-[#3D4852] mb-2 font-display">
+                LinkedIn Profile URL
+              </label>
+              <input
+                type="url"
+                id="simLinkedin"
+                placeholder="https://linkedin.com/in/alexmorgan"
+                class="w-full neu-input text-sm"
+              />
+              <span id="badge-simLinkedin" class="hidden absolute right-3 top-9 text-xs text-[#38B2AC] neu-pill px-2.5 py-0.5 font-mono font-bold">
+                ✓ 100%
+              </span>
+            </div>
+
+            <!-- Custom Question -->
+            <div class="relative sm:col-span-2">
+              <label for="simCustomQuestion" class="block text-xs font-bold text-[#3D4852] mb-2 font-display flex items-center justify-between">
+                <span>Custom ATS Prompt: Scaling high-throughput APIs</span>
+                <span class="neu-pill px-2.5 py-0.5 text-[10px] text-[#6C63FF] font-bold">Learned Memory</span>
+              </label>
+              <textarea
+                id="simCustomQuestion"
+                rows="3"
+                placeholder="Over 7 years leading high-throughput distributed architectures processing 15,000+ RPS..."
+                class="w-full neu-input text-sm resize-none"
+              ></textarea>
+              <span id="badge-simCustomQuestion" class="hidden absolute right-3 bottom-4 text-xs text-[#38B2AC] neu-pill px-2.5 py-0.5 font-mono font-bold">
+                ✓ Autonomous Match
+              </span>
+            </div>
+          </form>
+
+          <!-- Bottom Micro-Footnote -->
+          <div class="mt-8 pt-6 flex items-center justify-between text-xs text-[#6B7280] font-body flex-wrap gap-3">
+            <span class="flex items-center gap-1.5 font-medium">⚡ Powered by Magic Fill Deterministic Semantic Engine</span>
+            <span class="flex items-center gap-1.5 font-medium">🔒 Zero Data Transmitted Unencrypted</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", () => {
+    const btnSimulate = document.getElementById("btnSimulateAutofill");
+    const btnClear = document.getElementById("btnClearSimForm");
+    const successBanner = document.getElementById("simAutofillSuccess");
+
+    const sampleData = {
+      simName: "Alex Morgan",
+      simEmail: "alex.morgan@engineer.io",
+      simPhone: "+1 (415) 890-4219",
+      simEducation: "M.S. in Computer Science — Stanford University (GPA 3.92)",
+      simExperience: "Senior Staff Distributed Systems Architect at Stripe (2022 – Present)",
+      simPortfolio: "https://github.com/alexmorgan-dev",
+      simLinkedin: "https://linkedin.com/in/alexmorgan",
+      simCustomQuestion: "Over 7 years architecting high-throughput distributed APIs handling 25,000+ RPS across AWS & GCP. Reduced latency by 42% through optimized caching and connection pooling."
+    };
+
+    if (btnSimulate) {
+      btnSimulate.addEventListener("click", () => {
+        let delay = 0;
+        const keys = Object.keys(sampleData);
+
+        keys.forEach((id, index) => {
+          setTimeout(() => {
+            const input = document.getElementById(id);
+            const badge = document.getElementById(`badge-${id}`);
+            if (input) {
+              input.value = sampleData[id];
+              input.style.outline = "2px solid #6C63FF";
+              setTimeout(() => {
+                input.style.outline = "";
+              }, 1200);
+            }
+            if (badge) {
+              badge.classList.remove("hidden");
+            }
+
+            if (index === keys.length - 1) {
+              if (successBanner) {
+                successBanner.classList.remove("hidden");
+              }
+            }
+          }, delay);
+          delay += 70;
+        });
+      });
+    }
+
+    if (btnClear) {
+      btnClear.addEventListener("click", () => {
+        const form = document.getElementById("simulatedJobForm");
+        if (form) form.reset();
+        Object.keys(sampleData).forEach((id) => {
+          const badge = document.getElementById(`badge-${id}`);
+          const input = document.getElementById(id);
+          if (badge) badge.classList.add("hidden");
+          if (input) input.style.outline = "";
+        });
+        if (successBanner) {
+          successBanner.classList.add("hidden");
+        }
+      });
+    }
+  });
+</script>

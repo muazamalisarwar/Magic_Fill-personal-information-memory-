@@ -1,0 +1,26 @@
+---
+enable: true
+badge: "Core Architecture"
+title: "The 5 pillars of <strong>Smart Personal Memory</strong>"
+items:
+  - image: "/images/brands-group-1.png"
+    number: "01"
+    title: "PRECISION"
+    content: "Verified personal data matching with zero AI hallucinations, ensuring every field is completed accurately."
+  - image: "/images/brands-group-2.png"
+    number: "02"
+    title: "PRIVACY"
+    content: "End-to-end encrypted quarantine for your credentials, personal records, and sensitive identity documents."
+  - image: "/images/brands-group-3.png"
+    number: "03"
+    title: "LEARNING"
+    content: "Autonomous field intelligence captures and remembers new answers as you submit them on any website."
+  - image: "/images/brands-group-4.png"
+    number: "04"
+    title: "VELOCITY"
+    content: "One-click autofill for 50+ field job portals, government forms, and multi-step wizards in seconds."
+  - image: "/images/brands-group-5.png"
+    number: "05"
+    title: "OWNERSHIP"
+    content: "Complete user control with instant JSON backups, memory editing, and zero vendor lock-in."
+---

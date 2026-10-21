@@ -1,0 +1,85 @@
+{
+  "main": [
+    {
+      "name": "Features",
+      "url": "/features"
+    },
+    {
+      "name": "Live Simulator",
+      "url": "/playground"
+    },
+    {
+      "name": "Supported Portals",
+      "url": "/integrations"
+    },
+    {
+      "name": "Pricing",
+      "url": "/pricing"
+    },
+    {
+      "name": "How It Works",
+      "url": "/about"
+    }
+  ],
+  "footer_col_1_title": "Primary",
+  "footer_col_2_title": "Resource",
+  "footer_col_3_title": "Legal",
+  "footer_primary": [
+    {
+      "name": "Home",
+      "url": "/"
+    },
+    {
+      "name": "About Us",
+      "url": "/about"
+    },
+    {
+      "name": "Features",
+      "url": "/features"
+    },
+    {
+      "name": "Pricing",
+      "url": "/pricing"
+    },
+    {
+      "name": "Contact",
+      "url": "/contact"
+    }
+  ],
+  "footer_resource": [
+    {
+      "name": "Case Studies",
+      "url": "/case-study"
+    },
+    {
+      "name": "Form Simulator",
+      "url": "/playground"
+    },
+    {
+      "name": "Extension Setup",
+      "url": "/extension"
+    },
+    {
+      "name": "Blog",
+      "url": "/blog"
+    },
+    {
+      "name": "Careers",
+      "url": "/careers"
+    },
+    {
+      "name": "Supported Portals",
+      "url": "/integrations"
+    }
+  ],
+  "footer_legal": [
+    {
+      "name": "Privacy Policy",
+      "url": "/privacy-policy"
+    },
+    {
+      "name": "Terms and Conditions",
+      "url": "/term-and-condition"
+    }
+  ]
+}

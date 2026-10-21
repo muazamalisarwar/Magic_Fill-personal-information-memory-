@@ -30,6 +30,8 @@ htmlcov/
 *.db
 *.sqlite
 *.sqlite3
+*.backup
+backups/
 
 # Operating System Files
 .DS_Store

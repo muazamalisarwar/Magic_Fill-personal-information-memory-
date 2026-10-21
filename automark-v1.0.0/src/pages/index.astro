@@ -1,0 +1,271 @@
+---
+import Base from "@/layouts/Base.astro";
+import ValueCard from "@/layouts/components/ValueCard.astro";
+import PricingSection from "@/layouts/components/PricingSection.astro";
+import ProcessCard from "@/layouts/components/ProcessCard.astro";
+import Faq from "@/layouts/components/Faq.astro";
+import CallToAction from "@/layouts/components/CallToAction.astro";
+import VideoShowcase from "@/layouts/components/VideoShowcase.astro";
+import LivePlayground from "@/layouts/components/LivePlayground.astro";
+import config from "@/config/config.json";
+import { getListPage } from "@/lib/contentParser.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+import Features from "@/partials/Features.astro";
+import type { Homepage } from "@/types";
+
+const homepage = await getListPage("homepage", "-index");
+const homepageData: Homepage = homepage.data;
+---
+
+<Base>
+  <!-- Immediate Auth Guard: Redirect Logged-In Users to Authenticated Dashboard -->
+  <script is:inline>
+    (function () {
+      try {
+        if (localStorage.getItem("magic_fill_token")) {
+          window.location.replace("/dashboard");
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- Hero Banner -->
+  <section class="section-ph relative overflow-hidden pt-36 pb-24 sm:pt-44 sm:pb-32 bg-[#E0E5EC]">
+    <!-- Tactile Background Depth Rings (Neumorphic Physics) -->
+    <div class="absolute -top-24 -left-24 size-96 neu-circle-extruded opacity-40 pointer-events-none animate-neu-float"></div>
+    <div class="absolute top-1/3 -right-24 size-80 neu-circle-inset opacity-50 pointer-events-none"></div>
+
+    <div class="container relative z-10">
+      <div class="row justify-center">
+        <div class="mb-16 text-center relative z-10">
+          <!-- Announcement Pill Badge: Inset Well with Extruded Tag -->
+          <div class="neu-pill px-4 py-2 mb-8 inline-flex items-center gap-3 select-none">
+            <span class="neu-badge-extruded inline-flex items-center gap-1.5 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-[#38B2AC] font-display">
+              <span class="size-1.5 rounded-full bg-[#38B2AC] animate-pulse"></span>
+              Next-Gen Autofill
+            </span>
+            <span class="text-xs font-bold text-[#6B7280]">•</span>
+            <span class="text-xs sm:text-sm font-bold tracking-tight text-[#3D4852] font-display">
+              AI Personal Memory Studio
+            </span>
+          </div>
+
+          <!-- Hero Headline -->
+          <h1
+            class="mb-8 lg:col-10 mx-auto text-4xl sm:text-5xl lg:text-6xl hasHighlight tracking-tight font-extrabold font-display text-[#3D4852] leading-tight"
+            set:html={markdownify(homepageData.banner.title)}
+          />
+
+          <!-- Hero Description -->
+          <p class="mb-10 lg:col-8 mx-auto text-[#6B7280] font-body text-base sm:text-lg leading-relaxed">
+            {homepageData.banner.content}
+          </p>
+
+          <!-- Primary & Secondary CTA Buttons -->
+          <div class="flex gap-4 justify-center items-center flex-wrap">
+            <a
+              class="neu-btn-primary py-3.5 px-8 text-sm font-bold rounded-2xl flex items-center gap-2 cursor-pointer shadow-lg"
+              rel="noopener noreferrer"
+              href={homepageData.banner.button_primary.link}
+            >
+              <span>{homepageData.banner.button_primary.label}</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a
+              class="neu-btn-secondary py-3.5 px-8 text-sm font-bold rounded-2xl cursor-pointer"
+              rel="noopener noreferrer"
+              href={homepageData.banner.button_secondary.link}
+            >
+              {homepageData.banner.button_secondary.label}
+            </a>
+          </div>
+        </div>
+
+        <!-- Video Showcase Container -->
+        <div class="col-12">
+          <div class="flex justify-center w-full">
+            <div class="neu-card p-3 sm:p-5 rounded-[32px] w-full max-w-5xl">
+              <VideoShowcase />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Neumorphic Inset Divider Strip -->
+  <div class="container">
+    <div class="neu-inset-sm h-1 w-full rounded-full my-6 bg-transparent"></div>
+  </div>
+
+  <!-- Value Proposition -->
+  {
+    homepageData.value_props.enable && (
+      <section class="section relative overflow-hidden py-24">
+        <div class="container">
+          <div class="section-container">
+            <div class="section-intro centralize text-center mb-16">
+              <div class="neu-pill px-4 py-1.5 mb-4 text-xs font-bold text-[#6C63FF] tracking-wider uppercase font-display inline-block">
+                Core Capabilities
+              </div>
+              <h2
+                class="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-[#3D4852] hasHighlight mb-4"
+                set:html={markdownify(homepageData.value_props.title)}
+              />
+              <p class="font-body text-[#6B7280] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+                {homepageData.value_props.content}
+              </p>
+            </div>
+            <div class="section-content">
+              <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                {homepageData.value_props.items.map((item: any) => (
+                  <ValueCard
+                    logo={item.logo}
+                    title={item.title}
+                    list={item.list}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- Platform Features -->
+  {
+    homepageData.our_features.enable && (
+      <Features our_features={homepageData.our_features} />
+    )
+  }
+
+  <!-- Interactive Live Form Autofill Simulator -->
+  <LivePlayground />
+
+  <!-- How It Works / 3-Step Process -->
+  {
+    homepageData.growth_process.enable && (
+      <section class="section py-24 bg-transparent relative overflow-hidden" id="workflow">
+        <div class="container relative z-10">
+          <div class="section-container">
+            <div class="section-intro centralize mb-16 text-center">
+              <div class="neu-pill px-4 py-1.5 mb-4 text-xs font-bold uppercase tracking-wider text-[#6C63FF] font-display inline-block">
+                Simple Workflow
+              </div>
+              <h2
+                class="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-[#3D4852] hasHighlight mb-4"
+                set:html={markdownify(homepageData.growth_process.title)}
+              />
+            </div>
+            <div class="section-content">
+              <div class="grid lg:grid-cols-3 gap-8">
+                {homepageData.growth_process.items.map((item: any) => (
+                  <ProcessCard
+                    logo={item.logo}
+                    step={item.step}
+                    title={item.title}
+                    content={item.content}
+                  />
+                ))}
+              </div>
+              {homepageData.growth_process.button.enable && (
+                <div class="flex justify-center mt-14">
+                  <a
+                    href={homepageData.growth_process.button.link}
+                    class="neu-btn-primary py-3.5 px-9 text-sm font-bold rounded-2xl cursor-pointer shadow-lg"
+                  >
+                    {homepageData.growth_process.button.label}
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- Supported Portals & Integrations -->
+  {
+    homepageData.integrations.enable && (
+      <section id="portals" class="section relative overflow-hidden py-24">
+        <div class="container max-w-6xl">
+          <div class="section-container">
+            <div class="section-intro centralize text-center mb-16">
+              <div class="neu-pill px-4 py-1.5 mb-4 text-xs font-bold uppercase tracking-wider text-[#38B2AC] font-display inline-flex items-center gap-2">
+                <span class="size-2 rounded-full bg-[#38B2AC] animate-pulse"></span>
+                <span>Universal ATS &amp; Portal Compatibility</span>
+              </div>
+              <h2
+                class="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-[#3D4852] hasHighlight mb-4"
+                set:html={markdownify(homepageData.integrations.title)}
+              />
+              <p class="font-body text-[#6B7280] text-base max-w-2xl mx-auto leading-relaxed">
+                Magic Fill's deterministic semantic engine seamlessly recognizes field architectures across all enterprise ATS systems, job boards, and admissions forms with zero copy-pasting.
+              </p>
+            </div>
+            
+            <!-- Real Portals Showcase Grid: Authentic Logos & Names in Neumorphic Cards -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+              {homepageData.integrations.items.map((item: any) => (
+                <div class="neu-card p-6 flex flex-col justify-between group h-full">
+                  <div class="flex items-center gap-4 mb-4">
+                    <!-- Inset Deep Portal Icon Well -->
+                    <div class="neu-icon-well size-14 shrink-0 group-hover:scale-105 transition-transform duration-300">
+                      <img
+                        src={item.image}
+                        alt={`${item.name} logo`}
+                        class="size-8 object-contain"
+                        loading="lazy"
+                        width="32"
+                        height="32"
+                      />
+                    </div>
+                    <div class="min-w-0">
+                      <h3 class="text-base font-bold font-display text-[#3D4852] group-hover:text-[#6C63FF] transition-colors truncate">
+                        {item.name}
+                      </h3>
+                      <span class="text-xs font-body text-[#6B7280] block truncate">
+                        {item.category}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-between pt-3 border-t border-transparent">
+                    <span class="neu-pill px-2.5 py-0.5 text-[10px] font-bold text-[#38B2AC] font-mono">
+                      {item.badge || "Verified Compatible"}
+                    </span>
+                    <span class="text-[10px] text-[#6B7280] font-mono font-medium">100% Ready</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <!-- Portal Compatibility Notice Footer -->
+            <div class="mt-14 text-center">
+              <p class="text-xs font-body text-[#6B7280]">
+                Applying on a private company portal or government site? Magic Fill's AI engine detects standard HTML form fields on <strong class="text-[#3D4852]">100% of websites</strong>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- Pricing Plans -->
+  {
+    homepageData.pricing.enable && (
+      <PricingSection
+        title={homepageData.pricing.title}
+        content={homepageData.pricing.content}
+      />
+    )
+  }
+
+  <!-- FAQ -->
+  <Faq />
+
+  <!-- Call To Action -->
+  <CallToAction />
+</Base>

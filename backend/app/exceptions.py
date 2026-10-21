@@ -57,6 +57,16 @@ class ExperienceNotFoundException(AppException):
         )
 
 
+class CustomFieldNotFoundException(AppException):
+    """Exception raised when a custom field is not found."""
+    def __init__(self, field_id: int):
+        super().__init__(
+            message=f"Custom field with ID {field_id} was not found",
+            error_code="CUSTOM_FIELD_NOT_FOUND",
+            status_code=404
+        )
+
+
 class BadRequestException(AppException):
     """General bad request exception."""
     def __init__(self, message: str, error_code: str = "BAD_REQUEST", details: Optional[Any] = None):
@@ -66,3 +76,56 @@ class BadRequestException(AppException):
             status_code=400,
             details=details
         )
+
+
+class DocumentNotFoundException(AppException):
+    """Exception raised when a document is not found."""
+    def __init__(self, document_id: int):
+        super().__init__(
+            message=f"Document with ID {document_id} was not found",
+            error_code="DOCUMENT_NOT_FOUND",
+            status_code=404
+        )
+
+
+class NotFoundException(AppException):
+    """General not found exception."""
+    def __init__(self, message: str = "Resource not found", error_code: str = "NOT_FOUND"):
+        super().__init__(
+            message=message,
+            error_code=error_code,
+            status_code=404
+        )
+
+
+class AuthenticationException(AppException):
+    """Exception raised when authentication fails or token is invalid/expired."""
+    def __init__(self, message: str = "Authentication required or invalid credentials", error_code: str = "UNAUTHORIZED"):
+        super().__init__(
+            message=message,
+            error_code=error_code,
+            status_code=401
+        )
+
+
+class DuplicateEmailException(AppException):
+    """Exception raised when an email is already registered."""
+    def __init__(self, email: str):
+        super().__init__(
+            message=f"An account with email '{email}' already exists. Please sign in instead.",
+            error_code="DUPLICATE_EMAIL",
+            status_code=400
+        )
+
+
+class InvalidAuthCodeException(AppException):
+    """Exception raised when an extension single-use authorization code is invalid or expired."""
+    def __init__(self, message: str = "Authorization code is invalid, already used, or expired"):
+        super().__init__(
+            message=message,
+            error_code="INVALID_AUTH_CODE",
+            status_code=400
+        )
+
+
+

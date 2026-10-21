@@ -1,0 +1,686 @@
+---
+import Base from "@/layouts/Base.astro";
+---
+
+<Base
+  title="AI Document & Text Extraction — Magic Fill"
+  meta_title="AI Document & Text Extraction — Magic Fill"
+  description="Import your CV, resume, transcripts, or describe your background with AI. Review, edit, and confirm extracted data before saving."
+>
+  <div class="pt-28 md:pt-32 pb-14 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-8 min-h-[85vh]">
+
+    <!-- 1. Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-white/10">
+      <div>
+        <div class="flex items-center gap-2 mb-1">
+          <a href="/dashboard" class="text-xs text-text-light hover:text-white transition flex items-center gap-1">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            <span>Dashboard</span>
+          </a>
+          <span class="text-white/20">/</span>
+          <span class="text-xs text-primary-light font-semibold">AI Extraction</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-bold text-white">AI Document &amp; Memory Extraction</h1>
+        <p class="text-xs sm:text-sm text-text-light mt-1">
+          Extract verified personal records from CVs, PDFs, and conversational notes. Review and approve before saving.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="/memory" class="btn btn-outline text-xs py-2.5 px-4 font-semibold rounded-xl flex items-center gap-1.5 hover:bg-white/5 transition">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+          <span>View Current Memory</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 2. Method Selector Tabs -->
+    <div class="flex gap-2 p-1.5 rounded-2xl bg-dark/80 border border-white/10 max-w-md">
+      <button
+        type="button"
+        id="tabDocUploadBtn"
+        class="flex-1 py-2.5 px-4 text-xs font-bold rounded-xl text-white bg-primary transition cursor-pointer"
+      >
+        📄 Upload Resume / Document
+      </button>
+      <button
+        type="button"
+        id="tabChatbotBtn"
+        class="flex-1 py-2.5 px-4 text-xs font-bold rounded-xl text-text-light hover:text-white transition cursor-pointer"
+      >
+        💬 AI Memory Chatbot
+      </button>
+    </div>
+
+    <!-- 3A. View 1: Document Upload with Review-Before-Save Mode -->
+    <div id="sectionDocUpload" class="space-y-6">
+      <div class="bg-dark/80 border border-white/10 rounded-3xl p-6 sm:p-8 backdrop-blur-xl">
+        <h3 class="text-base font-bold text-white mb-2">Upload Resume or Identity Document</h3>
+        <p class="text-xs text-text-light mb-6">
+          Supported formats: PDF, DOCX, TXT. Our Groq AI parser will extract your contact info, education, skills, and work experience for review.
+        </p>
+
+        <!-- Drag & Drop Dropzone -->
+        <div
+          id="dropzoneContainer"
+          class="border-2 border-dashed border-white/15 hover:border-primary/50 rounded-2xl p-10 text-center transition cursor-pointer bg-white/5 hover:bg-primary/5 group"
+        >
+          <input type="file" id="resumeFileInput" accept=".pdf,.txt,.docx" class="hidden" />
+          <div class="size-16 rounded-2xl bg-primary/20 text-primary-light flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          </div>
+          <h4 class="text-sm font-bold text-white mb-1">Click to select or drag and drop your document</h4>
+          <p class="text-xs text-text-light max-w-sm mx-auto">
+            Maximum file size: 10MB. Files are processed securely in your private vault.
+          </p>
+        </div>
+
+        <!-- Extraction Progress Indicator -->
+        <div id="uploadProgress" class="hidden mt-6 p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3">
+          <div class="size-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+          <span id="uploadProgressText" class="text-xs text-white font-medium">Reading document &amp; extracting attributes with Groq AI...</span>
+        </div>
+      </div>
+
+      <!-- Review-Before-Save Approval Card (Shown after extraction completes) -->
+      <div id="reviewCard" class="hidden bg-dark/85 border border-primary/40 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
+          <div>
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-500/10 text-amber-300 border border-amber-500/30 mb-1">
+              <span>⚠️ Review Required Before Saving</span>
+            </div>
+            <h3 class="text-lg font-bold text-white">Confirm Extracted Personal Memory</h3>
+            <p class="text-xs text-text-light">
+              Review and edit any recognized values below. Uncheck any item you do not wish to save.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              id="btnDiscardExtracted"
+              class="btn-outline text-xs py-2 px-4 rounded-xl text-text-light hover:text-white"
+            >
+              Discard
+            </button>
+            <button
+              type="button"
+              id="btnConfirmSaveExtracted"
+              class="btn btn-primary text-xs py-2 px-5 font-bold rounded-xl shadow-lg shadow-primary/25 hover:scale-[1.02] transition"
+            >
+              Confirm &amp; Save to Vault
+            </button>
+          </div>
+        </div>
+
+        <!-- Editable Attributes Review List -->
+        <div id="reviewAttributesList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Dynamically populated review cards -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 3B. View 2: Conversational Chatbot Memory Input -->
+    <div id="sectionChatbot" class="hidden space-y-6">
+      <div class="bg-dark/80 border border-white/10 rounded-3xl p-6 sm:p-8 backdrop-blur-xl">
+        <div class="max-w-xl mb-6">
+          <h3 class="text-base font-bold text-white mb-1.5">Conversational Memory Copilot</h3>
+          <p class="text-xs text-text-light leading-relaxed">
+            Tell Magic Fill anything about your career, education, or preferences in natural language.
+            Example: <em>"I worked at Stripe as a Staff Engineer from 2021 to 2024 specializing in TypeScript and AWS. I graduated from Stanford in 2020."</em>
+          </p>
+        </div>
+
+        <form id="chatInputForm" class="space-y-4" onsubmit="return false;">
+          <div>
+            <textarea
+              id="chatTextarea"
+              rows="5"
+              placeholder="Paste text or describe your background here..."
+              required
+              class="w-full bg-dark/60 border border-white/10 rounded-2xl p-4 text-xs text-white placeholder:text-text-dark focus:border-primary focus:outline-none leading-relaxed transition"
+            ></textarea>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] text-text-dark">Groq AI parses skills, dates, companies, and roles automatically.</span>
+            <button
+              type="submit"
+              id="chatSubmitBtn"
+              class="btn btn-primary text-xs py-2.5 px-6 font-bold rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] transition"
+            >
+              Extract &amp; Review
+            </button>
+          </div>
+        </form>
+
+        <div id="chatProgress" class="hidden mt-6 p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3">
+          <div class="size-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+          <span class="text-xs text-white font-medium">Extracting structured entities from conversation...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Updated Memory Attributes JSON Result Card -->
+    <div id="extractUpdatedJsonBox" class="hidden bg-dark/85 border border-emerald-500/40 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl space-y-4 transition-all">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10">
+        <div class="flex items-center gap-2.5">
+          <span class="size-3 rounded-full bg-emerald-400 animate-pulse"></span>
+          <div>
+            <h4 class="text-sm font-bold text-white">Updated Memory Attributes (JSON Output)</h4>
+            <p id="extractUpdatedJsonSub" class="text-[11px] text-text-light">
+              Structured records committed to your PostgreSQL memory vault
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <span id="extractUpdatedBadge" class="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            ✓ Updated Just Now
+          </span>
+          <button
+            type="button"
+            id="btnCopyExtractJson"
+            class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-text-light hover:text-white text-xs font-mono transition flex items-center gap-1.5 border border-white/10 cursor-pointer"
+            title="Copy JSON payload"
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span id="copyExtractJsonText">Copy JSON</span>
+          </button>
+        </div>
+      </div>
+      <pre class="bg-black/60 p-4 rounded-2xl border border-white/5 overflow-x-auto text-[11px] font-mono text-emerald-300 leading-relaxed select-all max-h-80"><code id="extractUpdatedJsonCode">{}</code></pre>
+    </div>
+
+    <!-- 4. Uploaded Documents Vault Table -->
+    <div class="bg-dark/80 border border-white/10 rounded-3xl p-6 sm:p-8 backdrop-blur-xl">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <h3 class="text-base font-bold text-white">Stored Source Documents</h3>
+          <p class="text-xs text-text-light">Attached CVs, resumes, and credentials stored in your vault</p>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead>
+            <tr class="border-b border-white/10 text-text-light uppercase tracking-wider text-[10px]">
+              <th class="pb-3 font-semibold">File Name</th>
+              <th class="pb-3 font-semibold">Size</th>
+              <th class="pb-3 font-semibold">Description</th>
+              <th class="pb-3 font-semibold">Upload Date</th>
+              <th class="pb-3 font-semibold text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="documentsTableBody" class="divide-y divide-white/5">
+            <tr>
+              <td colspan="5" class="py-6 text-center text-text-light">
+                <div class="inline-block size-5 border-2 border-primary border-t-transparent rounded-full animate-spin mb-2"></div>
+                <div>Loading stored documents...</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Global Toast -->
+    <div id="extractToast" class="fixed bottom-6 right-6 z-50 hidden max-w-sm px-4 py-3 rounded-2xl bg-dark/95 border text-xs shadow-2xl backdrop-blur-xl flex items-center gap-2"></div>
+  </div>
+
+  <script is:inline>
+    (async () => {
+      const token = localStorage.getItem("magic_fill_token");
+      if (!token) {
+        window.location.href = "/login?redirect=/extract";
+        return;
+      }
+
+      const headers = {
+        "Authorization": `Bearer ${token}`
+      };
+
+      function showToast(msg, type = "success") {
+        const toast = document.getElementById("extractToast");
+        if (!toast) return;
+        toast.className = `fixed bottom-6 right-6 z-50 max-w-sm px-4 py-3 rounded-2xl bg-dark/95 border ${type === "success" ? "border-emerald-500/40 text-emerald-300" : "border-rose-500/40 text-rose-300"} text-xs shadow-2xl backdrop-blur-xl flex items-center gap-2`;
+        toast.textContent = msg;
+        toast.classList.remove("hidden");
+        setTimeout(() => toast.classList.add("hidden"), 3000);
+      }
+
+      // Tab switcher
+      const tabUpload = document.getElementById("tabDocUploadBtn");
+      const tabChat = document.getElementById("tabChatbotBtn");
+      const secUpload = document.getElementById("sectionDocUpload");
+      const secChat = document.getElementById("sectionChatbot");
+
+      if (tabUpload && tabChat) {
+        tabUpload.addEventListener("click", () => {
+          tabUpload.className = "flex-1 py-2.5 px-4 text-xs font-bold rounded-xl text-white bg-primary transition cursor-pointer";
+          tabChat.className = "flex-1 py-2.5 px-4 text-xs font-bold rounded-xl text-text-light hover:text-white transition cursor-pointer";
+          secUpload.classList.remove("hidden");
+          secChat.classList.add("hidden");
+        });
+
+        tabChat.addEventListener("click", () => {
+          tabChat.className = "flex-1 py-2.5 px-4 text-xs font-bold rounded-xl text-white bg-primary transition cursor-pointer";
+          tabUpload.className = "flex-1 py-2.5 px-4 text-xs font-bold rounded-xl text-text-light hover:text-white transition cursor-pointer";
+          secChat.classList.remove("hidden");
+          secUpload.classList.add("hidden");
+        });
+      }
+
+      // Dropzone
+      const dropzone = document.getElementById("dropzoneContainer");
+      const fileInput = document.getElementById("resumeFileInput");
+      const uploadProgress = document.getElementById("uploadProgress");
+      const reviewCard = document.getElementById("reviewCard");
+      const reviewList = document.getElementById("reviewAttributesList");
+
+      let currentDraftData = null;
+
+      if (dropzone && fileInput) {
+        dropzone.addEventListener("click", () => fileInput.click());
+
+        dropzone.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          dropzone.classList.add("border-primary");
+        });
+
+        dropzone.addEventListener("dragleave", () => {
+          dropzone.classList.remove("border-primary");
+        });
+
+        dropzone.addEventListener("drop", (e) => {
+          e.preventDefault();
+          dropzone.classList.remove("border-primary");
+          if (e.dataTransfer.files?.length) {
+            handleFileUpload(e.dataTransfer.files[0]);
+          }
+        });
+
+        fileInput.addEventListener("change", () => {
+          if (fileInput.files?.length) {
+            handleFileUpload(fileInput.files[0]);
+          }
+        });
+      }
+
+      async function handleFileUpload(file) {
+        if (!file) return;
+
+        if (uploadProgress) uploadProgress.classList.remove("hidden");
+        if (reviewCard) reviewCard.classList.add("hidden");
+
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("auto_save", "false"); // Draft mode for review!
+
+        try {
+          const res = await fetch("/api/memory/upload-document", {
+            method: "POST",
+            headers,
+            body: formData
+          });
+
+          const data = await res.json();
+          if (uploadProgress) uploadProgress.classList.add("hidden");
+
+          if (res.ok && data.success && data.data?.extracted) {
+            currentDraftData = data.data.extracted;
+            renderReviewCard(currentDraftData);
+            displayExtractUpdatedJson(currentDraftData, "Document Attributes Extracted");
+            showToast("Document analyzed! Review and confirm fields below.");
+          } else {
+            showToast(data.message || "Failed to parse document.", "error");
+          }
+        } catch (err) {
+          if (uploadProgress) uploadProgress.classList.add("hidden");
+          showToast("Network error uploading document.", "error");
+        }
+      }
+
+      // Clean text helper to strip any rogue Markdown/regex backslash escapes
+      function cleanText(str) {
+        if (str == null) return "";
+        return String(str).replace(/\\([ \.,@+()&/%:;!?'"|\-\[\]\\])/g, "$1").trim();
+      }
+
+      function escapeAttr(str) {
+        return cleanText(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      // Render Review Before Save Card
+      function renderReviewCard(extracted) {
+        if (!reviewCard || !reviewList) return;
+        reviewList.innerHTML = "";
+
+        const items = [];
+
+        // Personal Info fields
+        const pi = extracted.personal_info || {};
+        if (pi.full_name) items.push({ type: "pi", key: "full_name", label: "Full Legal Name", val: pi.full_name });
+        if (pi.email) items.push({ type: "pi", key: "email", label: "Email Address", val: pi.email });
+        if (pi.phone) items.push({ type: "pi", key: "phone", label: "Phone Number", val: pi.phone });
+        if (pi.city) items.push({ type: "pi", key: "city", label: "City", val: pi.city });
+        if (pi.country) items.push({ type: "pi", key: "country", label: "Country", val: pi.country });
+        if (pi.university) items.push({ type: "pi", key: "university", label: "University", val: pi.university });
+        if (pi.degree) items.push({ type: "pi", key: "degree", label: "Degree Program", val: pi.degree });
+        if (pi.major) items.push({ type: "pi", key: "major", label: "Major / Field", val: pi.major });
+        if (pi.linkedin_url) items.push({ type: "pi", key: "linkedin_url", label: "LinkedIn Profile", val: pi.linkedin_url });
+        if (pi.github_url) items.push({ type: "pi", key: "github_url", label: "GitHub Profile", val: pi.github_url });
+        if (pi.bio) items.push({ type: "pi", key: "bio", label: "Professional Bio", val: pi.bio });
+
+        // Experiences
+        (extracted.experiences || []).forEach((exp, idx) => {
+          items.push({
+            type: "exp",
+            index: idx,
+            label: `Work Experience: ${exp.job_title || "Role"}`,
+            company: exp.company || "",
+            title: exp.job_title || "",
+            skills: exp.skills || "",
+            startDate: exp.start_date || "2020-01-01",
+            desc: exp.description || ""
+          });
+        });
+
+        // Custom fields
+        (extracted.custom_fields || []).forEach((cf, idx) => {
+          items.push({
+            type: "cf",
+            index: idx,
+            key: cf.field_key,
+            label: cf.field_label || cf.field_key,
+            val: cf.field_value,
+            category: cf.category || "General"
+          });
+        });
+
+        items.forEach((item, i) => {
+          const div = document.createElement("div");
+          div.className = "bg-dark/60 border border-white/10 rounded-2xl p-4 flex items-start gap-3";
+
+          if (item.type === "pi") {
+            div.innerHTML = `
+              <input type="checkbox" checked class="mt-1 size-4 accent-primary review-item-check cursor-pointer" data-index="${i}" />
+              <div class="flex-1">
+                <label class="block text-[11px] font-bold text-text-light mb-1 uppercase tracking-wider">${item.label}</label>
+                <input type="text" value="${escapeAttr(item.val)}" class="review-pi-val w-full bg-black/40 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white focus:border-primary focus:outline-none" data-key="${item.key}" />
+              </div>
+            `;
+          } else if (item.type === "exp") {
+            div.innerHTML = `
+              <input type="checkbox" checked class="mt-1 size-4 accent-primary review-item-check cursor-pointer" data-index="${i}" />
+              <div class="flex-1 space-y-2">
+                <label class="block text-[11px] font-bold text-text-light uppercase tracking-wider">${item.label}</label>
+                <div class="grid grid-cols-2 gap-2">
+                  <input type="text" value="${escapeAttr(item.company)}" placeholder="Company" class="review-exp-comp w-full bg-black/40 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white" />
+                  <input type="text" value="${escapeAttr(item.title)}" placeholder="Title" class="review-exp-title w-full bg-black/40 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white" />
+                </div>
+                <input type="text" value="${escapeAttr(item.skills)}" placeholder="Skills" class="review-exp-skills w-full bg-black/40 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white" />
+              </div>
+            `;
+          } else if (item.type === "cf") {
+            div.innerHTML = `
+              <input type="checkbox" checked class="mt-1 size-4 accent-primary review-item-check cursor-pointer" data-index="${i}" />
+              <div class="flex-1">
+                <label class="block text-[11px] font-bold text-text-light mb-1 uppercase tracking-wider">${item.label}</label>
+                <input type="text" value="${escapeAttr(item.val)}" class="review-cf-val w-full bg-black/40 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white" data-key="${item.key}" data-label="${escapeAttr(item.label)}" data-cat="${escapeAttr(item.category)}" />
+              </div>
+            `;
+          }
+
+          reviewList.appendChild(div);
+        });
+
+        reviewCard.classList.remove("hidden");
+        reviewCard.scrollIntoView({ behavior: "smooth" });
+      }
+
+      // Confirm & Save Extracted Attributes to PostgreSQL
+      const confirmSaveBtn = document.getElementById("btnConfirmSaveExtracted");
+      const discardBtn = document.getElementById("btnDiscardExtracted");
+
+      if (discardBtn) {
+        discardBtn.addEventListener("click", () => {
+          reviewCard.classList.add("hidden");
+          currentDraftData = null;
+        });
+      }
+
+      if (confirmSaveBtn) {
+        confirmSaveBtn.addEventListener("click", async () => {
+          confirmSaveBtn.disabled = true;
+          confirmSaveBtn.textContent = "Saving to Database...";
+
+          try {
+            // Collect approved PI fields
+            const piPayload = {};
+            document.querySelectorAll(".review-pi-val").forEach(input => {
+              const check = input.closest("div.flex")?.previousElementSibling;
+              if (!check || check.checked) {
+                piPayload[input.getAttribute("data-key")] = cleanText(input.value);
+              }
+            });
+
+            if (Object.keys(piPayload).length > 0) {
+              await fetch("/api/personal-info/me", {
+                method: "PUT",
+                headers: { ...headers, "Content-Type": "application/json" },
+                body: JSON.stringify(piPayload)
+              });
+            }
+
+            // Collect approved Custom Fields
+            const cfPromises = [];
+            const cfSaved = [];
+            document.querySelectorAll(".review-cf-val").forEach(input => {
+              const check = input.closest("div.flex")?.previousElementSibling;
+              if (!check || check.checked) {
+                const item = {
+                  field_key: input.getAttribute("data-key"),
+                  field_label: cleanText(input.getAttribute("data-label")),
+                  field_value: cleanText(input.value),
+                  category: cleanText(input.getAttribute("data-cat") || "professional")
+                };
+                cfSaved.push(item);
+                cfPromises.push(
+                  fetch("/api/custom-fields/me", {
+                    method: "POST",
+                    headers: { ...headers, "Content-Type": "application/json" },
+                    body: JSON.stringify(item)
+                  })
+                );
+              }
+            });
+            await Promise.all(cfPromises);
+
+            // Collect approved Work Experiences
+            const expPromises = [];
+            const expSaved = [];
+            document.querySelectorAll(".review-exp-comp").forEach(compInput => {
+              const row = compInput.closest("div.bg-dark\\/60, div");
+              const check = row?.querySelector(".review-item-check");
+              if (!check || check.checked) {
+                const titleInput = row?.querySelector(".review-exp-title");
+                const skillsInput = row?.querySelector(".review-exp-skills");
+                const comp = cleanText(compInput.value);
+                const title = cleanText(titleInput ? titleInput.value : "");
+                const skills = cleanText(skillsInput ? skillsInput.value : "");
+                if (comp && title) {
+                  const expObj = {
+                    company: comp,
+                    job_title: title,
+                    start_date: "2022-01-01",
+                    skills: skills
+                  };
+                  expSaved.push(expObj);
+                  expPromises.push(
+                    fetch("/api/experiences/me", {
+                      method: "POST",
+                      headers: { ...headers, "Content-Type": "application/json" },
+                      body: JSON.stringify(expObj)
+                    })
+                  );
+                }
+              }
+            });
+            await Promise.all(expPromises);
+
+            const updatedSummary = {
+              status: "success",
+              action: "VAULT_SYNCHRONIZED",
+              timestamp: new Date().toISOString(),
+              personal_info_updated: piPayload,
+              custom_fields_saved: cfSaved,
+              experiences_saved: expSaved
+            };
+            displayExtractUpdatedJson(updatedSummary, "Saved to Memory Vault");
+
+            showToast("✓ Successfully saved verified attributes to memory vault!");
+            reviewCard.classList.add("hidden");
+            currentDraftData = null;
+            loadStoredDocuments();
+          } catch (e) {
+            showToast("Error saving attributes to memory.", "error");
+          } finally {
+            confirmSaveBtn.disabled = false;
+            confirmSaveBtn.textContent = "Confirm & Save to Vault";
+          }
+        });
+      }
+
+      // Chatbot Submit
+      const chatForm = document.getElementById("chatInputForm");
+      const chatTextarea = document.getElementById("chatTextarea");
+      const chatProgress = document.getElementById("chatProgress");
+
+      if (chatForm && chatTextarea) {
+        chatForm.addEventListener("submit", async () => {
+          const rawText = chatTextarea.value.trim();
+          if (!rawText) return;
+
+          if (chatProgress) chatProgress.classList.remove("hidden");
+
+          try {
+            const res = await fetch("/api/memory/extract-raw", {
+              method: "POST",
+              headers: { ...headers, "Content-Type": "application/json" },
+              body: JSON.stringify({ raw_text: rawText, auto_save: false })
+            });
+
+            const data = await res.json();
+            if (chatProgress) chatProgress.classList.add("hidden");
+
+            if (res.ok && data.success && data.data?.extracted) {
+              currentDraftData = data.data.extracted;
+              renderReviewCard(currentDraftData);
+              displayExtractUpdatedJson(currentDraftData, "Chat Entities Extracted");
+              showToast("Information parsed! Review and confirm fields below.");
+            } else {
+              showToast(data.message || "Could not parse information.", "error");
+            }
+          } catch (e) {
+            if (chatProgress) chatProgress.classList.add("hidden");
+            showToast("Network error communicating with AI.", "error");
+          }
+        });
+      }
+
+      // JSON Viewer Handlers
+      function displayExtractUpdatedJson(dataObj, badgeText = "Updated Records") {
+        const box = document.getElementById("extractUpdatedJsonBox");
+        const code = document.getElementById("extractUpdatedJsonCode");
+        const badge = document.getElementById("extractUpdatedBadge");
+        if (!box || !code) return;
+
+        const payload = {
+          status: "success",
+          source: "AI_EXTRACTION_ENGINE",
+          timestamp: new Date().toISOString(),
+          updated_records: dataObj
+        };
+
+        code.textContent = JSON.stringify(payload, null, 2);
+        if (badge) badge.textContent = `✓ ${badgeText}`;
+        box.classList.remove("hidden");
+        box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+
+      const copyExtractJsonBtn = document.getElementById("btnCopyExtractJson");
+      const copyExtractJsonText = document.getElementById("copyExtractJsonText");
+      if (copyExtractJsonBtn && copyExtractJsonText) {
+        copyExtractJsonBtn.addEventListener("click", () => {
+          const code = document.getElementById("extractUpdatedJsonCode");
+          if (code && code.textContent) {
+            navigator.clipboard.writeText(code.textContent);
+            copyExtractJsonText.textContent = "Copied!";
+            setTimeout(() => { copyExtractJsonText.textContent = "Copy JSON"; }, 2000);
+          }
+        });
+      }
+
+      // Load Stored Documents Table
+      async function loadStoredDocuments() {
+        const tbody = document.getElementById("documentsTableBody");
+        if (!tbody) return;
+
+        try {
+          const res = await fetch("/api/documents/me", { headers });
+          const docData = res.ok ? (await res.json())?.data || [] : [];
+
+          if (docData.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-text-light">No documents uploaded yet. Upload a resume above to start!</td></tr>`;
+            return;
+          }
+
+          tbody.innerHTML = "";
+          docData.forEach(doc => {
+            const tr = document.createElement("tr");
+            tr.className = "hover:bg-white/5 transition";
+            const dateStr = doc.created_at ? new Date(doc.created_at).toLocaleDateString() : "";
+            const sizeKb = (doc.file_size_bytes / 1024).toFixed(1);
+
+            tr.innerHTML = `
+              <td class="py-3 font-semibold text-white flex items-center gap-2">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span>${doc.file_name}</span>
+              </td>
+              <td class="py-3 text-text-light font-mono text-[11px]">${sizeKb} KB</td>
+              <td class="py-3 text-text-light">${doc.description || doc.category || "Uploaded Document"}</td>
+              <td class="py-3 text-text-dark font-mono text-[11px]">${dateStr}</td>
+              <td class="py-3 text-right">
+                <button type="button" class="btn-delete-doc text-rose-400 hover:text-rose-300 font-semibold text-xs" data-id="${doc.id}">
+                  Delete
+                </button>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+
+          tbody.querySelectorAll(".btn-delete-doc").forEach(btn => {
+            btn.addEventListener("click", async () => {
+              const docId = btn.getAttribute("data-id");
+              if (!confirm("Delete this document from your vault?")) return;
+              const delRes = await fetch(`/api/documents/me/${docId}`, { method: "DELETE", headers });
+              if (delRes.ok) {
+                showToast("Document deleted.");
+                loadStoredDocuments();
+              }
+            });
+          });
+        } catch (e) {
+          console.error("Error loading documents:", e);
+        }
+      }
+
+      loadStoredDocuments();
+    })();
+  </script>
+</Base>

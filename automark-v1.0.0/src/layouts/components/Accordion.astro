@@ -1,0 +1,38 @@
+---
+interface Props {
+  title: string;
+  content?: string;
+}
+const { title, content } = Astro.props;
+---
+
+<div class="neu-card mb-5 overflow-hidden rounded-2xl transition-all">
+  <button class="accordion-header w-full p-5 sm:p-6 text-left flex items-center justify-between font-display font-bold text-base text-[#3D4852] hover:text-[#6C63FF] transition-colors cursor-pointer select-none" data-accordion>
+    <span>{title}</span>
+    <div class="neu-icon-well size-9 rounded-xl shrink-0 ml-4 text-[#3D4852]">
+      <svg
+        class="accordion-icon size-3 transition-transform duration-300"
+        viewBox="0 0 11 11"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M0.75 5.41602H10.0833"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+        <path
+          d="M5.41663 10.083L5.41663 0.749675"
+          class="accordion-icon-vertical-line"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+      </svg>
+    </div>
+  </button>
+  <div class="accordion-content px-5 sm:px-6 pb-6 font-body text-sm text-[#6B7280] leading-relaxed hidden">
+    {content}
+  </div>
+</div>

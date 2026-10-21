@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Magic Fill — Personal Memory Vault & Intelligent Autofill</title>
+  <meta name="description"
+    content="Minimalist, modern AI personal memory vault and intelligent browser form autofill engine.">
+
+  <!-- Modern Typography Stacks (Featuring DM Serif Display for Simplify Aesthetic) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="/static/styles.css">
+
+  <!-- Google Identity Services (GIS) Client Library -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+
+<body class="light-theme">
+  <div class="app-shell">
+
+    <!-- Top Simplify-Style Floating Pill Navigation Bar -->
+    <header class="navbar simplify-navbar">
+      <div class="nav-container simplify-nav-pill">
+        <!-- Logo / Brand with Wand Image -->
+        <a href="/" class="brand-link">
+          <img src="/static/logo/Magic_Fill_logo.png" alt="Magic Fill Logo" class="brand-logo-img">
+          <div class="brand-text-group">
+            <span class="brand-name">Magic Fill</span>
+            <span class="brand-tag">MEMORY &amp; AUTOFILL</span>
+          </div>
+        </a>
+
+        <!-- Center Navigation Links (Simplify Style) -->
+        <nav class="simplify-nav-links" aria-label="Main Navigation">
+          <a href="#features" class="simplify-nav-link">Features</a>
+          <a href="#live-forms" class="simplify-nav-link">Supported Forms</a>
+          <a href="#how-it-works" class="simplify-nav-link">How It Works</a>
+          <a href="#live-playground" class="simplify-nav-link">Live Simulator</a>
+          <a href="#faq" class="simplify-nav-link">FAQ</a>
+        </nav>
+
+        <!-- Right Quick Action & Auth Controls -->
+        <div class="nav-actions">
+
+          <button type="button" id="btnExportVaultJson" class="btn-nav-export hidden"
+            title="Export entire memory vault as JSON backup">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Export Backup</span>
+          </button>
+
+          <!-- Auth Status Buttons Container -->
+          <div id="navAuthLoggedOut" class="nav-auth-group">
+            <button type="button" id="btnNavLogin" class="btn-nav-auth btn-nav-login">Log In</button>
+            <button type="button" id="btnNavRegister" class="btn-nav-auth btn-nav-register simplify-btn-pill-cta">
+              <span class="cta-glow-subtle"></span>
+              <span>Join Now</span>
+            </button>
+          </div>
+
+          <div id="navAuthLoggedIn" class="nav-auth-group hidden">
+            <div class="nav-user-chip" id="navUserChip" title="Active user profile">
+              <span class="user-chip-avatar" id="navUserAvatar">U</span>
+              <span class="user-chip-email" id="navUserEmail">user@example.com</span>
+            </div>
+            <button type="button" id="btnToggleStudio" class="btn-nav-auth simplify-btn-pill-cta" title="Open Memory Studio">
+              <span>Memory Studio &rarr;</span>
+            </button>
+            <button type="button" id="btnNavConnectExt" class="btn-nav-ext" title="Connect browser extension">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+              </svg>
+              <span>Connect Extension</span>
+            </button>
+            <button type="button" id="btnNavLogout" class="btn-nav-logout" title="Sign out">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+              <span>Sign Out</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Workspace Container -->
+    <main class="main-content">
+
+      <!-- ================================================================== -->
+      <!-- WEBSITE LANDING SHOWCASE & AUTH GATEWAY (Simplify.jobs Exact UI)    -->
+      <!-- ================================================================== -->
+      <section id="websiteAuthGateway" class="simplify-landing-container">
+
+        <!-- ============================================================== -->
+        <!-- 1. HERO SECTION (Split Grid + Cyan Wave Contour Visual)         -->
+        <!-- ============================================================== -->
+        <div class="simplify-hero-wrap">
+          <div class="simplify-hero-grid">
+
+            <!-- Hero Left Column: Copy & CTAs -->
+            <div class="simplify-hero-copy scroll-reveal-left">
+              <div class="simplify-hero-badge">
+                <span class="badge-pulsing-dot"></span>
+                <span>AI-Native Form Intelligence</span>
+              </div>
+
+              <h1 class="simplify-hero-title">
+                Fill forms 10x faster with your AI job &amp; form partner.
+              </h1>
+
+              <p class="simplify-hero-sub">
+                Magic Fill proactively matches your personal information, auto-detects complex application fields across any website, and completes forms with 100% precision.
+              </p>
+
+              <!-- CTA Buttons Row -->
+              <div class="simplify-hero-cta-row">
+                <button type="button" id="heroBtnGetStarted" class="simplify-btn-primary">
+                  <span class="mkt-cta-glow"></span>
+                  <span class="mkt-cta-ring"></span>
+                  <span class="btn-text">Try for free &rarr;</span>
+                </button>
+                <a href="#live-playground" class="simplify-btn-secondary">
+                  <span>Try Live Simulator &darr;</span>
+                </a>
+              </div>
+
+              <!-- Social Proof Rating -->
+              <div class="simplify-hero-rating">
+                <div class="stars-row" aria-label="5 stars rating">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                </div>
+                <span class="rating-num">4.9/5</span>
+                <span class="rating-sep">&bull;</span>
+                <span class="rating-label">Trusted by 25,000+ applicants &amp; professionals</span>
+              </div>
+
+              <!-- 3 Hero Metrics Under Copy (Simplify Exact Placement) -->
+              <div class="simplify-hero-metrics-grid scroll-reveal">
+                <div class="hero-metric-item stagger-1">
+                  <div class="metric-big-num">5+ hours</div>
+                  <div class="metric-caption">Saved on repetitive web forms each week</div>
+                </div>
+                <div class="hero-metric-item stagger-2">
+                  <div class="metric-big-num">10&times;</div>
+                  <div class="metric-caption">Faster form completion with zero copy-pasting</div>
+                </div>
+                <div class="hero-metric-item stagger-3">
+                  <div class="metric-big-num">25K+</div>
+                  <div class="metric-caption">People joined Magic Fill to automate application portals</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hero Right Column: 3D Visual Card Stack with Cyan Fluid Rings -->
+            <div class="simplify-hero-visual-stage">
+              <!-- Decorative Cyan Topographic Rings Canvas (Simplify Signature Wave) -->
+              <div class="hero-cyan-waves-bg" aria-hidden="true">
+                <svg viewBox="0 0 540 680" class="cyan-wave-svg" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="cyanRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#00C5FF" stop-opacity="0.85" />
+                      <stop offset="50%" stop-color="#0088FF" stop-opacity="0.65" />
+                      <stop offset="100%" stop-color="#0055DD" stop-opacity="0.25" />
+                    </linearGradient>
+                    <radialGradient id="meshCenterGlow" cx="50%" cy="50%" r="50%">
+                      <stop offset="0%" stop-color="#00D2FF" stop-opacity="0.4" />
+                      <stop offset="70%" stop-color="#0088FF" stop-opacity="0.1" />
+                      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+                    </radialGradient>
+                  </defs>
+                  <!-- Soft Radial Glow Backdrop -->
+                  <circle cx="270" cy="340" r="260" fill="url(#meshCenterGlow)" />
+                  <!-- Concentric Contour Wave Rings -->
+                  <g fill="none" stroke="url(#cyanRingGrad)" stroke-width="1.6" opacity="0.75">
+                    <path d="M 60,340 C 60,180 180,60 340,60 C 440,60 500,120 500,220 C 500,380 400,560 260,560 C 140,560 60,460 60,340 Z" />
+                    <path d="M 90,340 C 90,200 195,90 335,90 C 425,90 475,145 475,235 C 475,375 385,530 265,530 C 160,530 90,445 90,340 Z" />
+                    <path d="M 120,340 C 120,220 210,120 330,120 C 410,120 450,170 450,250 C 450,370 370,500 270,500 C 180,500 120,430 120,340 Z" />
+                    <path d="M 150,340 C 150,240 225,150 325,150 C 395,150 425,195 425,265 C 425,365 355,470 275,470 C 200,470 150,415 150,340 Z" />
+                    <path d="M 180,340 C 180,260 240,180 320,180 C 380,180 400,220 400,280 C 400,360 340,440 280,440 C 220,440 180,400 180,340 Z" />
+                    <path d="M 210,340 C 210,280 255,210 315,210 C 365,210 375,245 375,295 C 375,355 325,410 285,410 C 240,410 210,385 210,340 Z" />
+                    <path d="M 240,340 C 240,300 270,240 310,240 C 350,240 350,270 350,310 C 350,350 310,380 290,380 C 260,380 240,370 240,340 Z" />
+                  </g>
+                </svg>
+              </div>
+
+              <!-- Main Card: Magic Fill Logo Animations Video (User Marked in Red) -->
+              <div class="simplify-hero-main-card simplify-hero-video-card">
+                <div class="card-status-strip">
+                  <span class="status-indicator-tag">
+                    <span class="pulse-emerald"></span>
+                    <span>AI Form Copilot Active</span>
+                  </span>
+                  <span class="site-tag">Autonomous Memory &bull; Live</span>
+                </div>
+
+                <!-- Seamless Video Bezel Frame -->
+                <div class="hero-video-bezel-frame">
+                  <video class="hero-showcase-video" autoplay loop muted playsinline preload="auto">
+                    <source src="/static/video/Magic_Fill_Logo_Animations.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                  <div class="hero-video-ambient-glow"></div>
+                </div>
+
+                <!-- Card Bottom Status Strip -->
+                <div class="hero-video-bottom-strip">
+                  <div class="hero-video-feature-chip">
+                    <span class="chip-dot-cyan"></span>
+                    <span>Intelligent Form Copilot</span>
+                  </div>
+                  <div class="hero-video-feature-chip">
+                    <span class="chip-sparkle">✨</span>
+                    <span>Zero Copy-Paste &bull; 1-Click Fill</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Floating Satellite 1: Top Left - 28 Memory Attributes -->
+              <div class="simplify-float-card float-card-top-left">
+                <div class="float-icon-bubble">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                </div>
+                <div class="float-text-content">
+                  <span class="float-title">28 Memory Attributes Active</span>
+                  <span class="float-sub">Full Bio, Career, Custom Fields</span>
+                </div>
+              </div>
+
+              <!-- Floating Satellite 2: Top Right - Copilot Autofilling -->
+              <div class="simplify-float-card float-card-top-right">
+                <div class="float-icon-bubble cyan">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#00c5ff" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                </div>
+                <div class="float-text-content">
+                  <span class="float-title">Copilot Autofilling Form</span>
+                  <span class="float-sub">Ambiguous labels resolved</span>
+                </div>
+              </div>
+
+              <!-- Floating Satellite 3: Bottom Left - AI Gauge Accuracy -->
+              <div class="simplify-float-card float-card-bottom-left">
+                <div class="gauge-wrap">
+                  <svg class="gauge-svg" viewBox="0 0 36 36">
+                    <path class="gauge-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    <path class="gauge-val" stroke-dasharray="99, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    <text x="18" y="21" class="gauge-text">99%</text>
+                  </svg>
+                </div>
+                <div class="float-text-content">
+                  <span class="float-title">AI Grounding Accuracy</span>
+                  <span class="float-sub">100% Precision Verified</span>
+                </div>
+              </div>
+
+              <!-- Floating Satellite 4: Bottom Right - Auto Learn Active -->
+              <div class="simplify-float-card float-card-bottom-right">
+                <div class="float-icon-bubble emerald">
+                  <span class="pulse-dot-green"></span>
+                </div>
+                <div class="float-text-content">
+                  <div class="float-status-header">
+                    <span class="float-title">Auto Learn: ON</span>
+                    <span class="active-badge">Active</span>
+                  </div>
+                  <span class="float-sub">Intelligently learning new fields</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- 2. SIGNATURE DARK SECTION ("Fresh roles, added hourly")          -->
+        <!-- ============================================================== -->
+        <section id="live-forms" class="simplify-dark-section">
+          <div class="simplify-dark-inner">
+            <div class="dark-section-header scroll-reveal">
+              <h2 class="dark-section-title">Fresh forms, autofilled across the web</h2>
+              <p class="dark-section-sub">From high-volume job applications to university admissions and government portals.</p>
+              
+              <div class="dark-counter-pill scroll-reveal-scale">
+                <span class="counter-label">Forms detected today</span>
+                <span class="counter-box" id="liveFormCounter" data-target="1480">1,480+</span>
+              </div>
+            </div>
+
+            <!-- 6 Sleek Dark Cards Grid (Simplify Exact Style) -->
+            <div class="dark-cards-grid">
+              <div class="dark-portal-card scroll-reveal stagger-1">
+                <div class="portal-card-header">
+                  <span class="portal-icon">💼</span>
+                  <h3 class="portal-name">Workday Applications</h3>
+                </div>
+                <p class="portal-desc">Multi-step job portals completed in 1 click. Work experience, degrees, and custom questionnaire answers autofilled accurately.</p>
+                <div class="portal-tags">
+                  <span class="portal-tag">Careers</span>
+                  <span class="portal-tag">Enterprise</span>
+                  <span class="portal-tag">Multi-Step</span>
+                </div>
+              </div>
+
+              <div class="dark-portal-card scroll-reveal stagger-2">
+                <div class="portal-card-header">
+                  <span class="portal-icon">📄</span>
+                  <h3 class="portal-name">Greenhouse &amp; Lever</h3>
+                </div>
+                <p class="portal-desc">Autofill resumes, cover letters, portfolios, GitHub links, and demographic surveys without repeating yourself.</p>
+                <div class="portal-tags">
+                  <span class="portal-tag">Tech Startups</span>
+                  <span class="portal-tag">ATS Portals</span>
+                  <span class="portal-tag">Quick Apply</span>
+                </div>
+              </div>
+
+              <div class="dark-portal-card scroll-reveal stagger-3">
+                <div class="portal-card-header">
+                  <span class="portal-icon">🎓</span>
+                  <h3 class="portal-name">University &amp; Common App</h3>
+                </div>
+                <p class="portal-desc">Academic history, GPAs, department choices, semester details, and emergency contacts populated seamlessly.</p>
+                <div class="portal-tags">
+                  <span class="portal-tag">Higher Ed</span>
+                  <span class="portal-tag">Admissions</span>
+                  <span class="portal-tag">Scholarships</span>
+                </div>
+              </div>
+
+              <div class="dark-portal-card scroll-reveal stagger-4">
+                <div class="portal-card-header">
+                  <span class="portal-icon">🏛️</span>
+                  <h3 class="portal-name">Government &amp; Visa Portals</h3>
+                </div>
+                <p class="portal-desc">Passport numbers, national identification, permanent addresses, postal codes, and identity document uploads.</p>
+                <div class="portal-tags">
+                  <span class="portal-tag">Visas</span>
+                  <span class="portal-tag">Tax Forms</span>
+                  <span class="portal-tag">Identity Docs</span>
+                </div>
+              </div>
+
+              <div class="dark-portal-card scroll-reveal stagger-5">
+                <div class="portal-card-header">
+                  <span class="portal-icon">🚀</span>
+                  <h3 class="portal-name">Ashby, BambooHR &amp; Rippling</h3>
+                </div>
+                <p class="portal-desc">Complex job forms with custom dropdowns, expected compensation, start date availability, and skills tags.</p>
+                <div class="portal-tags">
+                  <span class="portal-tag">Compensation</span>
+                  <span class="portal-tag">Start Dates</span>
+                  <span class="portal-tag">Custom Selects</span>
+                </div>
+              </div>
+
+              <div class="dark-portal-card scroll-reveal stagger-6">
+                <div class="portal-card-header">
+                  <span class="portal-icon">💳</span>
+                  <h3 class="portal-name">Directories &amp; Registrations</h3>
+                </div>
+                <p class="portal-desc">Vendor onboarding, conference registrations, and billing profiles without touching search inputs or passwords.</p>
+                <div class="portal-tags">
+                  <span class="portal-tag">Onboarding</span>
+                  <span class="portal-tag">Directories</span>
+                  <span class="portal-tag">Profiles</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- 3. FEATURE HIGHLIGHTS ("Form filling is busywork.")             -->
+        <!-- ============================================================== -->
+        <section id="features" class="simplify-features-section">
+          <div class="features-header-wrap scroll-reveal">
+            <h2 class="features-main-title">
+              Form filling is busywork.<br>
+              <span class="text-cyan-gradient">Your Magic Fill agent takes it on.</span>
+            </h2>
+            <p class="features-main-sub">
+              An intelligent, privacy-first memory vault paired with lightning-fast AI autofill in your browser.
+            </p>
+          </div>
+
+          <!-- 3 Simplify-Style Interactive Feature Cards -->
+          <div class="features-cards-stack">
+
+            <!-- Card 1: Intelligent Form Learning (The Core Upgraded Feature) -->
+            <div class="feature-display-card scroll-reveal-left">
+              <div class="feature-card-content">
+                <span class="feature-mini-tag">01 &bull; FORM INTELLIGENCE</span>
+                <h3 class="feature-card-title">Never re-type a new attribute again.</h3>
+                <p class="feature-card-desc">
+                  When you manually type a new field like <strong>LinkedIn Profile URL</strong> or <strong>Certifications</strong> on any website, Magic Fill detects it, verifies it's reusable personal info (and not chat, search, or passwords), and asks for 1-click consent to save it to your personal memory vault.
+                </p>
+                <ul class="feature-bullets">
+                  <li><span>✓</span> Semantic canonical matching prevents duplicate keys</li>
+                  <li><span>✓</span> Changed phone or address triggers non-intrusive update prompt</li>
+                  <li><span>✓</span> Zero storage without explicit user confirmation</li>
+                </ul>
+              </div>
+
+              <!-- Interactive Visual Mockup: The Consent Prompt Card -->
+              <div class="feature-card-preview">
+                <div class="mockup-window">
+                  <div class="mockup-header">
+                    <span class="mockup-dot red"></span>
+                    <span class="mockup-dot yellow"></span>
+                    <span class="mockup-dot green"></span>
+                    <span class="mockup-title">Magic Fill &bull; Memory Learning Prompt</span>
+                  </div>
+                  <div class="mockup-prompt-card">
+                    <div class="prompt-badge">✨ New Attribute Detected</div>
+                    <div class="prompt-heading">Save to Magic Fill memory?</div>
+                    <div class="prompt-field-preview">
+                      <span class="prompt-field-key">LinkedIn Profile URL</span>
+                      <span class="prompt-field-val">https://linkedin.com/in/mayaramirez</span>
+                    </div>
+                    <p class="prompt-field-desc">Would you like to save this to your personal memory vault for future 1-click autofill?</p>
+                    <div class="prompt-actions-row">
+                      <button type="button" class="btn-prompt-save">Save to Memory</button>
+                      <button type="button" class="btn-prompt-dismiss">Not Now</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2: AI Semantic Matching Engine -->
+            <div class="feature-display-card reverse scroll-reveal-right">
+              <div class="feature-card-content">
+                <span class="feature-mini-tag">02 &bull; CONTEXT REASONING</span>
+                <h3 class="feature-card-title">Understands ambiguous fields instantly.</h3>
+                <p class="feature-card-desc">
+                  Web developers use hundreds of different labels: <em>"Mobile Number"</em>, <em>"Cell Phone"</em>, <em>"Telephone"</em>, <em>"Contact Phone"</em>. Magic Fill's neural matching engine evaluates the surrounding form context, field labels, and autocomplete tags to match with 99.4% precision in under 100ms.
+                </p>
+                <ul class="feature-bullets">
+                  <li><span>✓</span> Resolves non-standard form schemas without hardcoded lists</li>
+                  <li><span>✓</span> Grounds answers strictly against your verified records</li>
+                  <li><span>✓</span> 100% Precision &amp; zero guesswork</li>
+                </ul>
+              </div>
+
+              <!-- Interactive Visual Mockup: AI Match Gauge -->
+              <div class="feature-card-preview">
+                <div class="mockup-window">
+                  <div class="mockup-header">
+                    <span class="mockup-dot red"></span>
+                    <span class="mockup-dot yellow"></span>
+                    <span class="mockup-dot green"></span>
+                    <span class="mockup-title">AI Copilot &bull; Semantic Field Resolution</span>
+                  </div>
+                  <div class="mockup-gauge-card">
+                    <div class="match-score-big">99.4%</div>
+                    <div class="match-score-title">AI Grounding Confidence Score</div>
+                    <div class="match-pills-row">
+                      <span class="match-pill resolved">"Cellular Phone" &rarr; phone_number</span>
+                      <span class="match-pill resolved">"Undergrad Institute" &rarr; university</span>
+                      <span class="match-pill resolved">"LinkedIn URL" &rarr; custom_fields</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 3: Strict Anti-Over-Prompting & Privacy Quarantine -->
+            <div class="feature-display-card scroll-reveal-left">
+              <div class="feature-card-content">
+                <span class="feature-mini-tag">03 &bull; PRIVACY QUARANTINE</span>
+                <h3 class="feature-card-title">Strictly personal data. Zero chatter captured.</h3>
+                <p class="feature-card-desc">
+                  Unlike conventional extensions that pop up save banners on every keystroke, Magic Fill strictly quarantines ChatGPT conversation textareas, support chat inputs, comments, search queries, OTPs, and passwords. You are never interrupted.
+                </p>
+                <ul class="feature-bullets">
+                  <li><span>✓</span> 6-tier field classification: PERSONAL, PROFESSIONAL vs TRANSACTIONAL</li>
+                  <li><span>✓</span> Password, OTP, and payment inputs automatically blacklisted</li>
+                  <li><span>✓</span> Bank-grade end-to-end security &amp; local privacy isolation</li>
+                </ul>
+              </div>
+
+              <!-- Interactive Visual Mockup: Classification Shield -->
+              <div class="feature-card-preview">
+                <div class="mockup-window">
+                  <div class="mockup-header">
+                    <span class="mockup-dot red"></span>
+                    <span class="mockup-dot yellow"></span>
+                    <span class="mockup-dot green"></span>
+                    <span class="mockup-title">Field Classification Quarantine</span>
+                  </div>
+                  <div class="mockup-quarantine-card">
+                    <div class="quarantine-row allowed">
+                      <span class="quarantine-status">✓ APPROVED</span>
+                      <span class="quarantine-name">PERSONAL_INFO &bull; Full Name, Email, Phone, Address</span>
+                    </div>
+                    <div class="quarantine-row allowed">
+                      <span class="quarantine-status">✓ APPROVED</span>
+                      <span class="quarantine-name">PROFESSIONAL_INFO &bull; LinkedIn, Degree, Experience</span>
+                    </div>
+                    <div class="quarantine-row blocked">
+                      <span class="quarantine-status">✕ QUARANTINED</span>
+                      <span class="quarantine-name">COMMUNICATION &bull; ChatGPT, Support Chat, Comments</span>
+                    </div>
+                    <div class="quarantine-row blocked">
+                      <span class="quarantine-status">✕ QUARANTINED</span>
+                      <span class="quarantine-name">SENSITIVE &bull; Passwords, OTPs, Payment Cards</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- 4. DARK TESTIMONIALS SECTION ("Helping 2 million move forward") -->
+        <!-- ============================================================== -->
+        <section id="testimonials" class="simplify-dark-section testimonials-section">
+          <div class="simplify-dark-inner">
+            <div class="dark-section-header scroll-reveal">
+              <h2 class="dark-section-title">Helping over 25,000+ professionals move forward.</h2>
+              <p class="dark-section-sub">See how job seekers, students, and professionals save hours every week.</p>
+            </div>
+
+            <!-- Testimonial Quote Cards Grid -->
+            <div class="testimonial-cards-grid">
+              <div class="testimonial-card scroll-reveal stagger-1">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-quote">
+                  "Magic Fill cut my application time from 20 minutes to under 30 seconds. When I typed my LinkedIn URL into a Greenhouse form, the new learning prompt popped up cleanly and saved it for all my next applications."
+                </p>
+                <div class="testimonial-author">
+                  <div class="author-avatar-circle">MR</div>
+                  <div class="author-meta">
+                    <strong>Maya Ramirez</strong>
+                    <span>Senior Software Engineer &bull; Applied via Greenhouse</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card scroll-reveal stagger-2">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-quote">
+                  "Unlike other autofillers that spam you on every single chat box or search input, Magic Fill is dead quiet until you touch an actual personal info field. The intelligent context matching handles non-standard portal labels perfectly."
+                </p>
+                <div class="testimonial-author">
+                  <div class="author-avatar-circle">AK</div>
+                  <div class="author-meta">
+                    <strong>Alex Koenig</strong>
+                    <span>Product Designer &bull; Applied via Workday</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-card scroll-reveal stagger-3">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-quote">
+                  "Having all my documents, degrees, and custom fields stored in a private database that my browser extension communicates with securely is a game changer. Single-use auth codes mean zero passwords in the extension."
+                </p>
+                <div class="testimonial-author">
+                  <div class="author-avatar-circle">DL</div>
+                  <div class="author-meta">
+                    <strong>David Lin</strong>
+                    <span>Data Scientist &bull; Applied via Lever &amp; Ashby</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Trusted Partner Platforms Strip -->
+            <div class="trusted-logos-strip scroll-reveal">
+              <span class="trusted-lead">Seamless autofill support across:</span>
+              <div class="logos-row">
+                <span class="partner-logo-item">Workday</span>
+                <span class="partner-logo-item">Greenhouse</span>
+                <span class="partner-logo-item">Lever</span>
+                <span class="partner-logo-item">Ashby</span>
+                <span class="partner-logo-item">BambooHR</span>
+                <span class="partner-logo-item">LinkedIn</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- 5. INTERACTIVE LIVE SIMULATOR & PLAYGROUND                     -->
+        <!-- ============================================================== -->
+        <section id="live-playground" class="simplify-playground-section">
+          <div class="playground-section-inner">
+            <div class="playground-section-header scroll-reveal">
+              <span class="playground-badge">⚡ LIVE INTERACTIVE TESTER</span>
+              <h2 class="playground-section-title">Try Magic Fill live right now</h2>
+              <p class="playground-section-sub">
+                Click <strong>"Simulate Autofill"</strong> to experience instant intelligent form filling, or type in the <strong>LinkedIn Profile URL</strong> field to experience intelligent memory learning without installing the extension first.
+              </p>
+            </div>
+
+            <!-- Sleek Simplify-Style Form Card -->
+            <div class="simplify-playground-card scroll-reveal-scale">
+              <div class="playground-card-topbar">
+                <div class="portal-badge">
+                  <span class="portal-dot"></span>
+                  <span>Interactive Testing Form</span>
+                </div>
+                <div class="playground-controls">
+                  <button type="button" id="btnSimulateAutofill" class="btn-simplify-primary small">
+                    <span class="btn-text">⚡ Simulate Autofill</span>
+                  </button>
+                  <button type="button" id="btnClearForm" class="btn-simplify-secondary small">
+                    <span>Clear Form</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Summary Status Bar -->
+              <div id="autofillSummaryBar" class="autofill-summary-bar hidden">
+                <div class="summary-status-dot"></div>
+                <span id="autofillStatsText" class="summary-stats-text">0 fields matched</span>
+              </div>
+
+              <!-- Form Inputs Grid -->
+              <form id="playgroundForm" class="simplify-sim-form" onsubmit="return false;">
+                <div class="form-grid-2col">
+                  <div class="form-group">
+                    <label for="playFullName" class="field-label">Full Name</label>
+                    <input type="text" id="playFullName" class="form-input" placeholder="e.g. Maya Ramirez" autocomplete="name">
+                  </div>
+                  <div class="form-group">
+                    <label for="playEmail" class="field-label">Email Address</label>
+                    <input type="email" id="playEmail" class="form-input" placeholder="e.g. maya@example.com" autocomplete="email">
+                  </div>
+                  <div class="form-group">
+                    <label for="playPhone" class="field-label">Phone / Mobile Number</label>
+                    <input type="tel" id="playPhone" class="form-input" placeholder="+1 (555) 019-2834" autocomplete="tel">
+                  </div>
+
+                  <!-- LEARNABLE FIELD DEMO: Triggers memory prompt -->
+                  <div class="form-group">
+                    <div class="field-label-row">
+                      <label for="playLinkedIn" class="field-label">LinkedIn Profile URL</label>
+                      <span class="badge-learnable">✨ Test Learning</span>
+                    </div>
+                    <input type="url" id="playLinkedIn" class="form-input" placeholder="https://linkedin.com/in/username" data-learnable="true">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="playUniversity" class="field-label">University / Institute</label>
+                    <input type="text" id="playUniversity" class="form-input" placeholder="e.g. Stanford University">
+                  </div>
+                  <div class="form-group">
+                    <label for="playDegree" class="field-label">Degree &amp; Major</label>
+                    <input type="text" id="playDegree" class="form-input" placeholder="B.S. in Computer Science">
+                  </div>
+
+                  <div class="form-group span-2">
+                    <label for="playAddress" class="field-label">Residential Address</label>
+                    <input type="text" id="playAddress" class="form-input" placeholder="123 Tech Parkway, Suite 400, San Francisco, CA">
+                  </div>
+
+                  <!-- QUARANTINED FIELD DEMO: Never prompts memory -->
+                  <div class="form-group span-2">
+                    <div class="field-label-row">
+                      <label for="playSupportChat" class="field-label">Support Inquiry / Conversation Note</label>
+                      <span class="badge-quarantined">✕ Quarantined (Zero Prompting)</span>
+                    </div>
+                    <textarea id="playSupportChat" class="form-textarea" rows="2" placeholder="Type comments, messages, or inquiries here. Notice Magic Fill will NEVER ask to save this!"></textarea>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- 6. CLEAN ACCORDION FAQ SECTION                                 -->
+        <!-- ============================================================== -->
+        <section id="faq" class="simplify-faq-section">
+          <div class="faq-inner">
+            <div class="faq-header">
+              <h2 class="faq-title">Frequently Asked Questions</h2>
+              <p class="faq-sub">Everything you need to know about Magic Fill form learning and autofill.</p>
+            </div>
+
+            <div class="faq-accordion-list">
+              <details class="faq-item" open>
+                <summary class="faq-question">
+                  <span>How does Magic Fill learn new fields automatically?</span>
+                  <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </summary>
+                <div class="faq-answer">
+                  <p>When you finish filling an input on any website and blur or change it, Magic Fill analyzes the field's semantic category. If it's a reusable personal attribute (like LinkedIn URL, portfolio, or certification) that isn't already in your memory, a non-intrusive prompt appears asking if you want to save it with 1 click.</p>
+                </div>
+              </details>
+
+              <details class="faq-item">
+                <summary class="faq-question">
+                  <span>Does Magic Fill save my passwords, OTPs, or chat messages?</span>
+                  <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </summary>
+                <div class="faq-answer">
+                  <p><strong>Never.</strong> Magic Fill enforces a strict 6-category classification system. Chat textareas (like ChatGPT or support chat), search bars, comments, passwords, OTPs, and payment credentials are automatically quarantined both on the client and server. They never trigger memory prompts and are never saved.</p>
+                </div>
+              </details>
+
+              <details class="faq-item">
+                <summary class="faq-question">
+                  <span>What happens when a website uses different labels for the same thing?</span>
+                  <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </summary>
+                <div class="faq-answer">
+                  <p>Magic Fill normalizes semantic equivalents. For example, "Mobile Number", "Cell Phone", and "Telephone" are mapped to your canonical phone attribute. If the value entered matches your saved phone, no duplicate is created. If you enter a new phone number, it asks whether you want to update your memory.</p>
+                </div>
+              </details>
+
+              <details class="faq-item">
+                <summary class="faq-question">
+                  <span>How does the Chrome extension connect securely?</span>
+                  <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </summary>
+                <div class="faq-answer">
+                  <p>You can connect using 1-Click Tab Sync or a short-lived, single-use authorization code (MF-XXXXXXXX). Your master password is never sent to or stored inside the extension.</p>
+                </div>
+              </details>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- 7. BOTTOM CTA BANNER                                           -->
+        <!-- ============================================================== -->
+        <section class="simplify-bottom-cta">
+          <div class="bottom-cta-inner scroll-reveal-scale">
+            <h2 class="bottom-cta-title">Fill forms 10x faster with your personal AI memory partner.</h2>
+            <div class="bottom-cta-actions">
+              <button type="button" id="btnBottomGetStarted" class="simplify-btn-primary">
+                <span class="mkt-cta-glow"></span>
+                <span class="mkt-cta-ring"></span>
+                <span class="btn-text">Get Started Free &rarr;</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- 8. DEEP FOOTER (Simplify Exact 4-Column Layout)                -->
+        <!-- ============================================================== -->
+        <footer class="simplify-footer">
+          <div class="simplify-footer-inner">
+            <div class="footer-columns-grid">
+              <div class="footer-col brand-col">
+                <div class="footer-brand">
+                  <img src="/static/logo/Magic_Fill_logo.png" alt="Magic Fill" class="footer-logo-img">
+                  <span class="footer-brand-name">Magic Fill</span>
+                </div>
+                <p class="footer-brand-desc">
+                  Intelligent personal memory and form auto-completion powered by bank-grade encryption and context-aware autofill.
+                </p>
+                <div class="footer-status-pill">
+                  <span class="pulse-emerald"></span>
+                  <span>Magic Fill Cloud &bull; Active &amp; Protected</span>
+                </div>
+              </div>
+
+              <div class="footer-col">
+                <span class="footer-heading">Product</span>
+                <a href="#features" class="footer-link">AI Autofill Copilot</a>
+                <a href="#features" class="footer-link">Intelligent Form Learning</a>
+                <a href="#live-playground" class="footer-link">Interactive Simulator</a>
+                <a href="#live-forms" class="footer-link">Supported Portals</a>
+              </div>
+
+              <div class="footer-col">
+                <span class="footer-heading">Capabilities</span>
+                <a href="#features" class="footer-link">Personal Memory Vault</a>
+                <a href="#features" class="footer-link">Document &amp; Photo Studio</a>
+                <a href="#features" class="footer-link">100% Grounded Memory</a>
+                <a href="#features" class="footer-link">Privacy Quarantine</a>
+              </div>
+
+              <div class="footer-col">
+                <span class="footer-heading">Security &amp; Legal</span>
+                <a href="#faq" class="footer-link">Privacy Policy</a>
+                <a href="#faq" class="footer-link">Zero-Telemetry Guarantee</a>
+                <a href="#faq" class="footer-link">Terms of Service</a>
+                <a href="#faq" class="footer-link">Security Whitepaper</a>
+              </div>
+            </div>
+
+            <div class="footer-bottom-bar">
+              <span>&copy; 2026 Magic Fill. All rights reserved.</span>
+              <span class="footer-sub-tag">Designed with clean, high-legibility minimalist aesthetics.</span>
+            </div>
+          </div>
+        </footer>
+
+        <!-- ============================================================== -->
+        <!-- 9. EMBEDDED AUTH FORM CARD (Preserves gatewayLoginForm & Reg)  -->
+        <!-- ============================================================== -->
+        <div id="simplifyQuickAuthDrawer" class="simplify-quick-auth-modal hidden" role="dialog" aria-modal="true" aria-labelledby="gatewayAuthTitle">
+          <div class="quick-auth-card">
+            <button type="button" id="btnQuickAuthClose" class="quick-auth-close-btn" aria-label="Close">&times;</button>
+            <div class="auth-card-top">
+              <img src="/static/logo/Magic_Fill_logo.png" alt="Magic Fill" class="auth-header-logo">
+              <h2 id="gatewayAuthTitle" class="auth-card-heading">Access Your Vault</h2>
+              <p class="auth-card-sub">Sign in to unlock your personal memory studio and browser autofill.</p>
+            </div>
+
+            <!-- Auth Gateway Tabs -->
+            <div class="gateway-tabs-row" role="tablist">
+              <button type="button" id="gatewayTabBtnLogin" class="gateway-tab-btn active" role="tab" aria-selected="true">Sign In</button>
+              <button type="button" id="gatewayTabBtnRegister" class="gateway-tab-btn" role="tab" aria-selected="false">Create Account</button>
+            </div>
+
+            <!-- Gateway Sign In Form -->
+            <form id="gatewayLoginForm" class="auth-form" novalidate>
+              <div class="google-auth-wrapper">
+                <div id="googleSignInButton" class="google-btn-slot">
+                  <button type="button" id="fallbackGatewayGoogleSignInBtn" class="btn-google-fallback">
+                    <svg width="18" height="18" viewBox="0 0 24 24">
+                      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                      <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                    </svg>
+                    <span>Continue with Google</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="auth-divider">
+                <span class="auth-divider-line"></span>
+                <span class="auth-divider-text">OR SIGN IN WITH EMAIL</span>
+                <span class="auth-divider-line"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="gatewayLoginEmail" class="form-label">Email Address</label>
+                <input type="email" id="gatewayLoginEmail" class="form-input" placeholder="you@example.com" autocomplete="email" required>
+              </div>
+              <div class="form-group">
+                <label for="gatewayLoginPassword" class="form-label">Password</label>
+                <input type="password" id="gatewayLoginPassword" class="form-input" placeholder="Enter your password" autocomplete="current-password" required>
+              </div>
+              <div id="gatewayLoginErrorBox" class="auth-error-box hidden"></div>
+              <button type="submit" id="btnGatewayLoginSubmit" class="btn-auth-submit">
+                <span>Sign In to Vault &rarr;</span>
+              </button>
+              <p class="auth-footer-prompt">
+                Don't have an account? <a href="#register" id="linkGatewayToRegister" class="auth-text-link">Create an account</a>
+              </p>
+            </form>
+
+            <!-- Gateway Create Account Form -->
+            <form id="gatewayRegisterForm" class="auth-form hidden" novalidate>
+              <div class="google-auth-wrapper">
+                <div id="googleSignUpButton" class="google-btn-slot">
+                  <button type="button" id="fallbackGatewayGoogleSignUpBtn" class="btn-google-fallback">
+                    <svg width="18" height="18" viewBox="0 0 24 24">
+                      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                      <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                    </svg>
+                    <span>Sign up with Google</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="auth-divider">
+                <span class="auth-divider-line"></span>
+                <span class="auth-divider-text">OR REGISTER WITH EMAIL</span>
+                <span class="auth-divider-line"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="gatewayRegFullName" class="form-label">Full Name</label>
+                <input type="text" id="gatewayRegFullName" class="form-input" placeholder="e.g. Muazam Ali" autocomplete="name">
+              </div>
+              <div class="form-group">
+                <label for="gatewayRegEmail" class="form-label">Email Address *</label>
+                <input type="email" id="gatewayRegEmail" class="form-input" placeholder="you@example.com" autocomplete="email" required>
+              </div>
+              <div class="form-group">
+                <label for="gatewayRegPassword" class="form-label">Password (min 6 chars) *</label>
+                <input type="password" id="gatewayRegPassword" class="form-input" placeholder="Create a secure password" autocomplete="new-password" required>
+              </div>
+              <div class="form-group">
+                <label for="gatewayRegPasswordConfirm" class="form-label">Confirm Password *</label>
+                <input type="password" id="gatewayRegPasswordConfirm" class="form-input" placeholder="Re-type your password" autocomplete="new-password" required>
+              </div>
+              <div id="gatewayRegisterErrorBox" class="auth-error-box hidden"></div>
+              <button type="submit" id="btnGatewayRegisterSubmit" class="btn-auth-submit">
+                <span>Create Account &amp; Setup Extension &rarr;</span>
+              </button>
+              <p class="auth-footer-prompt">
+                Already have an account? <a href="#login" id="linkGatewayToLogin" class="auth-text-link">Sign In</a>
+              </p>
+            </form>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Private Authenticated Workstation (Hidden until User Signs In / Registers) -->
+      <div id="privateWorkstation" class="private-workstation-wrap hidden">
+
+        <!-- Compact Header Bar (Takes minimal vertical space so everything is immediately visible) -->
+        <section class="workspace-header-bar">
+          <div class="workspace-title-wrap">
+            <h1 class="workspace-title">Personal Memory <span class="gradient-text">&amp; Autofill Studio</span></h1>
+            <p class="workspace-subtitle">Type natural info or attach documents &bull; Instant grounding &bull;
+              Automatic browser form autofill</p>
+          </div>
+
+          <!-- Quick Summary Stats Strip -->
+          <div class="quick-stats-strip">
+            <div class="stat-bubble">
+              <span class="stat-bubble-label">Identity:</span>
+              <strong id="metricUserName" class="stat-bubble-val">Muazam Ali</strong>
+            </div>
+            <div class="stat-bubble">
+              <span class="stat-bubble-label">Documents:</span>
+              <strong id="metricDocCount" class="stat-bubble-val">0</strong>
+            </div>
+            <div class="stat-bubble">
+              <span class="stat-bubble-label">Custom Fields:</span>
+              <strong id="metricCustomCount" class="stat-bubble-val">0</strong>
+            </div>
+            <div class="stat-bubble">
+              <span class="stat-bubble-label">Grounding:</span>
+              <strong class="stat-bubble-val text-emerald">100%</strong>
+            </div>
+          </div>
+        </section>
+
+        <!-- Dedicated Spacious Workstation Tab Navigation (Full width, 100% visible, zero cutoff) -->
+        <div class="workstation-nav-bar" id="workstationNavBar">
+          <nav class="nav-tabs-bar" id="mainNavTabs" role="tablist" aria-label="Main Workstation Tabs">
+            <button type="button" id="tabBtnIngest" class="nav-tab-btn active" data-tab="ingest" role="tab"
+              aria-selected="true" aria-controls="tabIngest">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="12" y1="18" x2="12" y2="12"></line>
+                <line x1="9" y1="15" x2="15" y2="15"></line>
+              </svg>
+              <span>1. Ingestion Studio</span>
+            </button>
+
+            <button type="button" id="tabBtnDocuments" class="nav-tab-btn" data-tab="documents" role="tab"
+              aria-selected="false" aria-controls="tabDocuments">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+              <span>2. Photos &amp; Documents</span>
+              <span id="docBadgeCount" class="tab-badge-num">0</span>
+            </button>
+
+            <button type="button" id="tabBtnVault" class="nav-tab-btn" data-tab="vault" role="tab" aria-selected="false"
+              aria-controls="tabVault">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <span>3. Memory Vault</span>
+              <span id="vaultBadgeCount" class="tab-badge-num">0</span>
+            </button>
+
+            <button type="button" id="tabBtnPlayground" class="nav-tab-btn" data-tab="playground" role="tab"
+              aria-selected="false" aria-controls="tabPlayground">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
+              <span>4. Testing Form (Autofill Simulator)</span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- Central Floating Interactive Card (Prominent & Immediately Visible) -->
+        <div class="central-workstation-card">
+
+
+          <!-- ================================================================== -->
+          <!-- TAB 1: INGESTION STUDIO                                            -->
+          <!-- ================================================================== -->
+          <section id="tabIngest" class="tab-panel active" role="tabpanel" aria-labelledby="tabBtnIngest">
+            <div class="card-inner-box">
+
+              <!-- Central Clean Prompt Textarea Container -->
+              <div class="prompt-box-wrap">
+                <textarea id="rawTextInput" class="prompt-textarea" rows="5" placeholder="Type or paste unstructured information here... Examples:
+• 'Friends Name is Taha' (stores friend's name without altering your primary identity)
+• 'Personal mail is muazam.dev@gmail.com' (updates your personal email)
+• 'Emergency contact: Brother Usman, Phone: +92 300 7654321'
+• Or paste a full career CV / resume..."></textarea>
+
+                <!-- Bottom Bar inside Prompt Box -->
+                <div class="prompt-bottom-bar">
+                  <!-- Dropzone Attachment -->
+                  <div class="mini-dropzone" id="dropZone" tabindex="0" role="button"
+                    aria-label="Drop or attach CV or resume file">
+                    <input type="file" id="fileInput" accept=".pdf,.txt,.md" class="hidden-input">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <path
+                        d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48">
+                      </path>
+                    </svg>
+                    <span id="selectedFileName" class="drop-label">Attach CV/Resume (PDF, TXT, MD)</span>
+                  </div>
+
+                  <!-- Right Actions: Character count + Process Button -->
+                  <div class="prompt-action-cluster">
+                    <span id="charCountLabel" class="prompt-char-count">0 chars</span>
+                    <button type="button" id="btnClearInput" class="btn-clean-text">Clear</button>
+                    <button type="button" id="btnProcessAI" class="btn-primary-action">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                      </svg>
+                      <span id="btnProcessText">Process</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Grounding Inspector Drawer / Result Preview -->
+              <div class="inspector-drawer">
+                <div class="drawer-header">
+                  <div class="drawer-title-group">
+                    <h3 class="drawer-heading">Structured Grounding Inspector</h3>
+                    <span class="drawer-sub">Extraction &amp; schema verification</span>
+                  </div>
+                  <span id="extractionStatusBadge" class="status-pill-sub">Ready</span>
+                </div>
+
+                <div id="extractionPlaceholder" class="inspector-empty-state">
+                  <div class="empty-vector-circle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                    </svg>
+                  </div>
+                  <h4>Ready for Input</h4>
+                  <p>Type unstructured details above or attach a CV, then click "Process" to inspect structured memory
+                    grounding.</p>
+                </div>
+
+                <div id="extractionResultBox" class="inspector-result-panel hidden">
+                  <div id="identityNotice" class="protection-banner">
+                    <div class="banner-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                      </svg>
+                    </div>
+                    <div class="banner-content">
+                      <strong id="protectionTitle">Primary Identity Protected</strong>
+                      <span id="protectionDesc">User identity preserved without interference from auxiliary
+                        contacts.</span>
+                    </div>
+                  </div>
+
+                  <div class="summary-pills-row" id="extractionSummaryGrid"></div>
+
+                  <div class="json-code-wrapper">
+                    <div class="json-header">
+                      <span>Structured Schema Output</span>
+                      <button type="button" id="btnCopyJson" class="btn-micro-action">Copy JSON</button>
+                    </div>
+                    <pre id="jsonPreviewBox" class="json-content-block"></pre>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- ================================================================== -->
+          <!-- TAB 2: PHOTOS & DOCUMENTS STUDIO                                   -->
+          <!-- ================================================================== -->
+          <section id="tabDocuments" class="tab-panel" role="tabpanel" aria-labelledby="tabBtnDocuments">
+            <div class="card-inner-box">
+
+              <div class="panel-intro-header">
+                <div>
+                  <h2 class="panel-title">Add Photo or Document with Description</h2>
+                  <p class="panel-desc">Attach an image or document and describe what it is (e.g. "this is my cnic
+                    front", "this is my cnic back").</p>
+                </div>
+              </div>
+
+              <!-- Modern Document Dropzone Area -->
+              <div class="doc-upload-container">
+                <div class="drop-zone-card" id="docDropZone" tabindex="0" role="button"
+                  aria-label="Drop or click to upload document">
+                  <input type="file" id="docFileInput" accept="image/*,.pdf,.svg" class="hidden-input">
+                  <div class="drop-card-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                      <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                      <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                  </div>
+                  <div class="drop-card-text">
+                    <strong>Click to upload or drag and drop photo / document</strong>
+                    <span>Supports PNG, JPG, PDF, SVG (e.g. CNIC Front &amp; Back, Passport, Profile Photo)</span>
+                    <span id="docFileSelectedName" class="file-name-pill hidden"></span>
+                  </div>
+                </div>
+
+                <!-- Live Image / File Preview Card -->
+                <div id="docLivePreviewBox" class="live-preview-card hidden">
+                  <img id="docLivePreviewImg" class="preview-thumb" alt="Upload Preview">
+                  <div class="preview-meta">
+                    <span id="docLivePreviewName" class="preview-filename">image.png</span>
+                    <span id="docLivePreviewSize" class="preview-filesize">0 KB</span>
+                    <span id="docAutoDetectedTag" class="tag-classification">Classification: Pending</span>
+                  </div>
+                  <button type="button" id="btnRemoveDocFile" class="btn-remove-preview"
+                    title="Remove selected file">&times;</button>
+                </div>
+
+                <!-- Written Description Input Field -->
+                <div class="form-input-group" style="margin-top: 18px;">
+                  <label for="docDescriptionInput" class="input-label">
+                    Written Description
+                    <span class="input-sublabel">&mdash; e.g. "this is my cnic front", "this is my cnic back"</span>
+                  </label>
+                  <input type="text" id="docDescriptionInput" class="modern-input"
+                    placeholder="e.g. This is my cnic front / This is my cnic back / My profile photo" />
+                </div>
+
+                <!-- Save Action Button -->
+                <div style="margin-top: 18px;">
+                  <button type="button" id="btnSaveDocument" class="btn-primary-action"
+                    style="width: 100%; justify-content: center; padding: 13px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                      <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                      <polyline points="7 3 7 8 15 8"></polyline>
+                    </svg>
+                    <span>Save Photo / Document to Vault</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Saved Media Gallery Section -->
+              <div class="gallery-section-wrap">
+                <div class="gallery-title-bar">
+                  <div>
+                    <h3 class="section-title">Saved Documents &amp; Media</h3>
+                    <p class="section-subtitle">Stored identity cards, photographs, and credentials in active memory.
+                    </p>
+                  </div>
+                  <span id="docGalleryCountBadge" class="count-badge">0 Items</span>
+                </div>
+
+                <!-- Gallery Search & Filter Toolbar -->
+                <div class="gallery-toolbar">
+                  <div class="filter-pills-row">
+                    <button type="button" class="filter-pill active" data-filter="all">All</button>
+                    <button type="button" class="filter-pill" data-filter="identity">Identity (CNIC/Passport)</button>
+                    <button type="button" class="filter-pill" data-filter="photo">Photographs</button>
+                    <button type="button" class="filter-pill" data-filter="academic">Academic</button>
+                  </div>
+                  <div class="mini-search-wrap">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" id="docGallerySearch" class="mini-search-input"
+                      placeholder="Filter documents...">
+                  </div>
+                </div>
+
+                <!-- Gallery Grid -->
+                <div id="documentsGalleryList" class="doc-cards-grid">
+                  <div class="inspector-empty-state" style="grid-column: 1 / -1;">
+                    <div class="empty-vector-circle">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                      </svg>
+                    </div>
+                    <h4>No Documents Stored Yet</h4>
+                    <p>Upload your CNIC front, CNIC back, or profile picture above to see them stored here.</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- ================================================================== -->
+          <!-- TAB 3: MEMORY VAULT                                                -->
+          <!-- ================================================================== -->
+          <section id="tabVault" class="tab-panel" role="tabpanel" aria-labelledby="tabBtnVault">
+            <div class="card-inner-box">
+
+              <div class="panel-intro-header">
+                <div>
+                  <h2 class="panel-title">Personal Memory Vault</h2>
+                  <p class="panel-desc">Structured, encrypted database state for User #1. Fully editable and
+                    synchronized.</p>
+                </div>
+                <div class="panel-actions-cluster">
+                  <button type="button" id="btnToggleAddCustom" class="btn-secondary-action">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <line x1="12" y1="5" x2="12" y2="19"></line>
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <span>Add Attribute</span>
+                  </button>
+                  <button type="button" id="btnClearMemory" class="btn-danger-action">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    <span>Clear Vault</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Vault Search & Category Filter Toolbar -->
+              <div class="vault-toolbar-bar">
+                <div class="search-field-wrap">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                  <input type="text" id="vaultSearchInput" class="vault-search-field"
+                    placeholder="Search attributes by label, key, or value...">
+                </div>
+                <div class="vault-filter-pills" id="vaultFilterPills">
+                  <button type="button" class="vault-pill-btn active" data-vfilter="all">All</button>
+                  <button type="button" class="vault-pill-btn" data-vfilter="bio">Biographical</button>
+                  <button type="button" class="vault-pill-btn" data-vfilter="contact">Contact</button>
+                  <button type="button" class="vault-pill-btn" data-vfilter="academic">Academic</button>
+                  <button type="button" class="vault-pill-btn" data-vfilter="custom">Custom</button>
+                  <button type="button" class="vault-pill-btn" data-vfilter="docs">Documents</button>
+                  <button type="button" class="vault-pill-btn" data-vfilter="work">Career</button>
+                </div>
+              </div>
+
+              <!-- Add Custom Field Form Drawer (Toggable) -->
+              <div id="addCustomFieldBar" class="add-attribute-card hidden">
+                <div class="add-attribute-title">Add New Custom Memory Attribute</div>
+                <div class="add-attribute-grid">
+                  <div class="form-input-group">
+                    <label class="input-label" for="newFieldKey">Identifier Slug</label>
+                    <input type="text" id="newFieldKey" class="modern-input" placeholder="e.g. friends_name">
+                  </div>
+                  <div class="form-input-group">
+                    <label class="input-label" for="newFieldLabel">Display Label</label>
+                    <input type="text" id="newFieldLabel" class="modern-input" placeholder="e.g. Friend's Name">
+                  </div>
+                  <div class="form-input-group">
+                    <label class="input-label" for="newFieldValue">Value</label>
+                    <input type="text" id="newFieldValue" class="modern-input" placeholder="e.g. Taha">
+                  </div>
+                  <div class="form-input-group">
+                    <label class="input-label" for="newFieldCategory">Category</label>
+                    <input type="text" id="newFieldCategory" class="modern-input" placeholder="e.g. contact">
+                  </div>
+                </div>
+                <div class="add-attribute-actions">
+                  <button type="button" id="btnCancelAddCustom" class="btn-clean-text">Cancel</button>
+                  <button type="button" id="btnSaveCustomField" class="btn-primary-action">Save Attribute</button>
+                </div>
+              </div>
+
+              <!-- Memory Cards Container -->
+              <div id="memoryVaultContent" class="vault-cards-grid">
+                <div class="vault-loading-state">Loading personal memory vault...</div>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- ================================================================== -->
+          <!-- TAB 4: FORM PLAYGROUND                                             -->
+          <!-- ================================================================== -->
+          <section id="tabPlayground" class="tab-panel" role="tabpanel" aria-labelledby="tabBtnPlayground">
+            <div class="card-inner-box">
+
+              <div class="panel-intro-header">
+                <div>
+                  <div class="testing-form-badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5">
+                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                    <span>Interactive Autofill Testing Form</span>
+                  </div>
+                  <h2 class="panel-title">
+                    <img src="/static/logo/Magic_Fill_logo.png" alt="Magic Fill" class="simulator-brand-badge">
+                    Portal Testing Form &amp; Autofill Simulator
+                  </h2>
+                  <p class="panel-desc">Simulates real-world application forms. Click <strong>"Run Magic Fill
+                      Autofill"</strong> to instantly populate from your database vault, or test manual entry learning
+                    with the browser extension!</p>
+                </div>
+                <div class="panel-actions-cluster">
+                  <button type="button" id="btnSimulateAutofill" class="btn-primary-action"
+                    title="Run instant automated form fill from your memory vault">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5">
+                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                    <span>Run Magic Fill Autofill</span>
+                  </button>
+                  <button type="button" id="btnClearFormTop" class="btn-secondary-action" title="Clear all form fields">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.2">
+                      <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
+                    </svg>
+                    <span>Clear Inputs</span>
+                  </button>
+                </div>
+              </div>
+
+
+              <!-- Autofill stats alert bar -->
+              <div id="autofillSummaryBar" class="autofill-alert-bar hidden">
+                <div class="alert-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  </svg>
+                </div>
+                <span id="autofillStatsText" class="alert-text"></span>
+              </div>
+
+              <!-- Visual Field Status Dynamic Legend -->
+              <div class="field-status-legend" id="fieldStatusLegend">
+                <span style="font-weight:700; color:#0f172a;">Visual Field Status:</span>
+                <div class="legend-item"><span class="legend-dot-matched"></span> <span>Green = Stored Data Available</span></div>
+                <div class="legend-item"><span class="legend-dot-missing"></span> <span>Red = No Stored Data</span></div>
+              </div>
+
+              <!-- Simulated Form -->
+              <form id="playgroundForm" class="simulator-form" onsubmit="event.preventDefault();">
+
+                <!-- Section 1 -->
+                <div class="form-section-title">
+                  <span class="badge-num">1</span>
+                  <span>Personal Identity</span>
+                </div>
+                <div class="form-row-grid">
+                  <div class="form-input-group">
+                    <label for="p_first_name" class="input-label">First Name</label>
+                    <input type="text" id="p_first_name" name="first_name" class="modern-input"
+                      placeholder="First Name">
+                  </div>
+                  <div class="form-input-group">
+                    <label for="p_last_name" class="input-label">Last Name</label>
+                    <input type="text" id="p_last_name" name="last_name" class="modern-input" placeholder="Last Name">
+                  </div>
+                </div>
+
+                <div class="form-row-grid">
+                  <div class="form-input-group">
+                    <label for="p_full_name" class="input-label">Applicant Full Legal Name</label>
+                    <input type="text" id="p_full_name" name="applicant_legal_name" class="modern-input"
+                      placeholder="Full Legal Name">
+                  </div>
+                  <div class="form-input-group">
+                    <label for="p_email" class="input-label">Contact Email Address</label>
+                    <input type="email" id="p_email" name="contact_email" class="modern-input"
+                      placeholder="Email Address">
+                  </div>
+                </div>
+
+                <div class="form-row-grid">
+                  <div class="form-input-group">
+                    <label for="p_gender" class="input-label">
+                      Gender <span class="tag-meta">Dropdown Menu</span>
+                    </label>
+                    <select id="p_gender" name="gender" class="modern-select">
+                      <option value="">-- Select Gender --</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div class="form-input-group">
+                    <label for="p_dob" class="input-label">
+                      Date of Birth <span class="tag-meta">Date Picker</span>
+                    </label>
+                    <input type="date" id="p_dob" name="date_of_birth" class="modern-input">
+                  </div>
+                </div>
+
+                <div class="form-row-grid">
+                  <div class="form-input-group">
+                    <label for="p_phone" class="input-label">Mobile Phone Number</label>
+                    <input type="tel" id="p_phone" name="mobile_phone" class="modern-input"
+                      placeholder="+92 300 0000000">
+                  </div>
+                  <div class="form-input-group">
+                    <label for="p_country" class="input-label">
+                      Country of Residence <span class="tag-meta">Dropdown Menu</span>
+                    </label>
+                    <select id="p_country" name="country" class="modern-select">
+                      <option value="">-- Select Country --</option>
+                      <option value="Pakistan">Pakistan</option>
+                      <option value="United States">United States</option>
+                      <option value="United Kingdom">United Kingdom</option>
+                      <option value="Canada">Canada</option>
+                      <option value="Germany">Germany</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-row-grid">
+                  <div class="form-input-group">
+                    <label for="p_city" class="input-label">City of Residence</label>
+                    <input type="text" id="p_city" name="residential_city" class="modern-input" placeholder="City">
+                  </div>
+                  <div class="form-input-group">
+                    <label for="p_cnic_text" class="input-label">CNIC / ID Number</label>
+                    <input type="text" id="p_cnic_text" name="cnic" class="modern-input" placeholder="35202-0000000-0">
+                  </div>
+                </div>
+
+                <!-- Section 2 -->
+                <div class="form-section-title">
+                  <span class="badge-num">2</span>
+                  <span>Education &amp; Synonyms</span>
+                </div>
+                <div class="form-row-grid">
+                  <div class="form-input-group">
+                    <label for="p_institution" class="input-label">
+                      Institution Name <span class="tag-synonym-meta">Synonym &rarr; University</span>
+                    </label>
+                    <input type="text" id="p_institution" name="institution_name" class="modern-input"
+                      placeholder="Institution / University">
+                  </div>
+                  <div class="form-input-group">
+                    <label for="p_degree" class="input-label">Degree / Program</label>
+                    <input type="text" id="p_degree" name="degree_program" class="modern-input"
+                      placeholder="Degree Program">
+                  </div>
+                </div>
+
+                <!-- Section 3 -->
+                <div class="form-section-title">
+                  <span class="badge-num">3</span>
+                  <span>Professional Experience</span>
+                </div>
+                <div class="form-row-grid">
+                  <div class="form-input-group">
+                    <label for="p_company" class="input-label">Current Employer / Organization</label>
+                    <input type="text" id="p_company" name="current_employer" class="modern-input"
+                      placeholder="Company Name">
+                  </div>
+                  <div class="form-input-group">
+                    <label for="p_role" class="input-label">Job Title / Designation</label>
+                    <input type="text" id="p_role" name="job_title" class="modern-input" placeholder="Job Title">
+                  </div>
+                </div>
+
+                <!-- Section 4 -->
+                <div class="form-section-title">
+                  <span class="badge-num">4</span>
+                  <span>Dynamic Custom Attributes</span>
+                  <span class="section-hint-inline">&mdash; Friend name, personal mail, emergency contact</span>
+                </div>
+                <div class="form-row-grid">
+                  <div class="form-input-group">
+                    <label for="p_friend_name" class="input-label">
+                      Friend's Name / Referral Name <span class="tag-slug-meta">custom_fields.friends_name</span>
+                    </label>
+                    <input type="text" id="p_friend_name" name="friends_name" class="modern-input"
+                      placeholder="Friend or referral name">
+                  </div>
+                  <div class="form-input-group">
+                    <label for="p_personal_mail" class="input-label">
+                      Personal Mail <span class="tag-slug-meta">custom_fields.personal_mail</span>
+                    </label>
+                    <input type="email" id="p_personal_mail" name="personal_mail" class="modern-input"
+                      placeholder="Personal email">
+                  </div>
+                </div>
+
+                <div class="form-row-grid">
+                  <div class="form-input-group">
+                    <label for="p_monthly_salary" class="input-label">
+                      Monthly Salary <span class="tag-synonym-meta">Synonym &rarr; Salary</span>
+                    </label>
+                    <input type="text" id="p_monthly_salary" name="monthly_salary" class="modern-input"
+                      placeholder="Monthly salary (e.g. 50,000 PKR)">
+                  </div>
+                  <div class="form-input-group">
+                    <label for="p_expected_income" class="input-label">
+                      Income / Compensation <span class="tag-synonym-meta">Synonym &rarr; Monthly Income</span>
+                    </label>
+                    <input type="text" id="p_expected_income" name="monthly_income" class="modern-input"
+                      placeholder="Monthly income or compensation">
+                  </div>
+                </div>
+
+                <div class="form-row-grid">
+                  <div class="form-input-group">
+                    <label for="p_linkedin_url" class="input-label">
+                      LinkedIn Profile URL <span class="tag-slug-meta">Learnable &rarr; professional</span>
+                    </label>
+                    <input type="url" id="p_linkedin_url" name="linkedin_url" class="modern-input"
+                      placeholder="https://linkedin.com/in/username">
+                  </div>
+                  <div class="form-input-group">
+                    <label for="p_chat_message" class="input-label">
+                      Support Inquiry / Chat <span class="tag-meta" style="color:#ef4444;">Never Learn &rarr; excluded</span>
+                    </label>
+                    <input type="text" id="p_chat_message" name="support_chat_message" class="modern-input"
+                      placeholder="Type a support question (will not trigger learning prompt)">
+                  </div>
+                </div>
+
+                <!-- Section 5 -->
+                <div class="form-section-title">
+                  <span class="badge-num">5</span>
+                  <span>Photographs &amp; Identification Documents</span>
+                  <span class="section-hint-inline">&mdash; Separate file uploads for profile picture, CNIC Front, and
+                    CNIC Back</span>
+                </div>
+                <div class="form-row-grid">
+                  <div class="form-input-group">
+                    <label for="p_profile_photo" class="input-label">
+                      Profile Photograph / Picture <span class="tag-file-meta">File/Image Input</span>
+                    </label>
+                    <div class="portal-file-cell">
+                      <input type="file" id="p_profile_photo" name="profile_photo" accept="image/*"
+                        class="simulator-file-input">
+                      <div id="photoPreviewWrap" class="file-attached-preview hidden">
+                        <div class="file-attached-main">
+                          <img id="photoPreviewImg" class="mini-thumb-square"
+                            src="" alt="Profile Preview" title="Click to inspect full image">
+                          <div class="file-attached-meta">
+                            <span id="photoPreviewTitle" class="attached-filename">profile_photo.png</span>
+                            <span id="photoPreviewStatus" class="attached-status">&check; Image Attached</span>
+                          </div>
+                        </div>
+                        <button type="button" class="btn-clear-attachment" data-target="p_profile_photo" title="Remove attachment">&times;</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-input-group">
+                    <label for="p_cnic_front" class="input-label">
+                      CNIC Front Side Image <span class="tag-file-meta">File/Image Input</span>
+                    </label>
+                    <div class="portal-file-cell">
+                      <input type="file" id="p_cnic_front" name="cnic_front" accept="image/*,.pdf"
+                        class="simulator-file-input">
+                      <div id="cnicFrontPreviewWrap" class="file-attached-preview hidden">
+                        <div class="file-attached-main">
+                          <img id="cnicFrontPreviewImg" class="mini-thumb-square"
+                            src="" alt="CNIC Front Preview" title="Click to inspect full image">
+                          <div class="file-attached-meta">
+                            <span id="cnicFrontPreviewTitle" class="attached-filename">cnic_front.jpg</span>
+                            <span id="cnicFrontPreviewStatus" class="attached-status">&check; Image Attached</span>
+                          </div>
+                        </div>
+                        <button type="button" class="btn-clear-attachment" data-target="p_cnic_front" title="Remove attachment">&times;</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row-grid">
+                  <div class="form-input-group">
+                    <label for="p_cnic_back" class="input-label">
+                      CNIC Back Side Image <span class="tag-file-meta">File/Image Input</span>
+                    </label>
+                    <div class="portal-file-cell">
+                      <input type="file" id="p_cnic_back" name="cnic_back" accept="image/*,.pdf"
+                        class="simulator-file-input">
+                      <div id="cnicBackPreviewWrap" class="file-attached-preview hidden">
+                        <div class="file-attached-main">
+                          <img id="cnicBackPreviewImg" class="mini-thumb-square"
+                            src="" alt="CNIC Back Preview" title="Click to inspect full image">
+                          <div class="file-attached-meta">
+                            <span id="cnicBackPreviewTitle" class="attached-filename">cnic_back.jpg</span>
+                            <span id="cnicBackPreviewStatus" class="attached-status">&check; Image Attached</span>
+                          </div>
+                        </div>
+                        <button type="button" class="btn-clear-attachment" data-target="p_cnic_back" title="Remove attachment">&times;</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-input-group">
+                    <label for="p_passport_doc" class="input-label">
+                      Passport Scan (Optional) <span class="tag-file-meta">File/Image Input</span>
+                    </label>
+                    <div class="portal-file-cell">
+                      <input type="file" id="p_passport_doc" name="passport" accept="image/*,.pdf"
+                        class="simulator-file-input">
+                      <div id="passportPreviewWrap" class="file-attached-preview hidden">
+                        <div class="file-attached-main">
+                          <img id="passportPreviewImg" class="mini-thumb-square"
+                            src="" alt="Passport Preview" title="Click to inspect full image">
+                          <div class="file-attached-meta">
+                            <span id="passportPreviewTitle" class="attached-filename">passport.pdf</span>
+                            <span id="passportPreviewStatus" class="attached-status">&check; Document Attached</span>
+                          </div>
+                        </div>
+                        <button type="button" class="btn-clear-attachment" data-target="p_passport_doc" title="Remove attachment">&times;</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Section 6: Additional Supported Input Types -->
+                <div class="form-section-title">
+                  <span class="badge-num">6</span>
+                  <span>All Input Types &amp; Toggles</span>
+                  <span class="section-hint-inline">&mdash; Radios, Checkboxes, Toggle Switches, Sliders, and Text Areas</span>
+                </div>
+
+                <div class="form-row-grid">
+                  <div class="form-input-group">
+                    <label class="input-label">
+                      Work Authorization <span class="tag-meta">Radio Group</span>
+                    </label>
+                    <div class="modern-radio-group" id="p_work_auth_group">
+                      <label class="modern-radio-item" for="p_work_auth_yes">
+                        <input type="radio" id="p_work_auth_yes" name="work_authorization" value="Yes" class="modern-radio">
+                        <span>Authorized (Yes)</span>
+                      </label>
+                      <label class="modern-radio-item" for="p_work_auth_no">
+                        <input type="radio" id="p_work_auth_no" name="work_authorization" value="No" class="modern-radio">
+                        <span>Sponsorship (No)</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-input-group">
+                    <label class="input-label">
+                      Relocation Preference <span class="tag-meta">Toggle / Switch</span>
+                    </label>
+                    <div class="toggle-switch-wrap" id="p_relocate_wrap">
+                      <span style="font-size:13px; font-weight:500;">Willing to Relocate</span>
+                      <label class="toggle-switch" for="p_relocate">
+                        <input type="checkbox" role="switch" id="p_relocate" name="willing_to_relocate" value="Yes">
+                        <span class="toggle-slider"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row-grid">
+                  <div class="form-input-group">
+                    <label class="input-label">
+                      Years of Experience <span class="tag-meta">Range Slider</span>
+                    </label>
+                    <div class="modern-range-wrap" id="p_exp_wrap">
+                      <input type="range" id="p_exp_slider" name="years_of_experience" min="0" max="25" step="1" value="0" class="modern-range">
+                      <span id="expSliderDisplay" class="range-val-pill">0 years</span>
+                    </div>
+                  </div>
+
+                  <div class="form-input-group">
+                    <label class="input-label">
+                      Consent &amp; Terms <span class="tag-meta">Checkbox</span>
+                    </label>
+                    <div class="modern-checkbox-wrap" id="p_terms_wrap">
+                      <input type="checkbox" id="p_terms_agreement" name="terms_agreement" value="Yes" class="modern-checkbox">
+                      <label for="p_terms_agreement" style="font-size:13px; font-weight:500; cursor:pointer;">I confirm the accuracy of submitted personal data</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row-grid">
+                  <div class="form-input-group span-2">
+                    <label for="p_bio" class="input-label">
+                      Professional Summary &amp; Bio <span class="tag-meta">Text Area</span>
+                    </label>
+                    <textarea id="p_bio" name="bio" rows="3" class="modern-textarea" placeholder="Brief career highlights, technical skills, and background summary..."></textarea>
+                  </div>
+                </div>
+
+                <div class="simulator-footer-bar">
+                  <button type="reset" id="btnClearForm" class="btn-secondary-action">Clear Inputs</button>
+                  <button type="submit" id="btnPlaygroundSubmit" class="btn-primary-action">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>Submit Form</span>
+                  </button>
+                  <button type="button" id="btnToggleExtensionGuide" class="btn-clean-text">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="16" x2="12" y2="12"></line>
+                      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                    <span>Chromium Extension Setup Guide</span>
+                  </button>
+                </div>
+              </form>
+
+              <!-- Extension Guide Drawer -->
+              <div id="extensionGuideBox" class="extension-guide-card hidden">
+                <h4 class="guide-heading">How to load and use the Chromium Browser Extension:</h4>
+                <ol class="guide-list">
+                  <li>Open <code>chrome://extensions/</code> in Chrome, Edge, Brave, or Chromium.</li>
+                  <li>Toggle <strong>"Developer mode"</strong> in the top-right corner.</li>
+                  <li>Click <strong>"Load unpacked"</strong>.</li>
+                  <li>Select the directory: <code>Magic_Fill/extension</code>.</li>
+                  <li>Pin the <strong>Magic Fill</strong> icon in your browser toolbar and open any job portal or
+                    admission page.</li>
+                  <li>Click <strong>"Scan Page Fields" &rarr; "Autofill All Fields"</strong> in the extension popup!
+                  </li>
+                  <li><strong>Manual Entry Detection:</strong> When you manually type details into any online form,
+                    Magic Fill prompts: <em>"Save to memory?"</em> so you never re-type information again!</li>
+                </ol>
+              </div>
+
+            </div>
+          </section>
+
+        </div> <!-- End central-workstation-card -->
+
+      </div> <!-- End #privateWorkstation -->
+
+    </main>
+
+    <!-- ================================================================== -->
+    <!-- AUTHENTICATION MODAL (Sign In & Create Account)                     -->
+    <!-- ================================================================== -->
+    <div id="authModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+      <div class="modal-card auth-modal-card">
+        <button type="button" id="authModalClose" class="modal-close-btn" aria-label="Close dialog">&times;</button>
+
+        <div class="auth-header">
+          <img src="/static/logo/Magic_Fill_logo.png" alt="Magic Fill" class="auth-header-logo">
+          <h2 id="authModalTitle" class="auth-title">Magic Fill Account</h2>
+          <p class="auth-subtitle">One secure account for your website vault and browser autofill extension.</p>
+        </div>
+
+        <!-- Auth Tabs -->
+        <div class="auth-tabs-row" role="tablist">
+          <button type="button" id="authTabBtnLogin" class="auth-tab-btn active" role="tab" aria-selected="true">Sign
+            In</button>
+          <button type="button" id="authTabBtnRegister" class="auth-tab-btn" role="tab" aria-selected="false">Create
+            Account</button>
+        </div>
+
+        <!-- Tab 1: Sign In Form -->
+        <form id="loginForm" class="auth-form" novalidate>
+          <div class="form-group">
+            <label for="loginEmail" class="form-label">Email Address</label>
+            <input type="email" id="loginEmail" class="form-input" placeholder="you@example.com" autocomplete="email"
+              required>
+          </div>
+          <div class="form-group">
+            <label for="loginPassword" class="form-label">Password</label>
+            <input type="password" id="loginPassword" class="form-input" placeholder="Enter your password"
+              autocomplete="current-password" required>
+          </div>
+          <div id="loginErrorBox" class="auth-error-box hidden"></div>
+          <button type="submit" id="btnLoginSubmit" class="btn-auth-submit">
+            <span>Sign In to Vault</span>
+          </button>
+          <p class="auth-footer-prompt">
+            Don't have an account? <a href="#register" id="linkSwitchToRegister" class="auth-text-link">Create an
+              account</a>
+          </p>
+        </form>
+
+        <!-- Tab 2: Create Account Form -->
+        <form id="registerForm" class="auth-form hidden" novalidate>
+          <div class="form-group">
+            <label for="regFullName" class="form-label">Full Name</label>
+            <input type="text" id="regFullName" class="form-input" placeholder="e.g. Muazam Ali" autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label for="regEmail" class="form-label">Email Address *</label>
+            <input type="email" id="regEmail" class="form-input" placeholder="you@example.com" autocomplete="email"
+              required>
+          </div>
+          <div class="form-group">
+            <label for="regPassword" class="form-label">Password (min 6 chars) *</label>
+            <input type="password" id="regPassword" class="form-input" placeholder="Create a secure password"
+              autocomplete="new-password" required>
+          </div>
+          <div class="form-group">
+            <label for="regPasswordConfirm" class="form-label">Confirm Password *</label>
+            <input type="password" id="regPasswordConfirm" class="form-input" placeholder="Re-type your password"
+              autocomplete="new-password" required>
+          </div>
+          <div id="registerErrorBox" class="auth-error-box hidden"></div>
+          <button type="submit" id="btnRegisterSubmit" class="btn-auth-submit">
+            <span>Create Account &amp; Setup Extension</span>
+          </button>
+          <p class="auth-footer-prompt">
+            Already have an account? <a href="#login" id="linkSwitchToLogin" class="auth-text-link">Sign In</a>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- ================================================================== -->
+    <!-- FIRST-TIME ONBOARDING MODAL                                         -->
+    <!-- ================================================================== -->
+    <div id="onboardingModal" class="modal-backdrop hidden" role="dialog" aria-modal="true"
+      aria-labelledby="onboardingTitle">
+      <div class="modal-card onboarding-card">
+        <div class="onboarding-banner">
+          <img src="/static/logo/Magic_Fill_logo.png" alt="Magic Fill" class="onboarding-logo">
+          <div class="onboarding-badge-icon">✓</div>
+          <h2 id="onboardingTitle" class="onboarding-heading">Account Created Successfully!</h2>
+          <p class="onboarding-desc">Welcome to Magic Fill, <strong id="onboardingUserName">there</strong>. Complete
+            these simple steps to activate intelligent form autofill in your browser.</p>
+        </div>
+
+        <div class="onboarding-steps">
+          <div class="onboarding-step-card step-done">
+            <div class="step-num-circle">1</div>
+            <div class="step-content">
+              <strong>Account Registered</strong>
+              <span>Your personal memory vault is ready and secured.</span>
+            </div>
+            <span class="step-status-tag tag-success">Completed</span>
+          </div>
+
+          <div class="onboarding-step-card step-active">
+            <div class="step-num-circle">2</div>
+            <div class="step-content">
+              <strong>Install the Magic Fill Chrome Extension</strong>
+              <span>Load unpacked extension in Chrome to enable automatic form autofill on any website.</span>
+              <div class="extension-install-guide">
+                <ol>
+                  <li>Open <code>chrome://extensions</code> in your Google Chrome browser.</li>
+                  <li>Enable the <strong>"Developer mode"</strong> toggle (top-right).</li>
+                  <li>Click <strong>"Load unpacked"</strong> button (top-left).</li>
+                  <li>Select the <code>extension</code> folder in this project.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <div class="onboarding-step-card">
+            <div class="step-num-circle">3</div>
+            <div class="step-content">
+              <strong>Connect &amp; Autofill</strong>
+              <span>Open the extension icon, click <em>Sign In</em>, and it connects securely with zero passwords
+                passed!</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="onboarding-actions">
+          <button type="button" id="btnOnboardingConnect" class="btn-primary-action">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+            <span>Connect Chrome Extension</span>
+          </button>
+          <button type="button" id="btnOnboardingContinue" class="btn-secondary-action">
+            <span>Continue to Memory Vault &rarr;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================================== -->
+    <!-- EXTENSION AUTHORIZATION HANDOFF MODAL                              -->
+    <!-- ================================================================== -->
+    <div id="extensionAuthModal" class="modal-backdrop hidden" role="dialog" aria-modal="true"
+      aria-labelledby="extAuthTitle">
+      <div class="modal-card ext-auth-card">
+        <button type="button" id="extAuthModalClose" class="modal-close-btn" aria-label="Close dialog">&times;</button>
+
+        <div class="ext-auth-header">
+          <div class="ext-auth-icon-wrap">
+            <img src="/static/logo/Magic_Fill_logo.png" alt="Extension" class="ext-auth-logo">
+          </div>
+          <h2 id="extAuthTitle" class="ext-auth-heading">Authorize Magic Fill Extension</h2>
+          <p class="ext-auth-sub">Secure single-use authorization code. The extension never stores or receives your
+            password.</p>
+        </div>
+
+        <div class="ext-auth-body">
+          <div class="ext-user-info-box">
+            <span>Authorizing account:</span>
+            <strong id="extAuthUserEmail">user@example.com</strong>
+          </div>
+
+          <div class="auth-code-box">
+            <label class="code-box-label">Your Single-Use Authorization Code (Valid 5 mins):</label>
+            <div class="code-display-row">
+              <input type="text" id="displayAuthCode" class="auth-code-input" readonly value="Generating...">
+              <button type="button" id="btnCopyAuthCode" class="btn-copy-code" title="Copy code">Copy</button>
+            </div>
+            <p class="code-hint">Open your Magic Fill Chrome Extension popup and click <strong>"Sign In"</strong> or
+              paste this code to link instantly!</p>
+          </div>
+        </div>
+
+        <div class="ext-auth-actions">
+          <button type="button" id="btnExtAuthDone" class="btn-primary-action">
+            <span>Done &amp; Return to Vault</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Global Toast Container -->
+    <div id="toastContainer" class="toast-hub" aria-live="polite"></div>
+
+    <!-- Image Lightbox Modal -->
+    <div id="imageLightboxModal" class="lightbox-backdrop hidden" role="dialog" aria-modal="true"
+      aria-labelledby="lightboxTitle">
+      <div class="lightbox-dialog">
+        <div class="lightbox-top-bar">
+          <span id="lightboxTitle" class="lightbox-label">Document Preview</span>
+          <button type="button" id="lightboxCloseBtn" class="lightbox-exit-btn"
+            aria-label="Close preview">&times;</button>
+        </div>
+        <div class="lightbox-image-viewport">
+          <img id="lightboxImg" class="lightbox-img-render" alt="Document Full View">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+
+</html>

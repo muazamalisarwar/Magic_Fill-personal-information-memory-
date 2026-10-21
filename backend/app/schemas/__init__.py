@@ -1,6 +1,6 @@
 """Schemas package exporting Pydantic request and response models."""
 from app.schemas.common import APIResponse, ErrorResponse, HealthResponse
-from app.schemas.user import UserCreate, UserResponse
+from app.schemas.user import UserCreate, UserResponse, UserProfileResponse
 from app.schemas.personal_info import (
     PersonalInfoBase,
     PersonalInfoCreate,
@@ -13,6 +13,12 @@ from app.schemas.experience import (
     ExperienceUpdate,
     ExperienceResponse,
 )
+from app.schemas.matching import (
+    DetectedField,
+    FieldMatchRequest,
+    FieldMapping,
+    FieldMatchResponse,
+)
 
 __all__ = [
     "APIResponse",
@@ -20,6 +26,7 @@ __all__ = [
     "HealthResponse",
     "UserCreate",
     "UserResponse",
+    "UserProfileResponse",
     "PersonalInfoBase",
     "PersonalInfoCreate",
     "PersonalInfoUpdate",
@@ -28,4 +35,8 @@ __all__ = [
     "ExperienceCreate",
     "ExperienceUpdate",
     "ExperienceResponse",
+    "DetectedField",
+    "FieldMatchRequest",
+    "FieldMapping",
+    "FieldMatchResponse",
 ]

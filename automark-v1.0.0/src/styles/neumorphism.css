@@ -1,0 +1,329 @@
+/* ==========================================================================
+   Neumorphism (Soft UI) Design System
+   Monochromatic Cool Grey (#E0E5EC) with Dual Opposing RGB Shadows
+   ========================================================================== */
+
+:root {
+  /* Surface Tokens */
+  --neu-bg: #E0E5EC;
+  --neu-fg: #3D4852;
+  --neu-muted: #6B7280;
+  --neu-accent: #6C63FF;
+  --neu-accent-light: #8B84FF;
+  --neu-accent-secondary: #38B2AC;
+
+  /* Shadow Physics */
+  --neu-shadow-extruded: 9px 9px 16px rgb(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5);
+  --neu-shadow-extruded-hover: 12px 12px 20px rgb(163, 177, 198, 0.7), -12px -12px 20px rgba(255, 255, 255, 0.6);
+  --neu-shadow-extruded-sm: 5px 5px 10px rgb(163, 177, 198, 0.6), -5px -5px 10px rgba(255, 255, 255, 0.5);
+  --neu-shadow-inset: inset 6px 6px 10px rgb(163, 177, 198, 0.6), inset -6px -6px 10px rgba(255, 255, 255, 0.5);
+  --neu-shadow-inset-deep: inset 10px 10px 20px rgb(163, 177, 198, 0.7), inset -10px -10px 20px rgba(255, 255, 255, 0.6);
+  --neu-shadow-inset-sm: inset 3px 3px 6px rgb(163, 177, 198, 0.6), inset -3px -3px 6px rgba(255, 255, 255, 0.5);
+
+  /* Primary Button Opposing Shadows */
+  --neu-shadow-btn-primary: 6px 6px 14px rgb(163, 177, 198, 0.6), -6px -6px 14px rgba(255, 255, 255, 0.5);
+  --neu-shadow-btn-primary-hover: 8px 8px 18px rgb(163, 177, 198, 0.7), -8px -8px 18px rgba(255, 255, 255, 0.6);
+  --neu-shadow-btn-primary-active: inset 4px 4px 8px rgba(0, 0, 0, 0.28), inset -4px -4px 8px rgba(255, 255, 255, 0.2);
+}
+
+/* Typography Classes */
+.font-display {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+.font-body {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* Optional Neumorphic theme canvas resets (active only when explicitly set) */
+[data-theme="neumorphic"],
+[data-theme="neumorphic"] body {
+  background-color: var(--neu-bg) !important;
+  color: var(--neu-fg) !important;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+[data-theme="neumorphic"] h1,
+[data-theme="neumorphic"] h2,
+[data-theme="neumorphic"] h3,
+[data-theme="neumorphic"] h4,
+[data-theme="neumorphic"] h5,
+[data-theme="neumorphic"] h6 {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  color: var(--neu-fg) !important;
+  letter-spacing: -0.025em;
+}
+
+/* Base Neumorphic Surfaces */
+.neu-bg {
+  background-color: var(--neu-bg) !important;
+}
+
+.neu-card {
+  background-color: var(--neu-bg) !important;
+  border-radius: 32px !important;
+  box-shadow: var(--neu-shadow-extruded) !important;
+  border: transparent !important;
+  transition: transform 300ms ease-out, box-shadow 300ms ease-out !important;
+}
+
+.neu-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: var(--neu-shadow-extruded-hover) !important;
+}
+
+.neu-card-static {
+  background-color: var(--neu-bg) !important;
+  border-radius: 32px !important;
+  box-shadow: var(--neu-shadow-extruded) !important;
+  border: transparent !important;
+}
+
+/* Shadow Utility Classes */
+.neu-extruded {
+  box-shadow: var(--neu-shadow-extruded) !important;
+}
+
+.neu-extruded-hover:hover {
+  box-shadow: var(--neu-shadow-extruded-hover) !important;
+}
+
+.neu-extruded-sm {
+  box-shadow: var(--neu-shadow-extruded-sm) !important;
+}
+
+.neu-inset {
+  box-shadow: var(--neu-shadow-inset) !important;
+}
+
+.neu-inset-deep {
+  box-shadow: var(--neu-shadow-inset-deep) !important;
+}
+
+.neu-inset-sm {
+  box-shadow: var(--neu-shadow-inset-sm) !important;
+}
+
+/* Wells & Inset Containers */
+.neu-well {
+  background-color: var(--neu-bg) !important;
+  box-shadow: var(--neu-shadow-inset-deep) !important;
+  border: transparent !important;
+}
+
+.neu-well-sm {
+  background-color: var(--neu-bg) !important;
+  box-shadow: var(--neu-shadow-inset-sm) !important;
+  border: transparent !important;
+}
+
+.neu-icon-well {
+  background-color: var(--neu-bg) !important;
+  border-radius: 20px !important;
+  box-shadow: var(--neu-shadow-inset-deep) !important;
+  border: transparent !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Neumorphic Buttons */
+.neu-btn-primary {
+  background-color: var(--neu-accent) !important;
+  color: #FFFFFF !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 700 !important;
+  border-radius: 16px !important;
+  border: transparent !important;
+  box-shadow: var(--neu-shadow-btn-primary) !important;
+  transition: transform 300ms ease-out, box-shadow 300ms ease-out !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.neu-btn-primary:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: var(--neu-shadow-btn-primary-hover) !important;
+}
+
+.neu-btn-primary:active {
+  transform: translateY(0.5px) !important;
+  box-shadow: var(--neu-shadow-btn-primary-active) !important;
+}
+
+.neu-btn-secondary {
+  background-color: var(--neu-bg) !important;
+  color: var(--neu-fg) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 600 !important;
+  border-radius: 16px !important;
+  border: transparent !important;
+  box-shadow: var(--neu-shadow-extruded-sm) !important;
+  transition: transform 300ms ease-out, box-shadow 300ms ease-out, color 300ms ease-out !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.neu-btn-secondary:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 7px 7px 14px rgb(163, 177, 198, 0.7), -7px -7px 14px rgba(255, 255, 255, 0.6) !important;
+  color: var(--neu-accent) !important;
+}
+
+.neu-btn-secondary:active {
+  transform: translateY(0.5px) !important;
+  box-shadow: var(--neu-shadow-inset) !important;
+}
+
+/* Nav Item Button */
+.neu-nav-item {
+  background-color: var(--neu-bg) !important;
+  color: var(--neu-fg) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 600 !important;
+  border-radius: 14px !important;
+  border: transparent !important;
+  box-shadow: 4px 4px 8px rgb(163, 177, 198, 0.5), -4px -4px 8px rgba(255, 255, 255, 0.6) !important;
+  transition: transform 250ms ease-out, box-shadow 250ms ease-out, color 250ms ease-out !important;
+  padding: 8px 16px !important;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.neu-nav-item:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 6px 6px 12px rgb(163, 177, 198, 0.65), -6px -6px 12px rgba(255, 255, 255, 0.75) !important;
+  color: var(--neu-accent) !important;
+}
+
+.neu-nav-item:active,
+.neu-nav-item.active {
+  transform: translateY(0.5px) !important;
+  box-shadow: inset 4px 4px 7px rgb(163, 177, 198, 0.6), inset -4px -4px 7px rgba(255, 255, 255, 0.5) !important;
+  color: var(--neu-accent) !important;
+}
+
+/* Inputs & Form Controls */
+.neu-input {
+  background-color: var(--neu-bg) !important;
+  color: var(--neu-fg) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  border-radius: 16px !important;
+  border: transparent !important;
+  box-shadow: var(--neu-shadow-inset) !important;
+  padding: 12px 18px !important;
+  transition: box-shadow 300ms ease-out, outline 200ms ease-out !important;
+}
+
+.neu-input::placeholder {
+  color: #9CA3AF !important;
+}
+
+.neu-input:focus {
+  box-shadow: var(--neu-shadow-inset-deep) !important;
+  outline: 2px solid var(--neu-accent) !important;
+  outline-offset: 2px !important;
+}
+
+/* Badges and Pills */
+.neu-pill {
+  background-color: var(--neu-bg) !important;
+  border-radius: 9999px !important;
+  box-shadow: var(--neu-shadow-inset-sm) !important;
+  border: transparent !important;
+  display: inline-flex;
+  align-items: center;
+}
+
+.neu-badge-extruded {
+  background-color: var(--neu-bg) !important;
+  border-radius: 9999px !important;
+  box-shadow: 3px 3px 6px rgb(163, 177, 198, 0.6), -3px -3px 6px rgba(255, 255, 255, 0.6) !important;
+  border: transparent !important;
+  color: var(--neu-fg) !important;
+}
+
+/* Tactile Concentric Depth Circles */
+.neu-circle-extruded {
+  background-color: var(--neu-bg);
+  border-radius: 9999px;
+  box-shadow: 14px 14px 28px rgb(163, 177, 198, 0.65), -14px -14px 28px rgba(255, 255, 255, 0.6);
+}
+
+.neu-circle-inset {
+  background-color: var(--neu-bg);
+  border-radius: 9999px;
+  box-shadow: inset 12px 12px 24px rgb(163, 177, 198, 0.65), inset -12px -12px 24px rgba(255, 255, 255, 0.6);
+}
+
+/* Ambient Floating Animation */
+@keyframes neu-float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+}
+
+.animate-neu-float {
+  animation: neu-float 4s ease-in-out infinite;
+}
+
+/* Highlighting in headings */
+.hasHighlight strong,
+.neu-highlight {
+  color: var(--neu-accent) !important;
+  -webkit-text-fill-color: var(--neu-accent) !important;
+  background: none !important;
+}
+
+/* Explicit Neumorphic theme canvas overrides */
+[data-theme="neumorphic"],
+[data-theme="neumorphic"] body {
+  background-color: var(--neu-bg) !important;
+  background-image: none !important;
+  color: var(--neu-fg) !important;
+}
+
+[data-theme="neumorphic"] .ambient-glow-wrapper,
+[data-theme="neumorphic"] .heroSporeCanvas {
+  display: none !important;
+}
+
+[data-theme="neumorphic"] .section-box,
+[data-theme="neumorphic"] .glass-card-interactive,
+[data-theme="neumorphic"] .card {
+  border: transparent !important;
+  background-color: var(--neu-bg) !important;
+}
+
+[data-theme="neumorphic"] .title {
+  color: var(--neu-fg) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+}
+
+[data-theme="neumorphic"] .subtitle {
+  color: var(--neu-muted) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 400 !important;
+}
+
+/* Accent focus rings */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--neu-accent) !important;
+  outline-offset: 2px !important;
+}

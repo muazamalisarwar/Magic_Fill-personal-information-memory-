@@ -88,3 +88,13 @@ def update_experience(
     db.commit()
     db.refresh(experience)
     return experience
+
+
+def delete_experience(db: Session, experience_id: int) -> None:
+    """
+    Delete an experience entry by its unique ID.
+    Raises ExperienceNotFoundException if not found.
+    """
+    experience = get_experience_by_id(db, experience_id=experience_id)
+    db.delete(experience)
+    db.commit()

@@ -1,0 +1,107 @@
+---
+import PricingCheckout from "./PricingCheckout";
+
+interface Feature {
+  label: string;
+  included: boolean;
+  tooltip?: string;
+}
+interface Props {
+  price: string;
+  yearly_price: string;
+  title: string;
+  is_featured?: boolean;
+  offer_text?: string;
+  button: { enable: boolean; label: string; link: string };
+  description?: string;
+  features?: Feature[];
+}
+const {
+  price,
+  yearly_price,
+  title,
+  is_featured = false,
+  offer_text,
+  button,
+  description,
+  features,
+} = Astro.props;
+---
+
+<div
+  class={`neu-card p-8 sm:p-10 text-left relative flex flex-col justify-between ${is_featured ? "shadow-[12px_12px_24px_rgb(163,177,198,0.75),-12px_-12px_24px_rgba(255,255,255,0.75)]" : ""}`}
+>
+  <div>
+    {
+      is_featured && (
+        <div class="absolute top-8 right-8">
+          <span class="neu-pill px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-[#6C63FF] font-display">
+            {offer_text ?? "Most Popular"}
+          </span>
+        </div>
+      )
+    }
+
+    <!-- Pricing Header -->
+    <div class="mb-8 leading-none relative">
+      <span class="text-[#3D4852] text-4xl sm:text-5xl font-extrabold font-display opacity-0">I</span>
+      <span
+        class="text-[#3D4852] text-4xl sm:text-5xl font-extrabold font-display absolute left-0 top-0 flex items-baseline gap-1"
+        data-price-tag-monthly
+      >
+        ${price}
+        <span class="text-xs font-medium text-[#6B7280] font-body">/ Month</span>
+      </span>
+      <span
+        class="text-[#3D4852] text-4xl sm:text-5xl font-extrabold font-display opacity-0 absolute left-0 top-0 flex items-baseline gap-1"
+        data-price-tag-yearly
+      >
+        ${yearly_price}
+        <span class="text-xs font-medium text-[#6B7280] font-body">/ Month</span>
+      </span>
+    </div>
+
+    <h3 class="text-xl font-bold font-display text-[#3D4852] mb-3">{title}</h3>
+    <p class="font-body text-[#6B7280] text-sm leading-relaxed mb-8">{description}</p>
+
+    <!-- Checkout Action Button -->
+    <div class="mb-8">
+      {
+        button.enable && (
+          <PricingCheckout 
+            client:load 
+            planTitle={title}
+            monthlyPrice={price}
+            yearlyPrice={yearly_price}
+            buttonLabel={button.label}
+            isFeatured={is_featured}
+          />
+        )
+      }
+    </div>
+
+    <div class="text-xs font-extrabold uppercase tracking-wider text-[#3D4852] font-display mb-5">
+      Included Capabilities
+    </div>
+
+    <!-- Feature list -->
+    <ul class="space-y-3.5 font-body text-sm text-[#6B7280]">
+      {
+        (features || []).map((f) => (
+          <li class="flex items-start gap-3">
+            {f.included ? (
+              <span class="neu-inset-sm size-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 text-[#38B2AC] text-xs font-bold">
+                ✓
+              </span>
+            ) : (
+              <span class="neu-inset-sm size-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 text-gray-400 text-xs">
+                ✕
+              </span>
+            )}
+            <span class="leading-relaxed">{f.label}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>

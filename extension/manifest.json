@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "Magic Fill — Personal Memory & Intelligent Autofill",
+  "version": "1.0.0",
+  "description": "Intelligent form auto-completion powered by your personal memory and FastAPI backend.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:8000/*",
+    "http://localhost:8000/*",
+    "http://localhost:4321/*",
+    "http://127.0.0.1:4321/*"
+  ],
+  "externally_connectable": {
+    "matches": [
+      "http://127.0.0.1:8000/*",
+      "http://localhost:8000/*",
+      "http://localhost:4321/*",
+      "http://127.0.0.1:4321/*"
+    ]
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Magic Fill",
+    "default_icon": "icons/logo.png"
+  },
+  "background": {
+    "service_worker": "scripts/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["scripts/content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

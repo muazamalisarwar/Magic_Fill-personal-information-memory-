@@ -1,0 +1,116 @@
+---
+import Logo from "@/components/Logo.astro";
+import Social from "@/components/Social.astro";
+import config from "@/config/config.json";
+import menu from "@/config/menu.json";
+import social from "@/config/social.json";
+import { markdownify } from "@/lib/utils/textConverter";
+import type { Menu, SocialType } from "@/types";
+
+const {
+  footer_primary,
+  footer_resource,
+  footer_legal,
+  footer_col_1_title,
+  footer_col_2_title,
+  footer_col_3_title,
+} = menu as Menu;
+const { main: socialLinks } = social as SocialType;
+---
+
+<footer class="section pb-12 pt-20 relative overflow-hidden bg-[#E0E5EC]">
+  <div class="container pb-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
+      <!-- Column 1 - Logo & Contact -->
+      <div class="lg:col-span-2 text-base text-[#6B7280] font-body">
+        <Logo />
+        <p class="mt-6 text-sm leading-relaxed max-w-sm">{config.params.footer_tagline}</p>
+        <div class="mt-6 space-y-2 text-sm">
+          <a
+            class="block text-[#3D4852] font-bold hover:text-[#6C63FF] transition-colors"
+            href={`mailto:${config.params.footer_email}`}
+          >
+            {config.params.footer_email}
+          </a>
+          <a
+            class="block text-[#6B7280] hover:text-[#3D4852] transition-colors"
+            href={`tel:${config.params.footer_phone}`}
+          >
+            {config.params.footer_phone}
+          </a>
+        </div>
+      </div>
+
+      <!-- Column 2 - Primary -->
+      <div>
+        <h3 class="text-xs font-extrabold uppercase tracking-wider text-[#3D4852] font-display mb-5">
+          {footer_col_1_title}
+        </h3>
+        <ul class="space-y-3 font-body text-sm">
+          {
+            footer_primary?.map((item) => (
+              <li>
+                <a href={item.url} class="text-[#6B7280] hover:text-[#6C63FF] transition-colors">
+                  {item.name}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Column 3 - Resource -->
+      <div>
+        <h3 class="text-xs font-extrabold uppercase tracking-wider text-[#3D4852] font-display mb-5">
+          {footer_col_2_title}
+        </h3>
+        <ul class="space-y-3 font-body text-sm">
+          {
+            footer_resource?.map((item) => (
+              <li>
+                <a href={item.url} class="text-[#6B7280] hover:text-[#6C63FF] transition-colors">
+                  {item.name}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Column 4 - Legal -->
+      <div>
+        <h3 class="text-xs font-extrabold uppercase tracking-wider text-[#3D4852] font-display mb-5">
+          {footer_col_3_title}
+        </h3>
+        <ul class="space-y-3 font-body text-sm">
+          {
+            footer_legal?.map((item) => (
+              <li>
+                <a href={item.url} class="text-[#6B7280] hover:text-[#6C63FF] transition-colors">
+                  {item.name}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Neumorphic Inset Divider Strip -->
+  <div class="container">
+    <div class="neu-inset-sm h-1 w-full rounded-full my-6 bg-transparent"></div>
+  </div>
+
+  <!-- Bottom Area -->
+  <div class="container py-4">
+    <div class="flex justify-between items-center flex-col sm:flex-row gap-y-4 w-full">
+      <p
+        class="text-xs font-body text-[#6B7280]"
+        set:html={markdownify(config.params.copyright)}
+      />
+
+      <Social className="social-icons flex items-center gap-3" source={socialLinks} />
+    </div>
+  </div>
+</footer>

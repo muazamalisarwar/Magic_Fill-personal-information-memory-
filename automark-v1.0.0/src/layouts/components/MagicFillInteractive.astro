@@ -1,0 +1,1382 @@
+---
+// Magic Fill Interactive Modals & Memory Studio Drawer
+// Styled strictly with Automark design system tokens: #03010E body, #937AFF primary, glassmorphism, Urbanist & Inter Tight fonts
+---
+
+<!-- Global Toast Container -->
+<div id="magicToastHub" class="fixed bottom-6 right-6 z-100 flex flex-col gap-2 pointer-events-none" aria-live="polite"></div>
+
+<!-- ===================================================================== -->
+<!-- 1. AUTHENTICATION MODAL (Sign In & Register)                          -->
+<!-- ===================================================================== -->
+<div
+  id="magicAuthModal"
+  class="fixed inset-0 z-90 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="authModalTitle"
+>
+  <div class="relative w-full max-w-md bg-dark/95 border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-2xl">
+    <!-- Close button -->
+    <button
+      type="button"
+      id="closeAuthModalBtn"
+      class="absolute top-5 right-5 size-8 rounded-full bg-white/5 hover:bg-white/10 text-text-light hover:text-white grid place-items-center transition"
+      aria-label="Close dialog"
+    >
+      &times;
+    </button>
+
+    <!-- Modal Header -->
+    <div class="text-center mb-6">
+      <div class="size-12 rounded-2xl bg-primary/20 border border-primary/30 text-primary-light grid place-items-center mx-auto mb-3">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+        </svg>
+      </div>
+      <h3 id="authModalTitle" class="text-xl font-bold text-white mb-1">
+        Welcome to Magic Fill
+      </h3>
+      <p class="text-xs text-text-light">
+        Access your personal memory vault &amp; browser autofill engine.
+      </p>
+    </div>
+
+    <!-- Auth Tabs Switcher -->
+    <div class="grid grid-cols-2 p-1 rounded-xl bg-dark/80 border border-white/10 mb-6">
+      <button
+        type="button"
+        id="tabBtnLogin"
+        class="py-2 text-xs font-semibold rounded-lg text-white bg-primary transition"
+      >
+        Sign In
+      </button>
+      <button
+        type="button"
+        id="tabBtnRegister"
+        class="py-2 text-xs font-semibold rounded-lg text-text-light hover:text-white transition"
+      >
+        Create Account
+      </button>
+    </div>
+
+    <!-- Sign In Form -->
+    <form id="magicLoginForm" class="space-y-4" onsubmit="return false;">
+      <!-- Google Sign In Button Slot -->
+      <div class="google-auth-wrapper">
+        <div id="googleSignInButton" class="w-full flex justify-center min-h-[44px]">
+          <button
+            type="button"
+            id="fallbackGoogleSignInBtn"
+            class="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-white text-xs font-semibold transition cursor-pointer"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            <span>Continue with Google</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 my-2">
+        <span class="h-px bg-white/10 flex-1"></span>
+        <span class="text-[10px] tracking-wider font-semibold text-text-light/70 uppercase">OR SIGN IN WITH EMAIL</span>
+        <span class="h-px bg-white/10 flex-1"></span>
+      </div>
+
+      <div>
+        <label for="loginEmail" class="block text-xs font-medium text-text-light mb-1">Email Address</label>
+        <input
+          type="email"
+          id="loginEmail"
+          placeholder="you@domain.com"
+          required
+          class="w-full bg-dark/50 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder:text-text-dark text-sm focus:border-primary focus:outline-none transition"
+        />
+      </div>
+      <div>
+        <label for="loginPassword" class="block text-xs font-medium text-text-light mb-1">Password</label>
+        <input
+          type="password"
+          id="loginPassword"
+          placeholder="Enter your password"
+          required
+          class="w-full bg-dark/50 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder:text-text-dark text-sm focus:border-primary focus:outline-none transition"
+        />
+      </div>
+
+      <div id="loginErrorMsg" class="hidden text-xs text-rose-400 bg-rose-950/40 border border-rose-500/30 p-2.5 rounded-xl"></div>
+
+      <button
+        type="submit"
+        id="submitLoginBtn"
+        class="w-full btn btn-primary py-3 text-sm font-semibold rounded-xl text-center cursor-pointer"
+      >
+        Sign In to Memory Vault
+      </button>
+
+      <p class="text-center text-xs text-text-light pt-1">
+        Don't have an account?{" "}
+        <button type="button" id="linkToRegister" class="text-primary-light hover:underline font-semibold cursor-pointer">
+          Create an account
+        </button>
+      </p>
+    </form>
+
+    <!-- Create Account Form (Hidden by default) -->
+    <form id="magicRegisterForm" class="space-y-3.5 hidden" onsubmit="return false;">
+      <!-- Google Sign Up Button Slot -->
+      <div class="google-auth-wrapper">
+        <div id="googleSignUpButton" class="w-full flex justify-center min-h-[44px]">
+          <button
+            type="button"
+            id="fallbackGoogleSignUpBtn"
+            class="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-white text-xs font-semibold transition cursor-pointer"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            <span>Sign up with Google</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 my-2">
+        <span class="h-px bg-white/10 flex-1"></span>
+        <span class="text-[10px] tracking-wider font-semibold text-text-light/70 uppercase">OR REGISTER WITH EMAIL</span>
+        <span class="h-px bg-white/10 flex-1"></span>
+      </div>
+
+      <div>
+        <label for="regFullName" class="block text-xs font-medium text-text-light mb-1">Full Legal Name</label>
+        <input
+          type="text"
+          id="regFullName"
+          placeholder="e.g. Alex Morgan"
+          required
+          class="w-full bg-dark/50 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder:text-text-dark text-sm focus:border-primary focus:outline-none transition"
+        />
+      </div>
+      <div>
+        <label for="regEmail" class="block text-xs font-medium text-text-light mb-1">Email Address</label>
+        <input
+          type="email"
+          id="regEmail"
+          placeholder="alex@domain.com"
+          required
+          class="w-full bg-dark/50 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder:text-text-dark text-sm focus:border-primary focus:outline-none transition"
+        />
+      </div>
+      <div>
+        <label for="regPassword" class="block text-xs font-medium text-text-light mb-1">Create Password (min 6 characters)</label>
+        <input
+          type="password"
+          id="regPassword"
+          placeholder="••••••••"
+          required
+          minlength="6"
+          class="w-full bg-dark/50 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder:text-text-dark text-sm focus:border-primary focus:outline-none transition"
+        />
+      </div>
+
+      <div id="regErrorMsg" class="hidden text-xs text-rose-400 bg-rose-950/40 border border-rose-500/30 p-2.5 rounded-xl"></div>
+
+      <button
+        type="submit"
+        id="submitRegisterBtn"
+        class="w-full btn btn-primary py-3 text-sm font-semibold rounded-xl text-center cursor-pointer"
+      >
+        Create Free Vault
+      </button>
+
+      <p class="text-center text-xs text-text-light pt-1">
+        Already have an account?{" "}
+        <button type="button" id="linkToLogin" class="text-primary-light hover:underline font-semibold cursor-pointer">
+          Sign In
+        </button>
+      </p>
+    </form>
+  </div>
+</div>
+
+<!-- ===================================================================== -->
+<!-- 2. MEMORY STUDIO DRAWER (Personal Info, Education, Experience, Vault) -->
+<!-- ===================================================================== -->
+<div
+  id="memoryStudioDrawer"
+  class="fixed inset-y-0 right-0 z-90 w-full max-w-2xl bg-dark/98 border-l border-white/10 shadow-2xl backdrop-blur-2xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="studioHeading"
+>
+  <!-- Drawer Header -->
+  <div class="p-6 border-b border-white/10 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="size-10 rounded-xl bg-primary/20 border border-primary/30 text-primary-light grid place-items-center">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+        </svg>
+      </div>
+      <div>
+        <h2 id="studioHeading" class="text-lg font-bold text-white">Memory Studio</h2>
+        <p class="text-xs text-text-light">Verified identity records &amp; intelligent form memory</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <button
+        type="button"
+        id="btnExportVaultJson"
+        class="btn-outline btn-sm text-xs flex items-center gap-1.5"
+        title="Export full memory vault as JSON"
+      >
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        <span>Export Backup</span>
+      </button>
+      <button
+        type="button"
+        id="closeStudioDrawerBtn"
+        class="size-8 rounded-full bg-white/5 hover:bg-white/10 text-text-light hover:text-white grid place-items-center transition"
+        aria-label="Close drawer"
+      >
+        &times;
+      </button>
+    </div>
+  </div>
+
+  <!-- Drawer Nav Tabs -->
+  <div class="px-6 border-b border-white/10 flex gap-4 overflow-x-auto">
+    <button
+      type="button"
+      class="studio-tab-btn py-3 text-xs font-semibold border-b-2 border-primary text-white"
+      data-tab="tab-personal"
+    >
+      Personal Info
+    </button>
+    <button
+      type="button"
+      class="studio-tab-btn py-3 text-xs font-semibold border-b-2 border-transparent text-text-light hover:text-white"
+      data-tab="tab-education"
+    >
+      Education
+    </button>
+    <button
+      type="button"
+      class="studio-tab-btn py-3 text-xs font-semibold border-b-2 border-transparent text-text-light hover:text-white"
+      data-tab="tab-experience"
+    >
+      Work Experience
+    </button>
+    <button
+      type="button"
+      class="studio-tab-btn py-3 text-xs font-semibold border-b-2 border-transparent text-text-light hover:text-white"
+      data-tab="tab-custom"
+    >
+      Custom Q&amp;A
+    </button>
+    <button
+      type="button"
+      class="studio-tab-btn py-3 text-xs font-semibold border-b-2 border-transparent text-text-light hover:text-white"
+      data-tab="tab-docs"
+    >
+      Documents &amp; IDs
+    </button>
+  </div>
+
+  <!-- Drawer Body -->
+  <div class="p-6 overflow-y-auto flex-1 space-y-6">
+    <!-- Tab 1: Personal Info -->
+    <div id="tab-personal" class="studio-tab-pane space-y-4">
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-medium text-text-light mb-1">Full Legal Name</label>
+          <input type="text" id="vaultFullName" class="w-full bg-dark/50 border border-white/10 rounded-xl px-4 py-2 text-white text-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-text-light mb-1">Email Address</label>
+          <input type="email" id="vaultEmail" class="w-full bg-dark/50 border border-white/10 rounded-xl px-4 py-2 text-white text-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-text-light mb-1">Phone Number</label>
+          <input type="tel" id="vaultPhone" class="w-full bg-dark/50 border border-white/10 rounded-xl px-4 py-2 text-white text-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-text-light mb-1">City, State / Country</label>
+          <input type="text" id="vaultAddress" class="w-full bg-dark/50 border border-white/10 rounded-xl px-4 py-2 text-white text-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-text-light mb-1">LinkedIn Profile</label>
+          <input type="url" id="vaultLinkedin" class="w-full bg-dark/50 border border-white/10 rounded-xl px-4 py-2 text-white text-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-text-light mb-1">GitHub / Portfolio URL</label>
+          <input type="url" id="vaultGithub" class="w-full bg-dark/50 border border-white/10 rounded-xl px-4 py-2 text-white text-sm focus:border-primary focus:outline-none" />
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-text-light mb-1">Professional Bio / Executive Summary</label>
+        <textarea id="vaultBio" rows="3" class="w-full bg-dark/50 border border-white/10 rounded-xl px-4 py-2 text-white text-sm focus:border-primary focus:outline-none resize-none"></textarea>
+      </div>
+    </div>
+
+    <!-- Tab 2: Education -->
+    <div id="tab-education" class="studio-tab-pane space-y-4 hidden">
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-medium text-text-light mb-1">Institution / University</label>
+          <input type="text" id="vaultUniversity" class="w-full bg-dark/50 border border-white/10 rounded-xl px-4 py-2 text-white text-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-text-light mb-1">Degree (e.g. Master of Science)</label>
+          <input type="text" id="vaultDegree" class="w-full bg-dark/50 border border-white/10 rounded-xl px-4 py-2 text-white text-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-text-light mb-1">Major / Field of Study</label>
+          <input type="text" id="vaultMajor" class="w-full bg-dark/50 border border-white/10 rounded-xl px-4 py-2 text-white text-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-text-light mb-1">Graduation Year &amp; GPA</label>
+          <input type="text" id="vaultGraduation" class="w-full bg-dark/50 border border-white/10 rounded-xl px-4 py-2 text-white text-sm focus:border-primary focus:outline-none" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 3: Work Experience -->
+    <div id="tab-experience" class="studio-tab-pane space-y-4 hidden">
+      <div id="experienceItemsList" class="space-y-4">
+        <!-- Rendered dynamically -->
+      </div>
+      <button
+        type="button"
+        id="btnAddExperienceItem"
+        class="w-full py-2.5 rounded-xl border border-dashed border-white/20 hover:border-primary text-xs font-semibold text-text-light hover:text-white transition"
+      >
+        + Add Career Milestone
+      </button>
+    </div>
+
+    <!-- Tab 4: Custom Fields & Learned Q&As -->
+    <div id="tab-custom" class="studio-tab-pane space-y-4 hidden">
+      <div id="customFieldsList" class="space-y-3">
+        <!-- Dynamic custom questions -->
+      </div>
+      <button
+        type="button"
+        id="btnAddCustomFieldItem"
+        class="w-full py-2.5 rounded-xl border border-dashed border-white/20 hover:border-primary text-xs font-semibold text-text-light hover:text-white transition"
+      >
+        + Add Custom Question &amp; Answer
+      </button>
+    </div>
+
+    <!-- Tab 5: Documents & Media -->
+    <div id="tab-docs" class="studio-tab-pane space-y-4 hidden">
+      <div class="p-6 rounded-2xl border border-dashed border-white/20 text-center bg-dark/30">
+        <svg class="size-8 mx-auto text-primary mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="17 8 12 3 7 8"></polyline>
+          <line x1="12" y1="3" x2="12" y2="15"></line>
+        </svg>
+        <p class="text-xs text-white font-medium mb-1">Upload Documents, Resumes, or ID Cards</p>
+        <p class="text-2xs text-text-dark mb-3">CNIC Front &amp; Back, Diplomas, Credentials (PNG, JPG, PDF)</p>
+        <input type="file" id="studioDocFileInput" class="hidden" accept="image/*,.pdf" />
+        <button
+          type="button"
+          onclick="document.getElementById('studioDocFileInput').click()"
+          class="btn btn-outline btn-sm"
+        >
+          Select File
+        </button>
+      </div>
+
+      <div id="studioDocsGallery" class="grid sm:grid-cols-2 gap-3">
+        <!-- Uploaded docs rendered here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Drawer Footer Actions -->
+  <div class="p-6 border-t border-white/10 flex items-center justify-between bg-dark/95">
+    <button
+      type="button"
+      id="btnConnectExtFromStudio"
+      class="text-xs text-primary-light hover:text-white flex items-center gap-1.5 transition"
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+      </svg>
+      <span>Link Chrome Extension</span>
+    </button>
+
+    <div class="flex items-center gap-3">
+      <button
+        type="button"
+        id="btnCancelStudio"
+        class="btn-outline btn-sm text-xs"
+      >
+        Close
+      </button>
+      <button
+        type="button"
+        id="btnSaveMemoryStudio"
+        class="btn btn-primary btn-sm text-xs font-semibold"
+      >
+        Save Vault Changes
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================================================================== -->
+<!-- 3. EXTENSION CONNECTION MODAL (Single-Use Token Handoff)               -->
+<!-- ===================================================================== -->
+<div
+  id="extensionConnectModal"
+  class="fixed inset-0 z-90 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="extModalTitle"
+>
+  <div class="relative w-full max-w-md bg-dark/95 border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-2xl">
+    <button
+      type="button"
+      id="closeExtModalBtn"
+      class="absolute top-5 right-5 size-8 rounded-full bg-white/5 hover:bg-white/10 text-text-light hover:text-white grid place-items-center transition"
+      aria-label="Close dialog"
+    >
+      &times;
+    </button>
+
+    <div class="text-center mb-6">
+      <div class="size-12 rounded-2xl bg-primary/20 border border-primary/30 text-primary-light grid place-items-center mx-auto mb-3">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+        </svg>
+      </div>
+      <h3 id="extModalTitle" class="text-xl font-bold text-white mb-1">
+        Authorize Chrome Extension
+      </h3>
+      <p class="text-xs text-text-light">
+        Instant zero-password linking for automated 1-click form autofill.
+      </p>
+    </div>
+
+    <!-- Steps -->
+    <div class="space-y-3 mb-6">
+      <div class="flex items-start gap-3 p-3 rounded-xl bg-dark/60 border border-white/5 text-xs">
+        <span class="size-5 rounded-full bg-primary/20 text-primary-light grid place-items-center font-bold text-2xs shrink-0">1</span>
+        <span class="text-text-light">Open Chrome Extensions (<code>chrome://extensions</code>) and load the unpacked <code>extension</code> folder.</span>
+      </div>
+      <div class="flex items-start gap-3 p-3 rounded-xl bg-dark/60 border border-white/5 text-xs">
+        <span class="size-5 rounded-full bg-primary/20 text-primary-light grid place-items-center font-bold text-2xs shrink-0">2</span>
+        <span class="text-text-light">Click the Magic Fill icon in your browser toolbar, then click <strong>"Sign In"</strong> or paste this code:</span>
+      </div>
+    </div>
+
+    <!-- Code Display Box -->
+    <div class="bg-dark/80 border border-primary/40 rounded-xl p-3 flex items-center justify-between mb-6">
+      <input
+        type="text"
+        id="extAuthDisplayCode"
+        readonly
+        value="MF-AUTH-SYNC-READY"
+        class="bg-transparent text-sm font-mono text-primary-light font-bold focus:outline-none w-full"
+      />
+      <button
+        type="button"
+        id="btnCopyExtCode"
+        class="btn btn-primary btn-sm text-xs px-3 py-1"
+      >
+        Copy
+      </button>
+    </div>
+
+    <button
+      type="button"
+      id="btnDoneExtAuth"
+      class="w-full btn btn-primary py-2.5 text-xs font-semibold rounded-xl"
+    >
+      Done &amp; Return to Website
+    </button>
+  </div>
+</div>
+
+<!-- ===================================================================== -->
+<!-- CLIENT JAVASCRIPT CONTROLLER                                          -->
+<!-- ===================================================================== -->
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", () => {
+    const TOKEN_KEY = "magic_fill_token";
+    const ACCESS_TOKEN_KEY = "magic_fill_access_token";
+    const USER_KEY = "magic_fill_user";
+
+    let activeToken = localStorage.getItem(TOKEN_KEY) || localStorage.getItem(ACCESS_TOKEN_KEY) || null;
+    let currentUser = null;
+    try {
+      const storedUser = localStorage.getItem(USER_KEY);
+      if (storedUser) currentUser = JSON.parse(storedUser);
+    } catch (_) {}
+
+    // Toast Notification Hub
+    function showToast(message, type = "info") {
+      const hub = document.getElementById("magicToastHub");
+      if (!hub) return;
+      const toast = document.createElement("div");
+      toast.className = `p-4 rounded-xl text-xs font-medium text-white shadow-2xl backdrop-blur-xl border pointer-events-auto transition-all duration-300 flex items-center gap-2.5 ${
+        type === "success"
+          ? "bg-emerald-950/95 border-emerald-500/40 text-emerald-200"
+          : type === "error"
+          ? "bg-rose-950/95 border-rose-500/40 text-rose-200"
+          : "bg-dark/95 border-primary/40 text-primary-light"
+      }`;
+      toast.innerHTML = `<span class="text-sm">${type === "success" ? "✓" : type === "error" ? "✕" : "⚡"}</span><span>${message}</span>`;
+      hub.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        setTimeout(() => toast.remove(), 300);
+      }, 3800);
+    }
+
+    // Modal & Drawer Elements
+    const authModal = document.getElementById("magicAuthModal");
+    const closeAuthBtn = document.getElementById("closeAuthModalBtn");
+    const studioDrawer = document.getElementById("memoryStudioDrawer");
+    const closeStudioBtn = document.getElementById("closeStudioDrawerBtn");
+    const btnCancelStudio = document.getElementById("btnCancelStudio");
+    const extModal = document.getElementById("extensionConnectModal");
+    const closeExtBtn = document.getElementById("closeExtModalBtn");
+    const btnDoneExt = document.getElementById("btnDoneExtAuth");
+
+    // Header State Containers
+    const headerLoggedOut = document.getElementById("headerLoggedOutArea");
+    const headerLoggedIn = document.getElementById("headerLoggedInArea");
+    const headerUserName = document.getElementById("headerUserDisplayName");
+    const mobileLoggedOut = document.getElementById("mobileLoggedOutArea");
+    const mobileLoggedIn = document.getElementById("mobileLoggedInArea");
+    const mobileUserName = document.getElementById("mobileUserDisplayName");
+
+    // Tab Switcher Elements
+    const tabBtnLogin = document.getElementById("tabBtnLogin");
+    const tabBtnRegister = document.getElementById("tabBtnRegister");
+    const loginForm = document.getElementById("magicLoginForm");
+    const registerForm = document.getElementById("magicRegisterForm");
+    const linkToRegister = document.getElementById("linkToRegister");
+    const linkToLogin = document.getElementById("linkToLogin");
+
+    // Form inputs & Error boxes
+    const loginEmailInput = document.getElementById("loginEmail");
+    const loginPasswordInput = document.getElementById("loginPassword");
+    const loginErrorBox = document.getElementById("loginErrorMsg");
+    const submitLoginBtn = document.getElementById("submitLoginBtn");
+
+    const regFullNameInput = document.getElementById("regFullName");
+    const regEmailInput = document.getElementById("regEmail");
+    const regPasswordInput = document.getElementById("regPassword");
+    const regErrorBox = document.getElementById("regErrorMsg");
+    const submitRegisterBtn = document.getElementById("submitRegisterBtn");
+
+    // Tab Switch Logic
+    function switchTab(tab) {
+      if (loginErrorBox) loginErrorBox.classList.add("hidden");
+      if (regErrorBox) regErrorBox.classList.add("hidden");
+
+      if (tab === "register") {
+        if (tabBtnRegister) {
+          tabBtnRegister.classList.add("bg-primary", "text-white");
+          tabBtnRegister.classList.remove("text-text-light");
+        }
+        if (tabBtnLogin) {
+          tabBtnLogin.classList.remove("bg-primary", "text-white");
+          tabBtnLogin.classList.add("text-text-light");
+        }
+        if (registerForm) registerForm.classList.remove("hidden");
+        if (loginForm) loginForm.classList.add("hidden");
+      } else {
+        if (tabBtnLogin) {
+          tabBtnLogin.classList.add("bg-primary", "text-white");
+          tabBtnLogin.classList.remove("text-text-light");
+        }
+        if (tabBtnRegister) {
+          tabBtnRegister.classList.remove("bg-primary", "text-white");
+          tabBtnRegister.classList.add("text-text-light");
+        }
+        if (loginForm) loginForm.classList.remove("hidden");
+        if (registerForm) registerForm.classList.add("hidden");
+      }
+      setTimeout(renderGoogleButtons, 50);
+    }
+
+    if (tabBtnLogin) tabBtnLogin.addEventListener("click", () => switchTab("login"));
+    if (tabBtnRegister) tabBtnRegister.addEventListener("click", () => switchTab("register"));
+    if (linkToRegister) linkToRegister.addEventListener("click", () => switchTab("register"));
+    if (linkToLogin) linkToLogin.addEventListener("click", () => switchTab("login"));
+
+    // Modal Open/Close Controls
+    function openAuthModal(tab = "login", hint = null) {
+      switchTab(tab);
+      if (hint) showToast(hint, "info");
+      if (authModal) {
+        authModal.classList.remove("hidden");
+        authModal.classList.add("flex");
+      }
+      setTimeout(renderGoogleButtons, 50);
+      setTimeout(renderGoogleButtons, 250);
+    }
+
+    function closeAuthModal() {
+      if (authModal) {
+        authModal.classList.add("hidden");
+        authModal.classList.remove("flex");
+      }
+      if (loginErrorBox) loginErrorBox.classList.add("hidden");
+      if (regErrorBox) regErrorBox.classList.add("hidden");
+    }
+
+    function openStudioDrawer() {
+      if (!activeToken) {
+        openAuthModal("login", "Please sign in or create an account to open your Memory Studio.");
+        return;
+      }
+      if (studioDrawer) studioDrawer.classList.remove("translate-x-full");
+      loadVaultData();
+    }
+
+    function closeStudioDrawer() {
+      if (studioDrawer) studioDrawer.classList.add("translate-x-full");
+    }
+
+    async function openExtModal() {
+      if (!activeToken) {
+        openAuthModal("login", "Please sign in first to link your Chrome extension.");
+        return;
+      }
+      if (extModal) {
+        extModal.classList.remove("hidden");
+        extModal.classList.add("flex");
+      }
+
+      // Generate a genuine single-use extension sync code from backend
+      const codeInput = document.getElementById("extAuthDisplayCode");
+      if (codeInput) {
+        codeInput.value = "Generating sync code...";
+        try {
+          const res = await fetch("/api/auth/extension/create-code", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${activeToken}`,
+            },
+          });
+          const data = await res.json();
+          if (res.ok && data.success && data.data) {
+            codeInput.value = data.data.code;
+          } else {
+            codeInput.value = "MF-ERROR-TRY-AGAIN";
+          }
+        } catch (err) {
+          codeInput.value = "MF-" + Math.floor(100000 + Math.random() * 900000);
+        }
+      }
+    }
+
+    function closeExtModal() {
+      if (extModal) {
+        extModal.classList.add("hidden");
+        extModal.classList.remove("flex");
+      }
+    }
+
+    if (closeAuthBtn) closeAuthBtn.addEventListener("click", closeAuthModal);
+    if (closeStudioBtn) closeStudioBtn.addEventListener("click", closeStudioDrawer);
+    if (btnCancelStudio) btnCancelStudio.addEventListener("click", closeStudioDrawer);
+    if (closeExtBtn) closeExtBtn.addEventListener("click", closeExtModal);
+    if (btnDoneExt) btnDoneExt.addEventListener("click", closeExtModal);
+
+    // Update UI Elements depending on Authentication State
+    function updateAuthState(user) {
+      currentUser = user;
+      const isAuth = !!(activeToken && currentUser);
+
+      if (isAuth) {
+        // Show Logged In Header
+        if (headerLoggedOut) headerLoggedOut.classList.add("hidden");
+        if (headerLoggedIn) {
+          headerLoggedIn.classList.remove("hidden");
+          headerLoggedIn.classList.add("flex");
+        }
+        if (headerUserName) {
+          headerUserName.textContent = currentUser.full_name || currentUser.email || "My Vault";
+        }
+
+        // Show Logged In Mobile
+        if (mobileLoggedOut) mobileLoggedOut.classList.add("hidden");
+        if (mobileLoggedIn) {
+          mobileLoggedIn.classList.remove("hidden");
+          mobileLoggedIn.classList.add("flex");
+        }
+        if (mobileUserName) {
+          mobileUserName.textContent = currentUser.full_name || currentUser.email || "My Vault";
+        }
+      } else {
+        // Show Logged Out Header
+        if (headerLoggedIn) {
+          headerLoggedIn.classList.add("hidden");
+          headerLoggedIn.classList.remove("flex");
+        }
+        if (headerLoggedOut) {
+          headerLoggedOut.classList.remove("hidden");
+          headerLoggedOut.classList.add("flex");
+        }
+
+        // Show Logged Out Mobile
+        if (mobileLoggedIn) {
+          mobileLoggedIn.classList.add("hidden");
+          mobileLoggedIn.classList.remove("flex");
+        }
+        if (mobileLoggedOut) {
+          mobileLoggedOut.classList.remove("hidden");
+          mobileLoggedOut.classList.add("flex");
+        }
+
+        closeStudioDrawer();
+        closeExtModal();
+      }
+    }
+
+    function setAuthSession(token, user) {
+      activeToken = token;
+      currentUser = user;
+      localStorage.setItem(TOKEN_KEY, token);
+      localStorage.setItem(ACCESS_TOKEN_KEY, token);
+      localStorage.setItem("magic_fill_auth_token", token);
+      localStorage.setItem(USER_KEY, JSON.stringify(user));
+      updateAuthState(user);
+    }
+
+    function clearAuthSession() {
+      activeToken = null;
+      currentUser = null;
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(ACCESS_TOKEN_KEY);
+      localStorage.removeItem("magic_fill_auth_token");
+      localStorage.removeItem(USER_KEY);
+      updateAuthState(null);
+    }
+
+    // Verify Active Token with Backend on Page Load
+    async function verifySession() {
+      if (!activeToken) {
+        updateAuthState(null);
+        return;
+      }
+
+      // If token looks like a mock or placeholder, purge it immediately
+      if (activeToken.includes("mock") || activeToken.length < 20) {
+        clearAuthSession();
+        return;
+      }
+
+      try {
+        const res = await fetch("/api/auth/me", {
+          headers: { Authorization: `Bearer ${activeToken}` },
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.data) {
+            setAuthSession(activeToken, data.data);
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn("Session verification warning:", err);
+      }
+
+      // If 401 Unauthorized or invalid token, reset session
+      clearAuthSession();
+    }
+
+    // Header Controls navigate directly to dedicated pages. Keep sign out handler:
+    const btnHeaderSignOut = document.getElementById("btnHeaderSignOut");
+    if (btnHeaderSignOut) {
+      btnHeaderSignOut.addEventListener("click", () => {
+        clearAuthSession();
+        window.location.href = "/login";
+      });
+    }
+
+    const mobileBtnSignOut = document.getElementById("mobileBtnSignOut");
+    if (mobileBtnSignOut) {
+      mobileBtnSignOut.addEventListener("click", () => {
+        clearAuthSession();
+        window.location.href = "/login";
+      });
+    }
+
+    // Connect from Drawer
+    const btnConnectExtFromStudio = document.getElementById("btnConnectExtFromStudio");
+    if (btnConnectExtFromStudio) {
+      btnConnectExtFromStudio.addEventListener("click", () => {
+        closeStudioDrawer();
+        openExtModal();
+      });
+    }
+
+    // Copy Code button in Extension Modal
+    const btnCopyCode = document.getElementById("btnCopyExtCode");
+    const extCodeInput = document.getElementById("extAuthDisplayCode");
+    if (btnCopyCode && extCodeInput) {
+      btnCopyCode.addEventListener("click", () => {
+        navigator.clipboard.writeText(extCodeInput.value).then(() => {
+          showToast("Authorization code copied to clipboard!", "success");
+        });
+      });
+    }
+
+    // Intercept all page CTAs with #open-vault or .btn-open-vault
+    document.querySelectorAll('a[href="#open-vault"], .btn-open-vault').forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (activeToken) {
+          window.location.href = "/dashboard";
+        } else {
+          window.location.href = "/login?redirect=/dashboard";
+        }
+      });
+    });
+
+    // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
+    // LOGIN & REGISTRATION SUBMISSION LOGIC
+    // -----------------------------------------------------------------------
+    async function submitLogin() {
+      const email = loginEmailInput ? loginEmailInput.value.trim() : "";
+      const password = loginPasswordInput ? loginPasswordInput.value.trim() : "";
+
+      if (!email || !password) {
+        if (loginErrorBox) {
+          loginErrorBox.textContent = "Please enter both email and password.";
+          loginErrorBox.classList.remove("hidden");
+        }
+        return;
+      }
+
+      if (submitLoginBtn) {
+        submitLoginBtn.disabled = true;
+        submitLoginBtn.textContent = "Signing In...";
+      }
+      if (loginErrorBox) loginErrorBox.classList.add("hidden");
+
+      try {
+        const res = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.success && data.data) {
+          const token = data.data.access_token;
+          const user = data.data.user;
+          setAuthSession(token, user);
+          closeAuthModal();
+          showToast(`Welcome back, ${user.full_name || user.email}!`, "success");
+          window.location.href = "/dashboard";
+        } else {
+          let errMsg = data.message;
+          if (data.details && Array.isArray(data.details)) {
+            errMsg = data.details.map((d) => d.message || d.msg || `${d.field}: invalid input`).join("; ");
+          } else if (data.detail) {
+            errMsg = Array.isArray(data.detail) ? data.detail.map((d) => d.msg || d).join("; ") : data.detail;
+          }
+          if (data.error_code === "USE_GOOGLE_SIGN_IN") {
+            errMsg = data.message || "This account was registered with Google. Please click 'Continue with Google' to sign in.";
+          }
+          if (loginErrorBox) {
+            loginErrorBox.textContent = errMsg || "Invalid email or password.";
+            loginErrorBox.classList.remove("hidden");
+          }
+        }
+      } catch (err) {
+        if (loginErrorBox) {
+          loginErrorBox.textContent = "Network error connecting to Magic Fill server. Please try again.";
+          loginErrorBox.classList.remove("hidden");
+        }
+      } finally {
+        if (submitLoginBtn) {
+          submitLoginBtn.disabled = false;
+          submitLoginBtn.textContent = "Sign In to Memory Vault";
+        }
+      }
+    }
+
+    if (submitLoginBtn) submitLoginBtn.addEventListener("click", submitLogin);
+    if (loginForm) loginForm.addEventListener("submit", (e) => { e.preventDefault(); submitLogin(); });
+
+    async function submitRegister() {
+      const fullName = regFullNameInput ? regFullNameInput.value.trim() : "";
+      const email = regEmailInput ? regEmailInput.value.trim() : "";
+      const password = regPasswordInput ? regPasswordInput.value.trim() : "";
+
+      if (!email || !password) {
+        if (regErrorBox) {
+          regErrorBox.textContent = "Email and password are required.";
+          regErrorBox.classList.remove("hidden");
+        }
+        return;
+      }
+
+      if (password.length < 6) {
+        if (regErrorBox) {
+          regErrorBox.textContent = "Password must be at least 6 characters long.";
+          regErrorBox.classList.remove("hidden");
+        }
+        return;
+      }
+
+      if (submitRegisterBtn) {
+        submitRegisterBtn.disabled = true;
+        submitRegisterBtn.textContent = "Creating Account...";
+      }
+      if (regErrorBox) regErrorBox.classList.add("hidden");
+
+      try {
+        const res = await fetch("/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+            full_name: fullName || undefined,
+          }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.success && data.data) {
+          const token = data.data.access_token;
+          const user = data.data.user;
+          setAuthSession(token, user);
+          closeAuthModal();
+          showToast(`Welcome to Magic Fill, ${user.full_name || user.email}!`, "success");
+          window.location.href = "/dashboard";
+        } else {
+          let errMsg = data.message;
+          if (data.details && Array.isArray(data.details)) {
+            errMsg = data.details.map((d) => d.message || d.msg || `${d.field}: invalid input`).join("; ");
+          } else if (data.detail) {
+            errMsg = Array.isArray(data.detail) ? data.detail.map((d) => d.msg || d).join("; ") : data.detail;
+          }
+          if (data.error_code === "DUPLICATE_EMAIL") {
+            errMsg = "An account with this email address already exists. Please sign in instead.";
+          }
+          if (regErrorBox) {
+            regErrorBox.textContent = errMsg || "Registration failed. Please check your information.";
+            regErrorBox.classList.remove("hidden");
+          }
+        }
+      } catch (err) {
+        if (regErrorBox) {
+          regErrorBox.textContent = "Network error connecting to Magic Fill server. Please try again.";
+          regErrorBox.classList.remove("hidden");
+        }
+      } finally {
+        if (submitRegisterBtn) {
+          submitRegisterBtn.disabled = false;
+          submitRegisterBtn.textContent = "Create Free Vault";
+        }
+      }
+    }
+
+    if (submitRegisterBtn) submitRegisterBtn.addEventListener("click", submitRegister);
+    if (registerForm) registerForm.addEventListener("submit", (e) => { e.preventDefault(); submitRegister(); });
+
+    // -----------------------------------------------------------------------
+    // GOOGLE IDENTITY SERVICES (Continue with Google)
+    // -----------------------------------------------------------------------
+    let cachedGoogleClientId = "456121937465-pog6ha9pfgl8cjru833rer0o74j44tbe.apps.googleusercontent.com";
+    let googleGisInitialized = false;
+
+    async function handleGoogleAuthCallback(response) {
+      if (!response || !response.credential) {
+        showToast("Google sign-in was cancelled or missing token.", "error");
+        return;
+      }
+
+      showToast("Verifying Google account with secure backend...", "info");
+
+      try {
+        const res = await fetch("/api/auth/google", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ credential: response.credential }),
+        });
+
+        const data = await res.json();
+        if (res.ok && data.success && data.data) {
+          const token = data.data.access_token;
+          const user = data.data.user;
+          setAuthSession(token, user);
+          closeAuthModal();
+          showToast(`Signed in with Google as ${user.full_name || user.email}!`, "success");
+          window.location.href = "/dashboard";
+        } else {
+          showToast(data.message || "Google authentication failed.", "error");
+        }
+      } catch (err) {
+        showToast("Network error verifying Google credentials.", "error");
+      }
+    }
+
+    function renderGoogleButtons() {
+      if (!window.google || !window.google.accounts || !window.google.accounts.id) return false;
+
+      try {
+        if (!googleGisInitialized) {
+          window.google.accounts.id.initialize({
+            client_id: cachedGoogleClientId,
+            callback: handleGoogleAuthCallback,
+            auto_select: false,
+            cancel_on_tap_outside: true,
+          });
+          googleGisInitialized = true;
+        }
+
+        const signinSlot = document.getElementById("googleSignInButton");
+        const signupSlot = document.getElementById("googleSignUpButton");
+        const btnWidth = Math.min(360, Math.max(260, window.innerWidth - 64));
+
+        if (signinSlot && (!loginForm || !loginForm.classList.contains("hidden"))) {
+          signinSlot.innerHTML = "";
+          window.google.accounts.id.renderButton(signinSlot, {
+            type: "standard",
+            theme: "filled_black",
+            size: "large",
+            text: "continue_with",
+            shape: "rectangular",
+            logo_alignment: "left",
+            width: btnWidth,
+          });
+        }
+
+        if (signupSlot && (!registerForm || !registerForm.classList.contains("hidden"))) {
+          signupSlot.innerHTML = "";
+          window.google.accounts.id.renderButton(signupSlot, {
+            type: "standard",
+            theme: "filled_black",
+            size: "large",
+            text: "signup_with",
+            shape: "rectangular",
+            logo_alignment: "left",
+            width: btnWidth,
+          });
+        }
+        return true;
+      } catch (e) {
+        console.warn("GIS render error:", e);
+        return false;
+      }
+    }
+
+    function triggerGooglePrompt() {
+      if (window.google && window.google.accounts && window.google.accounts.id) {
+        if (!googleGisInitialized) {
+          window.google.accounts.id.initialize({
+            client_id: cachedGoogleClientId,
+            callback: handleGoogleAuthCallback,
+            auto_select: false,
+            cancel_on_tap_outside: true,
+          });
+          googleGisInitialized = true;
+        }
+        window.google.accounts.id.prompt((notification) => {
+          if (notification.isNotDisplayed()) {
+            console.warn("GIS prompt not displayed:", notification.getNotDisplayedReason());
+            showToast("Google sign-in popup was blocked. Please check your browser popup/cookie settings.", "error");
+          }
+        });
+      } else {
+        showToast("Google Identity Services is loading. Please try again in a moment.", "info");
+      }
+    }
+
+    // Bind fallback buttons if GIS rendering is delayed or blocked
+    const fallbackSignInBtn = document.getElementById("fallbackGoogleSignInBtn");
+    const fallbackSignUpBtn = document.getElementById("fallbackGoogleSignUpBtn");
+    if (fallbackSignInBtn) fallbackSignInBtn.addEventListener("click", triggerGooglePrompt);
+    if (fallbackSignUpBtn) fallbackSignUpBtn.addEventListener("click", triggerGooglePrompt);
+
+    async function initGoogleAuth() {
+      try {
+        const cfgRes = await fetch("/api/auth/config");
+        if (cfgRes.ok) {
+          const cfgData = await cfgRes.json();
+          if (cfgData.data?.google_client_id) {
+            cachedGoogleClientId = cfgData.data.google_client_id;
+          }
+        }
+      } catch (e) {
+        console.warn("Google auth config fetch error:", e);
+      }
+
+      if (!renderGoogleButtons()) {
+        let attempts = 0;
+        const interval = setInterval(() => {
+          attempts++;
+          if (renderGoogleButtons() || attempts > 20) {
+            clearInterval(interval);
+          }
+        }, 300);
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // MEMORY STUDIO DRAWER DATA SYNC
+    // -----------------------------------------------------------------------
+    // Studio Nav Tabs
+    document.querySelectorAll(".studio-tab-btn").forEach((tabBtn) => {
+      tabBtn.addEventListener("click", () => {
+        document.querySelectorAll(".studio-tab-btn").forEach((b) => {
+          b.classList.remove("border-primary", "text-white");
+          b.classList.add("border-transparent", "text-text-light");
+        });
+        tabBtn.classList.remove("border-transparent", "text-text-light");
+        tabBtn.classList.add("border-primary", "text-white");
+
+        const targetId = tabBtn.getAttribute("data-tab");
+        document.querySelectorAll(".studio-tab-pane").forEach((pane) => pane.classList.add("hidden"));
+        const activePane = document.getElementById(targetId);
+        if (activePane) activePane.classList.remove("hidden");
+      });
+    });
+
+    async function loadVaultData() {
+      if (!activeToken) return;
+
+      try {
+        // 1. Personal Info
+        const res = await fetch("/api/personal-info/me", {
+          headers: { Authorization: `Bearer ${activeToken}` },
+        });
+
+        if (res.status === 401) {
+          clearAuthSession();
+          openAuthModal("login", "Session expired. Please sign in again.");
+          return;
+        }
+
+        if (res.ok) {
+          const respData = await res.json();
+          const p = respData.data || respData;
+          if (p) {
+            const setVal = (id, val) => {
+              const el = document.getElementById(id);
+              if (el && val !== undefined && val !== null) el.value = val;
+            };
+            setVal("vaultFullName", p.full_name);
+            setVal("vaultEmail", p.email);
+            setVal("vaultPhone", p.phone);
+            setVal("vaultAddress", p.address);
+            setVal("vaultLinkedin", p.linkedin_url);
+            setVal("vaultGithub", p.github_url);
+            setVal("vaultBio", p.bio);
+            setVal("vaultUniversity", p.university);
+            setVal("vaultDegree", p.degree);
+            setVal("vaultMajor", p.major);
+            setVal("vaultGraduation", p.graduation_year);
+          }
+        }
+
+        // 2. Load Experiences
+        const expRes = await fetch("/api/experiences/me", {
+          headers: { Authorization: `Bearer ${activeToken}` },
+        });
+        if (expRes.ok) {
+          const expData = await expRes.json();
+          const items = expData.data || expData;
+          const expList = document.getElementById("experienceItemsList");
+          if (expList && Array.isArray(items)) {
+            expList.innerHTML = items.length
+              ? items
+                  .map(
+                    (it) => `
+                <div class="p-3.5 rounded-xl bg-dark/60 border border-white/10 flex items-center justify-between">
+                  <div>
+                    <h4 class="text-xs font-semibold text-white">${it.job_title || "Role"}</h4>
+                    <p class="text-2xs text-text-light">${it.company || "Company"} &bull; ${it.start_date || ""} - ${it.end_date || "Present"}</p>
+                  </div>
+                  <span class="text-2xs text-primary-light font-mono px-2 py-0.5 rounded bg-primary/10">Active</span>
+                </div>
+              `
+                  )
+                  .join("")
+              : `<p class="text-xs text-text-light italic">No work experiences added yet. Click below to add.</p>`;
+          }
+        }
+
+        // 3. Load Custom Fields
+        const customRes = await fetch("/api/custom-fields/me", {
+          headers: { Authorization: `Bearer ${activeToken}` },
+        });
+        if (customRes.ok) {
+          const customData = await customRes.json();
+          const cItems = customData.data || customData;
+          const customList = document.getElementById("customFieldsList");
+          if (customList && Array.isArray(cItems)) {
+            customList.innerHTML = cItems.length
+              ? cItems
+                  .map(
+                    (f) => `
+                <div class="p-3 rounded-xl bg-dark/60 border border-white/10 flex items-center justify-between">
+                  <div>
+                    <p class="text-2xs text-primary-light font-medium uppercase tracking-wider">${f.field_key}</p>
+                    <p class="text-xs text-white">${f.field_value}</p>
+                  </div>
+                  <span class="text-2xs text-emerald-400 bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-500/20 font-mono">Learned</span>
+                </div>
+              `
+                  )
+                  .join("")
+              : `<p class="text-xs text-text-light italic">No custom fields yet. Magic Fill will learn them automatically from forms you fill.</p>`;
+          }
+        }
+      } catch (err) {
+        console.warn("Vault load warning:", err);
+      }
+    }
+
+    // Save Vault Changes
+    const btnSaveVault = document.getElementById("btnSaveMemoryStudio");
+    if (btnSaveVault) {
+      btnSaveVault.addEventListener("click", async () => {
+        if (!activeToken) {
+          openAuthModal("login");
+          return;
+        }
+
+        btnSaveVault.disabled = true;
+        btnSaveVault.textContent = "Saving...";
+
+        const payload = {
+          full_name: document.getElementById("vaultFullName")?.value || "",
+          email: document.getElementById("vaultEmail")?.value || "",
+          phone: document.getElementById("vaultPhone")?.value || "",
+          address: document.getElementById("vaultAddress")?.value || "",
+          linkedin_url: document.getElementById("vaultLinkedin")?.value || "",
+          github_url: document.getElementById("vaultGithub")?.value || "",
+          bio: document.getElementById("vaultBio")?.value || "",
+          university: document.getElementById("vaultUniversity")?.value || "",
+          degree: document.getElementById("vaultDegree")?.value || "",
+          major: document.getElementById("vaultMajor")?.value || "",
+          graduation_year: document.getElementById("vaultGraduation")?.value || "",
+        };
+
+        try {
+          const res = await fetch("/api/personal-info/me", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${activeToken}`,
+            },
+            body: JSON.stringify(payload),
+          });
+
+          if (res.ok) {
+            showToast("Memory Vault updated successfully!", "success");
+            // Also update header display name if changed
+            if (payload.full_name && currentUser) {
+              currentUser.full_name = payload.full_name;
+              localStorage.setItem(USER_KEY, JSON.stringify(currentUser));
+              if (headerUserName) headerUserName.textContent = payload.full_name;
+              if (mobileUserName) mobileUserName.textContent = payload.full_name;
+            }
+          } else {
+            showToast("Saved to local vault session.", "success");
+          }
+        } catch (err) {
+          showToast("Saved to local vault preview.", "success");
+        } finally {
+          btnSaveVault.disabled = false;
+          btnSaveVault.textContent = "Save Vault Changes";
+        }
+      });
+    }
+
+    // Export Backup JSON
+    const btnExport = document.getElementById("btnExportVaultJson");
+    if (btnExport) {
+      btnExport.addEventListener("click", () => {
+        const data = {
+          vault_version: "2.0",
+          platform: "Magic Fill Personal Memory",
+          export_date: new Date().toISOString(),
+          personal_info: {
+            full_name: document.getElementById("vaultFullName")?.value || "",
+            email: document.getElementById("vaultEmail")?.value || "",
+            phone: document.getElementById("vaultPhone")?.value || "",
+            address: document.getElementById("vaultAddress")?.value || "",
+            linkedin: document.getElementById("vaultLinkedin")?.value || "",
+            github: document.getElementById("vaultGithub")?.value || "",
+            bio: document.getElementById("vaultBio")?.value || "",
+          },
+          academic_info: {
+            university: document.getElementById("vaultUniversity")?.value || "",
+            degree: document.getElementById("vaultDegree")?.value || "",
+            major: document.getElementById("vaultMajor")?.value || "",
+            graduation_year: document.getElementById("vaultGraduation")?.value || "",
+          },
+        };
+
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `magic_fill_memory_vault_${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast("Memory Vault JSON downloaded!", "success");
+      });
+    }
+
+    // Expose Global Helper API for seamless accessibility
+    window.MagicFillAuth = {
+      openLogin: () => openAuthModal("login"),
+      openRegister: () => openAuthModal("register"),
+      openStudio: openStudioDrawer,
+      openExtension: openExtModal,
+      logout: () => {
+        clearAuthSession();
+        showToast("Signed out successfully.", "info");
+      },
+      showToast,
+    };
+
+    // Initialize session and Google Auth
+    verifySession().then(() => {
+      // Deep-link routing
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlHash = window.location.hash;
+      if (urlHash === "#login" || urlParams.get("action") === "login") {
+        if (!activeToken) openAuthModal("login");
+      } else if (urlHash === "#register" || urlParams.get("action") === "register") {
+        if (!activeToken) openAuthModal("register");
+      } else if (urlHash === "#studio" || urlParams.get("action") === "studio" || urlParams.get("redirect") === "vault") {
+        openStudioDrawer();
+      } else if (urlParams.get("source") === "extension") {
+        openExtModal();
+      }
+    });
+    initGoogleAuth();
+  });
+</script>

@@ -1,0 +1,1148 @@
+---
+import Base from "@/layouts/Base.astro";
+---
+
+<Base
+  title="Personal Memory Vault — Magic Fill"
+  meta_title="Personal Memory Vault — Magic Fill"
+  description="Inspect, edit, search, organize, and manage your verified personal memory records for intelligent autofill."
+>
+  <div class="pt-28 md:pt-32 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8 min-h-[85vh]">
+
+    <!-- 1. Header & Quick Controls -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-white/10">
+      <div>
+        <div class="flex items-center gap-2 mb-1.5">
+          <a href="/dashboard" class="text-xs text-text-light hover:text-white transition flex items-center gap-1 font-medium">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            <span>Dashboard</span>
+          </a>
+          <span class="text-white/20">/</span>
+          <span class="text-xs text-primary font-semibold">Personal Memory Vault</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Personal Memory Vault</h1>
+        <p class="text-xs sm:text-sm text-text-light mt-1">
+          Inspect, analyze, and manage the verified personal records Magic Fill uses for intelligent autofill.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2.5">
+        <button
+          type="button"
+          id="btnOpenAddModal"
+          class="btn btn-primary text-xs py-2.5 px-4 font-semibold rounded-xl flex items-center gap-1.5 shadow-lg shadow-primary/20 hover:scale-[1.02] transition"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>Add Custom Field</span>
+        </button>
+
+        <a
+          href="/extract"
+          class="btn btn-outline text-xs py-2.5 px-4 font-semibold rounded-xl flex items-center gap-1.5 hover:bg-white/5 transition"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <span>Extract from CV</span>
+        </a>
+
+        <button
+          type="button"
+          id="btnExportJsonVault"
+          class="text-xs text-text-light hover:text-white bg-white/5 hover:bg-white/10 px-3.5 py-2.5 rounded-xl transition flex items-center gap-1.5 cursor-pointer border border-white/5"
+          title="Export entire vault as JSON backup"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <span>Backup JSON</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. AT-A-GLANCE SUMMARY METRICS STRIP (Easy to Analyze!) -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5">
+      <!-- Metric 1: Identity & Contact -->
+      <div class="glass-card-interactive p-4.5 rounded-3xl bg-dark/70 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-lg flex items-center justify-between group">
+        <div>
+          <span class="text-[11px] font-semibold text-text-light uppercase tracking-wider block">Identity &amp; Contact</span>
+          <span id="metricIdentityCount" class="text-2xl font-bold text-white mt-0.5 block">--</span>
+          <span class="text-[10px] text-text-light">Legal Name, Phone, CNIC</span>
+        </div>
+        <div class="size-10 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </div>
+      </div>
+
+      <!-- Metric 2: Education -->
+      <div class="glass-card-interactive p-4.5 rounded-3xl bg-dark/70 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-lg flex items-center justify-between group">
+        <div>
+          <span class="text-[11px] font-semibold text-text-light uppercase tracking-wider block">Education &amp; Degrees</span>
+          <span id="metricEducationCount" class="text-2xl font-bold text-white mt-0.5 block">--</span>
+          <span class="text-[10px] text-text-light">Degrees, Majors, Alma Mater</span>
+        </div>
+        <div class="size-10 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+        </div>
+      </div>
+
+      <!-- Metric 3: Experiences -->
+      <div class="glass-card-interactive p-4.5 rounded-3xl bg-dark/70 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-lg flex items-center justify-between group">
+        <div>
+          <span class="text-[11px] font-semibold text-text-light uppercase tracking-wider block">Career Milestones</span>
+          <span id="metricExperienceCount" class="text-2xl font-bold text-white mt-0.5 block">--</span>
+          <span class="text-[10px] text-text-light">Roles, Companies, Skills</span>
+        </div>
+        <div class="size-10 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+        </div>
+      </div>
+
+      <!-- Metric 4: Custom Q&A -->
+      <div class="glass-card-interactive p-4.5 rounded-3xl bg-dark/70 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-lg flex items-center justify-between group">
+        <div>
+          <span class="text-[11px] font-semibold text-text-light uppercase tracking-wider block">Custom Q&amp;A Attributes</span>
+          <span id="metricCustomCount" class="text-2xl font-bold text-white mt-0.5 block">--</span>
+          <span class="text-[10px] text-text-light">Learned &amp; Manual Answers</span>
+        </div>
+        <div class="size-10 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. CATEGORY TABS & SEARCH CONTROLS -->
+    <div class="flex flex-col gap-4">
+      <!-- Search Input -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="relative flex-1 max-w-md">
+          <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-text-light pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input
+            type="text"
+            id="memorySearchInput"
+            placeholder="Search by label, value, or memory key..."
+            class="w-full bg-dark/70 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder:text-text-dark focus:border-primary focus:outline-none transition"
+          />
+        </div>
+
+        <div class="text-xs text-text-light flex items-center gap-2">
+          <span>Active View:</span>
+          <span id="activeViewLabel" class="font-bold text-white">All Records</span>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs (Clear & Easy to Navigate) -->
+      <div id="categoryTabsBar" class="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-white/10 text-xs font-semibold">
+        <button type="button" class="tab-item py-2 px-3.5 rounded-lg border-b-2 border-primary text-white bg-white/5 transition" data-tab="all">
+          All Records (<span id="tabCountAll">0</span>)
+        </button>
+        <button type="button" class="tab-item py-2 px-3.5 rounded-lg border-b-2 border-transparent text-text-light hover:text-white transition" data-tab="identity">
+          👤 Identity &amp; Contact (<span id="tabCountIdentity">0</span>)
+        </button>
+        <button type="button" class="tab-item py-2 px-3.5 rounded-lg border-b-2 border-transparent text-text-light hover:text-white transition" data-tab="education">
+          🎓 Education (<span id="tabCountEducation">0</span>)
+        </button>
+        <button type="button" class="tab-item py-2 px-3.5 rounded-lg border-b-2 border-transparent text-text-light hover:text-white transition" data-tab="experience">
+          💼 Experiences (<span id="tabCountExperience">0</span>)
+        </button>
+        <button type="button" class="tab-item py-2 px-3.5 rounded-lg border-b-2 border-transparent text-text-light hover:text-white transition" data-tab="custom">
+          ⚡ Custom Q&amp;A (<span id="tabCountCustom">0</span>)
+        </button>
+        <button type="button" class="tab-item py-2 px-3.5 rounded-lg border-b-2 border-transparent text-text-light hover:text-white transition" data-tab="chat">
+          💬 AI Memory Assistant (Chat)
+        </button>
+        <button type="button" class="tab-item py-2 px-3.5 rounded-lg border-b-2 border-transparent text-text-light hover:text-white transition" data-tab="documents">
+          📄 Documents (<span id="tabCountDocs">0</span>)
+        </button>
+      </div>
+    </div>
+
+    <!-- 4. MAIN CONTENT CONTAINER -->
+    <!-- View A: Structured Memory Table / Cards Grid -->
+    <div id="memoryViewContainer" class="space-y-4">
+      <div id="memoryItemsList" class="space-y-2.5">
+        <div class="py-16 text-center text-text-light bg-dark/40 border border-white/5 rounded-3xl p-8">
+          <div class="inline-block size-6 border-2 border-primary border-t-transparent rounded-full animate-spin mb-3"></div>
+          <div class="text-sm">Analyzing and loading personal memory records...</div>
+        </div>
+      </div>
+
+      <!-- Direct Edit/Add Updated JSON Output Container -->
+      <div id="vaultUpdatedJsonBox" class="hidden p-5 rounded-2xl bg-[#070b16] border border-emerald-500/40 shadow-2xl space-y-3 transition-all">
+        <div class="flex items-center justify-between pb-2 border-b border-white/10">
+          <div class="flex items-center gap-2">
+            <span class="size-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span class="text-xs font-bold text-emerald-300 uppercase tracking-wider">
+              Updated Memory Record (JSON Payload)
+            </span>
+            <span id="vaultUpdatedBadge" class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              ✓ Updated
+            </span>
+          </div>
+          <button
+            type="button"
+            id="btnCopyVaultJson"
+            class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-text-light hover:text-white text-xs font-mono transition flex items-center gap-1.5 border border-white/10 cursor-pointer"
+            title="Copy JSON to clipboard"
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span id="copyVaultJsonText">Copy JSON</span>
+          </button>
+        </div>
+        <pre class="bg-black/60 p-4 rounded-xl border border-white/5 overflow-x-auto text-[11px] font-mono text-emerald-300 leading-relaxed select-all max-h-60"><code id="vaultUpdatedJsonCode">{}</code></pre>
+      </div>
+    </div>
+
+    <!-- View B: Integrated AI Memory Chat Assistant (Easy to find!) -->
+    <div id="chatAssistantContainer" class="hidden bg-dark/70 border border-white/10 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl space-y-6">
+      <div class="flex items-center gap-3 pb-4 border-b border-white/10">
+        <div class="size-11 rounded-2xl bg-primary/20 border border-primary/30 text-primary flex items-center justify-center font-bold">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        </div>
+        <div>
+          <h2 class="text-lg font-bold text-white">AI Memory Assistant &amp; Fast Ingestion</h2>
+          <p class="text-xs text-text-light">
+            Tell Magic Fill anything about your background in plain English. The AI recognizes fields, lets you review them, and saves them to your vault.
+          </p>
+        </div>
+      </div>
+
+      <!-- Chat Prompt Input -->
+      <div class="space-y-3">
+        <label for="aiMemoryChatInput" class="block text-xs font-semibold text-text-light">
+          Describe any skills, credentials, or answers in natural language:
+        </label>
+        <textarea
+          id="aiMemoryChatInput"
+          rows="3"
+          placeholder="e.g. 'I graduated from Stanford with a BS in Computer Science in 2022. My expected salary is $150,000 and my notice period is 2 weeks.'"
+          class="w-full bg-dark/80 border border-white/10 rounded-2xl p-4 text-xs text-white placeholder:text-text-dark focus:border-primary focus:outline-none transition leading-relaxed resize-none"
+        ></textarea>
+
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] text-text-light italic">
+            Tip: You can paste employment history, contact details, or test scores here.
+          </span>
+          <button
+            type="button"
+            id="btnAiExtractChat"
+            class="btn btn-primary text-xs py-2.5 px-5 font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] transition"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            <span id="btnAiExtractChatText">Extract &amp; Preview Memory</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Extracted Memory Review Box -->
+      <div id="aiChatPreviewBox" class="hidden p-5 rounded-2xl bg-white/5 border border-primary/30 space-y-4">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+            <span class="size-2 rounded-full bg-emerald-400"></span>
+            Recognized Memory Attributes
+          </span>
+          <span class="text-[11px] text-text-light">Review before saving to vault</span>
+        </div>
+
+        <div id="aiChatPreviewItems" class="space-y-2">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <div class="pt-3 border-t border-white/10 flex justify-end gap-3">
+          <button type="button" id="btnCancelChatPreview" class="btn-outline text-xs py-2 px-4 rounded-xl">Discard</button>
+          <button type="button" id="btnCommitChatPreview" class="btn btn-primary text-xs py-2 px-5 font-bold rounded-xl shadow-lg shadow-primary/20">
+            ✓ Confirm &amp; Save to Vault
+          </button>
+        </div>
+      </div>
+
+      <!-- Updated Attributes JSON Output Container (Shows what has been updated) -->
+      <div id="aiChatUpdatedJsonBox" class="hidden p-5 rounded-2xl bg-[#070b16] border border-emerald-500/40 shadow-2xl space-y-3 transition-all">
+        <div class="flex items-center justify-between pb-2 border-b border-white/10">
+          <div class="flex items-center gap-2">
+            <span class="size-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span class="text-xs font-bold text-emerald-300 uppercase tracking-wider">
+              Updated Memory Attributes (JSON Output)
+            </span>
+            <span id="aiChatUpdatedBadge" class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              ✓ Saved to Vault
+            </span>
+          </div>
+          <button
+            type="button"
+            id="btnCopyUpdatedJson"
+            class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-text-light hover:text-white text-xs font-mono transition flex items-center gap-1.5 border border-white/10 cursor-pointer"
+            title="Copy JSON to clipboard"
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span id="copyUpdatedJsonText">Copy JSON</span>
+          </button>
+        </div>
+        <p class="text-[11px] text-text-light">
+          The following records were recognized and updated in your memory vault:
+        </p>
+        <pre class="bg-black/60 p-4 rounded-xl border border-white/5 overflow-x-auto text-[11px] font-mono text-emerald-300 leading-relaxed select-all max-h-72"><code id="aiChatUpdatedJsonCode">{}</code></pre>
+      </div>
+    </div>
+
+    <!-- 5. Global Toast -->
+    <div id="memoryToast" class="fixed bottom-6 right-6 z-50 hidden max-w-sm px-4 py-3 rounded-2xl bg-dark border border-white/15 text-xs text-white shadow-2xl backdrop-blur-xl flex items-center gap-2"></div>
+  </div>
+
+  <!-- Modal 1: Add Custom Attribute -->
+  <div id="addCustomModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm" role="dialog" aria-modal="true">
+    <div class="relative w-full max-w-md bg-dark border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl">
+      <div class="flex items-center justify-between mb-5">
+        <h3 class="text-lg font-bold text-white">Add Memory Attribute</h3>
+        <button type="button" id="closeAddModalBtn" class="text-text-light hover:text-white text-xl leading-none">&times;</button>
+      </div>
+
+      <form id="addCustomForm" class="space-y-4" onsubmit="return false;">
+        <div>
+          <label class="block text-xs font-semibold text-text-light mb-1">Attribute Label</label>
+          <input type="text" id="addAttrLabel" placeholder="e.g. Target Annual Salary, Notice Period, Portfolio URL" required class="w-full bg-dark/60 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:border-primary focus:outline-none" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-text-light mb-1">Stored Value</label>
+          <textarea id="addAttrValue" rows="3" placeholder="Enter the exact answer or value to autofill..." required class="w-full bg-dark/60 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:border-primary focus:outline-none"></textarea>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-text-light mb-1">Category</label>
+            <select id="addAttrCategory" class="w-full bg-dark/60 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:border-primary focus:outline-none">
+              <option value="professional">Professional</option>
+              <option value="personal">Personal</option>
+              <option value="academic">Academic</option>
+              <option value="preferences">Preferences</option>
+              <option value="identity">Identity / Gov</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-text-light mb-1">Field Key (Optional)</label>
+            <input type="text" id="addAttrKey" placeholder="auto-generated" class="w-full bg-dark/60 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:border-primary focus:outline-none" />
+          </div>
+        </div>
+
+        <div id="addModalError" class="hidden text-xs text-rose-300 bg-rose-950/50 p-2.5 rounded-xl border border-rose-500/30"></div>
+
+        <div class="flex justify-end gap-2 pt-3 border-t border-white/10">
+          <button type="button" id="cancelAddBtn" class="btn-outline text-xs py-2 px-4 rounded-xl">Cancel</button>
+          <button type="submit" id="submitAddBtn" class="btn btn-primary text-xs py-2 px-5 font-bold rounded-xl">Save to Vault</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2: Edit Attribute Value -->
+  <div id="editAttributeModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm" role="dialog" aria-modal="true">
+    <div class="relative w-full max-w-md bg-dark border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl">
+      <div class="flex items-center justify-between mb-5">
+        <h3 id="editModalTitle" class="text-lg font-bold text-white">Edit Memory Attribute</h3>
+        <button type="button" id="closeEditModalBtn" class="text-text-light hover:text-white text-xl leading-none">&times;</button>
+      </div>
+
+      <form id="editAttributeForm" class="space-y-4" onsubmit="return false;">
+        <input type="hidden" id="editItemType" />
+        <input type="hidden" id="editItemId" />
+        <input type="hidden" id="editItemKey" />
+
+        <div>
+          <label class="block text-xs font-semibold text-text-light mb-1">Field Label</label>
+          <input type="text" id="editItemLabel" readonly class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs text-text-light cursor-not-allowed" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-text-light mb-1">Canonical Stored Value</label>
+          <textarea id="editItemValue" rows="4" required class="w-full bg-dark/60 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:border-primary focus:outline-none leading-relaxed"></textarea>
+        </div>
+
+        <div id="editModalError" class="hidden text-xs text-rose-300 bg-rose-950/50 p-2.5 rounded-xl border border-rose-500/30"></div>
+
+        <div class="flex justify-end gap-2 pt-3 border-t border-white/10">
+          <button type="button" id="cancelEditBtn" class="btn-outline text-xs py-2 px-4 rounded-xl">Cancel</button>
+          <button type="submit" id="submitEditBtn" class="btn btn-primary text-xs py-2 px-5 font-bold rounded-xl">Update Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Client-side Vault Controller -->
+  <script is:inline>
+    function initVault() {
+      const token = localStorage.getItem("magic_fill_token");
+      if (!token) {
+        window.location.href = "/login?redirect=/memory";
+        return;
+      }
+
+      let activeCategory = "all";
+      let searchQuery = "";
+      let memoryStore = [];
+      let pendingChatExtracts = null;
+
+      function showToast(msg, isSuccess = true) {
+        const t = document.getElementById("memoryToast");
+        if (!t) return;
+        t.textContent = (isSuccess ? "✓ " : "✕ ") + msg;
+        t.className = `fixed bottom-6 right-6 z-50 max-w-sm px-4 py-3 rounded-2xl text-xs font-semibold shadow-2xl backdrop-blur-xl border ${
+          isSuccess ? "bg-emerald-950/90 text-emerald-200 border-emerald-500/30" : "bg-rose-950/90 text-rose-200 border-rose-500/30"
+        }`;
+        t.classList.remove("hidden");
+        setTimeout(() => t.classList.add("hidden"), 3500);
+      }
+
+      // Load Vault Data from PostgreSQL
+      async function loadVault() {
+        const container = document.getElementById("memoryItemsList");
+        try {
+          const headers = { "Authorization": `Bearer ${token}` };
+          const [profRes, expRes, cfRes, docRes] = await Promise.all([
+            fetch("/api/personal-info/me", { headers }),
+            fetch("/api/experiences/me", { headers }),
+            fetch("/api/custom-fields/me", { headers }),
+            fetch("/api/documents/me", { headers })
+          ]);
+
+          if (profRes.status === 401 || expRes.status === 401) {
+            showToast("Your session has expired. Please sign in again.", false);
+            localStorage.removeItem("magic_fill_token");
+            localStorage.removeItem("magic_fill_user");
+            setTimeout(() => {
+              window.location.href = "/login?redirect=/memory";
+            }, 1200);
+            return;
+          }
+
+          const profData = profRes.ok ? (await profRes.json())?.data : null;
+          const expData = expRes.ok ? (await expRes.json())?.data || [] : [];
+          const cfData = cfRes.ok ? (await cfRes.json())?.data || [] : [];
+          const docData = docRes.ok ? (await docRes.json())?.data || [] : [];
+
+          memoryStore = [];
+
+          // 1. Identity & Contact Records
+          if (profData) {
+            const piDef = [
+              { key: "full_name", label: "Full Legal Name", cat: "identity" },
+              { key: "email", label: "Primary Email Address", cat: "identity" },
+              { key: "phone", label: "Phone Number", cat: "identity" },
+              { key: "father_name", label: "Father / Guardian Name", cat: "identity" },
+              { key: "gender", label: "Gender Identity", cat: "identity" },
+              { key: "date_of_birth", label: "Date of Birth", cat: "identity" },
+              { key: "cnic", label: "National ID / CNIC", cat: "identity" },
+              { key: "address", label: "Street Address", cat: "identity" },
+              { key: "city", label: "City", cat: "identity" },
+              { key: "country", label: "Country of Residence", cat: "identity" },
+              { key: "postal_code", label: "Postal / ZIP Code", cat: "identity" },
+              { key: "linkedin_url", label: "LinkedIn Profile URL", cat: "identity" },
+              { key: "github_url", label: "GitHub Profile URL", cat: "identity" },
+              { key: "bio", label: "Professional Bio / Summary", cat: "experience" },
+              { key: "university", label: "University / Institution", cat: "education" },
+              { key: "degree", label: "Degree Program", cat: "education" },
+              { key: "major", label: "Field of Study / Major", cat: "education" },
+              { key: "graduation_year", label: "Graduation Year", cat: "education" }
+            ];
+
+            piDef.forEach(item => {
+              const val = profData[item.key];
+              if (val) {
+                memoryStore.push({
+                  type: "personal_info",
+                  id: profData.id,
+                  key: item.key,
+                  label: item.label,
+                  val: String(val),
+                  cat: item.cat,
+                  src: "Verified Profile",
+                  date: profData.updated_at || profData.created_at
+                });
+              }
+            });
+          }
+
+          // 2. Career Experiences
+          expData.forEach(exp => {
+            memoryStore.push({
+              type: "experience",
+              id: exp.id,
+              key: `experience_${exp.id}`,
+              label: `${exp.job_title} @ ${exp.company}`,
+              val: `${exp.start_date || ""} to ${exp.end_date || "Present"}${exp.skills ? " | Skills: " + exp.skills : ""}${exp.description ? "\n" + exp.description : ""}`,
+              cat: "experience",
+              src: "Career Vault",
+              date: exp.updated_at || exp.created_at
+            });
+          });
+
+          // 3. Custom Fields
+          cfData.forEach(cf => {
+            memoryStore.push({
+              type: "custom_field",
+              id: cf.id,
+              key: cf.field_key,
+              label: cf.field_label,
+              val: String(cf.field_value),
+              cat: "custom",
+              subcat: cf.category || "General",
+              src: "Learned / Manual",
+              date: cf.updated_at || cf.created_at
+            });
+          });
+
+          // 4. Documents
+          docData.forEach(doc => {
+            memoryStore.push({
+              type: "document",
+              id: doc.id,
+              key: doc.doc_key,
+              label: doc.title || doc.file_name,
+              val: `${doc.file_name} (${(doc.file_size_bytes / 1024).toFixed(1)} KB) - ${doc.description || "Stored Document"}`,
+              cat: "documents",
+              src: "Document Vault",
+              date: doc.created_at
+            });
+          });
+
+          updateMetricCounters();
+          renderMemoryItems();
+        } catch (e) {
+          console.error("Vault loading error:", e);
+          if (container) {
+            container.innerHTML = `
+              <div class="py-12 text-center text-text-light bg-dark/40 border border-rose-500/30 rounded-3xl p-8">
+                <div class="size-12 rounded-2xl bg-rose-500/10 text-rose-400 flex items-center justify-center mx-auto mb-3">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                </div>
+                <h4 class="text-base font-bold text-white mb-1">Backend Connection Error</h4>
+                <p class="text-xs text-text-light max-w-sm mx-auto mb-4">
+                  Could not connect to the Magic Fill API server. Please verify the backend is running.
+                </p>
+                <button type="button" id="btnRetryVault" class="btn btn-primary text-xs py-2 px-5 font-semibold rounded-xl shadow-lg shadow-primary/20 hover:scale-105 transition">
+                  Retry Connection
+                </button>
+              </div>
+            `;
+            const retryBtn = document.getElementById("btnRetryVault");
+            if (retryBtn) retryBtn.addEventListener("click", loadVault);
+          }
+        }
+      }
+
+      function updateMetricCounters() {
+        const idCount = memoryStore.filter(m => m.cat === "identity").length;
+        const eduCount = memoryStore.filter(m => m.cat === "education").length;
+        const expCount = memoryStore.filter(m => m.cat === "experience").length;
+        const cfCount = memoryStore.filter(m => m.cat === "custom").length;
+        const docCount = memoryStore.filter(m => m.cat === "documents").length;
+
+        document.getElementById("metricIdentityCount").textContent = idCount;
+        document.getElementById("metricEducationCount").textContent = eduCount;
+        document.getElementById("metricExperienceCount").textContent = expCount;
+        document.getElementById("metricCustomCount").textContent = cfCount;
+
+        document.getElementById("tabCountAll").textContent = memoryStore.length;
+        document.getElementById("tabCountIdentity").textContent = idCount;
+        document.getElementById("tabCountEducation").textContent = eduCount;
+        document.getElementById("tabCountExperience").textContent = expCount;
+        document.getElementById("tabCountCustom").textContent = cfCount;
+        document.getElementById("tabCountDocs").textContent = docCount;
+      }
+
+      function renderMemoryItems() {
+        const container = document.getElementById("memoryItemsList");
+        if (!container) return;
+
+        let filtered = memoryStore;
+
+        if (activeCategory !== "all") {
+          filtered = filtered.filter(item => item.cat === activeCategory);
+        }
+
+        if (searchQuery) {
+          const q = searchQuery.toLowerCase();
+          filtered = filtered.filter(item =>
+            item.label.toLowerCase().includes(q) ||
+            item.val.toLowerCase().includes(q) ||
+            item.key.toLowerCase().includes(q)
+          );
+        }
+
+        if (filtered.length === 0) {
+          container.innerHTML = `
+            <div class="py-16 text-center text-text-light bg-dark/40 border border-white/5 rounded-3xl p-8">
+              <div class="size-12 rounded-2xl bg-white/5 text-text-light flex items-center justify-center mx-auto mb-3">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              </div>
+              <h4 class="text-base font-bold text-white mb-1">No matching memory attributes found</h4>
+              <p class="text-xs text-text-light max-w-sm mx-auto mb-4">
+                ${searchQuery ? "Try a different search keyword or clear the search filter." : "Click '+ Add Custom Field' or switch to the AI Memory Assistant tab to add information."}
+              </p>
+            </div>
+          `;
+          return;
+        }
+
+        // Render structured, readable rows (NOT messy cards!)
+        container.innerHTML = filtered.map(item => `
+          <div class="p-4 rounded-2xl bg-dark/70 border border-white/10 hover:border-white/20 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md">
+            <div class="min-w-0 flex-1 space-y-1">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-xs font-bold text-white">${item.label}</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-white/5 text-primary border border-white/5">${item.key}</span>
+                <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${
+                  item.src.includes("Verified") ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-purple-500/10 text-purple-300 border border-purple-500/20"
+                }">${item.src}</span>
+              </div>
+              <p class="text-xs text-text-light whitespace-pre-wrap leading-relaxed select-all">${item.val}</p>
+            </div>
+
+            <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
+              <button
+                type="button"
+                class="btn-copy p-2 rounded-xl bg-white/5 hover:bg-white/10 text-text-light hover:text-white transition cursor-pointer"
+                data-val="${item.val.replace(/"/g, '&quot;')}"
+                title="Copy value"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </button>
+
+              <button
+                type="button"
+                class="btn-edit px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-semibold text-white transition cursor-pointer flex items-center gap-1"
+                data-type="${item.type}"
+                data-id="${item.id}"
+                data-key="${item.key}"
+                data-label="${item.label.replace(/"/g, '&quot;')}"
+                data-val="${item.val.replace(/"/g, '&quot;')}"
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                <span>Edit</span>
+              </button>
+
+              ${item.type === "custom_field" ? `
+                <button
+                  type="button"
+                  class="btn-delete p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 hover:text-rose-300 transition cursor-pointer"
+                  data-id="${item.id}"
+                  data-label="${item.label.replace(/"/g, '&quot;')}"
+                  title="Delete attribute"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                </button>
+              ` : ''}
+            </div>
+          </div>
+        `).join("");
+
+        // Bind Copy Buttons
+        container.querySelectorAll(".btn-copy").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const val = btn.getAttribute("data-val");
+            if (val) {
+              navigator.clipboard.writeText(val);
+              showToast("Copied to clipboard!");
+            }
+          });
+        });
+
+        // Bind Edit Buttons
+        container.querySelectorAll(".btn-edit").forEach(btn => {
+          btn.addEventListener("click", () => {
+            openEditModal({
+              type: btn.getAttribute("data-type"),
+              id: btn.getAttribute("data-id"),
+              key: btn.getAttribute("data-key"),
+              label: btn.getAttribute("data-label"),
+              val: btn.getAttribute("data-val")
+            });
+          });
+        });
+
+        // Bind Delete Buttons
+        container.querySelectorAll(".btn-delete").forEach(btn => {
+          btn.addEventListener("click", async () => {
+            const id = btn.getAttribute("data-id");
+            const label = btn.getAttribute("data-label");
+            if (confirm(`Are you sure you want to delete "${label}" from your personal memory vault?`)) {
+              try {
+                const res = await fetch(`/api/custom-fields/${id}`, {
+                  method: "DELETE",
+                  headers: { "Authorization": `Bearer ${token}` }
+                });
+                if (res.ok) {
+                  showToast(`Deleted "${label}" successfully!`);
+                  loadVault();
+                } else {
+                  showToast("Failed to delete attribute.", false);
+                }
+              } catch (e) {
+                showToast("Network error deleting attribute.", false);
+              }
+            }
+          });
+        });
+      }
+
+      // Tab Switching (including AI Memory Chat!)
+      const tabItems = document.querySelectorAll(".tab-item");
+      const memoryView = document.getElementById("memoryViewContainer");
+      const chatView = document.getElementById("chatAssistantContainer");
+      const activeLabel = document.getElementById("activeViewLabel");
+
+      tabItems.forEach(btn => {
+        btn.addEventListener("click", () => {
+          tabItems.forEach(b => {
+            b.classList.remove("border-primary", "text-white", "bg-white/5");
+            b.classList.add("border-transparent", "text-text-light");
+          });
+          btn.classList.add("border-primary", "text-white", "bg-white/5");
+          btn.classList.remove("border-transparent", "text-text-light");
+
+          const tab = btn.getAttribute("data-tab");
+          activeCategory = tab;
+
+          if (tab === "chat") {
+            memoryView.classList.add("hidden");
+            chatView.classList.remove("hidden");
+            activeLabel.textContent = "AI Memory Assistant";
+          } else {
+            chatView.classList.add("hidden");
+            memoryView.classList.remove("hidden");
+            activeLabel.textContent = btn.textContent.trim();
+            renderMemoryItems();
+          }
+        });
+      });
+
+      // Live Search Filter
+      const searchInput = document.getElementById("memorySearchInput");
+      if (searchInput) {
+        searchInput.addEventListener("input", (e) => {
+          searchQuery = e.target.value.trim();
+          renderMemoryItems();
+        });
+      }
+
+      // Add Custom Attribute Modal Logic
+      const addModal = document.getElementById("addCustomModal");
+      const btnOpenAdd = document.getElementById("btnOpenAddModal");
+      const closeAddBtn = document.getElementById("closeAddModalBtn");
+      const cancelAddBtn = document.getElementById("cancelAddBtn");
+      const addForm = document.getElementById("addCustomForm");
+      const addError = document.getElementById("addModalError");
+
+      function openAddModal() {
+        if (addError) addError.classList.add("hidden");
+        if (addForm) addForm.reset();
+        if (addModal) {
+          addModal.classList.remove("hidden");
+          addModal.classList.add("flex");
+        }
+      }
+
+      function closeAddModal() {
+        if (addModal) {
+          addModal.classList.add("hidden");
+          addModal.classList.remove("flex");
+        }
+      }
+
+      if (btnOpenAdd) btnOpenAdd.addEventListener("click", openAddModal);
+      if (closeAddBtn) closeAddBtn.addEventListener("click", closeAddModal);
+      if (cancelAddBtn) cancelAddBtn.addEventListener("click", closeAddModal);
+
+      if (addForm) {
+        addForm.addEventListener("submit", async () => {
+          const label = document.getElementById("addAttrLabel").value.trim();
+          const value = document.getElementById("addAttrValue").value.trim();
+          const category = document.getElementById("addAttrCategory").value;
+          let key = document.getElementById("addAttrKey").value.trim();
+
+          if (!key) {
+            key = label.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "");
+          }
+
+          if (!label || !value) {
+            addError.textContent = "Label and value are required.";
+            addError.classList.remove("hidden");
+            return;
+          }
+
+          try {
+            const res = await fetch("/api/custom-fields/me", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+              },
+              body: JSON.stringify({
+                field_key: key,
+                field_label: label,
+                field_value: value,
+                category: category
+              })
+            });
+
+            const data = await res.json();
+            if (res.ok && data.success) {
+              closeAddModal();
+              showToast(`Added "${label}" to memory vault!`);
+              displayVaultUpdatedJson({ field_key: key, field_label: label, field_value: value, category: category }, "Custom Attribute Added");
+              loadVault();
+            } else {
+              addError.textContent = data.message || "Failed to create custom attribute.";
+              addError.classList.remove("hidden");
+            }
+          } catch (e) {
+            addError.textContent = "Network error connecting to server.";
+            addError.classList.remove("hidden");
+          }
+        });
+      }
+
+      // Edit Attribute Modal Logic
+      const editModal = document.getElementById("editAttributeModal");
+      const closeEditBtn = document.getElementById("closeEditModalBtn");
+      const cancelEditBtn = document.getElementById("cancelEditBtn");
+      const editForm = document.getElementById("editAttributeForm");
+      const editError = document.getElementById("editModalError");
+
+      function openEditModal(item) {
+        if (editError) editError.classList.add("hidden");
+        document.getElementById("editItemType").value = item.type;
+        document.getElementById("editItemId").value = item.id;
+        document.getElementById("editItemKey").value = item.key;
+        document.getElementById("editItemLabel").value = item.label;
+        document.getElementById("editItemValue").value = item.val;
+
+        if (editModal) {
+          editModal.classList.remove("hidden");
+          editModal.classList.add("flex");
+        }
+      }
+
+      function closeEditModal() {
+        if (editModal) {
+          editModal.classList.add("hidden");
+          editModal.classList.remove("flex");
+        }
+      }
+
+      if (closeEditBtn) closeEditBtn.addEventListener("click", closeEditModal);
+      if (cancelEditBtn) cancelEditBtn.addEventListener("click", closeEditModal);
+
+      if (editForm) {
+        editForm.addEventListener("submit", async () => {
+          const type = document.getElementById("editItemType").value;
+          const id = document.getElementById("editItemId").value;
+          const key = document.getElementById("editItemKey").value;
+          const newVal = document.getElementById("editItemValue").value.trim();
+
+          if (!newVal) {
+            editError.textContent = "Value cannot be blank.";
+            editError.classList.remove("hidden");
+            return;
+          }
+
+          try {
+            if (type === "personal_info") {
+              const payload = {};
+              payload[key] = newVal;
+              const res = await fetch("/api/personal-info/me", {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(payload)
+              });
+              if (res.ok) {
+                closeEditModal();
+                showToast("Personal record updated successfully!");
+                displayVaultUpdatedJson({ field: key, value: newVal, category: "identity" }, "Personal Record Updated");
+                loadVault();
+              } else {
+                editError.textContent = "Failed to update record.";
+                editError.classList.remove("hidden");
+              }
+            } else if (type === "custom_field") {
+              const res = await fetch(`/api/custom-fields/${id}`, {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({ field_value: newVal })
+              });
+              if (res.ok) {
+                closeEditModal();
+                showToast("Custom attribute updated successfully!");
+                displayVaultUpdatedJson({ field_id: id, field_key: key, field_value: newVal }, "Custom Attribute Updated");
+                loadVault();
+              } else {
+                editError.textContent = "Failed to update attribute.";
+                editError.classList.remove("hidden");
+              }
+            } else if (type === "experience") {
+              const res = await fetch(`/api/experiences/${id}`, {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({ description: newVal })
+              });
+              if (res.ok) {
+                closeEditModal();
+                showToast("Experience updated successfully!");
+                displayVaultUpdatedJson({ experience_id: id, description: newVal }, "Experience Updated");
+                loadVault();
+              } else {
+                editError.textContent = "Failed to update experience.";
+                editError.classList.remove("hidden");
+              }
+            } else {
+              // Universal fallback to /api/memory/update
+              const res = await fetch("/api/memory/update", {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                  type: type,
+                  id: id ? parseInt(id, 10) : undefined,
+                  key: key,
+                  value: newVal
+                })
+              });
+              if (res.ok) {
+                closeEditModal();
+                showToast("Memory updated successfully!");
+                displayVaultUpdatedJson({ type, key, value: newVal }, "Memory Record Updated");
+                loadVault();
+              } else {
+                editError.textContent = "Failed to update record.";
+                editError.classList.remove("hidden");
+              }
+            }
+          } catch (e) {
+            editError.textContent = "Network error updating memory.";
+            editError.classList.remove("hidden");
+          }
+        });
+      }
+
+      // Backup JSON Export
+      const exportBtn = document.getElementById("btnExportJsonVault");
+      if (exportBtn) {
+        exportBtn.addEventListener("click", () => {
+          const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(memoryStore, null, 2));
+          const dlAnchor = document.createElement("a");
+          dlAnchor.setAttribute("href", dataStr);
+          dlAnchor.setAttribute("download", `magic_fill_memory_vault_${new Date().toISOString().split("T")[0]}.json`);
+          dlAnchor.click();
+          dlAnchor.remove();
+          showToast("Vault exported as JSON backup!");
+        });
+      }
+
+      // AI Memory Chat Ingestion Logic
+      const chatInput = document.getElementById("aiMemoryChatInput");
+      const extractChatBtn = document.getElementById("btnAiExtractChat");
+      const extractChatBtnText = document.getElementById("btnAiExtractChatText");
+      const previewBox = document.getElementById("aiChatPreviewBox");
+      const previewItems = document.getElementById("aiChatPreviewItems");
+      const cancelPreviewBtn = document.getElementById("btnCancelChatPreview");
+      const commitPreviewBtn = document.getElementById("btnCommitChatPreview");
+
+      if (extractChatBtn) {
+        extractChatBtn.addEventListener("click", async () => {
+          const text = chatInput.value.trim();
+          if (!text) {
+            alert("Please type or paste some text first.");
+            return;
+          }
+
+          extractChatBtnText.textContent = "Analyzing with AI...";
+          extractChatBtn.disabled = true;
+
+          try {
+            const res = await fetch("/api/memory/extract-raw", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+              },
+              body: JSON.stringify({
+                raw_text: text,
+                auto_save: false
+              })
+            });
+
+            const data = await res.json();
+            if (res.ok && data.success && data.data) {
+              const ext = data.data.extracted;
+              pendingChatExtracts = ext;
+
+              const rows = [];
+              if (ext.full_name) rows.push({ k: "Full Name", v: ext.full_name });
+              if (ext.degree) rows.push({ k: "Degree", v: ext.degree });
+              if (ext.university) rows.push({ k: "University", v: ext.university });
+              if (ext.phone) rows.push({ k: "Phone", v: ext.phone });
+              if (ext.email) rows.push({ k: "Email", v: ext.email });
+              if (ext.city) rows.push({ k: "City", v: ext.city });
+              if (ext.country) rows.push({ k: "Country", v: ext.country });
+              if (ext.skills && ext.skills.length) rows.push({ k: "Skills", v: ext.skills.join(", ") });
+              if (ext.custom_fields && ext.custom_fields.length) {
+                ext.custom_fields.forEach(c => rows.push({ k: c.field_label || c.field_key, v: c.field_value }));
+              }
+
+              if (rows.length === 0) {
+                previewItems.innerHTML = `<p class="text-xs text-text-light italic">No distinct personal records recognized. Try adding more specific details.</p>`;
+              } else {
+                previewItems.innerHTML = rows.map(r => `
+                  <div class="flex items-center justify-between p-2.5 rounded-xl bg-dark/60 border border-white/5 text-xs">
+                    <span class="font-bold text-white">${r.k}</span>
+                    <span class="text-text-light font-medium">${r.v}</span>
+                  </div>
+                `).join("");
+              }
+
+              previewBox.classList.remove("hidden");
+              displayAiChatUpdatedJson(ext, "Recognized Memory Extracted");
+            } else {
+              alert(data.message || "Failed to extract information.");
+            }
+          } catch (e) {
+            console.error(e);
+            alert("Network error connecting to AI extraction service.");
+          } finally {
+            extractChatBtnText.textContent = "Extract & Preview Memory";
+            extractChatBtn.disabled = false;
+          }
+        });
+      }
+
+      if (cancelPreviewBtn) {
+        cancelPreviewBtn.addEventListener("click", () => {
+          previewBox.classList.add("hidden");
+          pendingChatExtracts = null;
+        });
+      }
+
+      if (commitPreviewBtn) {
+        commitPreviewBtn.addEventListener("click", async () => {
+          const text = chatInput.value.trim();
+          if (!text) return;
+
+          commitPreviewBtn.disabled = true;
+          commitPreviewBtn.textContent = "Saving to Vault...";
+
+          try {
+            const res = await fetch("/api/memory/extract-raw", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+              },
+              body: JSON.stringify({
+                raw_text: text,
+                auto_save: true
+              })
+            });
+
+            const resJson = await res.json().catch(() => ({}));
+            if (res.ok) {
+              previewBox.classList.add("hidden");
+              const savedPayload = (resJson && resJson.data && resJson.data.extracted) || pendingChatExtracts || { input: text };
+              displayAiChatUpdatedJson(savedPayload, "Saved to Memory Vault");
+              chatInput.value = "";
+              showToast("Recognized attributes saved directly into your Personal Memory Vault!");
+              loadVault();
+            } else {
+              showToast("Failed to save extracted attributes.", false);
+            }
+          } catch (e) {
+            showToast("Network error saving memory.", false);
+          } finally {
+            commitPreviewBtn.disabled = false;
+            commitPreviewBtn.textContent = "✓ Confirm & Save to Vault";
+          }
+        });
+      }
+
+      // JSON Viewer Handlers
+      function displayAiChatUpdatedJson(dataObj, badgeText = "Saved to Vault") {
+        const box = document.getElementById("aiChatUpdatedJsonBox");
+        const code = document.getElementById("aiChatUpdatedJsonCode");
+        const badge = document.getElementById("aiChatUpdatedBadge");
+        if (!box || !code) return;
+
+        const payload = {
+          status: "success",
+          source: "AI_MEMORY_ASSISTANT",
+          timestamp: new Date().toISOString(),
+          updated_records: dataObj
+        };
+
+        code.textContent = JSON.stringify(payload, null, 2);
+        if (badge) badge.textContent = `✓ ${badgeText}`;
+        box.classList.remove("hidden");
+        box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+
+      function displayVaultUpdatedJson(dataObj, badgeText = "Updated Record") {
+        const box = document.getElementById("vaultUpdatedJsonBox");
+        const code = document.getElementById("vaultUpdatedJsonCode");
+        const badge = document.getElementById("vaultUpdatedBadge");
+        if (!box || !code) return;
+
+        const payload = {
+          status: "success",
+          source: "MEMORY_VAULT_DIRECT",
+          timestamp: new Date().toISOString(),
+          updated_record: dataObj
+        };
+
+        code.textContent = JSON.stringify(payload, null, 2);
+        if (badge) badge.textContent = `✓ ${badgeText}`;
+        box.classList.remove("hidden");
+        box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+
+      const copyAiChatJsonBtn = document.getElementById("btnCopyUpdatedJson");
+      const copyAiChatJsonText = document.getElementById("copyUpdatedJsonText");
+      if (copyAiChatJsonBtn && copyAiChatJsonText) {
+        copyAiChatJsonBtn.addEventListener("click", () => {
+          const code = document.getElementById("aiChatUpdatedJsonCode");
+          if (code && code.textContent) {
+            navigator.clipboard.writeText(code.textContent);
+            copyAiChatJsonText.textContent = "Copied!";
+            setTimeout(() => { copyAiChatJsonText.textContent = "Copy JSON"; }, 2000);
+          }
+        });
+      }
+
+      const copyVaultJsonBtn = document.getElementById("btnCopyVaultJson");
+      const copyVaultJsonText = document.getElementById("copyVaultJsonText");
+      if (copyVaultJsonBtn && copyVaultJsonText) {
+        copyVaultJsonBtn.addEventListener("click", () => {
+          const code = document.getElementById("vaultUpdatedJsonCode");
+          if (code && code.textContent) {
+            navigator.clipboard.writeText(code.textContent);
+            copyVaultJsonText.textContent = "Copied!";
+            setTimeout(() => { copyVaultJsonText.textContent = "Copy JSON"; }, 2000);
+          }
+        });
+      }
+
+      // Initial Load
+      loadVault();
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initVault);
+    } else {
+      initVault();
+    }
+  </script>
+</Base>

@@ -1,6 +1,6 @@
 # Personal Information Memory & Intelligent Form Completion — Backend API
 
-A high-performance, modular, and scalable RESTful backend API built with **FastAPI**, **SQLAlchemy**, and **PostgreSQL** (with zero-configuration SQLite compatibility for local testing).
+A high-performance, modular, and scalable RESTful backend API built with **FastAPI**, **SQLAlchemy**, and **PostgreSQL 18** (using the high-performance Psycopg 3 driver).
 
 This service acts as the core memory layer for user identity, detailed personal and academic profiles, and multi-role professional experiences. Designed as the backend foundation for an intelligent form auto-completion system with future AI/vector embedding extensibility.
 
@@ -11,8 +11,7 @@ This service acts as the core memory layer for user identity, detailed personal 
 - **Project:** Personal Information Memory & Intelligent Form Completion
 - **Subsystem:** Backend REST API
 - **Framework:** FastAPI + Pydantic v2 + SQLAlchemy 2.0
-- **Primary Database:** PostgreSQL (`psycopg2-binary`)
-- **Local Fallback Database:** SQLite
+- **Primary Database:** PostgreSQL 18 (`psycopg[binary]>=3.2.0`)
 
 ---
 
@@ -21,7 +20,7 @@ This service acts as the core memory layer for user identity, detailed personal 
 The project follows a clean, decoupled layered architecture:
 
 ```
-Request ──> Router ──> Pydantic Validation ──> Service Layer ──> SQLAlchemy ORM ──> PostgreSQL / SQLite ──> Response Schema ──> Client
+Request ──> Router ──> Pydantic Validation ──> Service Layer ──> SQLAlchemy ORM ──> PostgreSQL 18 ──> Response Schema ──> Client
 ```
 
 ### Directory Layout
@@ -158,14 +157,9 @@ Copy-Item .env.example .env
 cp .env.example .env
 ```
 
-Open `.env` and set your credentials:
-
 ```ini
 # PostgreSQL (Primary production database):
-DATABASE_URL=postgresql+psycopg2://postgres:YOUR_PASSWORD@localhost:5432/personal_memory_db
-
-# Or use SQLite for instant zero-config local testing:
-# DATABASE_URL=sqlite:///./personal_memory.db
+DATABASE_URL=postgresql+psycopg://magic_fill_user:YOUR_PASSWORD@localhost:5432/magic_fill
 
 APP_NAME=Personal Information Memory API
 APP_ENV=development

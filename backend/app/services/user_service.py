@@ -23,3 +23,32 @@ def get_user_by_id(db: Session, user_id: int) -> User:
     if not user:
         raise UserNotFoundException(user_id=user_id)
     return user
+
+
+def delete_user(db: Session, user_id: int) -> None:
+    """
+    Delete a user by their unique identifier.
+    Cascades deletion to associated personal information and experiences.
+    Raises UserNotFoundException if no user matches the ID.
+    """
+    user = get_user_by_id(db, user_id=user_id)
+    db.delete(user)
+    db.commit()
+
+
+def get_user_profile(db: Session, user_id: int) -> dict:
+    """
+    Retrieve full aggregated user memory profile including user identity,
+    personal information, all experiences, custom fields, and documents.
+    Raises UserNotFoundException if no user matches the ID.
+    """
+    user = get_user_by_id(db, user_id=user_id)
+    return {
+        "user": user,
+        "personal_info": user.personal_info,
+        "experiences": user.experiences,
+        "custom_fields": user.custom_fields,
+        "documents": user.documents,
+    }
+
+

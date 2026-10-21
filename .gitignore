@@ -30,6 +30,15 @@ htmlcov/
 *.db
 *.sqlite
 *.sqlite3
+*.backup
+backups/
+
+# Web & Frontend Build Artifacts
+node_modules/
+dist/
+.output/
+.astro/
+.vercel/
 
 # Operating System Files
 .DS_Store

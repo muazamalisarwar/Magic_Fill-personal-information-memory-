@@ -1,0 +1,25 @@
+---
+import ImageMod from "@/layouts/components/ImageMod.astro";
+interface Props {
+  logo: string;
+  title: string;
+  content?: string;
+  is_starred: boolean;
+}
+const { logo, title, content, is_starred } = Astro.props;
+---
+
+<div class="neu-card p-8 group relative flex flex-col items-center text-center h-full">
+  <!-- Inset Deep Icon Well -->
+  <div class="neu-icon-well size-18 mb-6 group-hover:scale-105 transition-transform duration-300">
+    <ImageMod src={logo} alt={`${title} icon`} class="size-9 object-contain" />
+  </div>
+
+  <h3 class="text-lg font-bold font-display text-[#3D4852] group-hover:text-[#6C63FF] transition-colors mb-3">
+    {title}
+  </h3>
+
+  <p class="font-body text-sm text-[#6B7280] leading-relaxed">
+    {content || "Proactively matches your verified personal memory to complex form fields with zero errors."}
+  </p>
+</div>

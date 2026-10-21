@@ -1,0 +1,569 @@
+/* ==========================================================================
+   Magic Fill — Dark & Light Theme System
+   Rich Ambient Aesthetics | Dynamic Colored Background Animations
+   Smooth Transitions | High Legibility & Contrast in Both Themes
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Light Theme Canvas & Dynamic Mesh Background
+   -------------------------------------------------------------------------- */
+html.light-theme,
+[data-theme="light"],
+[data-theme="light"] body {
+  --color-body: #f8fafc;
+  --color-dark: #ffffff;
+  --color-light: #f1f5f9;
+  --color-border: #e2e8f0;
+  --color-text: #334155;
+  --color-text-dark: #64748b;
+  --color-text-light: #0f172a;
+
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+
+  /* Rich Ambient Colored Background: Soft Violet, Sky, Rose with Dot Grid Texture */
+  background-image:
+    radial-gradient(at 10% 8%, rgba(132, 80, 255, 0.14) 0px, transparent 40%),
+    radial-gradient(at 90% 12%, rgba(56, 189, 248, 0.15) 0px, transparent 40%),
+    radial-gradient(at 50% 50%, rgba(244, 63, 94, 0.06) 0px, transparent 50%),
+    radial-gradient(at 85% 85%, rgba(168, 85, 247, 0.12) 0px, transparent 45%),
+    radial-gradient(at 15% 90%, rgba(99, 102, 241, 0.10) 0px, transparent 45%),
+    radial-gradient(rgba(148, 163, 184, 0.14) 1.2px, transparent 1.2px) !important;
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 28px 28px !important;
+  background-attachment: fixed !important;
+}
+
+/* --------------------------------------------------------------------------
+   2. Dynamic Floating Ambient Orbs (Colored Motion Animations)
+   -------------------------------------------------------------------------- */
+.ambient-glow-wrapper {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 48rem;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -10;
+}
+
+.ambient-orb-1 {
+  position: absolute;
+  top: 7rem;
+  left: 20%;
+  width: 30rem;
+  height: 30rem;
+  border-radius: 9999px;
+  filter: blur(80px);
+  background: radial-gradient(circle, rgba(132, 80, 255, 0.45) 0%, rgba(99, 102, 241, 0.20) 50%, transparent 75%);
+  animation: orbFloat1 18s ease-in-out infinite alternate;
+}
+
+.ambient-orb-2 {
+  position: absolute;
+  top: 9rem;
+  right: 15%;
+  width: 28rem;
+  height: 28rem;
+  border-radius: 9999px;
+  filter: blur(80px);
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.40) 0%, rgba(132, 80, 255, 0.15) 50%, transparent 75%);
+  animation: orbFloat2 22s ease-in-out infinite alternate;
+}
+
+.ambient-orb-3 {
+  position: absolute;
+  top: 18rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32rem;
+  height: 32rem;
+  border-radius: 9999px;
+  filter: blur(90px);
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.30) 0%, rgba(168, 85, 247, 0.18) 50%, transparent 75%);
+  animation: orbPulse 16s ease-in-out infinite alternate;
+}
+
+/* Light mode overrides for ambient orbs (soft, vibrant, readable) */
+[data-theme="light"] .ambient-orb-1 {
+  background: radial-gradient(circle, rgba(132, 80, 255, 0.30) 0%, rgba(99, 102, 241, 0.12) 50%, transparent 75%) !important;
+}
+
+[data-theme="light"] .ambient-orb-2 {
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.28) 0%, rgba(132, 80, 255, 0.10) 50%, transparent 75%) !important;
+}
+
+[data-theme="light"] .ambient-orb-3 {
+  background: radial-gradient(circle, rgba(244, 63, 94, 0.18) 0%, rgba(168, 85, 247, 0.10) 50%, transparent 75%) !important;
+}
+
+@keyframes orbFloat1 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(60px, 45px) scale(1.12); }
+  100% { transform: translate(-45px, 85px) scale(0.92); }
+}
+
+@keyframes orbFloat2 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-70px, 50px) scale(1.08); }
+  100% { transform: translate(35px, 90px) scale(0.95); }
+}
+
+@keyframes orbPulse {
+  0% { transform: translateX(-50%) scale(0.95); opacity: 0.5; }
+  50% { transform: translateX(-48%) scale(1.15); opacity: 0.8; }
+  100% { transform: translateX(-52%) scale(1.0); opacity: 0.55; }
+}
+
+/* --------------------------------------------------------------------------
+   3. Typography in Light Mode
+   -------------------------------------------------------------------------- */
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] h4,
+[data-theme="light"] h5,
+[data-theme="light"] h6,
+[data-theme="light"] strong,
+[data-theme="light"] b {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .hasHighlight strong {
+  background: linear-gradient(135deg, #8450FF 0%, #6366F1 50%, #A855F7 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+}
+
+[data-theme="light"] .text-white:not(.btn-primary):not(.btn-primary *):not(.btn-shimmer):not(.btn-shimmer *):not(.badge-primary):not([class*="bg-primary"]) {
+  color: #0f172a !important;
+}
+
+/* Guarantee 100% pure white contrast for primary CTA buttons and badges in both themes */
+.btn-primary,
+.btn-primary *,
+[data-theme="light"] .btn-primary,
+[data-theme="light"] .btn-primary *,
+.btn-shimmer,
+.btn-shimmer *,
+[data-theme="light"] .btn-shimmer,
+[data-theme="light"] .btn-shimmer *,
+#btnHeaderGetStarted,
+[data-theme="light"] #btnHeaderGetStarted,
+#btnHeaderGetStarted * {
+  color: #ffffff !important;
+}
+
+.btn-primary svg,
+[data-theme="light"] .btn-primary svg,
+.btn-shimmer svg,
+[data-theme="light"] .btn-shimmer svg,
+#btnHeaderGetStarted svg,
+[data-theme="light"] #btnHeaderGetStarted svg {
+  stroke: #ffffff !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .text-white\/80:not(.btn-primary *),
+[data-theme="light"] .text-white\/70:not(.btn-primary *),
+[data-theme="light"] .text-white\/60:not(.btn-primary *),
+[data-theme="light"] .text-text-light:not(.btn-primary *) {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .text-white\/50:not(.btn-primary *),
+[data-theme="light"] .text-white\/40:not(.btn-primary *),
+[data-theme="light"] .text-white\/30:not(.btn-primary *),
+[data-theme="light"] .text-text-dark:not(.btn-primary *) {
+  color: #64748b !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. Glassmorphism Navigation System (Dark & Light)
+   -------------------------------------------------------------------------- */
+/* Universal Header (Dark Mode / Default) */
+.header,
+[data-theme="dark"] .header {
+  background: rgba(10, 14, 26, 0.80) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4) !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Responsive Desktop Navigation Strict Guard:
+   Ensure menus NEVER display as block or vertical bubbles on < 1024px screens */
+@media (max-width: 1023px) {
+  #publicNavMenu,
+  #authNavMenu {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  #publicNavMenu.active-desktop-menu,
+  #authNavMenu.active-desktop-menu {
+    display: flex !important;
+  }
+  #publicNavMenu:not(.active-desktop-menu),
+  #authNavMenu:not(.active-desktop-menu) {
+    display: none !important;
+  }
+}
+
+/* Navigation Bar: Clean Buttons Directly on Navbar (NO enclosing background strip) */
+#publicNavMenu,
+#authNavMenu,
+[data-theme="dark"] #publicNavMenu,
+[data-theme="dark"] #authNavMenu,
+[data-theme="light"] #publicNavMenu,
+[data-theme="light"] #authNavMenu {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+/* Nav Button Items (Dark Mode) */
+[data-theme="dark"] .nav-link,
+[data-theme="dark"] .nav-link-idle {
+  color: #cbd5e1 !important;
+  font-weight: 600 !important;
+  font-size: 13.5px !important;
+  padding: 7px 14px !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+[data-theme="dark"] .nav-link:hover,
+[data-theme="dark"] .nav-link-idle:hover {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  transform: translateY(-1px);
+}
+
+[data-theme="dark"] .nav-link-active,
+[data-theme="dark"] .nav-link.active {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+}
+
+/* Universal Header in Light Mode — Clean, Airy, No colored bottom stripe */
+[data-theme="light"] .header,
+html.light-theme .header {
+  background: rgba(255, 255, 255, 0.88) !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.85) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.03), 0 4px 12px 0 rgba(0, 0, 0, 0.02) !important;
+}
+
+/* Nav Button Items in Light Mode */
+[data-theme="light"] .nav-link,
+[data-theme="light"] .nav-link-idle {
+  color: #1e293b !important;
+  font-weight: 600 !important;
+  font-size: 13.5px !important;
+  padding: 7px 14px !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+[data-theme="light"] .nav-link:hover,
+[data-theme="light"] .nav-link-idle:hover {
+  color: #8450FF !important;
+  background-color: rgba(132, 80, 255, 0.08) !important;
+  transform: translateY(-1px);
+}
+
+[data-theme="light"] .nav-link.active,
+[data-theme="light"] .nav-link-active,
+[data-theme="light"] .nav-link.bg-white\/10 {
+  color: #8450FF !important;
+  background: rgba(132, 80, 255, 0.12) !important;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+}
+
+/* ==========================================================================
+   Hero Announcement Pill — Guaranteed Razor-Sharp Legibility & High Contrast
+   ========================================================================== */
+.hero-announcement-pill {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Light Mode: Crisp pure white card, vibrant purple tag, deep slate text */
+[data-theme="light"] .hero-announcement-pill,
+html.light-theme .hero-announcement-pill {
+  background: #ffffff !important;
+  border: 1.5px solid #8450FF !important;
+  box-shadow: 0 4px 16px -2px rgba(132, 80, 255, 0.18), 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="light"] .hero-announcement-pill .pill-tag {
+  background: #8450FF !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(132, 80, 255, 0.3) !important;
+}
+
+[data-theme="light"] .hero-announcement-pill .pill-divider {
+  color: #94a3b8 !important;
+}
+
+[data-theme="light"] .hero-announcement-pill .pill-headline {
+  color: #0f172a !important; /* Deepest black-slate: 100% crystal clear legibility */
+  font-weight: 700 !important;
+}
+
+/* Dark Mode: Sleek dark glass card, bright luminous text */
+[data-theme="dark"] .hero-announcement-pill,
+.hero-announcement-pill {
+  background: rgba(18, 24, 38, 0.90) !important;
+  border: 1.5px solid rgba(132, 80, 255, 0.5) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  box-shadow: 0 4px 20px -2px rgba(132, 80, 255, 0.25) !important;
+}
+
+[data-theme="dark"] .hero-announcement-pill .pill-tag,
+.hero-announcement-pill .pill-tag {
+  background: #8450FF !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(132, 80, 255, 0.3) !important;
+}
+
+[data-theme="dark"] .hero-announcement-pill .pill-divider,
+.hero-announcement-pill .pill-divider {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+[data-theme="dark"] .hero-announcement-pill .pill-headline,
+.hero-announcement-pill .pill-headline {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.hero-announcement-pill:hover {
+  transform: translateY(-1px) scale(1.02) !important;
+}
+
+/* Header Buttons in Light Mode */
+[data-theme="light"] #btnHeaderSignIn {
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(16px) !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+}
+
+[data-theme="light"] #btnHeaderSignIn:hover {
+  background: #ffffff !important;
+  border-color: #8450FF !important;
+  color: #8450FF !important;
+  transform: translateY(-1px) scale(1.02) !important;
+  box-shadow: 0 4px 12px rgba(132, 80, 255, 0.15) !important;
+}
+
+[data-theme="light"] #headerLoggedInArea a {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(16px) !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-theme="dark"] #btnHeaderSignIn {
+  background: rgba(255, 255, 255, 0.06) !important;
+  backdrop-filter: blur(16px) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] #btnHeaderSignIn:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(132, 80, 255, 0.5) !important;
+  transform: translateY(-1px) scale(1.02) !important;
+}
+
+/* Polished Outline Button System (Dual-Theme Contrast) */
+.btn-outline,
+[data-theme="dark"] .btn-outline {
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.20) !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+.btn-outline:hover,
+[data-theme="dark"] .btn-outline:hover {
+  background: linear-gradient(135deg, #8450FF 0%, #6366F1 100%) !important;
+  border-color: transparent !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 20px rgba(132, 80, 255, 0.4) !important;
+  transform: translateY(-1px);
+}
+
+[data-theme="light"] .btn-outline {
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+  background-color: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-theme="light"] .btn-outline:hover {
+  background: linear-gradient(135deg, #8450FF 0%, #6366F1 100%) !important;
+  border-color: transparent !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 20px rgba(132, 80, 255, 0.35) !important;
+  transform: translateY(-1px);
+}
+
+/* --------------------------------------------------------------------------
+   5. Cards, Containers, and Modals
+   -------------------------------------------------------------------------- */
+[data-theme="light"] .bg-dark,
+[data-theme="light"] .bg-dark\/80,
+[data-theme="light"] .bg-dark\/70,
+[data-theme="light"] .bg-dark\/90,
+[data-theme="light"] .bg-dark\/60,
+[data-theme="light"] .bg-dark\/50,
+[data-theme="light"] .bg-black\/40,
+[data-theme="light"] .bg-black\/30 {
+  background-color: #ffffff !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.03) !important;
+}
+
+[data-theme="light"] .border-white\/10,
+[data-theme="light"] .border-white\/5,
+[data-theme="light"] .border-white\/15,
+[data-theme="light"] .border-white\/20,
+[data-theme="light"] .border-white\/30 {
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .bg-white\/5 {
+  background-color: #f1f5f9 !important;
+}
+
+[data-theme="light"] .bg-white\/10 {
+  background-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .bg-white\/20 {
+  background-color: #cbd5e1 !important;
+}
+
+/* --------------------------------------------------------------------------
+   6. Form Inputs & Modals
+   -------------------------------------------------------------------------- */
+[data-theme="light"] input:not([type="checkbox"]):not([type="radio"]),
+[data-theme="light"] select,
+[data-theme="light"] textarea {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] input::placeholder,
+[data-theme="light"] textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+[data-theme="light"] input:focus,
+[data-theme="light"] select:focus,
+[data-theme="light"] textarea:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px rgba(132, 80, 255, 0.20) !important;
+}
+
+[data-theme="light"] [role="dialog"] > div {
+  background-color: #ffffff !important;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25) !important;
+}
+
+/* --------------------------------------------------------------------------
+   7. Theme Switcher Button
+   -------------------------------------------------------------------------- */
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: scale(1.1) rotate(15deg);
+  box-shadow: 0 0 16px rgba(132, 80, 255, 0.35);
+}
+
+[data-theme="light"] .theme-toggle-btn {
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(16px) !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+}
+
+[data-theme="light"] .theme-toggle-btn:hover {
+  background: #ffffff !important;
+  border-color: #8450FF !important;
+  color: #8450FF !important;
+  transform: scale(1.1) rotate(15deg) !important;
+  box-shadow: 0 4px 14px rgba(132, 80, 255, 0.25) !important;
+}
+
+[data-theme="light"] #mobileDrawer {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: -10px 0 30px rgba(15, 23, 42, 0.15) !important;
+}
+
+[data-theme="light"] #mobileDrawerCloseBtn {
+  color: #64748b !important;
+}
+
+[data-theme="light"] #mobileDrawerCloseBtn:hover {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] #mobileDrawer .border-b,
+[data-theme="light"] #mobileDrawer .border-t {
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] #mobileDrawer a {
+  color: #334155 !important;
+}
+
+[data-theme="light"] #mobileDrawer a:hover {
+  background-color: #f1f5f9 !important;
+  color: #8450FF !important;
+}
+
+[data-theme="light"] #mobileDrawerLoggedOutBtns a:first-child {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
