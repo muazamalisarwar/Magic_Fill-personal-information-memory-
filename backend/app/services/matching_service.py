@@ -162,7 +162,9 @@ def _match_deterministic(field: DetectedField, profile_data: Dict[str, Any]) -> 
     ]
     excluded_name_tokens = [
         "first", "last", "father", "parent", "mother", "company", "employer",
-        "school", "institution", "university", "friend", "emergency", "file",
+        "school", "institution", "university", "college", "degree", "major", "department",
+        "program", "course", "subject", "qualification", "title", "role", "position",
+        "job", "manager", "supervisor", "friend", "emergency", "file",
         "document", "photo", "user_name", "username", "user", "pet", "animal",
         "dog", "cat", "middle", "spouse", "child", "baby", "doctor", "reference",
         "referee", "vendor", "partner", "bank", "project", "product", "item",
@@ -438,15 +440,18 @@ def _match_deterministic(field: DetectedField, profile_data: Dict[str, Any]) -> 
             )
 
 
-    # 14. Degree Program
-    if any(k in combined_text for k in ["degree", "program", "qualification", "degree program"]):
-        if personal_info and personal_info.degree:
+    # 14. Degree Program / Major
+    if any(k in combined_text for k in ["degree", "degree name", "qualification", "degree program", "major", "field of study"]):
+        if personal_info and (personal_info.degree or personal_info.major):
+            deg_val = personal_info.degree or personal_info.major
+            if field.options:
+                deg_val = _pick_best_option(deg_val, field.options)
             return FieldMapping(
                 field_id=field.field_id,
-                memory_key="personal_info.degree",
-                value=personal_info.degree,
-                confidence=0.95,
-                reason="Matched degree program",
+                memory_key="personal_info.degree" if personal_info.degree else "personal_info.major",
+                value=deg_val,
+                confidence=0.96,
+                reason="Matched academic degree program / major",
                 source="deterministic"
             )
 
@@ -778,7 +783,11 @@ async def match_form_fields(
             {
                 "field_key": cf.field_key,
                 "field_label": cf.field_label,
-                "field_value": cf.field_value,
+                "field_value": (
+                    "[ATTACHED_DOCUMENT]"
+                    if (cf.field_value and (cf.field_value.startswith("data:") or len(cf.field_value) > 300))
+                    else cf.field_value
+                ),
                 "category": cf.category,
             }
             for cf in custom_fields
@@ -826,8 +835,13 @@ async def match_form_fields(
                 # Normalize custom_fields memory keys (e.g. custom_fields[0].field_value -> custom_fields.<key>)
                 if custom_fields:
                     for cf in custom_fields:
-                        if val == cf.field_value and (mem_key.startswith("custom_fields") or not mem_key):
+                        if (
+                            val == cf.field_value
+                            or (val == "[ATTACHED_DOCUMENT]" and (mem_key == f"custom_fields.{cf.field_key}" or mem_key == cf.field_key))
+                            or mem_key == f"custom_fields.{cf.field_key}"
+                        ):
                             mem_key = f"custom_fields.{cf.field_key}"
+                            val = cf.field_value
                             break
 
                 # Resolve file attachments for file inputs or document keys

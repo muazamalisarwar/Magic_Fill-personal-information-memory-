@@ -77,38 +77,122 @@
   }
 
   // ---------------------------------------------------------------------------
-  // 2. Comprehensive DOM Scanner (Supports all 10 input types)
+  // 2. Comprehensive DOM Scanner (Supports all 10 input types & Google Forms)
   // ---------------------------------------------------------------------------
+  function cleanLabelText(str) {
+    if (!str) return "";
+    return str
+      .replace(/\s+/g, " ")
+      .replace(/[\*\u204E\u2217\u2731]/g, "") // remove asterisks
+      .replace(/\b(this is a required question|required question|required)\b/gi, "")
+      .trim();
+  }
+
+  function isGenericPlaceholder(text) {
+    if (!text) return true;
+    const t = text.trim().toLowerCase();
+    return /^(your answer|short answer|short answer text|long answer|long answer text|type your answer|enter answer|type here|enter text|write your answer|answer)$/i.test(t);
+  }
+
   function getElementLabel(el) {
+    // 1. Check aria-labelledby (Handles space-separated IDs used by Google Forms, Microsoft Forms, ARIA)
+    const labelledby = el.getAttribute("aria-labelledby");
+    if (labelledby) {
+      const ids = labelledby.trim().split(/\s+/);
+      const textParts = [];
+      for (const id of ids) {
+        try {
+          const target = document.getElementById(id);
+          if (target) {
+            const raw = cleanLabelText(target.innerText || target.textContent);
+            if (raw && !isGenericPlaceholder(raw)) {
+              textParts.push(raw);
+            }
+          }
+        } catch (e) {}
+      }
+      if (textParts.length > 0) {
+        return textParts[0]; // The primary question title
+      }
+    }
+
+    // 2. Google Forms / Job Portals Question Item Container Heading
+    const questionContainer = el.closest(
+      '[role="listitem"], .Qr7Oae, .geS5n, [jsmodel], .freebirdFormviewerViewNumberedItemContainer, .form-group, .field, .form-field, fieldset'
+    );
+    if (questionContainer) {
+      const titleEl = questionContainer.querySelector(
+        '[role="heading"], .M7eMe, .HoDAff, .freebirdFormviewerComponentsQuestionBaseTitle, div[aria-level], legend, label, .quantumWizTextinputPaperinputTitle'
+      );
+      if (titleEl && !titleEl.contains(el)) {
+        const cleaned = cleanLabelText(titleEl.innerText || titleEl.textContent);
+        if (cleaned && !isGenericPlaceholder(cleaned)) return cleaned;
+      }
+    }
+
+    // 3. Explicit HTML <label for="id">
     if (el.id) {
       try {
         const labelEl = document.querySelector(`label[for="${CSS.escape(el.id)}"]`);
-        if (labelEl) return labelEl.innerText.replace(/\s+/g, " ").trim();
+        if (labelEl) {
+          const cleaned = cleanLabelText(labelEl.innerText || labelEl.textContent);
+          if (cleaned && !isGenericPlaceholder(cleaned)) return cleaned;
+        }
       } catch (e) {}
     }
+
+    // 4. Direct aria-label
+    const ariaLabel = el.getAttribute("aria-label");
+    if (ariaLabel) {
+      const cleaned = cleanLabelText(ariaLabel);
+      if (cleaned && !isGenericPlaceholder(cleaned)) return cleaned;
+    }
+
+    // 5. Parent <label> element
     const parent = el.closest("label");
     if (parent) {
       const clone = parent.cloneNode(true);
       const child = clone.querySelector("input, select, textarea");
       if (child) child.remove();
-      const txt = clone.innerText.replace(/\s+/g, " ").trim();
-      if (txt) return txt;
+      const txt = cleanLabelText(clone.innerText || clone.textContent);
+      if (txt && !isGenericPlaceholder(txt)) return txt;
     }
-    if (el.getAttribute("aria-label")) return el.getAttribute("aria-label").trim();
-    if (el.getAttribute("aria-labelledby")) {
-      const ariaEl = document.getElementById(el.getAttribute("aria-labelledby"));
-      if (ariaEl) return ariaEl.innerText.replace(/\s+/g, " ").trim();
+
+    // 6. Preceding sibling label/span/p
+    let prev = el.previousElementSibling;
+    while (prev) {
+      if (["LABEL", "SPAN", "P", "DIV", "H1", "H2", "H3", "H4", "H5", "H6"].includes(prev.tagName)) {
+        const txt = cleanLabelText(prev.innerText || prev.textContent);
+        if (txt && !isGenericPlaceholder(txt) && txt.length < 120) return txt;
+      }
+      prev = prev.previousElementSibling;
     }
-    // Check preceding sibling
-    const prev = el.previousElementSibling;
-    if (prev && (prev.tagName === "LABEL" || prev.tagName === "SPAN" || prev.tagName === "P")) {
-      return prev.innerText.replace(/\s+/g, " ").trim();
+
+    // 7. Check parent container previous element
+    const parentContainer = el.parentElement;
+    if (parentContainer && parentContainer.previousElementSibling) {
+      const prevContainer = parentContainer.previousElementSibling;
+      const heading = prevContainer.querySelector ? prevContainer.querySelector("label, span, div, [role='heading']") : null;
+      const target = heading || prevContainer;
+      const txt = cleanLabelText(target.innerText || target.textContent);
+      if (txt && !isGenericPlaceholder(txt) && txt.length < 120) return txt;
     }
-    return (el.placeholder || el.name || "").trim();
+
+    // 8. Placeholder fallback ONLY if meaningful and not generic placeholder
+    if (el.placeholder && !isGenericPlaceholder(el.placeholder)) {
+      return cleanLabelText(el.placeholder);
+    }
+
+    // 9. Name attribute fallback (cleaning entry.123 or form field identifiers)
+    if (el.name && !/^entry\.\d+$/i.test(el.name) && !/^input_\d+$/i.test(el.name)) {
+      return el.name.replace(/[_\-\.]+/g, " ").trim();
+    }
+
+    return "";
   }
 
   function scanFormFields() {
-    const selector = "input, select, textarea, [role='switch'], button[type='submit'], input[type='submit']";
+    const selector = "input, select, textarea, [role='switch'], [role='radio'], [role='checkbox'], button[type='submit'], input[type='submit']";
     const rawElements = document.querySelectorAll(selector);
     const fields = [];
     const processedRadioGroups = new Set();
@@ -268,31 +352,38 @@
         if (!matched && el.options.length > 0) {
           el.value = mapping.value;
         }
-      } else if (type === "radio") {
+      } else if (type === "radio" || role === "radio") {
         const targetVal = String(mapping.value).toLowerCase().trim();
+        const container = el.closest('[role="radiogroup"], [role="listitem"], .Qr7Oae, .geS5n, fieldset') || document;
         const radios = el.name
           ? document.querySelectorAll(`input[type="radio"][name="${CSS.escape(el.name)}"]`)
-          : [el];
+          : Array.from(container.querySelectorAll('[role="radio"], input[type="radio"]'));
 
         radios.forEach((r) => {
-          const rVal = r.value.toLowerCase().trim();
-          const rLabel = (getElementLabel(r) || "").toLowerCase().trim();
+          const rVal = (r.value || r.getAttribute("data-value") || "").toLowerCase().trim();
+          const rLabel = (getElementLabel(r) || r.getAttribute("aria-label") || r.innerText || "").toLowerCase().trim();
           if (
-            rVal === targetVal ||
-            rLabel.includes(targetVal) ||
+            (rVal && (rVal === targetVal || targetVal.includes(rVal))) ||
+            (rLabel && (rLabel.includes(targetVal) || targetVal.includes(rLabel))) ||
             (targetVal === "yes" && (rVal.includes("yes") || rLabel.includes("yes") || rVal === "1" || rVal === "true")) ||
             (targetVal === "no" && (rVal.includes("no") || rLabel.includes("no") || rVal === "0" || rVal === "false"))
           ) {
             r.checked = true;
-            r.dispatchEvent(new Event("change", { bubbles: true }));
+            try {
+              r.click();
+            } catch (e) {}
+            r.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
           }
         });
-      } else if (type === "checkbox" || role === "switch") {
+      } else if (type === "checkbox" || role === "checkbox" || role === "switch") {
         const v = String(mapping.value).toLowerCase().trim();
         const isTrue = v === "yes" || v === "true" || v === "1" || mapping.value === true;
         el.checked = isTrue;
-        if (role === "switch") {
+        if (role === "switch" || role === "checkbox") {
           el.setAttribute("aria-checked", isTrue ? "true" : "false");
+          if (isTrue && el.getAttribute("aria-checked") !== "true") {
+            try { el.click(); } catch (e) {}
+          }
         }
       } else if (type === "range") {
         const numVal = parseInt(String(mapping.value).replace(/\D/g, ""), 10) || 0;
@@ -327,10 +418,25 @@
         } catch (e) {
           console.warn("[Magic Fill] Could not populate file input:", e);
         }
-      } else if (tag === "textarea") {
-        el.value = mapping.value;
+      } else if (tag === "textarea" || type === "text" || type === "email" || type === "tel" || type === "url" || type === "number" || !type) {
+        // Native property setter for React, Angular, Vue, and Google Closure (Google Forms)
+        try {
+          el.focus();
+        } catch (e) {}
+
+        try {
+          const isTextArea = tag === "textarea";
+          const proto = isTextArea ? window.HTMLTextAreaElement.prototype : window.HTMLInputElement.prototype;
+          const desc = Object.getOwnPropertyDescriptor(proto, "value");
+          if (desc && desc.set) {
+            desc.set.call(el, mapping.value);
+          } else {
+            el.value = mapping.value;
+          }
+        } catch (e) {
+          el.value = mapping.value;
+        }
       } else {
-        // Standard text, email, tel, url, number
         el.value = mapping.value;
       }
 
@@ -344,9 +450,25 @@
         });
       }
 
-      // Dispatch standard browser events so React/Vue/Angular forms detect changes
-      el.dispatchEvent(new Event("input", { bubbles: true }));
-      el.dispatchEvent(new Event("change", { bubbles: true }));
+      // Dispatch comprehensive event sequence for Google Forms (Google Closure), React, and Angular
+      el.dispatchEvent(new Event("input", { bubbles: true, composed: true }));
+      el.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
+      try {
+        el.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, composed: true, key: "Enter" }));
+        el.dispatchEvent(new KeyboardEvent("keyup", { bubbles: true, composed: true, key: "Enter" }));
+        el.dispatchEvent(new Event("blur", { bubbles: true, composed: true }));
+      } catch (e) {}
+
+      // Clean up Google Forms Material container error messages and float label
+      const gfContainer = el.closest(".quantumWizTextinputPaperinputEl, .o3G8cc, .nd91id, .geS5n, .Qr7Oae, [role='listitem']");
+      if (gfContainer) {
+        gfContainer.classList.add("is-filled");
+        gfContainer.classList.remove("is-invalid");
+        const errorAlerts = gfContainer.querySelectorAll(".RxsGPe, [role='alert'], .freebirdFormviewerViewItemsItemErrorMessage");
+        errorAlerts.forEach((ea) => {
+          ea.style.display = "none";
+        });
+      }
 
       filledCount++;
     });

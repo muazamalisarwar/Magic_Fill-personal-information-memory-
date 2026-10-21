@@ -235,15 +235,17 @@ def _is_grounded_in_memory(
     if v_lower in valid_memory_values:
         return True
 
-    # 2. Document reference or file upload
+    # 2. Document reference or file upload or custom memory field
     if (
         memory_key.startswith("documents.")
+        or memory_key.startswith("custom_fields.")
         or input_type == "file"
         or "photo" in v_lower
         or "cnic" in v_lower
         or "data:image" in v_lower
         or "passport" in v_lower
         or "resume" in v_lower
+        or v_lower == "[attached_document]"
     ):
         return True
 
