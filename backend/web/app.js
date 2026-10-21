@@ -1219,6 +1219,7 @@ Education: BS Computer Science from University of Education, Lahore in 2024.`;
   btnClearInput.addEventListener("click", () => {
     rawTextInput.value = "";
     currentUploadedFile = null;
+    if (fileInput) fileInput.value = "";
     selectedFileName.textContent = "Attach CV/Resume (PDF, TXT, MD)";
     rawTextInput.dispatchEvent(new Event("input"));
     showToast("Input cleared", "success");
@@ -1250,10 +1251,50 @@ Education: BS Computer Science from University of Education, Lahore in 2024.`;
     if (e.target.files && e.target.files[0]) handleFileSelected(e.target.files[0]);
   });
 
-  function handleFileSelected(file) {
+  async function handleFileSelected(file) {
+    if (!file) return;
     currentUploadedFile = file;
-    selectedFileName.textContent = `Attached: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
-    showToast(`Attached document: ${file.name}`, "success");
+    selectedFileName.textContent = `Scanning: ${file.name}...`;
+
+    const fileNameLower = file.name.toLowerCase();
+    if (fileNameLower.endsWith(".txt") || fileNameLower.endsWith(".md")) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target.result || "";
+        rawTextInput.value = text;
+        rawTextInput.dispatchEvent(new Event("input"));
+        selectedFileName.textContent = `Attached: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+        showToast(`Scanned ${text.length.toLocaleString()} chars from ${file.name}`, "success");
+      };
+      reader.onerror = () => {
+        selectedFileName.textContent = `Attached: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+        showToast(`Attached ${file.name}`, "info");
+      };
+      reader.readAsText(file);
+    } else {
+      // For PDF or other documents, parse text immediately so characters and words are visible
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+        const res = await authFetch("/api/memory/parse-text", {
+          method: "POST",
+          body: formData,
+        });
+        const data = await res.json();
+        if (res.ok && data.success && data.data && data.data.raw_text) {
+          rawTextInput.value = data.data.raw_text;
+          rawTextInput.dispatchEvent(new Event("input"));
+          selectedFileName.textContent = `Attached: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+          showToast(`Scanned ${data.data.char_count.toLocaleString()} chars from ${file.name}`, "success");
+        } else {
+          selectedFileName.textContent = `Attached: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+          showToast(data.message || "No readable text found in document (it may be a scanned image).", "error");
+        }
+      } catch (err) {
+        selectedFileName.textContent = `Attached: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+        showToast(`Attached ${file.name}`, "info");
+      }
+    }
   }
 
   // -------------------------------------------------------------------------
@@ -1273,22 +1314,29 @@ Education: BS Computer Science from University of Education, Lahore in 2024.`;
     try {
       let res, data;
       const effectiveUserId = currentAuthUser ? currentAuthUser.id : 1;
-      if (currentUploadedFile) {
-        const formData = new FormData();
-        formData.append("file", currentUploadedFile);
-        formData.append("user_id", String(effectiveUserId));
-        formData.append("auto_save", "true");
-        res = await authFetch("/api/memory/upload-document", { method: "POST", body: formData });
-      } else {
+
+      // If we have text in the prompt box, send text directly; otherwise send the file
+      if (rawText) {
         res = await authFetch("/api/memory/extract-raw", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ raw_text: rawText, user_id: effectiveUserId, auto_save: true }),
         });
+      } else if (currentUploadedFile) {
+        const formData = new FormData();
+        formData.append("file", currentUploadedFile);
+        formData.append("user_id", String(effectiveUserId));
+        formData.append("auto_save", "true");
+        res = await authFetch("/api/memory/upload-document", { method: "POST", body: formData });
       }
 
       data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.message || "Failed to process text");
+
+      if (data.data && data.data.raw_text && !rawTextInput.value) {
+        rawTextInput.value = data.data.raw_text;
+        rawTextInput.dispatchEvent(new Event("input"));
+      }
 
       const extracted = data.data.extracted;
       extractionPlaceholder.classList.add("hidden");

@@ -6,12 +6,13 @@ def main():
     root_dir = os.path.dirname(os.path.abspath(__file__))
     backend_dir = os.path.join(root_dir, "backend")
     
-    # Path to virtual environment uvicorn
-    uvicorn_exe = os.path.join(backend_dir, ".venv", "Scripts", "uvicorn.exe")
+    # Path to virtual environment uvicorn (venv is at project root, not backend/)
+    venv_scripts = os.path.join(root_dir, ".venv", "Scripts")
+    uvicorn_exe = os.path.join(venv_scripts, "uvicorn.exe")
     
     if not os.path.exists(uvicorn_exe):
         # Fallback to python in .venv
-        python_exe = os.path.join(backend_dir, ".venv", "Scripts", "python.exe")
+        python_exe = os.path.join(venv_scripts, "python.exe")
         cmd = [python_exe, "-m", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", "8000", "--reload"]
     else:
         cmd = [uvicorn_exe, "app.main:app", "--host", "127.0.0.1", "--port", "8000", "--reload"]

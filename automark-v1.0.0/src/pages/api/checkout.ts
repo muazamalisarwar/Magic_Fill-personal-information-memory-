@@ -31,7 +31,7 @@ export const POST: APIRoute = async ({ request, url }) => {
   }
 
   const stripe = new Stripe(STRIPE_SECRET_KEY, {
-    apiVersion: "2026-03-25.dahlia", // Matching latest SDK typings
+    apiVersion: "2026-08-26.dahlia", // Matching latest SDK typings
   });
 
   // Parse incoming request

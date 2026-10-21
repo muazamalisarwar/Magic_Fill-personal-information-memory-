@@ -45,6 +45,7 @@ class ExtractionResponse(BaseModel):
     extracted: Dict[str, Any]
     profile: Optional[UserProfileResponse] = None
     saved: bool
+    raw_text: Optional[str] = None
 
 
 def _build_profile_response(profile_data: Dict[str, Any]) -> UserProfileResponse:
@@ -116,6 +117,41 @@ async def extract_raw_text_endpoint(
 
 
 @router.post(
+    "/parse-text",
+    response_model=APIResponse[Dict[str, Any]],
+    status_code=status.HTTP_200_OK,
+    summary="Parse raw text from uploaded document (PDF/TXT/MD)",
+    description="Extracts raw plain text from an uploaded document for immediate frontend preview and character/word counting."
+)
+async def parse_document_text_endpoint(
+    file: UploadFile = File(...),
+) -> APIResponse[Dict[str, Any]]:
+    """Extracts raw text from a document without running LLM extraction yet."""
+    content_bytes = await file.read()
+    raw_text = extract_text_from_file_bytes(content_bytes=content_bytes, filename=file.filename or "doc.txt")
+    char_count = len(raw_text)
+    word_count = len(raw_text.split()) if raw_text else 0
+
+    if not raw_text or not raw_text.strip():
+        return APIResponse(
+            success=False,
+            message="No readable text found in document. If this is a scanned PDF or image, please copy/paste the text directly.",
+            data={"raw_text": "", "char_count": 0, "word_count": 0, "filename": file.filename}
+        )
+
+    return APIResponse(
+        success=True,
+        message=f"Scanned {char_count} characters ({word_count} words) from {file.filename}",
+        data={
+            "raw_text": raw_text,
+            "char_count": char_count,
+            "word_count": word_count,
+            "filename": file.filename
+        }
+    )
+
+
+@router.post(
     "/upload-document",
     response_model=APIResponse[ExtractionResponse],
     status_code=status.HTTP_200_OK,
@@ -151,7 +187,8 @@ async def upload_document_endpoint(
         data=ExtractionResponse(
             extracted=extracted,
             profile=saved_profile,
-            saved=auto_save
+            saved=auto_save,
+            raw_text=raw_text
         )
     )
 

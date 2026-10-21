@@ -79,19 +79,26 @@ def extract_text_from_file_bytes(content_bytes: bytes, filename: str) -> str:
     """Extract plain text from uploaded file bytes (supports PDF and plaintext/markdown)."""
     filename_lower = filename.lower()
     if filename_lower.endswith(".pdf"):
-        from pypdf import PdfReader
-        reader = PdfReader(io.BytesIO(content_bytes))
-        pages_text = []
-        for page in reader.pages:
-            t = page.extract_text()
-            if t:
-                pages_text.append(t)
-        return "\n\n".join(pages_text).strip()
+        try:
+            from pypdf import PdfReader
+            reader = PdfReader(io.BytesIO(content_bytes))
+            pages_text = []
+            for page in reader.pages:
+                t = page.extract_text()
+                if t and t.strip():
+                    pages_text.append(t.strip())
+            return "\n\n".join(pages_text).strip()
+        except Exception as exc:
+            logger.warning("Failed to extract text from PDF %s: %s", filename, str(exc))
+            return ""
     else:
         try:
             return content_bytes.decode("utf-8").strip()
         except UnicodeDecodeError:
-            return content_bytes.decode("latin-1", errors="ignore").strip()
+            try:
+                return content_bytes.decode("latin-1", errors="ignore").strip()
+            except Exception:
+                return ""
 
 
 def _clean_extracted_strings(data: Any) -> Any:
