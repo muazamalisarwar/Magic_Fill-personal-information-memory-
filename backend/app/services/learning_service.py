@@ -227,7 +227,9 @@ def classify_field_deterministically(
         "feedback", "complaint", "inquiry", "support", "ticket", "ask a question",
         "how can we help", "body", "email body", "email content", "tweet",
         "post content", "forum", "subject line", "tell us more", "leave a note",
-        "write a comment", "type a message"
+        "write a comment", "type a message", "what is this document", "describe what this",
+        "document description", "photo description", "media description", "ai description",
+        "doc_desc", "media_description", "file description"
     ]
     if any(k in combined_desc for k in comm_keywords):
         return FieldCategory.COMMUNICATION_CONTENT, None, None, None
@@ -239,8 +241,8 @@ def classify_field_deterministically(
             return FieldCategory.COMMUNICATION_CONTENT, None, None, None
 
     # Chat sentences heuristic
-    conversational_signals = ["hello", "hi there", "please help", "i wanted to ask", "thank you", "thanks", "problem with", "issue with"]
-    if any(sig in val.lower() for sig in conversational_signals) and len(val.split()) > 4:
+    conversational_signals = ["hello", "hi there", "please help", "i wanted to ask", "thank you", "thanks", "problem with", "issue with", "this is my", "this is a"]
+    if any(sig in val.lower() for sig in conversational_signals) and len(val.split()) > 3:
         return FieldCategory.COMMUNICATION_CONTENT, None, None, None
 
     # 4. Check TRANSACTIONAL (Coupons, orders, bookings, tracking, quantities)
@@ -256,17 +258,30 @@ def classify_field_deterministically(
         return FieldCategory.TRANSACTIONAL, None, None, None
 
     # 5. Check Semantic Canonical Dictionary for Matches
+    def _validate_candidate_value(k: str, v: str) -> bool:
+        """Ensures that detected canonical key matches the shape of the user-entered value."""
+        if k in ("cnic", "national_id"):
+            # National IDs are numbers/hyphens (e.g. 35405-0542380-2 or 3540505423802).
+            # A text sentence like "This is my official profile photo" can NEVER be a CNIC.
+            digits_only = re.sub(r"\D", "", v)
+            has_multiple_words = len([w for w in v.split() if w.isalpha() and len(w) > 2]) >= 2
+            if has_multiple_words or len(digits_only) < 7:
+                return False
+        return True
+
     # Test normalized key directly
     for probe in [norm_lbl, norm_id]:
         if probe in SEMANTIC_CANONICAL_MAP:
             canon_k, human_l, cat, sub_cat = SEMANTIC_CANONICAL_MAP[probe]
-            return cat, canon_k, human_l, sub_cat
+            if _validate_candidate_value(canon_k, val):
+                return cat, canon_k, human_l, sub_cat
 
-    # Substring dictionary lookup
+    # Substring dictionary lookup with word-boundary and validation
     for syn, (canon_k, human_l, cat, sub_cat) in SEMANTIC_CANONICAL_MAP.items():
         syn_word = syn.replace("_", " ")
-        if syn_word in combined_desc or syn in combined_desc:
-            return cat, canon_k, human_l, sub_cat
+        if re.search(rf"\b{re.escape(syn_word)}\b", combined_desc) or re.search(rf"\b{re.escape(syn)}\b", combined_desc):
+            if _validate_candidate_value(canon_k, val):
+                return cat, canon_k, human_l, sub_cat
 
     # 6. Specific Domain Heuristics
     # LinkedIn URL

@@ -2548,7 +2548,9 @@ Education: BS Computer Science from University of Education, Lahore in 2024.`;
     if (el.getAttribute("data-magic-fill-autofilled") === "true") return;
 
     const type = (el.type || "text").toLowerCase();
-    if (type === "submit" || type === "reset" || type === "button") return;
+    if (type === "submit" || type === "reset" || type === "button" || type === "file") return;
+    if (el.getAttribute("data-magic-fill-ignore") === "true" || el.getAttribute("data-no-learn") === "true") return;
+    if (el.id === "mediaDescriptionInput" || el.name === "media_ai_description" || el.id === "rawTextInput") return;
     if (type === "radio" && !el.checked) return;
 
     let val = "";

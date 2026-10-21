@@ -365,11 +365,23 @@
     const v = val.trim();
     if (v.length < 2 && !/^\d+$/.test(v)) return true;
 
-    // Exclude if populated by Magic Fill without user modification
-    if (el.getAttribute("data-magic-fill-autofilled") === "true") return true;
+    // Exclude if element explicitly opts out of Magic Fill auto-learning
+    if (el.getAttribute("data-magic-fill-ignore") === "true" || el.getAttribute("data-no-learn") === "true") return true;
+
+    // Exclude Magic Fill's own web app pages on localhost
+    const host = window.location.hostname;
+    const path = window.location.pathname;
+    if ((host === "localhost" || host === "127.0.0.1") && (path.includes("/extract") || path.includes("/memory") || path.includes("/dashboard") || path.includes("/login") || path.includes("/register"))) {
+      return true;
+    }
+
+    // Exclude document and file description textareas
+    if (el.id === "mediaDescriptionInput" || el.name === "media_ai_description" || el.id === "rawTextInput" || el.id === "chatInput") {
+      return true;
+    }
 
     const type = (el.type || "text").toLowerCase();
-    if (SENSITIVE_TYPES.has(type) || type === "search" || type === "color") {
+    if (SENSITIVE_TYPES.has(type) || type === "search" || type === "color" || type === "file") {
       return true;
     }
 

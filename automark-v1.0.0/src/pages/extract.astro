@@ -221,8 +221,12 @@ import Base from "@/layouts/Base.astro";
 
             <textarea
               id="mediaDescriptionInput"
+              name="media_ai_description"
               rows="2"
-              placeholder="e.g. This is my CNIC front picture, or This is my official profile photo, or This is my software engineering CV"
+              data-magic-fill-ignore="true"
+              data-no-learn="true"
+              autocomplete="off"
+              placeholder="e.g. Front of national identity card, official profile photo, updated CV/resume, degree transcript"
               class="w-full bg-slate-900/60 border border-white/15 rounded-xl px-4 py-3 text-white placeholder:text-slate-500 text-sm focus:border-[#6C63FF] focus:ring-2 focus:ring-[#6C63FF]/20 focus:outline-none transition resize-none"
               required
             ></textarea>
@@ -299,12 +303,21 @@ import Base from "@/layouts/Base.astro";
       <pre class="bg-black/60 p-4 rounded-2xl border border-white/5 overflow-x-auto text-[11px] font-mono text-emerald-300 leading-relaxed select-all max-h-80"><code id="extractUpdatedJsonCode">{}</code></pre>
     </div>
 
-    <!-- 4. Uploaded Documents Vault Table -->
+    <!-- 4. Uploaded Documents & Media Vault -->
     <div class="bg-dark/80 border border-white/10 rounded-3xl p-6 sm:p-8 backdrop-blur-xl">
-      <div class="flex items-center justify-between mb-5">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h3 class="text-base font-bold text-white">Stored Source Documents</h3>
-          <p class="text-xs text-text-light">Attached CVs, resumes, and credentials stored in your vault</p>
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <span>Stored Photos, IDs &amp; Documents</span>
+            <span id="docCountBadge" class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/20 text-primary border border-primary/30">0</span>
+          </h3>
+          <p class="text-xs text-text-light">Attached CVs, CNIC scans, profile photos, and credentials ready for instant form attachment</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button type="button" id="btnRefreshDocs" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-text-light hover:text-white text-xs font-semibold transition flex items-center gap-1.5 border border-white/10 cursor-pointer">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            <span>Refresh</span>
+          </button>
         </div>
       </div>
 
@@ -312,22 +325,54 @@ import Base from "@/layouts/Base.astro";
         <table class="w-full text-left text-xs">
           <thead>
             <tr class="border-b border-white/10 text-text-light uppercase tracking-wider text-[10px]">
+              <th class="pb-3 font-semibold w-16">Preview</th>
               <th class="pb-3 font-semibold">File Name</th>
+              <th class="pb-3 font-semibold">Assigned Field Key</th>
+              <th class="pb-3 font-semibold">User Description</th>
               <th class="pb-3 font-semibold">Size</th>
-              <th class="pb-3 font-semibold">Description</th>
               <th class="pb-3 font-semibold">Upload Date</th>
               <th class="pb-3 font-semibold text-right">Actions</th>
             </tr>
           </thead>
           <tbody id="documentsTableBody" class="divide-y divide-white/5">
             <tr>
-              <td colspan="5" class="py-6 text-center text-text-light">
+              <td colspan="7" class="py-6 text-center text-text-light">
                 <div class="inline-block size-5 border-2 border-primary border-t-transparent rounded-full animate-spin mb-2"></div>
                 <div>Loading stored documents...</div>
               </td>
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- Document Full Resolution Preview Modal -->
+    <div id="docPreviewModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md" role="dialog" aria-modal="true">
+      <div class="relative w-full max-w-2xl bg-dark border border-white/15 rounded-3xl p-6 sm:p-8 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+        <div class="flex items-center justify-between pb-4 border-b border-white/10 shrink-0">
+          <div>
+            <h3 id="modalDocTitle" class="text-base font-bold text-white">Document Preview</h3>
+            <p id="modalDocSubtitle" class="text-xs text-text-light font-mono">Loading...</p>
+          </div>
+          <button type="button" id="btnCloseDocPreview" class="text-text-light hover:text-white text-2xl leading-none cursor-pointer">&times;</button>
+        </div>
+
+        <div id="modalDocContent" class="py-4 overflow-y-auto flex-1 flex items-center justify-center min-h-[250px] max-h-[500px]">
+          <!-- Dynamic Image or Document view inserted here -->
+        </div>
+
+        <div class="pt-4 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0">
+          <div class="text-xs text-text-light">
+            <span class="font-semibold text-white">AI Description:</span> <span id="modalDocDesc" class="italic text-slate-300">None</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <a id="modalDocDownloadBtn" href="#" download class="btn-outline text-xs py-1.5 px-3 rounded-xl flex items-center gap-1.5">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Download File</span>
+            </a>
+            <button type="button" id="btnCloseDocPreview2" class="btn btn-primary text-xs py-1.5 px-4 rounded-xl font-bold cursor-pointer">Close</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -346,6 +391,23 @@ import Base from "@/layouts/Base.astro";
       const headers = {
         "Authorization": `Bearer ${token}`
       };
+
+      // Resilient API Fetch Helper with automatic backend fallback
+      async function apiFetch(endpoint, options = {}) {
+        // 1. Attempt relative URL
+        try {
+          const res = await fetch(endpoint, options);
+          if (res.status !== 502 && res.status !== 503 && res.status !== 504) {
+            return res;
+          }
+        } catch (err) {
+          console.warn(`Relative fetch to ${endpoint} failed, falling back to port 8000:`, err);
+        }
+
+        // 2. Direct backend fallback to http://127.0.0.1:8000
+        const directUrl = endpoint.startsWith("http") ? endpoint : `http://127.0.0.1:8000${endpoint.startsWith("/") ? "" : "/"}${endpoint}`;
+        return await fetch(directUrl, options);
+      }
 
       function showToast(msg, type = "success") {
         const toast = document.getElementById("extractToast");
@@ -511,7 +573,7 @@ import Base from "@/layouts/Base.astro";
             formData.append("file", selectedMediaFile);
             formData.append("description", desc);
 
-            const res = await fetch("/api/documents/upload", {
+            const res = await apiFetch("/api/documents/upload", {
               method: "POST",
               headers: {
                 "Authorization": `Bearer ${token}`
@@ -524,7 +586,7 @@ import Base from "@/layouts/Base.astro";
               showToast(`Document '${data.data.title}' saved to personal memory vault!`);
               if (mediaAlert) {
                 mediaAlert.className = "text-xs p-3.5 rounded-xl bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 block";
-                mediaAlert.innerHTML = `<strong>✓ Saved Successfully:</strong> Stored as <code>${data.data.doc_key}</code> (${data.data.title}) and synchronized to your personal autofill memory.`;
+                mediaAlert.innerHTML = `<strong>✓ Saved Successfully:</strong> Stored as <code class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-200 font-mono text-[11px]">${data.data.doc_key}</code> (${data.data.title}) and synchronized to your personal autofill memory.`;
               }
 
               // Display updated JSON output
@@ -554,9 +616,10 @@ import Base from "@/layouts/Base.astro";
               }
             }
           } catch (err) {
+            console.error("Document upload failed:", err);
             if (mediaAlert) {
               mediaAlert.className = "text-xs p-3.5 rounded-xl bg-rose-500/10 text-rose-300 border border-rose-500/30 block";
-              mediaAlert.textContent = "Network error during upload. Please verify the backend is running.";
+              mediaAlert.textContent = `Upload issue: ${err.message || "Could not reach backend on port 8000."} Please ensure the backend is running.`;
             }
           } finally {
             if (mediaSubmitBtn) {
@@ -923,52 +986,193 @@ import Base from "@/layouts/Base.astro";
         });
       }
 
-      // Load Stored Documents Table
+      // Load Stored Documents Table & Preview Gallery
+      let storedDocsCache = [];
+
+      const docPreviewModal = document.getElementById("docPreviewModal");
+      const modalDocTitle = document.getElementById("modalDocTitle");
+      const modalDocSubtitle = document.getElementById("modalDocSubtitle");
+      const modalDocContent = document.getElementById("modalDocContent");
+      const modalDocDesc = document.getElementById("modalDocDesc");
+      const modalDocDownloadBtn = document.getElementById("modalDocDownloadBtn");
+      const btnCloseDocPreview = document.getElementById("btnCloseDocPreview");
+      const btnCloseDocPreview2 = document.getElementById("btnCloseDocPreview2");
+      const btnRefreshDocs = document.getElementById("btnRefreshDocs");
+      const docCountBadge = document.getElementById("docCountBadge");
+
+      function openDocModal(doc) {
+        if (!docPreviewModal || !doc) return;
+        if (modalDocTitle) modalDocTitle.textContent = doc.title || doc.file_name;
+        if (modalDocSubtitle) modalDocSubtitle.textContent = `${doc.doc_key} • ${doc.mime_type || "file"}`;
+        if (modalDocDesc) modalDocDesc.textContent = doc.description || "No description provided";
+
+        if (modalDocDownloadBtn) {
+          modalDocDownloadBtn.href = doc.file_data;
+          modalDocDownloadBtn.download = doc.file_name || "document";
+        }
+
+        if (modalDocContent) {
+          modalDocContent.innerHTML = "";
+          const isImg = (doc.mime_type && doc.mime_type.startsWith("image/")) || (doc.file_data && doc.file_data.startsWith("data:image"));
+          const isPdf = (doc.mime_type && doc.mime_type.includes("pdf")) || (doc.file_data && doc.file_data.startsWith("data:application/pdf"));
+
+          if (isImg) {
+            const img = document.createElement("img");
+            img.src = doc.file_data;
+            img.alt = doc.title || doc.file_name;
+            img.className = "max-h-[460px] max-w-full rounded-2xl object-contain shadow-2xl border border-white/10";
+            modalDocContent.appendChild(img);
+          } else if (isPdf) {
+            const iframe = document.createElement("iframe");
+            iframe.src = doc.file_data;
+            iframe.className = "w-full h-[460px] rounded-2xl border border-white/10";
+            modalDocContent.appendChild(iframe);
+          } else {
+            modalDocContent.innerHTML = `
+              <div class="text-center p-8 space-y-3">
+                <div class="size-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto text-primary">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </div>
+                <p class="text-sm font-bold text-white">${doc.file_name}</p>
+                <p class="text-xs text-text-light font-mono">${(doc.file_size_bytes / 1024).toFixed(1)} KB</p>
+              </div>
+            `;
+          }
+        }
+
+        docPreviewModal.classList.remove("hidden");
+        docPreviewModal.classList.add("flex");
+      }
+
+      function closeDocModal() {
+        if (!docPreviewModal) return;
+        docPreviewModal.classList.add("hidden");
+        docPreviewModal.classList.remove("flex");
+      }
+
+      if (btnCloseDocPreview) btnCloseDocPreview.addEventListener("click", closeDocModal);
+      if (btnCloseDocPreview2) btnCloseDocPreview2.addEventListener("click", closeDocModal);
+      if (docPreviewModal) {
+        docPreviewModal.addEventListener("click", (e) => {
+          if (e.target === docPreviewModal) closeDocModal();
+        });
+      }
+      if (btnRefreshDocs) {
+        btnRefreshDocs.addEventListener("click", () => {
+          loadStoredDocuments();
+          showToast("Refreshed documents list.");
+        });
+      }
+
+      function getDocKeyBadge(key) {
+        switch (key) {
+          case "cnic_front":
+            return `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">🪪 CNIC Front</span>`;
+          case "cnic_back":
+            return `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">🪪 CNIC Back</span>`;
+          case "profile_photo":
+            return `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-sky-500/15 text-sky-300 border border-sky-500/30">👤 Profile Photo</span>`;
+          case "resume":
+            return `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-purple-500/15 text-purple-300 border border-purple-500/30">📄 Resume / CV</span>`;
+          case "degree_transcript":
+            return `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30">🎓 Degree</span>`;
+          case "passport":
+            return `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">🛂 Passport</span>`;
+          default:
+            return `<span class="px-2.5 py-1 rounded-lg text-[10px] font-mono font-semibold bg-white/5 text-text-light border border-white/10">${key || "document"}</span>`;
+        }
+      }
+
       async function loadStoredDocuments() {
         const tbody = document.getElementById("documentsTableBody");
         if (!tbody) return;
 
         try {
-          const res = await fetch("/api/documents/me", { headers });
+          const res = await apiFetch("/api/documents/me", { headers });
           const docData = res.ok ? (await res.json())?.data || [] : [];
+          storedDocsCache = docData;
+
+          if (docCountBadge) docCountBadge.textContent = String(docData.length);
 
           if (docData.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-text-light">No documents uploaded yet. Upload a resume above to start!</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-text-light">No documents uploaded yet. Upload a photo or ID document above to begin!</td></tr>`;
             return;
           }
 
           tbody.innerHTML = "";
-          docData.forEach(doc => {
+          docData.forEach((doc, idx) => {
             const tr = document.createElement("tr");
             tr.className = "hover:bg-white/5 transition";
             const dateStr = doc.created_at ? new Date(doc.created_at).toLocaleDateString() : "";
             const sizeKb = (doc.file_size_bytes / 1024).toFixed(1);
 
+            const isImg = (doc.mime_type && doc.mime_type.startsWith("image/")) || (doc.file_data && doc.file_data.startsWith("data:image"));
+            const isPdf = (doc.mime_type && doc.mime_type.includes("pdf")) || (doc.file_data && doc.file_data.startsWith("data:application/pdf"));
+
+            let thumbHtml = "";
+            if (isImg) {
+              thumbHtml = `<img src="${doc.file_data}" alt="${doc.title}" class="size-11 rounded-xl object-cover border border-white/15 hover:border-primary cursor-pointer hover:scale-110 transition shadow-md doc-thumb-click" data-idx="${idx}" title="Click to view full photo" />`;
+            } else if (isPdf) {
+              thumbHtml = `<div class="size-11 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 flex items-center justify-center font-bold text-[10px] cursor-pointer hover:scale-105 transition doc-thumb-click shadow-md" data-idx="${idx}">PDF</div>`;
+            } else {
+              thumbHtml = `<div class="size-11 rounded-xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 flex items-center justify-center font-bold text-[10px] cursor-pointer hover:scale-105 transition doc-thumb-click shadow-md" data-idx="${idx}">DOC</div>`;
+            }
+
             tr.innerHTML = `
-              <td class="py-3 font-semibold text-white flex items-center gap-2">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                <span>${doc.file_name}</span>
+              <td class="py-3">
+                ${thumbHtml}
+              </td>
+              <td class="py-3">
+                <div class="font-bold text-white text-xs truncate max-w-[180px]">${doc.file_name}</div>
+                <div class="text-[10px] text-text-light font-mono">${doc.title || "Document"}</div>
+              </td>
+              <td class="py-3">
+                ${getDocKeyBadge(doc.doc_key)}
+              </td>
+              <td class="py-3 text-text-light max-w-xs">
+                <p class="truncate text-xs text-slate-300">${doc.description || "—"}</p>
               </td>
               <td class="py-3 text-text-light font-mono text-[11px]">${sizeKb} KB</td>
-              <td class="py-3 text-text-light">${doc.description || doc.category || "Uploaded Document"}</td>
               <td class="py-3 text-text-dark font-mono text-[11px]">${dateStr}</td>
               <td class="py-3 text-right">
-                <button type="button" class="btn-delete-doc text-rose-400 hover:text-rose-300 font-semibold text-xs" data-id="${doc.id}">
-                  Delete
-                </button>
+                <div class="flex items-center justify-end gap-2">
+                  <button type="button" class="btn-preview-doc px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-white font-semibold text-xs border border-white/10 cursor-pointer transition hover:border-primary/50" data-idx="${idx}">
+                    Preview
+                  </button>
+                  <button type="button" class="btn-delete-doc px-2.5 py-1 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 font-semibold text-xs border border-rose-500/20 cursor-pointer transition" data-id="${doc.id}">
+                    Delete
+                  </button>
+                </div>
               </td>
             `;
             tbody.appendChild(tr);
           });
 
+          // Bind preview triggers
+          tbody.querySelectorAll(".doc-thumb-click, .btn-preview-doc").forEach(el => {
+            el.addEventListener("click", () => {
+              const idx = parseInt(el.getAttribute("data-idx"), 10);
+              if (!isNaN(idx) && storedDocsCache[idx]) {
+                openDocModal(storedDocsCache[idx]);
+              }
+            });
+          });
+
+          // Bind delete triggers
           tbody.querySelectorAll(".btn-delete-doc").forEach(btn => {
             btn.addEventListener("click", async () => {
               const docId = btn.getAttribute("data-id");
-              if (!confirm("Delete this document from your vault?")) return;
-              const delRes = await fetch(`/api/documents/me/${docId}`, { method: "DELETE", headers });
-              if (delRes.ok) {
-                showToast("Document deleted.");
-                loadStoredDocuments();
+              if (!confirm("Permanently delete this document from your vault?")) return;
+              try {
+                const delRes = await apiFetch(`/api/documents/me/${docId}`, { method: "DELETE", headers });
+                if (delRes.ok) {
+                  showToast("Document deleted successfully.");
+                  loadStoredDocuments();
+                } else {
+                  showToast("Failed to delete document.", "error");
+                }
+              } catch (err) {
+                showToast("Network error deleting document.", "error");
               }
             });
           });
