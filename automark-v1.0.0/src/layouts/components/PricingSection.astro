@@ -26,18 +26,18 @@ const sectionContent = content ?? pricingData.page_header?.content ?? "";
       {
         isHome && (
           <div class="section-intro centralize text-center mb-16">
-            <div class="neu-pill px-4 py-1.5 mb-4 text-xs font-bold text-[#6C63FF] tracking-wider uppercase font-display">
+            <p class="text-xs font-semibold uppercase tracking-[0.12em] text-indigo-600 mb-2">
               Transparent Pricing
-            </div>
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-[#3D4852] hasHighlight mb-4" set:html={sectionTitle} />
-            {sectionContent && <p class="font-body text-[#6B7280] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">{sectionContent}</p>}
+            </p>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-slate-900 dark:text-white hasHighlight mb-4" set:html={sectionTitle} />
+            {sectionContent && <p class="font-body text-slate-600 dark:text-slate-400 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">{sectionContent}</p>}
           </div>
         )
       }
       <div class="section-content text-center">
-        <!-- Neumorphic Pricing Cycle Toggle -->
+        <!-- Pricing Cycle Toggle -->
         <div class="inline-flex items-center justify-center mb-14">
-          <div class="neu-inset-sm p-1.5 rounded-full inline-flex items-center gap-1">
+          <div class="bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 p-1 rounded-xl inline-flex items-center gap-1">
             <input
               type="checkbox"
               data-pricing-toggle
@@ -47,17 +47,17 @@ const sectionContent = content ?? pricingData.page_header?.content ?? "";
             <label
               for="pricing-toggle"
               id="lblToggleMonthly"
-              class="neu-btn-secondary px-6 py-2 text-xs font-bold rounded-full cursor-pointer transition-all active"
+              class="bg-white dark:bg-white/10 text-slate-900 dark:text-white shadow-2xs px-5 py-2 text-xs font-semibold rounded-lg cursor-pointer transition-all active"
             >
               {pricingData.toggler?.monthly_label ?? "Monthly"}
             </label>
             <label
               for="pricing-toggle"
               id="lblToggleYearly"
-              class="px-6 py-2 text-xs font-bold text-[#6B7280] hover:text-[#3D4852] rounded-full cursor-pointer transition-all"
+              class="px-5 py-2 text-xs font-semibold text-slate-500 hover:text-slate-900 dark:hover:text-white rounded-lg cursor-pointer transition-all"
             >
               {pricingData.toggler?.yearly_label ?? "Yearly"}
-              <span class="ml-1 text-[10px] text-[#38B2AC] font-mono font-bold">(Save 20%)</span>
+              <span class="ml-1 text-[10px] text-emerald-600 dark:text-emerald-400 font-mono font-bold">(Save 20%)</span>
             </label>
           </div>
         </div>
@@ -94,18 +94,19 @@ const sectionContent = content ?? pricingData.page_header?.content ?? "";
     if (toggle && lblMonthly && lblYearly) {
       toggle.addEventListener("change", () => {
         const isYearly = toggle.checked;
+        const activeClasses = ["bg-white", "dark:bg-white/10", "text-slate-900", "dark:text-white", "shadow-2xs", "active"];
         if (isYearly) {
-          lblMonthly.classList.remove("neu-btn-secondary", "active");
-          lblMonthly.classList.add("text-[#6B7280]");
-          lblYearly.classList.add("neu-btn-secondary", "active");
-          lblYearly.classList.remove("text-[#6B7280]");
+          lblMonthly.classList.remove(...activeClasses);
+          lblMonthly.classList.add("text-slate-500");
+          lblYearly.classList.add(...activeClasses);
+          lblYearly.classList.remove("text-slate-500");
           monthlyTags.forEach(el => el.classList.add("opacity-0"));
           yearlyTags.forEach(el => el.classList.remove("opacity-0"));
         } else {
-          lblYearly.classList.remove("neu-btn-secondary", "active");
-          lblYearly.classList.add("text-[#6B7280]");
-          lblMonthly.classList.add("neu-btn-secondary", "active");
-          lblMonthly.classList.remove("text-[#6B7280]");
+          lblYearly.classList.remove(...activeClasses);
+          lblYearly.classList.add("text-slate-500");
+          lblMonthly.classList.add(...activeClasses);
+          lblMonthly.classList.remove("text-slate-500");
           yearlyTags.forEach(el => el.classList.add("opacity-0"));
           monthlyTags.forEach(el => el.classList.remove("opacity-0"));
         }

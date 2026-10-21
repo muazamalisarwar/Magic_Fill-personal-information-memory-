@@ -82,31 +82,31 @@ export default function PricingCheckout({
             setShowModal(true);
           }
         }}
-        className={`${isFeatured ? "neu-btn-primary" : "neu-btn-secondary"} w-full py-3.5 my-8 block text-center cursor-pointer rounded-2xl text-xs font-bold uppercase tracking-wider`}
+        className={`${isFeatured ? "bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs" : "bg-white dark:bg-white/5 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10"} w-full py-3.5 my-8 block text-center cursor-pointer rounded-lg text-xs font-semibold uppercase tracking-wider transition-all`}
       >
         {buttonLabel}
       </button>
 
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs px-4">
-          <div className="bg-[#E0E5EC] p-8 rounded-[32px] w-full max-w-md neu-card relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs px-4">
+          <div className="bg-white dark:bg-[#0f1422] p-8 rounded-2xl w-full max-w-md border border-slate-200 dark:border-white/10 shadow-xl relative">
             <button
               onClick={() => setShowModal(false)}
-              className="neu-btn-secondary size-8 rounded-xl absolute top-6 right-6 flex items-center justify-center text-[#3D4852]"
+              className="size-8 rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 absolute top-6 right-6 flex items-center justify-center text-slate-500 hover:text-slate-800 dark:hover:text-white transition-colors cursor-pointer"
               aria-label="Close"
             >
               &times;
             </button>
-            <h3 className="text-xl font-bold font-display mb-2 text-[#3D4852]">
+            <h3 className="text-xl font-bold font-display mb-2 text-slate-900 dark:text-white">
               Unlock {planTitle}
             </h3>
-            <p className="text-xs font-body text-[#6B7280] mb-6">
+            <p className="text-xs font-body text-slate-500 dark:text-slate-400 mb-6">
               Enter your details below to activate your account credentials before checkout.
             </p>
 
             <form onSubmit={handleCheckout} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-[#3D4852] mb-1.5 font-display">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1.5 font-display">
                   Full Name
                 </label>
                 <input
@@ -114,13 +114,13 @@ export default function PricingCheckout({
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="neu-input w-full text-sm"
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 transition-all"
                   placeholder="John Doe"
                   disabled={loading}
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-[#3D4852] mb-1.5 font-display">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1.5 font-display">
                   Email Address
                 </label>
                 <input
@@ -128,7 +128,7 @@ export default function PricingCheckout({
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="neu-input w-full text-sm"
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 transition-all"
                   placeholder="john@example.com"
                   disabled={loading}
                 />
@@ -139,7 +139,7 @@ export default function PricingCheckout({
               <button
                 type="submit"
                 disabled={loading}
-                className="neu-btn-primary w-full py-3 rounded-2xl mt-6 flex justify-center items-center gap-2 text-xs font-bold uppercase tracking-wider disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full py-3 rounded-lg mt-6 flex justify-center items-center gap-2 text-xs font-semibold uppercase tracking-wider bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs transition-all disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
               >
                 {loading ? (
                   <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">

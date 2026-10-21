@@ -13,14 +13,14 @@ if (!faqData.enable) return;
     <div class="section-container grid lg:grid-cols-12 gap-12 items-start">
       <div class="section-intro max-lg:text-center lg:col-span-5">
         <div class="sticky top-28">
-          <div class="neu-pill px-4 py-1.5 mb-4 text-xs font-bold text-[#6C63FF] tracking-wider uppercase font-display inline-block">
-            Frequently Asked
-          </div>
-          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-[#3D4852] hasHighlight mb-4" set:html={faqData.title} />
-          <p class="font-body text-[#6B7280] text-base leading-relaxed">{faqData.description}</p>
+          <p class="text-xs font-semibold uppercase tracking-[0.12em] text-indigo-600 mb-2">
+            Frequently Asked Questions
+          </p>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-slate-900 dark:text-white hasHighlight mb-4" set:html={faqData.title} />
+          <p class="font-body text-slate-600 dark:text-slate-400 text-base leading-relaxed">{faqData.description}</p>
           {
             faqData.button && faqData.button.enable && faqData.button.link && (
-              <a href={faqData.button.link} class="neu-btn-secondary px-6 py-3 text-xs font-bold rounded-2xl mt-8 inline-flex">
+              <a href={faqData.button.link} class="rounded-lg px-4 py-2.5 text-xs font-medium bg-white dark:bg-white/5 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-white/10 shadow-2xs hover:bg-slate-50 dark:hover:bg-white/10 mt-8 inline-flex transition-all">
                 {faqData.button.label}
               </a>
             )

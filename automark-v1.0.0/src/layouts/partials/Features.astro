@@ -13,11 +13,11 @@ const { our_features } = Astro.props;
   <div class="container">
     <div class="section-container">
       <div class="section-intro centralize text-center mb-16">
-        <div class="neu-pill px-4 py-1.5 mb-4 text-xs font-bold text-[#6C63FF] tracking-wider uppercase">
+        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-indigo-600 mb-2">
           Autonomous Form Intelligence
-        </div>
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-[#3D4852] hasHighlight mb-4" set:html={our_features.title} />
-        <p class="font-body text-[#6B7280] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">{our_features.content}</p>
+        </p>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-slate-900 dark:text-white hasHighlight mb-4" set:html={our_features.title} />
+        <p class="font-body text-slate-600 dark:text-slate-400 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">{our_features.content}</p>
       </div>
       <div class="section-content">
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">

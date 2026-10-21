@@ -93,9 +93,9 @@ import Base from "@/layouts/Base.astro";
       <div id="reviewCard" class="hidden bg-dark/85 border border-primary/40 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
           <div>
-            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-500/10 text-amber-300 border border-amber-500/30 mb-1">
-              <span>⚠️ Review Required Before Saving</span>
-            </div>
+            <p class="text-xs font-semibold uppercase tracking-[0.12em] text-amber-500 mb-1">
+              Review Required Before Saving
+            </p>
             <h3 class="text-lg font-bold text-white">Confirm Extracted Personal Memory</h3>
             <p class="text-xs text-text-light">
               Review and edit any recognized values below. Uncheck any item you do not wish to save.
@@ -172,9 +172,9 @@ import Base from "@/layouts/Base.astro";
     <div id="sectionMediaUpload" class="hidden space-y-6">
       <div class="bg-dark/80 border border-white/10 rounded-3xl p-6 sm:p-8 backdrop-blur-xl">
         <div class="mb-6">
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-[#6C63FF]/15 text-[#6C63FF] border border-[#6C63FF]/30 mb-2">
-            <span>✨ AI Form Attachment Copilot</span>
-          </div>
+          <p class="text-xs font-semibold uppercase tracking-[0.12em] text-indigo-400 mb-2">
+            AI Form Attachment Copilot
+          </p>
           <h3 class="text-xl font-extrabold text-white">Upload Identity Assets, Photos &amp; Documents</h3>
           <p class="text-xs text-text-light mt-1 max-w-2xl">
             Upload your CNIC front/back, professional profile photo, degree certificates, or CV. Describe the document in natural language and Magic Fill's AI will automatically categorize and attach it whenever web forms require file uploads!
@@ -286,7 +286,7 @@ import Base from "@/layouts/Base.astro";
           </div>
         </div>
         <div class="flex items-center gap-2">
-          <span id="extractUpdatedBadge" class="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span id="extractUpdatedBadge" class="text-[10px] font-semibold px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
             ✓ Updated Just Now
           </span>
           <button
@@ -309,7 +309,7 @@ import Base from "@/layouts/Base.astro";
         <div>
           <h3 class="text-base font-bold text-white flex items-center gap-2">
             <span>Stored Photos, IDs &amp; Documents</span>
-            <span id="docCountBadge" class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/20 text-primary border border-primary/30">0</span>
+            <span id="docCountBadge" class="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-primary/20 text-primary border border-primary/30">0</span>
           </h3>
           <p class="text-xs text-text-light">Attached CVs, CNIC scans, profile photos, and credentials ready for instant form attachment</p>
         </div>

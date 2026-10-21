@@ -7,30 +7,27 @@ import Base from "@/layouts/Base.astro";
   meta_title="Authenticated Dashboard — Magic Fill Personal Memory Vault"
   description="Central hub for managing your verified personal memory, document extraction, browser extension setup, and autofill status."
 >
-  <div class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10 min-h-[85vh] bg-[#E0E5EC]">
+  <div class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10 min-h-[85vh]">
 
-    <!-- 1. Top Welcome & Identity Hero Card (Neumorphic Extruded Surface) -->
-    <div class="neu-card p-6 sm:p-10 relative overflow-hidden">
-      <!-- Ambient Tactile Rings -->
-      <div class="absolute -right-16 -top-16 size-72 neu-circle-inset opacity-40 pointer-events-none"></div>
-
+    <!-- 1. Top Welcome & Identity Hero Card -->
+    <div class="bg-white dark:bg-[#0f1422] border border-slate-200/80 dark:border-white/10 rounded-2xl p-6 sm:p-10 shadow-xs relative overflow-hidden">
       <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div class="flex items-center gap-5">
-          <!-- Inset Deep Avatar Well -->
-          <div id="userAvatarContainer" class="neu-icon-well size-18 rounded-2xl shrink-0">
-            <span id="userAvatarInitials" class="text-xl font-extrabold font-display text-[#6C63FF]">MF</span>
+          <!-- Avatar -->
+          <div id="userAvatarContainer" class="w-14 h-14 rounded-xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-800/40 flex items-center justify-center shrink-0">
+            <span id="userAvatarInitials" class="text-xl font-bold font-display text-indigo-600 dark:text-indigo-400">MF</span>
           </div>
           <div>
             <div class="flex items-center gap-3 mb-1.5 flex-wrap">
-              <h1 id="dashUserGreeting" class="text-2xl sm:text-3xl font-extrabold font-display text-[#3D4852]">
+              <h1 id="dashUserGreeting" class="text-2xl sm:text-3xl font-extrabold font-display text-slate-900 dark:text-white">
                 Welcome back!
               </h1>
-              <span class="neu-pill px-3 py-1 text-[11px] font-bold text-[#38B2AC] inline-flex items-center gap-1.5 font-mono">
-                <span class="size-1.5 rounded-full bg-[#38B2AC] animate-pulse"></span>
+              <span class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                 Vault Active
               </span>
             </div>
-            <p id="dashUserEmail" class="text-xs text-[#6B7280] font-mono font-medium">Loading profile...</p>
+            <p id="dashUserEmail" class="text-xs text-slate-500 dark:text-slate-400 font-mono font-medium">Loading profile...</p>
           </div>
         </div>
 
@@ -38,7 +35,7 @@ import Base from "@/layouts/Base.astro";
         <div class="flex flex-wrap items-center gap-3">
           <a
             href="/memory"
-            class="neu-btn-primary py-2.5 px-5 text-xs font-bold rounded-2xl flex items-center gap-2 cursor-pointer shadow-md"
+            class="rounded-lg px-4 py-2 text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs flex items-center gap-2 cursor-pointer transition-all"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
             <span>Open Memory Studio</span>
@@ -46,7 +43,7 @@ import Base from "@/layouts/Base.astro";
 
           <a
             href="/extract"
-            class="neu-btn-secondary py-2.5 px-4 text-xs font-bold rounded-2xl flex items-center gap-2 cursor-pointer"
+            class="rounded-lg px-3.5 py-2 text-xs font-medium bg-white dark:bg-white/5 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-white/10 shadow-2xs hover:bg-slate-50 dark:hover:bg-white/10 flex items-center gap-2 cursor-pointer transition-all"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
             <span>Upload Resume</span>
@@ -55,7 +52,7 @@ import Base from "@/layouts/Base.astro";
           <button
             type="button"
             id="dashSignOutBtn"
-            class="neu-btn-secondary py-2.5 px-4 text-xs font-bold rounded-2xl text-rose-500 hover:text-rose-600 cursor-pointer"
+            class="rounded-lg px-3.5 py-2 text-xs font-medium text-rose-600 hover:text-rose-700 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xs hover:bg-rose-50 dark:hover:bg-rose-950/20 cursor-pointer transition-all"
             title="Sign Out"
           >
             Sign Out
@@ -63,41 +60,41 @@ import Base from "@/layouts/Base.astro";
         </div>
       </div>
 
-      <!-- Live Vault Metrics Counter Strip (Deep Inset Wells) -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-5 mt-10 pt-8 border-t border-transparent">
-        <div class="neu-inset-sm rounded-2xl p-5 text-center">
-          <span class="text-xs font-bold uppercase tracking-wider text-[#6B7280] block mb-1 font-display">Identity Fields</span>
-          <span id="metricIdentityCount" class="text-3xl font-extrabold font-display text-[#3D4852] tracking-tight">--</span>
-          <span class="text-[10px] text-[#6B7280] font-body block mt-1">Name, Contact, Education</span>
+      <!-- Live Vault Metrics Counter Strip -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-5 mt-10 pt-8 border-t border-slate-100 dark:border-white/5">
+        <div class="bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 rounded-xl p-5 text-center">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1 font-display">Identity Fields</span>
+          <span id="metricIdentityCount" class="text-3xl font-extrabold font-display text-slate-900 dark:text-white tracking-tight">--</span>
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 font-body block mt-1">Name, Contact, Education</span>
         </div>
 
-        <div class="neu-inset-sm rounded-2xl p-5 text-center">
-          <span class="text-xs font-bold uppercase tracking-wider text-[#6B7280] block mb-1 font-display">Work Experiences</span>
-          <span id="metricExperienceCount" class="text-3xl font-extrabold font-display text-[#3D4852] tracking-tight">--</span>
-          <span class="text-[10px] text-[#6B7280] font-body block mt-1">Roles, Companies, Skills</span>
+        <div class="bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 rounded-xl p-5 text-center">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1 font-display">Work Experiences</span>
+          <span id="metricExperienceCount" class="text-3xl font-extrabold font-display text-slate-900 dark:text-white tracking-tight">--</span>
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 font-body block mt-1">Roles, Companies, Skills</span>
         </div>
 
-        <div class="neu-inset-sm rounded-2xl p-5 text-center">
-          <span class="text-xs font-bold uppercase tracking-wider text-[#6B7280] block mb-1 font-display">Custom Q&amp;A</span>
-          <span id="metricCustomCount" class="text-3xl font-extrabold font-display text-[#3D4852] tracking-tight">--</span>
-          <span class="text-[10px] text-[#6B7280] font-body block mt-1">Learned &amp; Manual</span>
+        <div class="bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 rounded-xl p-5 text-center">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1 font-display">Custom Q&amp;A</span>
+          <span id="metricCustomCount" class="text-3xl font-extrabold font-display text-slate-900 dark:text-white tracking-tight">--</span>
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 font-body block mt-1">Learned &amp; Manual</span>
         </div>
 
-        <div class="neu-inset-sm rounded-2xl p-5 text-center">
-          <span class="text-xs font-bold uppercase tracking-wider text-[#6B7280] block mb-1 font-display">Stored Documents</span>
-          <span id="metricDocCount" class="text-3xl font-extrabold font-display text-[#3D4852] tracking-tight">--</span>
-          <span class="text-[10px] text-[#6B7280] font-body block mt-1">Resumes &amp; Identity</span>
+        <div class="bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 rounded-xl p-5 text-center">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1 font-display">Stored Documents</span>
+          <span id="metricDocCount" class="text-3xl font-extrabold font-display text-slate-900 dark:text-white tracking-tight">--</span>
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 font-body block mt-1">Resumes &amp; Identity</span>
         </div>
       </div>
     </div>
 
     <!-- 2. Primary Navigation Hub Cards (4 Dedicated Feature Pages) -->
     <div>
-      <div class="flex items-center gap-3 mb-6">
-        <div class="neu-pill px-3 py-1 text-xs font-bold text-[#6C63FF] uppercase font-display">
+      <div class="mb-6">
+        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-indigo-600 mb-1">
           Workspace Modules
-        </div>
-        <h2 class="text-xl font-bold font-display text-[#3D4852]">
+        </p>
+        <h2 class="text-xl font-bold font-display text-slate-900 dark:text-white">
           Platform Features &amp; Workflows
         </h2>
       </div>
@@ -106,20 +103,20 @@ import Base from "@/layouts/Base.astro";
         <!-- Card 1: Personal Memory Studio -->
         <a
           href="/memory"
-          class="neu-card p-6 flex flex-col justify-between group h-full cursor-pointer"
+          class="bg-white dark:bg-[#0f1422] border border-slate-200/80 dark:border-white/10 rounded-xl p-6 shadow-xs hover:border-slate-300 dark:hover:border-white/20 hover:shadow-sm transition-all flex flex-col justify-between group h-full cursor-pointer"
         >
           <div>
-            <div class="neu-icon-well size-14 mb-5 group-hover:scale-105 transition-transform text-[#6C63FF]">
+            <div class="w-12 h-12 rounded-lg border border-slate-100 dark:border-white/10 bg-slate-50 dark:bg-white/5 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform text-indigo-600">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
             </div>
-            <h3 class="text-base font-bold font-display text-[#3D4852] mb-2 group-hover:text-[#6C63FF] transition-colors">
+            <h3 class="text-base font-bold font-display text-slate-900 dark:text-white mb-2 group-hover:text-indigo-600 transition-colors">
               Personal Memory Studio
             </h3>
-            <p class="text-xs font-body text-[#6B7280] leading-relaxed mb-4">
+            <p class="text-xs font-body text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
               Inspect, edit, search, and organize all your verified credentials, education records, and custom answers.
             </p>
           </div>
-          <div class="flex items-center text-xs font-bold text-[#6C63FF] gap-1.5 pt-3 border-t border-transparent font-display">
+          <div class="flex items-center text-xs font-semibold text-indigo-600 gap-1.5 pt-3 border-t border-slate-100 dark:border-white/5 font-display">
             <span>Manage Vault</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </div>
@@ -128,20 +125,20 @@ import Base from "@/layouts/Base.astro";
         <!-- Card 2: AI Document Extraction -->
         <a
           href="/extract"
-          class="neu-card p-6 flex flex-col justify-between group h-full cursor-pointer"
+          class="bg-white dark:bg-[#0f1422] border border-slate-200/80 dark:border-white/10 rounded-xl p-6 shadow-xs hover:border-slate-300 dark:hover:border-white/20 hover:shadow-sm transition-all flex flex-col justify-between group h-full cursor-pointer"
         >
           <div>
-            <div class="neu-icon-well size-14 mb-5 group-hover:scale-105 transition-transform text-[#8B84FF]">
+            <div class="w-12 h-12 rounded-lg border border-slate-100 dark:border-white/10 bg-slate-50 dark:bg-white/5 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform text-indigo-600">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
             </div>
-            <h3 class="text-base font-bold font-display text-[#3D4852] mb-2 group-hover:text-[#6C63FF] transition-colors">
+            <h3 class="text-base font-bold font-display text-slate-900 dark:text-white mb-2 group-hover:text-indigo-600 transition-colors">
               AI Document Extraction
             </h3>
-            <p class="text-xs font-body text-[#6B7280] leading-relaxed mb-4">
+            <p class="text-xs font-body text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
               Upload CV/Resume (PDF or text) or talk to the AI chatbot. Review and approve extracted information before saving.
             </p>
           </div>
-          <div class="flex items-center text-xs font-bold text-[#8B84FF] gap-1.5 pt-3 border-t border-transparent font-display">
+          <div class="flex items-center text-xs font-semibold text-indigo-600 gap-1.5 pt-3 border-t border-slate-100 dark:border-white/5 font-display">
             <span>Extract &amp; Review</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </div>
@@ -150,20 +147,20 @@ import Base from "@/layouts/Base.astro";
         <!-- Card 3: Browser Extension Pairing -->
         <a
           href="/extension"
-          class="neu-card p-6 flex flex-col justify-between group h-full cursor-pointer"
+          class="bg-white dark:bg-[#0f1422] border border-slate-200/80 dark:border-white/10 rounded-xl p-6 shadow-xs hover:border-slate-300 dark:hover:border-white/20 hover:shadow-sm transition-all flex flex-col justify-between group h-full cursor-pointer"
         >
           <div>
-            <div class="neu-icon-well size-14 mb-5 group-hover:scale-105 transition-transform text-[#38B2AC]">
+            <div class="w-12 h-12 rounded-lg border border-slate-100 dark:border-white/10 bg-slate-50 dark:bg-white/5 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform text-emerald-600">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
             </div>
-            <h3 class="text-base font-bold font-display text-[#3D4852] mb-2 group-hover:text-[#38B2AC] transition-colors">
+            <h3 class="text-base font-bold font-display text-slate-900 dark:text-white mb-2 group-hover:text-emerald-600 transition-colors">
               Extension Setup &amp; Sync
             </h3>
-            <p class="text-xs font-body text-[#6B7280] leading-relaxed mb-4">
+            <p class="text-xs font-body text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
               Generate 1-click pairing codes, check extension connectivity, and synchronize the theme across your browser.
             </p>
           </div>
-          <div class="flex items-center text-xs font-bold text-[#38B2AC] gap-1.5 pt-3 border-t border-transparent font-display">
+          <div class="flex items-center text-xs font-semibold text-emerald-600 gap-1.5 pt-3 border-t border-slate-100 dark:border-white/5 font-display">
             <span>Pair Browser</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </div>
@@ -172,20 +169,20 @@ import Base from "@/layouts/Base.astro";
         <!-- Card 4: Form Simulator -->
         <a
           href="/playground"
-          class="neu-card p-6 flex flex-col justify-between group h-full cursor-pointer"
+          class="bg-white dark:bg-[#0f1422] border border-slate-200/80 dark:border-white/10 rounded-xl p-6 shadow-xs hover:border-slate-300 dark:hover:border-white/20 hover:shadow-sm transition-all flex flex-col justify-between group h-full cursor-pointer"
         >
           <div>
-            <div class="neu-icon-well size-14 mb-5 group-hover:scale-105 transition-transform text-amber-500">
+            <div class="w-12 h-12 rounded-lg border border-slate-100 dark:border-white/10 bg-slate-50 dark:bg-white/5 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform text-amber-500">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
             </div>
-            <h3 class="text-base font-bold font-display text-[#3D4852] mb-2 group-hover:text-amber-500 transition-colors">
+            <h3 class="text-base font-bold font-display text-slate-900 dark:text-white mb-2 group-hover:text-amber-500 transition-colors">
               Live Form Simulator
             </h3>
-            <p class="text-xs font-body text-[#6B7280] leading-relaxed mb-4">
+            <p class="text-xs font-body text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
               Test autofill on all 10 input types with real-time semantic visual feedback and consent-based learning.
             </p>
           </div>
-          <div class="flex items-center text-xs font-bold text-amber-500 gap-1.5 pt-3 border-t border-transparent font-display">
+          <div class="flex items-center text-xs font-semibold text-amber-500 gap-1.5 pt-3 border-t border-slate-100 dark:border-white/5 font-display">
             <span>Launch Simulator</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </div>
@@ -196,29 +193,29 @@ import Base from "@/layouts/Base.astro";
     <!-- 3. Memory Snapshot & Recent Activity Section -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <!-- Left 2 Cols: Stored Attributes Table -->
-      <div class="lg:col-span-2 neu-card p-6 sm:p-8">
+      <div class="lg:col-span-2 bg-white dark:bg-[#0f1422] border border-slate-200/80 dark:border-white/10 rounded-xl p-6 sm:p-8 shadow-xs">
         <div class="flex items-center justify-between mb-6">
           <div>
-            <h3 class="text-lg font-bold font-display text-[#3D4852]">Active Memory Overview</h3>
-            <p class="text-xs font-body text-[#6B7280]">Verified records ready for instantaneous browser autofill</p>
+            <h3 class="text-lg font-bold font-display text-slate-900 dark:text-white">Active Memory Overview</h3>
+            <p class="text-xs font-body text-slate-500 dark:text-slate-400">Verified records ready for instantaneous browser autofill</p>
           </div>
-          <a href="/memory" class="text-xs text-[#6C63FF] font-bold font-display hover:underline">View All &rarr;</a>
+          <a href="/memory" class="text-xs text-indigo-600 font-bold font-display hover:underline">View All &rarr;</a>
         </div>
 
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs">
             <thead>
-              <tr class="border-b border-transparent text-[#3D4852] uppercase tracking-wider text-[11px] font-display font-extrabold">
+              <tr class="border-b border-slate-100 dark:border-white/5 text-slate-700 dark:text-slate-300 uppercase tracking-wider text-[11px] font-display font-extrabold">
                 <th class="pb-3">Field / Attribute</th>
                 <th class="pb-3">Stored Value</th>
                 <th class="pb-3">Category</th>
                 <th class="pb-3">Source</th>
               </tr>
             </thead>
-            <tbody id="dashMemoryTableBody" class="font-body text-[#3D4852]">
+            <tbody id="dashMemoryTableBody" class="font-body text-slate-700 dark:text-slate-300">
               <tr>
-                <td colspan="4" class="py-8 text-center text-[#6B7280]">
-                  <div class="inline-block size-5 border-2 border-[#6C63FF] border-t-transparent rounded-full animate-spin mb-2"></div>
+                <td colspan="4" class="py-8 text-center text-slate-500 dark:text-slate-400">
+                  <div class="inline-block size-5 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin mb-2"></div>
                   <div>Loading verified memory records...</div>
                 </td>
               </tr>
@@ -228,30 +225,30 @@ import Base from "@/layouts/Base.astro";
       </div>
 
       <!-- Right 1 Col: Quick Browser Connection Card -->
-      <div class="neu-card p-6 sm:p-8 flex flex-col justify-between">
+      <div class="bg-white dark:bg-[#0f1422] border border-slate-200/80 dark:border-white/10 rounded-xl p-6 sm:p-8 shadow-xs flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between mb-4">
-            <span class="text-xs font-bold uppercase tracking-wider text-[#6B7280] font-display">Browser Extension</span>
-            <span class="neu-pill px-2.5 py-0.5 text-[10px] font-bold text-[#38B2AC] font-mono">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 font-display">Browser Extension</span>
+            <span class="text-xs text-slate-500 font-medium">
               Ready to Pair
             </span>
           </div>
 
-          <h4 class="text-lg font-bold font-display text-[#3D4852] mb-2">Pair Your Browser in 5s</h4>
-          <p class="text-xs font-body text-[#6B7280] leading-relaxed mb-6">
+          <h4 class="text-lg font-bold font-display text-slate-900 dark:text-white mb-2">Pair Your Browser in 5s</h4>
+          <p class="text-xs font-body text-slate-500 dark:text-slate-400 leading-relaxed mb-6">
             Use this authorization code to securely connect your Magic Fill Chromium extension without re-entering credentials.
           </p>
 
-          <!-- Pairing Code Box (Deep Inset Well) -->
-          <div class="neu-inset-deep rounded-2xl p-5 text-center mb-6">
-            <span class="text-[10px] text-[#6B7280] font-display uppercase tracking-wider font-extrabold block mb-1">Single-Use Link Code</span>
-            <div id="dashPairingCode" class="text-2xl font-mono font-extrabold text-[#6C63FF] tracking-wider select-all">
+          <!-- Pairing Code Box -->
+          <div class="bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 rounded-xl p-5 text-center mb-6">
+            <span class="text-[10px] text-slate-500 dark:text-slate-400 font-display uppercase tracking-wider font-extrabold block mb-1">Single-Use Link Code</span>
+            <div id="dashPairingCode" class="text-2xl font-mono font-extrabold text-indigo-600 dark:text-indigo-400 tracking-wider select-all">
               Generating...
             </div>
             <button
               type="button"
               id="dashCopyCodeBtn"
-              class="mt-4 w-full neu-btn-secondary text-xs py-2.5 px-4 rounded-2xl flex items-center justify-center gap-2 transition cursor-pointer font-bold"
+              class="mt-4 w-full rounded-lg py-2.5 px-4 text-xs font-medium bg-white dark:bg-white/10 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-white/10 shadow-2xs hover:bg-slate-50 dark:hover:bg-white/15 flex items-center justify-center gap-2 transition cursor-pointer"
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
               <span>Copy Connection Code</span>
@@ -259,8 +256,8 @@ import Base from "@/layouts/Base.astro";
           </div>
         </div>
 
-        <div class="pt-4 border-t border-transparent">
-          <a href="/extension" class="text-xs font-bold text-[#6B7280] hover:text-[#6C63FF] flex items-center justify-between transition-colors">
+        <div class="pt-4 border-t border-slate-100 dark:border-white/5">
+          <a href="/extension" class="text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center justify-between transition-colors">
             <span>Read installation &amp; setup guide</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
           </a>
@@ -371,7 +368,7 @@ import Base from "@/layouts/Base.astro";
               tr.innerHTML = `
                 <td class="py-3.5 font-bold text-[#3D4852]">${r.label}</td>
                 <td class="py-3.5 text-[#6B7280] truncate max-w-xs font-mono text-[11px]">${r.val}</td>
-                <td class="py-3.5"><span class="neu-pill px-2.5 py-0.5 text-[10px] font-bold text-[#6C63FF]">${r.cat}</span></td>
+                <td class="py-3.5"><span class="rounded-md px-2 py-0.5 text-[11px] font-medium bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/10">${r.cat}</span></td>
                 <td class="py-3.5 text-[#6B7280] text-[11px] font-medium">${r.src}</td>
               `;
               tbody.appendChild(tr);

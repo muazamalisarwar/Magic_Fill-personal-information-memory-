@@ -9,17 +9,17 @@ interface Props {
 const { logo, title, content, is_starred } = Astro.props;
 ---
 
-<div class="neu-card p-8 group relative flex flex-col items-center text-center h-full">
-  <!-- Inset Deep Icon Well -->
-  <div class="neu-icon-well size-18 mb-6 group-hover:scale-105 transition-transform duration-300">
-    <ImageMod src={logo} alt={`${title} icon`} class="size-9 object-contain" />
+<div class="bg-white dark:bg-[#0f1422] border border-slate-200/80 dark:border-white/10 rounded-xl p-8 shadow-xs hover:border-slate-300 dark:hover:border-white/20 hover:shadow-sm transition-all group relative flex flex-col items-center text-center h-full">
+  <!-- Clean Flat Icon Container -->
+  <div class="w-14 h-14 rounded-lg border border-slate-100 dark:border-white/10 bg-slate-50 dark:bg-white/5 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-300">
+    <ImageMod src={logo} alt={`${title} icon`} class="size-7 object-contain" />
   </div>
 
-  <h3 class="text-lg font-bold font-display text-[#3D4852] group-hover:text-[#6C63FF] transition-colors mb-3">
+  <h3 class="text-lg font-bold font-display text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors mb-3">
     {title}
   </h3>
 
-  <p class="font-body text-sm text-[#6B7280] leading-relaxed">
+  <p class="font-body text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
     {content || "Proactively matches your verified personal memory to complex form fields with zero errors."}
   </p>
 </div>

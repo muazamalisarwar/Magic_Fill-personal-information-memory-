@@ -60,13 +60,13 @@ const { pathname } = Astro.url;
       <li class="nav-item">
         <a
           href="/memory"
-          class={`text-xs font-bold px-3.5 py-2.5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+          class={`text-xs px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
             pathname === "/memory" || pathname === "/memory/"
-              ? "bg-[#6C63FF]/15 text-[#6C63FF] font-extrabold"
-              : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10"
+              ? "bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white font-semibold"
+              : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 font-medium"
           }`}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
           <span>Memory Vault</span>
         </a>
       </li>
@@ -74,13 +74,13 @@ const { pathname } = Astro.url;
       <li class="nav-item">
         <a
           href="/dashboard"
-          class={`text-xs font-bold px-3.5 py-2.5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+          class={`text-xs px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
             pathname === "/dashboard" || pathname === "/dashboard/"
-              ? "bg-[#6C63FF]/15 text-[#6C63FF] font-extrabold"
-              : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10"
+              ? "bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white font-semibold"
+              : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 font-medium"
           }`}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
           <span>Dashboard</span>
         </a>
       </li>
@@ -88,13 +88,13 @@ const { pathname } = Astro.url;
       <li class="nav-item">
         <a
           href="/extract"
-          class={`text-xs font-bold px-3.5 py-2.5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+          class={`text-xs px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
             pathname === "/extract" || pathname === "/extract/"
-              ? "bg-[#6C63FF]/15 text-[#6C63FF] font-extrabold"
-              : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10"
+              ? "bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white font-semibold"
+              : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 font-medium"
           }`}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
           <span>AI Extraction</span>
         </a>
       </li>
@@ -102,13 +102,13 @@ const { pathname } = Astro.url;
       <li class="nav-item">
         <a
           href="/playground"
-          class={`text-xs font-bold px-3.5 py-2.5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+          class={`text-xs px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
             pathname === "/playground" || pathname === "/playground/"
-              ? "bg-emerald-500/15 text-emerald-500 font-extrabold"
-              : "text-slate-600 dark:text-slate-300 hover:text-emerald-500 hover:bg-slate-100 dark:hover:bg-white/10"
+              ? "bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white font-semibold"
+              : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 font-medium"
           }`}
         >
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
           <span>Simulator</span>
         </a>
       </li>
@@ -116,13 +116,13 @@ const { pathname } = Astro.url;
       <li class="nav-item">
         <a
           href="/extension"
-          class={`text-xs font-bold px-3.5 py-2.5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${
+          class={`text-xs px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
             pathname === "/extension" || pathname === "/extension/"
-              ? "bg-[#6C63FF]/15 text-[#6C63FF] font-extrabold"
-              : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10"
+              ? "bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white font-semibold"
+              : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 font-medium"
           }`}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
           <span>Extension</span>
         </a>
       </li>
@@ -157,40 +157,40 @@ const { pathname } = Astro.url;
       </button>
 
       <!-- Logged Out Actions -->
-      <div id="headerLoggedOutArea" class="flex items-center gap-2.5">
+      <div id="headerLoggedOutArea" class="flex items-center gap-2">
         <a
           href="/login"
           id="btnHeaderSignIn"
-          class="h-10 px-4.5 text-xs font-bold rounded-2xl cursor-pointer bg-white hover:bg-slate-50 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-300 dark:border-white/15 text-slate-800 dark:text-white transition-all shadow-xs flex items-center justify-center"
+          class="h-9 px-3.5 text-xs font-medium rounded-lg cursor-pointer bg-white hover:bg-slate-50 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200 dark:border-white/15 text-slate-700 dark:text-white transition-colors flex items-center justify-center shadow-2xs"
         >
           Sign In
         </a>
         <a
           href="/register"
           id="btnHeaderGetStarted"
-          class="h-10 px-5 text-xs font-bold rounded-2xl cursor-pointer bg-gradient-to-r from-[#6C63FF] via-indigo-600 to-violet-600 hover:opacity-95 text-white transition-all shadow-md shadow-[#6C63FF]/25 flex items-center justify-center"
+          class="h-9 px-4 text-xs font-semibold rounded-lg cursor-pointer bg-indigo-600 hover:bg-indigo-700 text-white transition-colors flex items-center justify-center shadow-xs"
         >
           Get Started
         </a>
       </div>
 
       <!-- Logged In Actions -->
-      <div id="headerLoggedInArea" class="hidden items-center gap-2.5">
-        <!-- User profile pill -->
+      <div id="headerLoggedInArea" class="hidden items-center gap-2">
+        <!-- User profile button without status dot -->
         <a
           href="/dashboard"
-          class="h-10 px-4 rounded-2xl flex items-center gap-2 text-xs font-bold bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-300 dark:border-white/10 text-slate-800 dark:text-white shadow-xs"
+          class="h-9 px-3 rounded-lg flex items-center gap-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200 transition-colors"
           title="Go to Dashboard"
         >
-          <span class="size-2 rounded-full bg-[#38B2AC]"></span>
-          <span id="headerUserDisplayName" class="truncate max-w-28 font-bold text-slate-900 dark:text-white">Ali</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span id="headerUserDisplayName" class="truncate max-w-28 font-medium text-slate-900 dark:text-white">Account</span>
         </a>
 
         <!-- Sign Out button -->
         <button
           type="button"
           id="btnHeaderSignOut"
-          class="h-10 px-4 rounded-2xl text-xs font-bold text-rose-500 hover:text-rose-600 bg-rose-500/10 hover:bg-rose-500/20 transition-all cursor-pointer"
+          class="h-9 px-3 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 border border-transparent transition-colors cursor-pointer"
           title="Sign Out"
         >
           Sign Out
