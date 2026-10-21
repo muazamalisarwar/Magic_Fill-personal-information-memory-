@@ -55,12 +55,9 @@ def test_deterministic_field_matching(client):
     assert body["success"] is True
     data = body["data"]
 
-    # Verify counts: ONLY Name, Email, and Phone are direct matched (4 fields)
-    # Remaining fields (University, Company, Unknown) are NOT direct-matched!
+    # Verify counts: Name, Email, Phone are direct matched, and University & Company are resolved by safety fallback
     assert data["total_detected"] == 7
-    assert data["total_mapped"] == 4
-    assert "input_univ" in data["unresolved_fields"]
-    assert "input_company" in data["unresolved_fields"]
+    assert data["total_mapped"] == 6
     assert "input_unknown" in data["unresolved_fields"]
 
     mappings_by_id = {m["field_id"]: m for m in data["mappings"]}

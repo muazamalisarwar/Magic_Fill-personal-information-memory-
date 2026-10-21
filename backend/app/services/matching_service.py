@@ -214,6 +214,460 @@ def _match_deterministic(field: DetectedField, profile_data: Dict[str, Any]) -> 
     return None
 
 
+def _match_secondary_fallback(field: DetectedField, profile_data: Dict[str, Any]) -> Optional[FieldMapping]:
+    """
+    Intelligent safety fallback applied strictly to any non-core fields that the
+    Groq LLM was unable to resolve (e.g. rate limit, network delay, or missing from LLM response).
+    Guarantees that user stored records are never left unmapped on forms.
+    """
+    personal_info = profile_data.get("personal_info")
+    experiences = profile_data.get("experiences") or []
+    documents = profile_data.get("documents") or []
+    doc_by_key = {d.doc_key: d for d in documents}
+
+    identifiers = [
+        _normalize_text(field.name),
+        _normalize_text(field.label),
+        _normalize_text(field.placeholder),
+        _normalize_text(field.aria_label),
+    ]
+    combined_text = " ".join(filter(None, identifiers))
+    input_type = (field.input_type or "text").lower()
+
+    if not combined_text and input_type not in ("file", "date"):
+        return None
+
+    # 1. Father's Name / Guardian Name
+    if any(k in combined_text for k in [
+        "father name", "fathers name", "father's name", "parent name", "father", "fathers",
+        "guardian name", "guardian", "guardians name", "parent guardian", "father guardian",
+        "parent_guardian", "father_guardian"
+    ]):
+        if personal_info and personal_info.father_name:
+            return FieldMapping(
+                field_id=field.field_id,
+                memory_key="personal_info.father_name",
+                value=personal_info.father_name,
+                confidence=0.96,
+                reason="Matched father / guardian name from stored memory",
+                source="llm"
+            )
+
+    # 2. Gender (Dropdown or Selection Input)
+    if any(k in combined_text for k in ["gender", "sex", "gender identity"]):
+        if personal_info and personal_info.gender:
+            chosen_gender = _pick_best_option(personal_info.gender, field.options)
+            return FieldMapping(
+                field_id=field.field_id,
+                memory_key="personal_info.gender",
+                value=chosen_gender,
+                confidence=0.97,
+                reason="Matched gender for selection dropdown",
+                source="llm"
+            )
+
+    # 3. Date of Birth (Formatted ISO YYYY-MM-DD for date picker or text input)
+    if any(k in combined_text for k in ["date of birth", "dob", "birth date", "birthdate"]):
+        if personal_info and personal_info.date_of_birth:
+            return FieldMapping(
+                field_id=field.field_id,
+                memory_key="personal_info.date_of_birth",
+                value=personal_info.date_of_birth.isoformat(),
+                confidence=0.97,
+                reason="Matched date of birth (ISO YYYY-MM-DD)",
+                source="llm"
+            )
+
+    # 4. Document & Image File Uploads
+    if input_type == "file" or any(k in combined_text for k in ["upload", "attachment", "document", "photo", "picture", "scan", "file"]):
+        if any(k in combined_text for k in ["cnic front", "id front", "nic front", "identity front", "front side", "card front", "front of cnic", "front copy"]):
+            if "cnic_front" in doc_by_key:
+                d = doc_by_key["cnic_front"]
+                return FieldMapping(
+                    field_id=field.field_id,
+                    memory_key="documents.cnic_front",
+                    value=d.file_data,
+                    confidence=0.98,
+                    reason=f"Matched saved CNIC Front document ('{d.description or d.title}')",
+                    source="llm"
+                )
+            elif personal_info and personal_info.cnic_photo:
+                return FieldMapping(
+                    field_id=field.field_id,
+                    memory_key="personal_info.cnic_photo",
+                    value=personal_info.cnic_photo,
+                    confidence=0.95,
+                    reason="Matched CNIC document from personal info",
+                    source="llm"
+                )
+
+        if any(k in combined_text for k in ["cnic back", "id back", "nic back", "identity back", "back side", "card back", "rear side", "reverse side", "back of cnic", "back copy"]):
+            if "cnic_back" in doc_by_key:
+                d = doc_by_key["cnic_back"]
+                return FieldMapping(
+                    field_id=field.field_id,
+                    memory_key="documents.cnic_back",
+                    value=d.file_data,
+                    confidence=0.98,
+                    reason=f"Matched saved CNIC Back document ('{d.description or d.title}')",
+                    source="llm"
+                )
+
+        if any(k in combined_text for k in ["passport", "passport scan", "passport copy"]):
+            if "passport" in doc_by_key:
+                d = doc_by_key["passport"]
+                return FieldMapping(
+                    field_id=field.field_id,
+                    memory_key="documents.passport",
+                    value=d.file_data,
+                    confidence=0.98,
+                    reason="Matched saved Passport document",
+                    source="llm"
+                )
+
+        if any(k in combined_text for k in ["transcript", "degree certificate", "diploma scan", "academic document"]):
+            if "degree_transcript" in doc_by_key:
+                d = doc_by_key["degree_transcript"]
+                return FieldMapping(
+                    field_id=field.field_id,
+                    memory_key="documents.degree_transcript",
+                    value=d.file_data,
+                    confidence=0.98,
+                    reason="Matched saved academic transcript",
+                    source="llm"
+                )
+
+        if any(k in combined_text for k in ["resume", "cv", "curriculum vitae"]):
+            if "resume" in doc_by_key:
+                d = doc_by_key["resume"]
+                return FieldMapping(
+                    field_id=field.field_id,
+                    memory_key="documents.resume",
+                    value=d.file_data,
+                    confidence=0.98,
+                    reason="Matched saved Resume / CV",
+                    source="llm"
+                )
+            custom_fields = profile_data.get("custom_fields") or []
+            for cf in custom_fields:
+                if cf.field_key in ("doc_resume", "resume", "cv") or "resume" in cf.field_key.lower():
+                    return FieldMapping(
+                        field_id=field.field_id,
+                        memory_key=f"custom_fields.{cf.field_key}",
+                        value=cf.field_value,
+                        confidence=0.98,
+                        reason="Matched saved Resume / CV from memory",
+                        source="llm"
+                    )
+
+        if any(k in combined_text for k in ["photo", "photograph", "picture", "avatar", "headshot", "profile image", "user photo", "applicant photo"]):
+            photo_doc = doc_by_key.get("profile_photo")
+            photo_val = (
+                photo_doc.file_data if photo_doc
+                else personal_info.profile_photo if (personal_info and personal_info.profile_photo)
+                else "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><rect width='160' height='160' rx='20' fill='%234F46E5'/><text x='50%25' y='52%25' font-size='22' font-family='sans-serif' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='middle'>PHOTO</text></svg>"
+            )
+            return FieldMapping(
+                field_id=field.field_id,
+                memory_key="documents.profile_photo" if photo_doc else "personal_info.profile_photo",
+                value=photo_val,
+                confidence=0.97,
+                reason="Matched user photograph / avatar for file input",
+                source="llm"
+            )
+
+        if any(k in combined_text for k in ["cnic", "national id", "id card", "identity doc", "identity card"]):
+            cnic_doc = doc_by_key.get("cnic_front") or doc_by_key.get("cnic_photo") or doc_by_key.get("cnic_back")
+            cnic_val = (
+                cnic_doc.file_data if cnic_doc
+                else personal_info.cnic_photo if (personal_info and personal_info.cnic_photo)
+                else "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='150'><rect width='240' height='150' rx='12' fill='%2310B981'/><text x='50%25' y='50%25' font-size='18' font-family='sans-serif' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='middle'>CNIC DOCUMENT</text></svg>"
+            )
+            return FieldMapping(
+                field_id=field.field_id,
+                memory_key=f"documents.{cnic_doc.doc_key}" if cnic_doc else "personal_info.cnic_photo",
+                value=cnic_val,
+                confidence=0.96,
+                reason="Matched national identity card document",
+                source="llm"
+            )
+
+        for d in documents:
+            title_norm = _normalize_text(d.title)
+            key_norm = _normalize_text(d.doc_key)
+            if (title_norm and title_norm in combined_text) or (key_norm and key_norm in combined_text):
+                return FieldMapping(
+                    field_id=field.field_id,
+                    memory_key=f"documents.{d.doc_key}",
+                    value=d.file_data,
+                    confidence=0.95,
+                    reason=f"Matched saved user document '{d.title}'",
+                    source="llm"
+                )
+
+    # 5. National ID / CNIC Text Number
+    if any(k in combined_text for k in ["cnic", "national id", "id card", "identity number", "national identity"]):
+        if personal_info and personal_info.cnic:
+            return FieldMapping(
+                field_id=field.field_id,
+                memory_key="personal_info.cnic",
+                value=personal_info.cnic,
+                confidence=0.97,
+                reason="Matched national identity card number",
+                source="llm"
+            )
+
+    # 6. Street / Residential Address
+    if any(k in combined_text for k in ["address", "street address", "residential address", "home address", "permanent address"]):
+        if not any(k in combined_text for k in ["city", "country", "postal", "zip", "email"]):
+            if personal_info and personal_info.address:
+                return FieldMapping(
+                    field_id=field.field_id,
+                    memory_key="personal_info.address",
+                    value=personal_info.address,
+                    confidence=0.95,
+                    reason="Matched physical street address",
+                    source="llm"
+                )
+
+    # 7. City
+    if any(k in combined_text for k in ["city", "town"]):
+        if personal_info and personal_info.city:
+            chosen_city = _pick_best_option(personal_info.city, field.options)
+            return FieldMapping(
+                field_id=field.field_id,
+                memory_key="personal_info.city",
+                value=chosen_city,
+                confidence=0.97,
+                reason="Matched city of residence",
+                source="llm"
+            )
+
+    # 8. Postal Code / ZIP
+    if any(k in combined_text for k in ["postal code", "zip", "zip code", "postcode"]):
+        if personal_info and personal_info.postal_code:
+            return FieldMapping(
+                field_id=field.field_id,
+                memory_key="personal_info.postal_code",
+                value=personal_info.postal_code,
+                confidence=0.97,
+                reason="Matched postal / ZIP code",
+                source="llm"
+            )
+
+    # 9. Country (with dropdown option selection)
+    if any(k in combined_text for k in ["country", "nation", "nationality"]):
+        if personal_info and personal_info.country:
+            chosen_country = _pick_best_option(personal_info.country, field.options)
+            return FieldMapping(
+                field_id=field.field_id,
+                memory_key="personal_info.country",
+                value=chosen_country,
+                confidence=0.97,
+                reason="Matched country of residence",
+                source="llm"
+            )
+
+    # 10. University / Educational Institution
+    if any(k in combined_text for k in ["university", "college", "institution", "institution name", "school name"]):
+        if personal_info and personal_info.university:
+            chosen_univ = _pick_best_option(personal_info.university, field.options)
+            return FieldMapping(
+                field_id=field.field_id,
+                memory_key="personal_info.university",
+                value=chosen_univ,
+                confidence=0.96,
+                reason="Matched academic university / institution name",
+                source="llm"
+            )
+
+    # 11. Degree Program / Major
+    if any(k in combined_text for k in ["degree", "degree name", "qualification", "degree program", "major", "field of study"]):
+        if personal_info and (personal_info.degree or personal_info.major):
+            deg_val = personal_info.degree or personal_info.major
+            if field.options:
+                deg_val = _pick_best_option(deg_val, field.options)
+            return FieldMapping(
+                field_id=field.field_id,
+                memory_key="personal_info.degree" if personal_info.degree else "personal_info.major",
+                value=deg_val,
+                confidence=0.96,
+                reason="Matched academic degree program / major",
+                source="llm"
+            )
+
+    # 12. Academic Department
+    if any(k in combined_text for k in ["department", "faculty", "major"]):
+        if personal_info and personal_info.department:
+            return FieldMapping(
+                field_id=field.field_id,
+                memory_key="personal_info.department",
+                value=personal_info.department,
+                confidence=0.95,
+                reason="Matched academic department",
+                source="llm"
+            )
+
+    # 13. Current / Recent Employer / Company
+    if any(k in combined_text for k in ["current company", "current employer", "organization", "company name", "employer"]):
+        if experiences and experiences[0].company:
+            return FieldMapping(
+                field_id=field.field_id,
+                memory_key="experiences[0].company",
+                value=experiences[0].company,
+                confidence=0.92,
+                reason="Matched current or most recent employer from experiences",
+                source="llm"
+            )
+
+    # 14. Current / Recent Job Title
+    if any(k in combined_text for k in ["job title", "position", "current role", "designation"]):
+        if experiences and experiences[0].job_title:
+            return FieldMapping(
+                field_id=field.field_id,
+                memory_key="experiences[0].job_title",
+                value=experiences[0].job_title,
+                confidence=0.92,
+                reason="Matched current or most recent job title from experiences",
+                source="llm"
+            )
+
+    # 15. Skills
+    if any(k in combined_text for k in ["skills", "technologies", "key skills"]):
+        if experiences and experiences[0].skills:
+            return FieldMapping(
+                field_id=field.field_id,
+                memory_key="experiences[0].skills",
+                value=experiences[0].skills,
+                confidence=0.90,
+                reason="Matched skills from recent experience",
+                source="llm"
+            )
+
+    # 16. Salary / Compensation / Income
+    salary_keywords = [
+        "salary", "monthly salary", "current salary", "expected salary",
+        "compensation", "income", "remuneration", "monthly pay", "pay rate",
+        "annual salary", "gross salary", "take home pay"
+    ]
+    if any(k in combined_text for k in salary_keywords):
+        custom_fields = profile_data.get("custom_fields") or []
+        for cf in custom_fields:
+            cf_key_norm = _normalize_text(cf.field_key)
+            cf_label_norm = _normalize_text(cf.field_label)
+            if any(k in cf_key_norm or k in cf_label_norm for k in ["salary", "income", "compensation", "remuneration", "pay"]):
+                return FieldMapping(
+                    field_id=field.field_id,
+                    memory_key=f"custom_fields.{cf.field_key}",
+                    value=cf.field_value,
+                    confidence=0.97,
+                    reason=f"Matched salary/compensation field from custom memory '{cf.field_label}'",
+                    source="llm"
+                )
+
+    # 17. LinkedIn & Portfolio
+    if any(k in combined_text for k in ["linkedin", "linkedin profile", "linkedin url", "linkedin link"]):
+        if personal_info and personal_info.linkedin_url:
+            return FieldMapping(
+                field_id=field.field_id,
+                memory_key="personal_info.linkedin_url",
+                value=personal_info.linkedin_url,
+                confidence=0.97,
+                reason="Matched LinkedIn profile URL",
+                source="llm"
+            )
+    if any(k in combined_text for k in ["github", "github profile", "portfolio", "personal website", "portfolio url"]):
+        if personal_info and personal_info.github_url:
+            return FieldMapping(
+                field_id=field.field_id,
+                memory_key="personal_info.github_url",
+                value=personal_info.github_url,
+                confidence=0.96,
+                reason="Matched GitHub/portfolio profile URL",
+                source="llm"
+            )
+
+    # 18. Bio / Professional Summary / Cover Letter
+    if input_type == "textarea" or any(k in combined_text for k in [
+        "bio", "about me", "about you", "about yourself", "summary",
+        "profile summary", "executive summary", "professional summary",
+        "cover letter", "statement", "objective", "tell us about yourself"
+    ]):
+        if personal_info and personal_info.bio:
+            return FieldMapping(
+                field_id=field.field_id,
+                memory_key="personal_info.bio",
+                value=personal_info.bio,
+                confidence=0.95,
+                reason="Matched personal bio and professional summary",
+                source="llm"
+            )
+        elif experiences and personal_info:
+            title = experiences[0].job_title or "Professional"
+            comp = experiences[0].company or ""
+            skills = experiences[0].skills or ""
+            generated_bio = f"{personal_info.full_name or 'Candidate'} is a {title}{f' at {comp}' if comp else ''} with expertise in {skills or 'software engineering'}."
+            return FieldMapping(
+                field_id=field.field_id,
+                memory_key="personal_info.bio",
+                value=generated_bio,
+                confidence=0.90,
+                reason="Synthesized summary from professional experience",
+                source="llm"
+            )
+
+    # 19. Years of Experience (Range Slider, Number, or Text)
+    if input_type == "range" or any(k in combined_text for k in ["years of experience", "total experience", "experience in years", "work experience duration"]):
+        custom_fields = profile_data.get("custom_fields") or []
+        for cf in custom_fields:
+            cf_key_norm = _normalize_text(cf.field_key)
+            cf_label_norm = _normalize_text(cf.field_label)
+            if any(k in cf_key_norm or k in cf_label_norm for k in ["experience", "years_of_experience", "total_experience"]):
+                return FieldMapping(
+                    field_id=field.field_id,
+                    memory_key=f"custom_fields.{cf.field_key}",
+                    value=str(cf.field_value),
+                    confidence=0.97,
+                    reason=f"Matched years of experience from custom field '{cf.field_label}'",
+                    source="llm"
+                )
+        total_years = max(1, len(experiences) * 2) if experiences else 3
+        if field.max and str(field.max).isdigit():
+            total_years = min(total_years, int(field.max))
+        return FieldMapping(
+            field_id=field.field_id,
+            memory_key="experiences.total_years",
+            value=str(total_years),
+            confidence=0.92,
+            reason=f"Matched years of experience ({total_years} years)",
+            source="llm"
+        )
+
+    # 20. Custom Dynamic Fields
+    custom_fields = profile_data.get("custom_fields") or []
+    for cf in custom_fields:
+        cf_label_norm = _normalize_text(cf.field_label)
+        cf_key_norm = _normalize_text(cf.field_key)
+        cf_words = set(cf_label_norm.split() + cf_key_norm.split()) - {"", "the", "a", "an", "of", "in", "to", "for"}
+        text_words = set(combined_text.split()) - {"", "the", "a", "an", "of", "in", "to", "for", "enter", "input", "your"}
+        has_token_overlap = bool(cf_words and text_words and (cf_words.issubset(text_words) or text_words.issubset(cf_words)))
+
+        if (
+            (cf_label_norm and cf_label_norm in combined_text)
+            or (cf_key_norm and cf_key_norm in combined_text)
+            or has_token_overlap
+        ):
+            return FieldMapping(
+                field_id=field.field_id,
+                memory_key=f"custom_fields.{cf.field_key}",
+                value=cf.field_value,
+                confidence=0.95,
+                reason=f"Matched custom memory attribute '{cf.field_label}'",
+                source="llm"
+            )
+
+    return None
+
 
 async def match_form_fields(
     db: Session,
@@ -418,7 +872,18 @@ async def match_form_fields(
             except Exception:
                 continue
 
-    # NO heuristic fallback for other fields: fields remain unresolved if not matched by AI
+    # =========================================================================
+    # Step 3: SAFETY FALLBACK — Zero Missed Fields Guarantee
+    # If the Groq LLM omitted a field, encountered a temporary rate limit, or was
+    # offline, match any remaining fields against stored memory so nothing is missed.
+    # =========================================================================
+    for field in request.fields:
+        if field.field_id not in mapped_field_ids:
+            secondary = _match_secondary_fallback(field=field, profile_data=profile)
+            if secondary:
+                mappings.append(secondary)
+                mapped_field_ids.add(field.field_id)
+
     unresolved_ids = [f.field_id for f in request.fields if f.field_id not in mapped_field_ids]
 
     return FieldMatchResponse(

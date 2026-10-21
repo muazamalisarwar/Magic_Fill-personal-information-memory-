@@ -14,54 +14,75 @@ async def query_groq_llm(
     messages: List[Dict[str, str]],
     model: Optional[str] = None,
     temperature: float = 0.1,
-    timeout_seconds: float = 12.0,
+    timeout_seconds: float = 14.0,
 ) -> Optional[Dict[str, Any]]:
     """
     Asynchronously calls the Groq Chat Completions API with JSON mode enabled.
-    Gracefully falls back to None if GROQ_API_KEY is not configured or an error occurs.
+    Features automatic multi-model fallback across high-capacity models (e.g.
+    openai/gpt-oss-20b, qwen/qwen3.8-27b) if rate-limited (HTTP 429) or unavailable.
     """
     api_key = settings.GROQ_API_KEY
     if not api_key or api_key.startswith("gsk_your_groq_api_key"):
         logger.debug("Groq API key is not configured or using placeholder; skipping LLM call.")
         return None
 
-    selected_model = model or settings.GROQ_MODEL
+    # Priority candidate models: active config first, then fast high-token-limit models
+    candidate_models: List[str] = []
+    if model:
+        candidate_models.append(model)
+    if settings.GROQ_MODEL and settings.GROQ_MODEL not in candidate_models:
+        candidate_models.append(settings.GROQ_MODEL)
+    for m_candidate in ["openai/gpt-oss-20b", "qwen/qwen3.8-27b", "openai/gpt-oss-120b"]:
+        if m_candidate not in candidate_models:
+            candidate_models.append(m_candidate)
+
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
     }
-    payload = {
-        "model": selected_model,
-        "messages": messages,
-        "response_format": {"type": "json_object"},
-        "temperature": temperature,
-        "max_tokens": 3072,
-    }
 
-    try:
-        async with httpx.AsyncClient(timeout=timeout_seconds) as client:
-            response = await client.post(GROQ_API_URL, headers=headers, json=payload)
-            if response.status_code != 200:
-                logger.warning(
-                    "Groq API returned HTTP status %d: %s",
-                    response.status_code,
-                    response.text[:200],
-                )
-                return None
+    for current_model in candidate_models:
+        payload = {
+            "model": current_model,
+            "messages": messages,
+            "response_format": {"type": "json_object"},
+            "temperature": temperature,
+            "max_tokens": 3072,
+        }
 
-            data = response.json()
-            content = data["choices"][0]["message"]["content"]
-            parsed = json.loads(content)
-            return parsed
-    except httpx.TimeoutException:
-        logger.warning("Groq API request timed out after %.1fs", timeout_seconds)
-        return None
-    except json.JSONDecodeError as exc:
-        logger.warning("Failed to parse Groq API response as JSON: %s", str(exc))
-        return None
-    except Exception as exc:
-        logger.warning("Unexpected error communicating with Groq API: %s", str(exc))
-        return None
+        try:
+            async with httpx.AsyncClient(timeout=timeout_seconds) as client:
+                response = await client.post(GROQ_API_URL, headers=headers, json=payload)
+                if response.status_code == 200:
+                    data = response.json()
+                    content = data["choices"][0]["message"]["content"]
+                    parsed = json.loads(content)
+                    return parsed
+                elif response.status_code in (429, 404, 503, 502):
+                    logger.warning(
+                        "Groq model '%s' returned HTTP %d (%s), attempting fallback...",
+                        current_model,
+                        response.status_code,
+                        response.text[:120],
+                    )
+                    continue
+                else:
+                    logger.warning(
+                        "Groq API error on model '%s' HTTP %d: %s",
+                        current_model,
+                        response.status_code,
+                        response.text[:150],
+                    )
+                    continue
+        except (httpx.TimeoutException, json.JSONDecodeError) as exc:
+            logger.warning("Groq model '%s' encountered %s, trying fallback...", current_model, str(exc))
+            continue
+        except Exception as exc:
+            logger.warning("Unexpected error communicating with Groq model '%s': %s", current_model, str(exc))
+            continue
+
+    logger.error("All Groq model candidates failed to return a valid JSON response.")
+    return None
 
 
 async def match_ambiguous_fields_with_groq(
