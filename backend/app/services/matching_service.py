@@ -141,15 +141,19 @@ def _match_deterministic(field: DetectedField, profile_data: Dict[str, Any]) -> 
                     source="deterministic"
                 )
 
-    # 3. Father's Name
-    if any(k in combined_text for k in ["father name", "fathers name", "parent name"]):
+    # 3. Father's Name / Guardian Name
+    if any(k in combined_text for k in [
+        "father name", "fathers name", "father's name", "parent name", "father", "fathers",
+        "guardian name", "guardian", "guardians name", "parent guardian", "father guardian",
+        "parent_guardian", "father_guardian"
+    ]):
         if personal_info and personal_info.father_name:
             return FieldMapping(
                 field_id=field.field_id,
                 memory_key="personal_info.father_name",
                 value=personal_info.father_name,
                 confidence=0.98,
-                reason="Matched father's name",
+                reason="Matched father / guardian name",
                 source="deterministic"
             )
 
@@ -161,7 +165,7 @@ def _match_deterministic(field: DetectedField, profile_data: Dict[str, Any]) -> 
         "enter your name", "applicant legal name"
     ]
     excluded_name_tokens = [
-        "first", "last", "father", "parent", "mother", "company", "employer",
+        "first", "last", "father", "parent", "mother", "guardian", "company", "employer",
         "school", "institution", "university", "college", "degree", "major", "department",
         "program", "course", "subject", "qualification", "title", "role", "position",
         "job", "manager", "supervisor", "friend", "emergency", "file",

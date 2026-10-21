@@ -84,6 +84,20 @@ SEMANTIC_CANONICAL_MAP = {
     "first_name": ("first_name", "First Name", FieldCategory.PERSONAL_INFO, "personal"),
     "last_name": ("last_name", "Last Name", FieldCategory.PERSONAL_INFO, "personal"),
     "father_name": ("father_name", "Father's Name", FieldCategory.PERSONAL_INFO, "personal"),
+    "fathers_name": ("father_name", "Father's Name", FieldCategory.PERSONAL_INFO, "personal"),
+    "father": ("father_name", "Father's Name", FieldCategory.PERSONAL_INFO, "personal"),
+    "father_guardian_name": ("father_name", "Father / Guardian Name", FieldCategory.PERSONAL_INFO, "personal"),
+    "parent_guardian_name": ("father_name", "Father / Guardian Name", FieldCategory.PERSONAL_INFO, "personal"),
+    "father_guardian": ("father_name", "Father / Guardian Name", FieldCategory.PERSONAL_INFO, "personal"),
+    "parent_guardian": ("father_name", "Father / Guardian Name", FieldCategory.PERSONAL_INFO, "personal"),
+    "guardian_name": ("father_name", "Guardian's Name", FieldCategory.PERSONAL_INFO, "personal"),
+    "guardian": ("father_name", "Guardian's Name", FieldCategory.PERSONAL_INFO, "personal"),
+    "parent_name": ("father_name", "Parent's Name", FieldCategory.PERSONAL_INFO, "personal"),
+    "parent": ("father_name", "Parent's Name", FieldCategory.PERSONAL_INFO, "personal"),
+    "mother_name": ("mother_name", "Mother's Name", FieldCategory.PERSONAL_INFO, "personal"),
+    "mothers_name": ("mother_name", "Mother's Name", FieldCategory.PERSONAL_INFO, "personal"),
+    "mother": ("mother_name", "Mother's Name", FieldCategory.PERSONAL_INFO, "personal"),
+    "spouse_name": ("spouse_name", "Spouse's Name", FieldCategory.PERSONAL_INFO, "personal"),
     "date_of_birth": ("date_of_birth", "Date of Birth", FieldCategory.PERSONAL_INFO, "personal"),
     "dob": ("date_of_birth", "Date of Birth", FieldCategory.PERSONAL_INFO, "personal"),
     "cnic": ("cnic", "CNIC / National ID", FieldCategory.PERSONAL_INFO, "identity"),
@@ -292,8 +306,12 @@ def classify_field_deterministically(
     def _validate_candidate_value(k: str, v: str) -> bool:
         """Ensures that detected canonical key matches the shape of the user-entered value."""
         if k in ("full_name", "first_name", "last_name"):
-            # A field like "Degree Name", "University Name", or "Company Name" is NOT the user's name
-            if any(tok in combined_desc for tok in ["degree", "university", "college", "school", "institution", "company", "employer", "department", "program", "course", "subject", "file", "document", "photo"]):
+            # A field like "Father Name", "Guardian Name", "Mother Name", "Spouse Name", "Emergency Contact", "Degree Name", etc. is NOT the user's name
+            if any(tok in combined_desc for tok in [
+                "father", "guardian", "parent", "mother", "spouse", "emergency", "reference", "referee", "nominee",
+                "degree", "university", "college", "school", "institution", "company", "employer",
+                "department", "program", "course", "subject", "file", "document", "photo"
+            ]):
                 return False
         if k in ("cnic", "national_id"):
             # National IDs are numbers/hyphens (e.g. 35405-0542380-2 or 3540505423802).
@@ -311,8 +329,9 @@ def classify_field_deterministically(
             if _validate_candidate_value(canon_k, val):
                 return cat, canon_k, human_l, sub_cat
 
-    # Substring dictionary lookup with word-boundary and validation
-    for syn, (canon_k, human_l, cat, sub_cat) in SEMANTIC_CANONICAL_MAP.items():
+    # Substring dictionary lookup with word-boundary and validation (sorted by key length descending so longer specific keys like 'father_name' or 'parent_guardian_name' match before 'name')
+    sorted_synonyms = sorted(SEMANTIC_CANONICAL_MAP.items(), key=lambda item: len(item[0]), reverse=True)
+    for syn, (canon_k, human_l, cat, sub_cat) in sorted_synonyms:
         syn_word = syn.replace("_", " ")
         if re.search(rf"\b{re.escape(syn_word)}\b", combined_desc) or re.search(rf"\b{re.escape(syn)}\b", combined_desc):
             if _validate_candidate_value(canon_k, val):
