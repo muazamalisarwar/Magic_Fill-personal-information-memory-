@@ -129,10 +129,18 @@ SEMANTIC_CANONICAL_MAP = {
     "university_name": ("university", "University / Institution", FieldCategory.PROFESSIONAL_INFO, "academic"),
     "institution": ("university", "Institution / University", FieldCategory.PROFESSIONAL_INFO, "academic"),
     "alma_mater": ("university", "Alma Mater", FieldCategory.PROFESSIONAL_INFO, "academic"),
+    "college": ("university", "College / Institution", FieldCategory.PROFESSIONAL_INFO, "academic"),
+    "school": ("university", "School / Institution", FieldCategory.PROFESSIONAL_INFO, "academic"),
     "degree": ("degree", "Degree", FieldCategory.PROFESSIONAL_INFO, "academic"),
     "degree_name": ("degree", "Degree", FieldCategory.PROFESSIONAL_INFO, "academic"),
+    "qualification": ("degree", "Highest Qualification", FieldCategory.PROFESSIONAL_INFO, "academic"),
+    "highest_qualification": ("degree", "Highest Qualification", FieldCategory.PROFESSIONAL_INFO, "academic"),
+    "highest_degree": ("degree", "Highest Degree", FieldCategory.PROFESSIONAL_INFO, "academic"),
+    "education_level": ("degree", "Education Level", FieldCategory.PROFESSIONAL_INFO, "academic"),
+    "current_degree": ("degree", "Current Degree", FieldCategory.PROFESSIONAL_INFO, "academic"),
     "major": ("major", "Major / Field of Study", FieldCategory.PROFESSIONAL_INFO, "academic"),
     "field_of_study": ("major", "Field of Study", FieldCategory.PROFESSIONAL_INFO, "academic"),
+    "discipline": ("major", "Discipline / Major", FieldCategory.PROFESSIONAL_INFO, "academic"),
     "department": ("department", "Academic Department", FieldCategory.PROFESSIONAL_INFO, "academic"),
     "graduation_year": ("graduation_year", "Graduation Year", FieldCategory.PROFESSIONAL_INFO, "academic"),
     "semester": ("semester", "Semester", FieldCategory.PROFESSIONAL_INFO, "academic"),
@@ -141,8 +149,24 @@ SEMANTIC_CANONICAL_MAP = {
     # Employment
     "job_title": ("job_title", "Job Title / Designation", FieldCategory.PROFESSIONAL_INFO, "employment"),
     "designation": ("job_title", "Designation", FieldCategory.PROFESSIONAL_INFO, "employment"),
+    "role": ("job_title", "Job Role", FieldCategory.PROFESSIONAL_INFO, "employment"),
+    "desired_role": ("job_title", "Desired Role", FieldCategory.PROFESSIONAL_INFO, "employment"),
+    "position": ("job_title", "Position Applied For", FieldCategory.PROFESSIONAL_INFO, "employment"),
     "company": ("company", "Company / Employer", FieldCategory.PROFESSIONAL_INFO, "employment"),
     "employer": ("company", "Current Employer", FieldCategory.PROFESSIONAL_INFO, "employment"),
+    "expected_ctc": ("salary", "Expected Compensation", FieldCategory.PROFESSIONAL_INFO, "employment"),
+    "current_ctc": ("salary", "Current Compensation", FieldCategory.PROFESSIONAL_INFO, "employment"),
+    "desired_salary": ("salary", "Desired Salary", FieldCategory.PROFESSIONAL_INFO, "employment"),
+    "remote": ("remote_preference", "Remote Preference", FieldCategory.PROFESSIONAL_INFO, "employment"),
+    "work_mode": ("remote_preference", "Work Mode Preference", FieldCategory.PROFESSIONAL_INFO, "employment"),
+    "marital_status": ("marital_status", "Marital Status", FieldCategory.PERSONAL_INFO, "personal"),
+    "blood_group": ("blood_group", "Blood Group", FieldCategory.PERSONAL_INFO, "personal"),
+    "religion": ("religion", "Religion", FieldCategory.PERSONAL_INFO, "personal"),
+    "domicile": ("domicile", "Domicile / District", FieldCategory.PERSONAL_INFO, "address"),
+    "province": ("province", "Province / State", FieldCategory.PERSONAL_INFO, "address"),
+    "state": ("province", "State / Province", FieldCategory.PERSONAL_INFO, "address"),
+    "current_location": ("city", "Current City / Location", FieldCategory.PERSONAL_INFO, "address"),
+    "location": ("city", "Location / City", FieldCategory.PERSONAL_INFO, "address"),
 }
 
 
@@ -406,14 +430,39 @@ async def evaluate_field_for_learning(
     )
 
     # Step 2: Contextual AI Classification if deterministic returned UNKNOWN
-    # Only invoke LLM if label is meaningful and input is not obvious secret/comm
     if category == FieldCategory.UNKNOWN and request.label and len(request.label.strip()) > 3:
-        category, canon_key, field_lbl = await classify_field_with_groq_llm(
-            field_name=request.field_name,
-            label=request.label,
-            value=val,
-            form_context=request.form_context
-        )
+        try:
+            category, canon_key, field_lbl = await classify_field_with_groq_llm(
+                field_name=request.field_name,
+                label=request.label,
+                value=val,
+                form_context=request.form_context
+            )
+        except Exception as e:
+            logger.warning("Groq classification fallback encountered error: %s", str(e))
+            category = FieldCategory.UNKNOWN
+
+    # Step 2b: Resilient Fallback for Application / Profile Form Questions
+    # If not explicitly marked as sensitive, chat, or transactional, treat any non-empty
+    # labeled form field as a learnable personal or professional attribute.
+    if category == FieldCategory.UNKNOWN:
+        desc = (request.label or request.field_name or "").strip()
+        if desc and len(desc) >= 2:
+            generic_placeholders = ["your answer", "short answer", "long answer", "type here", "enter text", "null", "undefined"]
+            if not any(gp in desc.lower() for gp in generic_placeholders):
+                prof_signals = [
+                    "experience", "salary", "skill", "job", "work", "role", "degree",
+                    "university", "school", "college", "academic", "career", "tech",
+                    "code", "portfolio", "github", "linkedin", "notice", "relocat",
+                    "qualification", "department", "semester", "gpa", "major", "title",
+                    "position", "framework", "language", "certificate", "license"
+                ]
+                if any(s in desc.lower() for s in prof_signals):
+                    category = FieldCategory.PROFESSIONAL_INFO
+                else:
+                    category = FieldCategory.PERSONAL_INFO
+                canon_key = _normalize_identifier(desc)
+                field_lbl = desc.replace("_", " ").strip().title()
 
     # Step 3: Enforce that ONLY PERSONAL_INFO and PROFESSIONAL_INFO qualify for suggestions!
     if category not in (FieldCategory.PERSONAL_INFO, FieldCategory.PROFESSIONAL_INFO):

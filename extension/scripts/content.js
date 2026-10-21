@@ -564,7 +564,7 @@
     return false;
   }
 
-  function triggerFieldEvaluation(el, immediate = false) {
+  function triggerFieldEvaluation(el, immediate = false, overrideVal = null, overrideLabel = null) {
     if (!el) return;
     const tag = (el.tagName || "").toLowerCase();
     const type = (el.type || el.getAttribute("type") || "text").toLowerCase();
@@ -575,25 +575,26 @@
       el.removeAttribute("data-magic-fill-autofilled");
     }
 
-    let val = "";
-    if (tag === "select") {
-      val = el.options && el.selectedIndex >= 0 ? (el.options[el.selectedIndex]?.text?.trim() || el.options[el.selectedIndex]?.value?.trim()) : (el.value || "").trim();
-    } else if (type === "checkbox" || role === "checkbox") {
-      val = (el.checked || el.getAttribute("aria-checked") === "true") ? "Yes" : "No";
-    } else if (type === "radio" || role === "radio") {
-      if (!el.checked && el.getAttribute("aria-checked") !== "true") return;
-      val = el.value || el.getAttribute("data-value") || el.innerText?.trim() || "Yes";
-    } else if (role === "option") {
-      val = el.getAttribute("data-value") || el.innerText?.trim() || "";
-    } else if (tag === "button" || role === "button") {
-      val = el.getAttribute("data-value") || el.innerText?.trim() || "";
-    } else {
-      val = (el.value || "").trim();
+    let val = overrideVal !== null ? overrideVal : "";
+    if (!val) {
+      if (tag === "select") {
+        val = el.options && el.selectedIndex >= 0 ? (el.options[el.selectedIndex]?.text?.trim() || el.options[el.selectedIndex]?.value?.trim()) : (el.value || "").trim();
+      } else if (type === "checkbox" || role === "checkbox") {
+        val = (el.checked || el.getAttribute("aria-checked") === "true") ? "Yes" : "No";
+      } else if (type === "radio" || role === "radio") {
+        val = el.value || el.getAttribute("data-value") || el.innerText?.trim() || "Yes";
+      } else if (role === "option") {
+        val = el.getAttribute("data-value") || el.innerText?.trim() || "";
+      } else if (tag === "button" || role === "button") {
+        val = el.getAttribute("data-value") || el.innerText?.trim() || "";
+      } else {
+        val = (el.value || "").trim();
+      }
     }
 
     if (!val || (val.length < 2 && !/^\d+$/.test(val))) return;
 
-    const label = getElementLabel(el);
+    const label = overrideLabel || getElementLabel(el);
     if (isExcludedField(el, label, val)) return;
 
     const fieldKey = el.name || el.id || label || "field";
@@ -610,7 +611,7 @@
       if (fieldDebounceTimers.has(fieldKey)) {
         clearTimeout(fieldDebounceTimers.get(fieldKey));
       }
-      fieldDebounceTimers.set(fieldKey, setTimeout(doEval, 350));
+      fieldDebounceTimers.set(fieldKey, setTimeout(doEval, 550));
     }
   }
 
@@ -634,54 +635,76 @@
         },
       },
       (res) => {
-        if (!res || !res.success || !res.data) return;
+        if (!res || !res.success || !res.data || !res.data.is_learnable) {
+          evaluatedFieldsCache.delete(cacheKey);
+          return;
+        }
         const evalData = res.data;
-        if (!evalData.is_learnable) return;
-
         showLearningPrompt(el, evalData, cacheKey);
       }
     );
   }
 
-  // 1. Native change event (fired on selects, radios, checkboxes, and inputs on commit)
+  // 1. Live keystroke listener (debounced 550ms for typing into inputs & textareas)
+  document.addEventListener("input", (e) => {
+    triggerFieldEvaluation(e.target, false);
+  }, true);
+
+  // 2. Native change event (fired on selects, radios, checkboxes, and inputs on commit)
   document.addEventListener("change", (e) => {
     triggerFieldEvaluation(e.target, true);
   }, true);
 
-  // 2. Blur event for text and textarea
-  document.addEventListener("blur", handleUserInput, true);
+  // 3. Blur event for text and textarea
+  document.addEventListener("blur", (e) => {
+    triggerFieldEvaluation(e.target, true);
+  }, true);
 
-  // 3. Click event for custom dropdown options, radios, checkboxes, and choice buttons
+  // 4. Click event for custom dropdown options, radios, checkboxes, and choice buttons
   document.addEventListener("click", (e) => {
     const target = e.target;
     if (!target) return;
 
-    // A. Option clicked in custom dropdown
+    // A. Option clicked in custom dropdown (Google Forms listbox, custom select, etc.)
     const option = target.closest('[role="option"], .select-option, [data-value]');
     if (option) {
-      const container = option.closest('[role="combobox"], [role="listbox"], .form-group') || option.parentElement;
-      setTimeout(() => triggerFieldEvaluation(container || option, true), 100);
+      const optionVal = (option.getAttribute("data-value") || option.innerText || "").trim();
+      const container = option.closest('[role="combobox"], [role="listbox"], .form-group, [role="listitem"], .Qr7Oae') || option.parentElement;
+      const label = getElementLabel(container) || getElementLabel(option);
+      if (optionVal) {
+        setTimeout(() => triggerFieldEvaluation(container || option, true, optionVal, label), 120);
+      }
       return;
     }
 
-    // B. Custom radio or checkbox widget clicked
-    const customWidget = target.closest('[role="radio"], [role="checkbox"], [role="switch"]');
+    // B. Custom radio or checkbox widget clicked (Google Forms radio / check)
+    const customWidget = target.closest('[role="radio"], [role="checkbox"], [role="switch"], .docssharedwizTogglelabeledContainer');
     if (customWidget) {
-      setTimeout(() => triggerFieldEvaluation(customWidget, true), 100);
+      const radioContainer = customWidget.closest('[role="listitem"], .Qr7Oae, .geS5n, fieldset, .form-group') || customWidget.parentElement;
+      const questionLabel = getElementLabel(radioContainer) || getElementLabel(customWidget);
+      const valEl = customWidget.querySelector('.aDTYNe, .d7L4fc, label, span') || customWidget;
+      const widgetVal = (customWidget.getAttribute("data-value") || valEl.innerText || "").trim();
+      if (widgetVal) {
+        setTimeout(() => triggerFieldEvaluation(customWidget, true, widgetVal, questionLabel), 120);
+      }
       return;
     }
 
     // C. Choice buttons in button groups
     const choiceBtn = target.closest('button, [role="button"]');
-    if (choiceBtn && choiceBtn.type !== "submit") {
-      const group = choiceBtn.closest('.btn-group, [role="group"], .button-group, .choices, [role="listitem"]');
+    if (choiceBtn && choiceBtn.type !== "submit" && !choiceBtn.closest("#magic-fill-learning-prompt")) {
+      const group = choiceBtn.closest('.btn-group, [role="group"], .button-group, .choices, [role="listitem"], .Qr7Oae');
       if (group) {
-        setTimeout(() => triggerFieldEvaluation(choiceBtn, true), 100);
+        const btnVal = (choiceBtn.getAttribute("data-value") || choiceBtn.innerText || "").trim();
+        const label = getElementLabel(group) || getElementLabel(choiceBtn);
+        if (btnVal) {
+          setTimeout(() => triggerFieldEvaluation(choiceBtn, true, btnVal, label), 120);
+        }
       }
     }
   }, true);
 
-  // 4. Form Submit event: scan and evaluate any remaining filled fields
+  // 5. Form Submit event: scan and evaluate any remaining filled fields
   document.addEventListener("submit", (e) => {
     const form = e.target;
     if (!form || !form.querySelectorAll) return;
@@ -701,57 +724,243 @@
     host.style.bottom = "24px";
     host.style.right = "24px";
     host.style.zIndex = "2147483647";
-    host.style.fontFamily = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+    host.style.display = "block";
+    const shadow = host.attachShadow({ mode: "open" });
 
     const isUpdate = evalData.action_type === "UPDATE_ATTRIBUTE";
-    const titleText = isUpdate ? "Update saved information?" : "Save to Magic Fill memory?";
+    const badgeText = isUpdate ? "🔄 Changed Data Detected" : "✨ New Data Detected";
+    const badgeClass = isUpdate ? "badge-update" : "badge-new";
 
-    let contentHtml = "";
+    let bodyHtml = "";
     let buttonsHtml = "";
 
     if (isUpdate) {
-      contentHtml = `
-        <div style="font-size:12.5px; color:#475569; margin-bottom:12px; line-height:1.45;">
-          Your saved <strong>${escapeHtml(evalData.field_label)}</strong> (<em>${escapeHtml(evalData.existing_value || "")}</em>) is different from the value you just entered (<strong>${escapeHtml(evalData.new_value)}</strong>). Would you like to update your Magic Fill memory?
+      bodyHtml = `
+        <div class="desc-text">
+          Your saved <strong>${escapeHtml(evalData.field_label)}</strong> is different from what you just entered:
+        </div>
+        <div class="diff-card">
+          <div class="diff-row">
+            <span class="diff-tag old-tag">Saved:</span>
+            <span class="diff-val old-val">${escapeHtml(evalData.existing_value || "Empty")}</span>
+          </div>
+          <div class="diff-row">
+            <span class="diff-tag new-tag">Entered:</span>
+            <span class="diff-val new-val">${escapeHtml(evalData.new_value)}</span>
+          </div>
         </div>
       `;
       buttonsHtml = `
-        <button id="mf-learn-dismiss" style="background:#ffffff; border:1px solid #cbd5e1; color:#475569; border-radius:9999px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer;">Not Now</button>
-        <button id="mf-learn-keep" style="background:#f1f5f9; border:1px solid #cbd5e1; color:#334155; border-radius:9999px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer;">Keep Existing</button>
-        <button id="mf-learn-save" style="background:#0f172a; border:none; color:#ffffff; border-radius:9999px; padding:6px 16px; font-size:12px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(15,23,42,0.15);">Update Memory</button>
+        <button id="mf-learn-dismiss" class="btn-secondary">Not Now</button>
+        <button id="mf-learn-keep" class="btn-secondary">Keep Saved</button>
+        <button id="mf-learn-save" class="btn-primary">Update Memory</button>
       `;
     } else {
-      contentHtml = `
-        <div style="font-size:12.5px; color:#475569; margin-bottom:8px; line-height:1.45;">
-          Magic Fill detected a new personal information field:
+      bodyHtml = `
+        <div class="desc-text">
+          Magic Fill detected a new personal or professional field:
         </div>
-        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:9px 12px; font-size:12px; color:#1e293b; margin-bottom:12px; line-height:1.5;">
-          <div style="font-weight:700; color:#0f172a; margin-bottom:2px;">${escapeHtml(evalData.field_label)}</div>
-          <div style="color:#0284c7; word-break:break-all; font-family:monospace; font-size:11.5px;">${escapeHtml(evalData.new_value)}</div>
+        <div class="info-card">
+          <div class="field-title">${escapeHtml(evalData.field_label)}</div>
+          <div class="field-value">${escapeHtml(evalData.new_value)}</div>
         </div>
-        <div style="font-size:12px; color:#64748b; margin-bottom:12px;">
-          Would you like to save it for future autofill?
+        <div class="helper-text">
+          Would you like to save this to your memory for automatic form filling?
         </div>
       `;
       buttonsHtml = `
-        <button id="mf-learn-dismiss" style="background:#ffffff; border:1px solid #cbd5e1; color:#475569; border-radius:9999px; padding:6px 14px; font-size:12px; font-weight:600; cursor:pointer;">Not Now</button>
-        <button id="mf-learn-save" style="background:#0f172a; border:none; color:#ffffff; border-radius:9999px; padding:6px 16px; font-size:12px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(15,23,42,0.15);">Save to Memory</button>
+        <button id="mf-learn-dismiss" class="btn-secondary">Not Now</button>
+        <button id="mf-learn-save" class="btn-primary">Save to Memory</button>
       `;
     }
 
-    host.innerHTML = `
-      <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:14px; box-shadow:0 20px 45px -10px rgba(15,23,42,0.22), 0 2px 4px rgba(15,23,42,0.06); padding:16px 18px; width:350px; color:#0f172a;">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <div style="background:#0f172a; width:26px; height:26px; border-radius:7px; display:flex; align-items:center; justify-content:center; color:#fff;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+    shadow.innerHTML = `
+      <style>
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .prompt-card {
+          background: #ffffff;
+          border: 1px solid #cbd5e1;
+          border-radius: 16px;
+          box-shadow: 0 20px 45px -10px rgba(15,23,42,0.28), 0 4px 12px rgba(15,23,42,0.08);
+          padding: 16px 18px;
+          width: 360px;
+          color: #0f172a;
+          animation: mfSlideIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes mfSlideIn {
+          from { opacity: 0; transform: translateY(14px) scale(0.98); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .header-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 10px;
+        }
+        .header-left {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .logo-icon {
+          background: #0f172a;
+          width: 24px;
+          height: 24px;
+          border-radius: 6px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #ffffff;
+          flex-shrink: 0;
+        }
+        .badge {
+          font-size: 11px;
+          font-weight: 700;
+          border-radius: 9999px;
+          padding: 2px 8px;
+          display: inline-block;
+        }
+        .badge-update {
+          background: #fef3c7;
+          color: #92400e;
+          border: 1px solid #fde68a;
+        }
+        .badge-new {
+          background: #dcfce7;
+          color: #166534;
+          border: 1px solid #bbf7d0;
+        }
+        .close-btn {
+          background: none;
+          border: none;
+          color: #94a3b8;
+          font-size: 22px;
+          cursor: pointer;
+          line-height: 1;
+          padding: 0 4px;
+        }
+        .close-btn:hover {
+          color: #0f172a;
+        }
+        .desc-text {
+          font-size: 12.5px;
+          color: #475569;
+          margin-bottom: 8px;
+          line-height: 1.45;
+        }
+        .diff-card {
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
+          border-radius: 8px;
+          padding: 8px 10px;
+          margin-bottom: 12px;
+        }
+        .diff-row {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 12px;
+          margin-bottom: 4px;
+        }
+        .diff-row:last-child {
+          margin-bottom: 0;
+        }
+        .diff-tag {
+          font-weight: 600;
+          font-size: 11px;
+          width: 48px;
+          flex-shrink: 0;
+        }
+        .old-tag { color: #dc2626; }
+        .new-tag { color: #0284c7; }
+        .old-val {
+          color: #991b1b;
+          text-decoration: line-through;
+          font-family: ui-monospace, SFMono-Regular, monospace;
+          word-break: break-all;
+        }
+        .new-val {
+          color: #0369a1;
+          font-weight: 700;
+          font-family: ui-monospace, SFMono-Regular, monospace;
+          word-break: break-all;
+        }
+        .info-card {
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
+          border-radius: 8px;
+          padding: 8px 10px;
+          margin-bottom: 8px;
+        }
+        .field-title {
+          font-weight: 700;
+          font-size: 12.5px;
+          color: #0f172a;
+          margin-bottom: 2px;
+        }
+        .field-value {
+          color: #0284c7;
+          font-family: ui-monospace, SFMono-Regular, monospace;
+          font-size: 11.5px;
+          word-break: break-all;
+        }
+        .helper-text {
+          font-size: 11.5px;
+          color: #64748b;
+          margin-bottom: 12px;
+        }
+        .btn-row {
+          display: flex;
+          gap: 8px;
+          justify-content: flex-end;
+          align-items: center;
+        }
+        .btn-secondary {
+          background: #ffffff;
+          border: 1px solid #cbd5e1;
+          color: #475569;
+          border-radius: 9999px;
+          padding: 6px 12px;
+          font-size: 12px;
+          font-weight: 600;
+          cursor: pointer;
+        }
+        .btn-secondary:hover {
+          background: #f1f5f9;
+          color: #0f172a;
+        }
+        .btn-primary {
+          background: #0f172a;
+          border: 1px solid #0f172a;
+          color: #ffffff;
+          border-radius: 9999px;
+          padding: 6px 16px;
+          font-size: 12px;
+          font-weight: 700;
+          cursor: pointer;
+          box-shadow: 0 2px 8px rgba(15,23,42,0.15);
+        }
+        .btn-primary:hover {
+          background: #1e293b;
+        }
+      </style>
+      <div class="prompt-card">
+        <div class="header-row">
+          <div class="header-left">
+            <div class="logo-icon">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
             </div>
-            <strong style="font-size:13.5px; color:#0f172a;">${titleText}</strong>
+            <span class="badge ${badgeClass}">${badgeText}</span>
           </div>
-          <button id="mf-learn-close" style="background:none; border:none; color:#94a3b8; font-size:20px; cursor:pointer; line-height:1;">&times;</button>
+          <button id="mf-learn-close" class="close-btn" title="Close">&times;</button>
         </div>
-        ${contentHtml}
-        <div style="display:flex; gap:8px; justify-content:flex-end;">
+        ${bodyHtml}
+        <div class="btn-row">
           ${buttonsHtml}
         </div>
       </div>
@@ -763,14 +972,19 @@
       if (host && host.parentNode) host.parentNode.removeChild(host);
     };
 
-    host.querySelector("#mf-learn-close").addEventListener("click", closePrompt);
-    const dismissBtn = host.querySelector("#mf-learn-dismiss");
-    if (dismissBtn) dismissBtn.addEventListener("click", closePrompt);
+    shadow.querySelector("#mf-learn-close").addEventListener("click", closePrompt);
+    const dismissBtn = shadow.querySelector("#mf-learn-dismiss");
+    if (dismissBtn) {
+      dismissBtn.addEventListener("click", () => {
+        evaluatedFieldsCache.delete(cacheKey);
+        closePrompt();
+      });
+    }
 
-    const keepBtn = host.querySelector("#mf-learn-keep");
+    const keepBtn = shadow.querySelector("#mf-learn-keep");
     if (keepBtn) keepBtn.addEventListener("click", closePrompt);
 
-    const saveBtn = host.querySelector("#mf-learn-save");
+    const saveBtn = shadow.querySelector("#mf-learn-save");
     saveBtn.addEventListener("click", () => {
       saveBtn.disabled = true;
       saveBtn.innerText = isUpdate ? "Updating..." : "Saving...";
@@ -788,7 +1002,6 @@
         },
         (res) => {
           if (res && res.success) {
-            // Dynamically flip field visual status from red (missing) to green (matched)!
             el.setAttribute("data-magic-fill-status", "matched");
             if (el.type === "radio" && el.name) {
               document.querySelectorAll(`input[type="radio"][name="${CSS.escape(el.name)}"]`).forEach((r) => {
@@ -797,10 +1010,12 @@
             }
 
             saveBtn.style.background = "#059669";
+            saveBtn.style.borderColor = "#059669";
             saveBtn.innerText = isUpdate ? "✓ Updated Memory!" : "✓ Saved to Memory!";
-            setTimeout(closePrompt, 1800);
+            setTimeout(closePrompt, 1600);
           } else {
             saveBtn.style.background = "#e11d48";
+            saveBtn.style.borderColor = "#e11d48";
             saveBtn.innerText = "Error saving";
             setTimeout(closePrompt, 2200);
           }

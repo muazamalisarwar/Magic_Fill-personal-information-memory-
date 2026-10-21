@@ -135,11 +135,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       }
 
       case "MATCH_FORM_FIELDS": {
-        if (!auth.token) {
-          return { success: false, error: "Authentication required to match fields.", unauthenticated: true };
-        }
-
         try {
+          const headers = { "Content-Type": "application/json" };
+          if (auth && auth.token) {
+            headers["Authorization"] = `Bearer ${auth.token}`;
+          }
+
           const userId = (auth.user && auth.user.id) ? auth.user.id : 1;
           const url = `${DEFAULT_CONFIG.apiBaseUrl}/matching/fields`;
           const payload = {
@@ -150,14 +151,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
           const res = await fetch(url, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${auth.token}`,
-            },
+            headers: headers,
             body: JSON.stringify(payload),
           });
 
-          if (res.status === 401) {
+          if (res.status === 401 && auth && auth.token) {
             await clearStoredAuth();
             return { success: false, sessionExpired: true, error: "Session expired. Please sign in again." };
           }
@@ -175,11 +173,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       }
 
       case "SAVE_MANUAL_FIELDS_TO_MEMORY": {
-        if (!auth.token) {
-          return { success: false, error: "Authentication required to save memory.", unauthenticated: true };
-        }
-
         try {
+          const headers = { "Content-Type": "application/json" };
+          if (auth && auth.token) {
+            headers["Authorization"] = `Bearer ${auth.token}`;
+          }
+
           const userId = (auth.user && auth.user.id) ? auth.user.id : 1;
           const url = `${DEFAULT_CONFIG.apiBaseUrl}/memory/extract-raw`;
           const payload = {
@@ -190,14 +189,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
           const res = await fetch(url, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${auth.token}`,
-            },
+            headers: headers,
             body: JSON.stringify(payload),
           });
 
-          if (res.status === 401) {
+          if (res.status === 401 && auth && auth.token) {
             await clearStoredAuth();
             return { success: false, sessionExpired: true, error: "Session expired." };
           }
@@ -215,22 +211,20 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       }
 
       case "EVALUATE_FIELD_FOR_LEARNING": {
-        if (!auth.token) {
-          return { success: true, data: { is_learnable: false, reason: "Unauthenticated" } };
-        }
-
         try {
+          const headers = { "Content-Type": "application/json" };
+          if (auth && auth.token) {
+            headers["Authorization"] = `Bearer ${auth.token}`;
+          }
+
           const url = `${DEFAULT_CONFIG.apiBaseUrl}/memory/evaluate-field`;
           const res = await fetch(url, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${auth.token}`,
-            },
+            headers: headers,
             body: JSON.stringify(message.field),
           });
 
-          if (res.status === 401) {
+          if (res.status === 401 && auth && auth.token) {
             await clearStoredAuth();
             return { success: false, sessionExpired: true, error: "Session expired." };
           }
@@ -248,22 +242,20 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       }
 
       case "COMMIT_LEARNED_FIELD": {
-        if (!auth.token) {
-          return { success: false, error: "Authentication required to commit memory.", unauthenticated: true };
-        }
-
         try {
+          const headers = { "Content-Type": "application/json" };
+          if (auth && auth.token) {
+            headers["Authorization"] = `Bearer ${auth.token}`;
+          }
+
           const url = `${DEFAULT_CONFIG.apiBaseUrl}/memory/commit-learning`;
           const res = await fetch(url, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${auth.token}`,
-            },
+            headers: headers,
             body: JSON.stringify(message.data),
           });
 
-          if (res.status === 401) {
+          if (res.status === 401 && auth && auth.token) {
             await clearStoredAuth();
             return { success: false, sessionExpired: true, error: "Session expired." };
           }

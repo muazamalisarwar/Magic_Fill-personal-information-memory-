@@ -117,7 +117,7 @@ def save_user_document(db: Session, doc_in: DocumentCreate) -> UserDocument:
     if not user.personal_info:
         user.personal_info = PersonalInfo(
             user_id=user.id,
-            full_name=user.full_name or user.username or "User",
+            full_name=user.full_name or user.email or "User",
             email=user.email
         )
         db.add(user.personal_info)
