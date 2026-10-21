@@ -590,15 +590,21 @@ import Base from "@/layouts/Base.astro";
               }
 
               // Display updated JSON output
-              displayUpdatedJson({
-                document_id: data.data.id,
-                canonical_key: data.data.doc_key,
-                title: data.data.title,
-                category: data.data.category,
-                description: data.data.description,
-                file_name: data.data.file_name,
-                file_size_kb: (data.data.file_size_bytes / 1024).toFixed(1)
-              }, `Document Asset '${data.data.title}' Saved`);
+              try {
+                if (typeof displayExtractUpdatedJson === "function") {
+                  displayExtractUpdatedJson({
+                    document_id: data.data.id,
+                    canonical_key: data.data.doc_key,
+                    title: data.data.title,
+                    category: data.data.category,
+                    description: data.data.description,
+                    file_name: data.data.file_name,
+                    file_size_kb: (data.data.file_size_bytes / 1024).toFixed(1)
+                  }, `Document Asset '${data.data.title}' Saved`);
+                }
+              } catch (jsonErr) {
+                console.warn("Could not render JSON box:", jsonErr);
+              }
 
               // Reset form fields
               selectedMediaFile = null;
@@ -972,6 +978,8 @@ import Base from "@/layouts/Base.astro";
         box.classList.remove("hidden");
         box.scrollIntoView({ behavior: "smooth", block: "nearest" });
       }
+
+      const displayUpdatedJson = displayExtractUpdatedJson;
 
       const copyExtractJsonBtn = document.getElementById("btnCopyExtractJson");
       const copyExtractJsonText = document.getElementById("copyExtractJsonText");
