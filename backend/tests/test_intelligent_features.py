@@ -69,7 +69,14 @@ def test_intelligent_semantic_field_matching(db_session, client):
         {"field_id": "f_pet", "name": "pet_name", "label": "Pet Name", "input_type": "text"},  # Irrelevant, must NOT match full name
     ]
 
-    with patch("app.services.groq_service.query_groq_llm", new=AsyncMock(return_value=None)):
+    mock_llm = {
+        "mappings": [
+            {"field_id": "f_country_drop", "memory_key": "personal_info.country", "value": "Pakistan", "confidence": 0.98},
+            {"field_id": "f_bio", "memory_key": "personal_info.bio", "value": "Muazam Ali is a software engineer with expertise in Python.", "confidence": 0.95},
+        ]
+    }
+
+    with patch("app.services.groq_service.query_groq_llm", new=AsyncMock(return_value=mock_llm)):
         res = client.post("/api/matching/fields", json={
             "user_id": user.id,
             "fields": fields,
@@ -80,22 +87,26 @@ def test_intelligent_semantic_field_matching(db_session, client):
 
     mapped_dict = {m["field_id"]: m for m in data["mappings"]}
 
-    # Verify "Your Name" matched full name
+    # Verify "Your Name" matched full name (direct match)
     assert "f_your_name" in mapped_dict
     assert mapped_dict["f_your_name"]["value"] == "Muazam Ali"
     assert mapped_dict["f_your_name"]["memory_key"] == "personal_info.full_name"
+    assert mapped_dict["f_your_name"]["source"] == "deterministic"
 
-    # Verify "Applicant Legal Name" matched full name
+    # Verify "Applicant Legal Name" matched full name (direct match)
     assert "f_applicant_name" in mapped_dict
     assert mapped_dict["f_applicant_name"]["value"] == "Muazam Ali"
+    assert mapped_dict["f_applicant_name"]["source"] == "deterministic"
 
-    # Verify Country dropdown picked "Pakistan" from options
+    # Verify Country dropdown picked "Pakistan" from options (AI match)
     assert "f_country_drop" in mapped_dict
     assert mapped_dict["f_country_drop"]["value"] == "Pakistan"
+    assert mapped_dict["f_country_drop"]["source"] == "llm"
 
-    # Verify Bio textarea matched
+    # Verify Bio textarea matched (AI match)
     assert "f_bio" in mapped_dict
     assert "software engineer" in mapped_dict["f_bio"]["value"]
+    assert mapped_dict["f_bio"]["source"] == "llm"
 
     # Verify "Pet Name" is UNMAPPED and placed in unresolved_fields (Visual Field Status = Red candidate)
     assert "f_pet" not in mapped_dict
@@ -163,7 +174,19 @@ def test_support_all_10_input_types(db_session, client):
         {"field_id": "in_btn", "name": "submit_action", "label": "Submit Application", "input_type": "submit", "tag_name": "button"},
     ]
 
-    with patch("app.services.groq_service.query_groq_llm", new=AsyncMock(return_value=None)):
+    mock_llm_10 = {
+        "mappings": [
+            {"field_id": "in_select", "memory_key": "personal_info.gender", "value": "Female", "confidence": 0.98},
+            {"field_id": "in_radio", "memory_key": "custom_fields.work_authorization", "value": "Yes", "confidence": 0.98},
+            {"field_id": "in_check", "memory_key": "custom_fields.work_authorization", "value": "true", "confidence": 0.98},
+            {"field_id": "in_textarea", "memory_key": "personal_info.bio", "value": "Senior Cyber Security Lead with 8 years of defense experience.", "confidence": 0.95},
+            {"field_id": "in_date", "memory_key": "personal_info.date_of_birth", "value": "1992-06-15", "confidence": 0.98},
+            {"field_id": "in_switch", "memory_key": "custom_fields.willing_to_relocate", "value": "true", "confidence": 0.98},
+            {"field_id": "in_slider", "memory_key": "custom_fields.years_of_experience", "value": "8", "confidence": 0.98},
+        ]
+    }
+
+    with patch("app.services.groq_service.query_groq_llm", new=AsyncMock(return_value=mock_llm_10)):
         res = client.post("/api/matching/fields", json={
             "user_id": user.id,
             "fields": test_fields,
@@ -174,22 +197,37 @@ def test_support_all_10_input_types(db_session, client):
 
     mapped_map = {m["field_id"]: m for m in data["mappings"]}
 
-    # Verify Text Input
+    # Verify Text Input (Email is direct matched)
     assert mapped_map["in_text"]["value"] == "sarah@example.com"
-    # Verify Dropdown
+    assert mapped_map["in_text"]["source"] == "deterministic"
+
+    # Verify Dropdown (AI matched)
     assert mapped_map["in_select"]["value"] == "Female"
-    # Verify Radio Button
+    assert mapped_map["in_select"]["source"] == "llm"
+
+    # Verify Radio Button (AI matched)
     assert mapped_map["in_radio"]["value"] == "Yes"
-    # Verify Checkbox (boolean checked representation)
+    assert mapped_map["in_radio"]["source"] == "llm"
+
+    # Verify Checkbox (boolean checked representation, AI matched)
     assert mapped_map["in_check"]["value"] in ("true", "Yes")
-    # Verify Text Area
+    assert mapped_map["in_check"]["source"] == "llm"
+
+    # Verify Text Area (AI matched)
     assert "Cyber Security" in mapped_map["in_textarea"]["value"]
-    # Verify Date Picker (ISO YYYY-MM-DD)
+    assert mapped_map["in_textarea"]["source"] == "llm"
+
+    # Verify Date Picker (ISO YYYY-MM-DD, AI matched)
     assert mapped_map["in_date"]["value"] == "1992-06-15"
-    # Verify Toggle / Switch
+    assert mapped_map["in_date"]["source"] == "llm"
+
+    # Verify Toggle / Switch (AI matched)
     assert mapped_map["in_switch"]["value"] in ("true", "Yes")
-    # Verify Range Slider
+    assert mapped_map["in_switch"]["source"] == "llm"
+
+    # Verify Range Slider (AI matched)
     assert mapped_map["in_slider"]["value"] == "8"
+    assert mapped_map["in_slider"]["source"] == "llm"
 
 
 @pytest.mark.anyio
@@ -355,8 +393,13 @@ def test_visual_field_status_partitioning_and_dynamic_flip(db_session, client):
     )
     commit_learned_field(db=db_session, user_id=user.id, request=commit_req)
 
-    # Dynamic status update: Rescan form fields after learning
-    with patch("app.services.groq_service.query_groq_llm", new=AsyncMock(return_value=None)):
+    # Dynamic status update: Rescan form fields after learning (LinkedIn mapped via AI)
+    mock_llm_linkedin = {
+        "mappings": [
+            {"field_id": "id_linkedin", "memory_key": "custom_fields.linkedin_url", "value": "https://linkedin.com/in/alexmercer", "confidence": 0.98}
+        ]
+    }
+    with patch("app.services.groq_service.query_groq_llm", new=AsyncMock(return_value=mock_llm_linkedin)):
         res2 = client.post("/api/matching/fields", json={
             "user_id": user.id,
             "fields": fields_scan_1

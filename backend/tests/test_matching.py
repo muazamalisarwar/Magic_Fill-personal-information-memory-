@@ -55,14 +55,17 @@ def test_deterministic_field_matching(client):
     assert body["success"] is True
     data = body["data"]
 
-    # Verify counts
+    # Verify counts: ONLY Name, Email, and Phone are direct matched (4 fields)
+    # Remaining fields (University, Company, Unknown) are NOT direct-matched!
     assert data["total_detected"] == 7
-    assert data["total_mapped"] == 6
+    assert data["total_mapped"] == 4
+    assert "input_univ" in data["unresolved_fields"]
+    assert "input_company" in data["unresolved_fields"]
     assert "input_unknown" in data["unresolved_fields"]
 
     mappings_by_id = {m["field_id"]: m for m in data["mappings"]}
 
-    # Verify First Name does not contain full name
+    # Verify First Name
     assert mappings_by_id["input_fname"]["value"] == "Muazam"
     assert mappings_by_id["input_fname"]["memory_key"] == "personal_info.first_name"
     assert mappings_by_id["input_fname"]["source"] == "deterministic"
@@ -70,16 +73,84 @@ def test_deterministic_field_matching(client):
     # Verify Last Name
     assert mappings_by_id["input_lname"]["value"] == "Ali"
     assert mappings_by_id["input_lname"]["memory_key"] == "personal_info.last_name"
+    assert mappings_by_id["input_lname"]["source"] == "deterministic"
 
     # Verify Email & Phone
     assert mappings_by_id["input_email"]["value"] == "muazam@example.com"
+    assert mappings_by_id["input_email"]["source"] == "deterministic"
     assert mappings_by_id["input_phone"]["value"] == "+92 300 1234567"
+    assert mappings_by_id["input_phone"]["source"] == "deterministic"
 
-    # Verify Institution Name mapped to stored university
+
+def test_ai_matching_for_non_core_fields(client):
+    """
+    Test that all non-core fields (University, Company, etc.) are mapped by
+    AI logic (source='llm') instead of direct heuristic matching.
+    """
+    user_res = client.post("/api/users", json={})
+    user_id = user_res.json()["data"]["id"]
+
+    client.post(
+        f"/api/users/{user_id}/personal-info",
+        json={
+            "full_name": "Muazam Ali",
+            "email": "muazam@example.com",
+            "university": "University of Education, Lahore",
+        }
+    )
+    client.post(
+        f"/api/users/{user_id}/experiences",
+        json={
+            "company": "Apex Software Solutions",
+            "job_title": "Full Stack Engineer",
+            "start_date": "2024-01-01",
+        }
+    )
+
+    match_payload = {
+        "user_id": user_id,
+        "fields": [
+            {"field_id": "input_fname", "label": "First Name", "name": "fname"},
+            {"field_id": "input_univ", "label": "Institution Name", "name": "institution_name"},
+            {"field_id": "input_company", "label": "Current Employer", "name": "employer"},
+        ]
+    }
+
+    mock_llm_response = {
+        "mappings": [
+            {
+                "field_id": "input_univ",
+                "memory_key": "personal_info.university",
+                "value": "University of Education, Lahore",
+                "confidence": 0.96,
+                "reason": "AI matched university name"
+            },
+            {
+                "field_id": "input_company",
+                "memory_key": "experiences[0].company",
+                "value": "Apex Software Solutions",
+                "confidence": 0.94,
+                "reason": "AI matched employer from experience"
+            }
+        ]
+    }
+
+    with patch("app.services.groq_service.query_groq_llm", new=AsyncMock(return_value=mock_llm_response)):
+        res = client.post("/api/matching/fields", json=match_payload)
+    assert res.status_code == 200
+    data = res.json()["data"]
+
+    assert data["total_mapped"] == 3
+    mappings_by_id = {m["field_id"]: m for m in data["mappings"]}
+
+    # First name is direct matched
+    assert mappings_by_id["input_fname"]["source"] == "deterministic"
+    assert mappings_by_id["input_fname"]["value"] == "Muazam"
+
+    # University and Employer are AI matched
+    assert mappings_by_id["input_univ"]["source"] == "llm"
     assert mappings_by_id["input_univ"]["value"] == "University of Education, Lahore"
-    assert mappings_by_id["input_univ"]["memory_key"] == "personal_info.university"
-
-    # Verify Employer mapped to recent company
+    assert mappings_by_id["input_company"]["source"] == "llm"
     assert mappings_by_id["input_company"]["value"] == "Apex Software Solutions"
 
 

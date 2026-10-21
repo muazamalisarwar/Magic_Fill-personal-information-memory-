@@ -91,13 +91,18 @@ def _pick_best_option(canonical_value: str, options: Optional[List[str]]) -> str
 
 def _match_deterministic(field: DetectedField, profile_data: Dict[str, Any]) -> Optional[FieldMapping]:
     """
-    Applies high-speed deterministic heuristic rules to map a detected field
-    to stored personal memory attributes without invoking the LLM.
+    Applies high-speed deterministic heuristic rules ONLY for core identity fields:
+    - Name (First Name, Last Name, Full Legal Name)
+    - Email Address
+    - Phone / Mobile / Contact Number
+
+    All other fields (Father's name, gender, dob, cnic, address, city, country,
+    education, employment, bio, salary, documents, custom fields) MUST be resolved
+    by AI logic (GroqService) as explicitly requested by the user.
     """
     personal_info = profile_data.get("personal_info")
-    experiences = profile_data.get("experiences") or []
-    documents = profile_data.get("documents") or []
-    doc_by_key = {d.doc_key: d for d in documents}
+    if not personal_info:
+        return None
 
     # Combine all identifiers for the field
     identifiers = [
@@ -112,52 +117,38 @@ def _match_deterministic(field: DetectedField, profile_data: Dict[str, Any]) -> 
     if not combined_text and input_type not in ("email", "tel"):
         return None
 
-    # 1. First Name (Strict separation from Full Name)
+    # 1. First Name (Strict separation from Full Name, rejects family/relation tokens)
     if any(k in combined_text for k in ["first name", "fname", "given name", "forename"]):
-        if personal_info and personal_info.full_name:
-            tokens = personal_info.full_name.strip().split()
-            first_name = tokens[0] if tokens else personal_info.full_name
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="personal_info.first_name",
-                value=first_name,
-                confidence=0.98,
-                reason="Derived first name from stored full name",
-                source="deterministic"
-            )
-
-    # 2. Last Name / Surname
-    if any(k in combined_text for k in ["last name", "lname", "surname", "family name"]):
-        if personal_info and personal_info.full_name:
-            tokens = personal_info.full_name.strip().split()
-            last_name = tokens[-1] if len(tokens) > 1 else ""
-            if last_name:
+        if not any(k in combined_text for k in ["father", "guardian", "parent", "mother", "spouse", "friend", "emergency"]):
+            if personal_info.full_name:
+                tokens = personal_info.full_name.strip().split()
+                first_name = tokens[0] if tokens else personal_info.full_name
                 return FieldMapping(
                     field_id=field.field_id,
-                    memory_key="personal_info.last_name",
-                    value=last_name,
+                    memory_key="personal_info.first_name",
+                    value=first_name,
                     confidence=0.98,
-                    reason="Derived last name from stored full name",
+                    reason="Direct matched first name from stored full name",
                     source="deterministic"
                 )
 
-    # 3. Father's Name / Guardian Name
-    if any(k in combined_text for k in [
-        "father name", "fathers name", "father's name", "parent name", "father", "fathers",
-        "guardian name", "guardian", "guardians name", "parent guardian", "father guardian",
-        "parent_guardian", "father_guardian"
-    ]):
-        if personal_info and personal_info.father_name:
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="personal_info.father_name",
-                value=personal_info.father_name,
-                confidence=0.98,
-                reason="Matched father / guardian name",
-                source="deterministic"
-            )
+    # 2. Last Name / Surname (rejects family/relation tokens)
+    if any(k in combined_text for k in ["last name", "lname", "surname", "family name"]):
+        if not any(k in combined_text for k in ["father", "guardian", "parent", "mother", "spouse", "friend", "emergency"]):
+            if personal_info.full_name:
+                tokens = personal_info.full_name.strip().split()
+                last_name = tokens[-1] if len(tokens) > 1 else ""
+                if last_name:
+                    return FieldMapping(
+                        field_id=field.field_id,
+                        memory_key="personal_info.last_name",
+                        value=last_name,
+                        confidence=0.98,
+                        reason="Direct matched last name from stored full name",
+                        source="deterministic"
+                    )
 
-    # 4. Full Name / Legal Name / Applicant Name / Your Name
+    # 3. Full Name / Legal Name / Applicant Name / Your Name
     name_full_indicators = [
         "full name", "legal name", "applicant name", "candidate name",
         "complete name", "student name", "employee name", "your name",
@@ -183,555 +174,43 @@ def _match_deterministic(field: DetectedField, profile_data: Dict[str, Any]) -> 
         )
     )
     if is_name_match:
-        if personal_info and personal_info.full_name:
+        if personal_info.full_name:
             return FieldMapping(
                 field_id=field.field_id,
                 memory_key="personal_info.full_name",
                 value=personal_info.full_name,
                 confidence=0.98,
-                reason="Matched full legal name",
+                reason="Direct matched full legal name",
                 source="deterministic"
             )
 
-    # 5. Email Address
-    if input_type == "email" or any(k in combined_text for k in ["email", "e mail", "electronic mail"]):
+    # 4. Email Address
+    if input_type == "email" or any(k in combined_text for k in ["email", "e mail", "electronic mail", "mail"]):
         if not any(k in combined_text for k in ["friend", "emergency"]):
-            if personal_info and personal_info.email:
+            if personal_info.email:
                 return FieldMapping(
                     field_id=field.field_id,
                     memory_key="personal_info.email",
                     value=personal_info.email,
                     confidence=0.99,
-                    reason="Matched primary email address",
+                    reason="Direct matched primary email address",
                     source="deterministic"
                 )
 
-    # 6. Phone / Mobile Number
+    # 5. Phone / Mobile Number
     if input_type == "tel" or any(k in combined_text for k in ["phone", "mobile", "telephone", "cell", "contact number"]):
-        if personal_info and personal_info.phone:
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="personal_info.phone",
-                value=personal_info.phone,
-                confidence=0.98,
-                reason="Matched primary phone number",
-                source="deterministic"
-            )
-
-    # 7. Gender (Dropdown or Selection Input)
-    if any(k in combined_text for k in ["gender", "sex", "gender identity"]):
-        if personal_info and personal_info.gender:
-            chosen_gender = _pick_best_option(personal_info.gender, field.options)
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="personal_info.gender",
-                value=chosen_gender,
-                confidence=0.99,
-                reason="Matched user gender for selection dropdown",
-                source="deterministic"
-            )
-
-    # 8. Date of Birth (Formatted ISO YYYY-MM-DD for date picker or text input)
-    if any(k in combined_text for k in ["date of birth", "dob", "birth date", "birthdate"]):
-        if personal_info and personal_info.date_of_birth:
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="personal_info.date_of_birth",
-                value=personal_info.date_of_birth.isoformat(),
-                confidence=0.98,
-                reason="Matched date of birth (ISO YYYY-MM-DD)",
-                source="deterministic"
-            )
-
-    # 9. Document & Image File Uploads
-    if input_type == "file" or any(k in combined_text for k in ["upload", "attachment", "document", "photo", "picture", "scan", "file"]):
-        # 9a. CNIC Front
-        if any(k in combined_text for k in ["cnic front", "id front", "nic front", "identity front", "front side", "card front", "front of cnic", "front copy"]):
-            if "cnic_front" in doc_by_key:
-                d = doc_by_key["cnic_front"]
+        if not any(k in combined_text for k in ["friend", "emergency"]):
+            if personal_info.phone:
                 return FieldMapping(
                     field_id=field.field_id,
-                    memory_key="documents.cnic_front",
-                    value=d.file_data,
-                    confidence=0.99,
-                    reason=f"Matched saved CNIC Front document ('{d.description or d.title}')",
-                    source="deterministic"
-                )
-            elif personal_info and personal_info.cnic_photo:
-                return FieldMapping(
-                    field_id=field.field_id,
-                    memory_key="personal_info.cnic_photo",
-                    value=personal_info.cnic_photo,
-                    confidence=0.95,
-                    reason="Matched CNIC document from personal info",
-                    source="deterministic"
-                )
-
-        # 9b. CNIC Back
-        if any(k in combined_text for k in ["cnic back", "id back", "nic back", "identity back", "back side", "card back", "rear side", "reverse side", "back of cnic", "back copy"]):
-            if "cnic_back" in doc_by_key:
-                d = doc_by_key["cnic_back"]
-                return FieldMapping(
-                    field_id=field.field_id,
-                    memory_key="documents.cnic_back",
-                    value=d.file_data,
-                    confidence=0.99,
-                    reason=f"Matched saved CNIC Back document ('{d.description or d.title}')",
-                    source="deterministic"
-                )
-
-        # 9c. Passport
-        if any(k in combined_text for k in ["passport", "passport scan", "passport copy"]):
-            if "passport" in doc_by_key:
-                d = doc_by_key["passport"]
-                return FieldMapping(
-                    field_id=field.field_id,
-                    memory_key="documents.passport",
-                    value=d.file_data,
+                    memory_key="personal_info.phone",
+                    value=personal_info.phone,
                     confidence=0.98,
-                    reason="Matched saved Passport document",
+                    reason="Direct matched primary phone number",
                     source="deterministic"
                 )
 
-        # 9d. Degree / Academic Transcript
-        if any(k in combined_text for k in ["transcript", "degree certificate", "diploma scan", "academic document"]):
-            if "degree_transcript" in doc_by_key:
-                d = doc_by_key["degree_transcript"]
-                return FieldMapping(
-                    field_id=field.field_id,
-                    memory_key="documents.degree_transcript",
-                    value=d.file_data,
-                    confidence=0.98,
-                    reason="Matched saved academic transcript",
-                    source="deterministic"
-                )
-
-        # 9e. Resume / CV
-        if any(k in combined_text for k in ["resume", "cv", "curriculum vitae"]):
-            if "resume" in doc_by_key:
-                d = doc_by_key["resume"]
-                return FieldMapping(
-                    field_id=field.field_id,
-                    memory_key="documents.resume",
-                    value=d.file_data,
-                    confidence=0.98,
-                    reason="Matched saved Resume / CV",
-                    source="deterministic"
-                )
-            custom_fields = profile_data.get("custom_fields") or []
-            for cf in custom_fields:
-                if cf.field_key in ("doc_resume", "resume", "cv") or "resume" in cf.field_key.lower():
-                    return FieldMapping(
-                        field_id=field.field_id,
-                        memory_key=f"custom_fields.{cf.field_key}",
-                        value=cf.field_value,
-                        confidence=0.98,
-                        reason="Matched saved Resume / CV from memory",
-                        source="deterministic"
-                    )
-
-        # 9f. Profile Photograph / Avatar Image
-        if any(k in combined_text for k in ["photo", "photograph", "picture", "avatar", "headshot", "profile image", "user photo", "applicant photo"]):
-            photo_doc = doc_by_key.get("profile_photo")
-            photo_val = (
-                photo_doc.file_data if photo_doc
-                else personal_info.profile_photo if (personal_info and personal_info.profile_photo)
-                else "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><rect width='160' height='160' rx='20' fill='%234F46E5'/><text x='50%25' y='52%25' font-size='22' font-family='sans-serif' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='middle'>PHOTO</text></svg>"
-            )
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="documents.profile_photo" if photo_doc else "personal_info.profile_photo",
-                value=photo_val,
-                confidence=0.97,
-                reason="Matched user photograph / avatar for file input",
-                source="deterministic"
-            )
-
-        # 9g. General CNIC / National ID Card (without specific front/back)
-        if any(k in combined_text for k in ["cnic", "national id", "id card", "identity doc", "identity card"]):
-            cnic_doc = doc_by_key.get("cnic_front") or doc_by_key.get("cnic_photo") or doc_by_key.get("cnic_back")
-            cnic_val = (
-                cnic_doc.file_data if cnic_doc
-                else personal_info.cnic_photo if (personal_info and personal_info.cnic_photo)
-                else "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='150'><rect width='240' height='150' rx='12' fill='%2310B981'/><text x='50%25' y='50%25' font-size='18' font-family='sans-serif' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='middle'>CNIC DOCUMENT</text></svg>"
-            )
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key=f"documents.{cnic_doc.doc_key}" if cnic_doc else "personal_info.cnic_photo",
-                value=cnic_val,
-                confidence=0.96,
-                reason="Matched national identity card document",
-                source="deterministic"
-            )
-
-        # 9h. Custom Saved Documents Match by Title or Description
-        for d in documents:
-            title_norm = _normalize_text(d.title)
-            key_norm = _normalize_text(d.doc_key)
-            if (title_norm and title_norm in combined_text) or (key_norm and key_norm in combined_text):
-                return FieldMapping(
-                    field_id=field.field_id,
-                    memory_key=f"documents.{d.doc_key}",
-                    value=d.file_data,
-                    confidence=0.95,
-                    reason=f"Matched saved user document '{d.title}'",
-                    source="deterministic"
-                )
-
-    # 11. National ID / CNIC Text Number
-    if any(k in combined_text for k in ["cnic", "national id", "id card", "identity number", "national identity"]):
-        if personal_info and personal_info.cnic:
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="personal_info.cnic",
-                value=personal_info.cnic,
-                confidence=0.98,
-                reason="Matched national identity card number",
-                source="deterministic"
-            )
-
-    # 12. Street / Residential Address
-    if any(k in combined_text for k in ["address", "street address", "residential address", "home address", "permanent address"]):
-        if not any(k in combined_text for k in ["city", "country", "postal", "zip", "email"]):
-            if personal_info and personal_info.address:
-                return FieldMapping(
-                    field_id=field.field_id,
-                    memory_key="personal_info.address",
-                    value=personal_info.address,
-                    confidence=0.95,
-                    reason="Matched physical street address",
-                    source="deterministic"
-                )
-
-    # 13. City
-    if any(k in combined_text for k in ["city", "town"]):
-        if personal_info and personal_info.city:
-            chosen_city = _pick_best_option(personal_info.city, field.options)
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="personal_info.city",
-                value=chosen_city,
-                confidence=0.98,
-                reason="Matched city of residence",
-                source="deterministic"
-            )
-
-    # 14. Postal Code / ZIP
-    if any(k in combined_text for k in ["postal code", "zip", "zip code", "postcode"]):
-        if personal_info and personal_info.postal_code:
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="personal_info.postal_code",
-                value=personal_info.postal_code,
-                confidence=0.98,
-                reason="Matched postal / ZIP code",
-                source="deterministic"
-            )
-
-    # 15. Country (with dropdown option selection)
-    if any(k in combined_text for k in ["country", "nation", "nationality"]):
-        if personal_info and personal_info.country:
-            chosen_country = _pick_best_option(personal_info.country, field.options)
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="personal_info.country",
-                value=chosen_country,
-                confidence=0.98,
-                reason="Matched country of residence",
-                source="deterministic"
-            )
-
-    # 16. University / Educational Institution (with dropdown option selection)
-    if any(k in combined_text for k in ["university", "college", "institution", "institution name", "school name"]):
-        if personal_info and personal_info.university:
-            chosen_univ = _pick_best_option(personal_info.university, field.options)
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="personal_info.university",
-                value=chosen_univ,
-                confidence=0.96,
-                reason="Matched academic university / institution name",
-                source="deterministic"
-            )
-
-
-    # 14. Degree Program / Major
-    if any(k in combined_text for k in ["degree", "degree name", "qualification", "degree program", "major", "field of study"]):
-        if personal_info and (personal_info.degree or personal_info.major):
-            deg_val = personal_info.degree or personal_info.major
-            if field.options:
-                deg_val = _pick_best_option(deg_val, field.options)
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="personal_info.degree" if personal_info.degree else "personal_info.major",
-                value=deg_val,
-                confidence=0.96,
-                reason="Matched academic degree program / major",
-                source="deterministic"
-            )
-
-    # 15. Academic Department
-    if any(k in combined_text for k in ["department", "faculty", "major"]):
-        if personal_info and personal_info.department:
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="personal_info.department",
-                value=personal_info.department,
-                confidence=0.95,
-                reason="Matched academic department",
-                source="deterministic"
-            )
-
-    # 16. Semester / Academic Standing
-    if any(k in combined_text for k in ["semester", "academic year", "current semester"]):
-        if personal_info and personal_info.semester:
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="personal_info.semester",
-                value=personal_info.semester,
-                confidence=0.95,
-                reason="Matched semester or academic standing",
-                source="deterministic"
-            )
-
-    # 17. Student Registration / Roll Number
-    if any(k in combined_text for k in ["registration number", "roll number", "student id", "registration no"]):
-        if personal_info and personal_info.registration_number:
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="personal_info.registration_number",
-                value=personal_info.registration_number,
-                confidence=0.95,
-                reason="Matched student registration / roll number",
-                source="deterministic"
-            )
-
-    # 18. Current / Recent Employer / Company
-    if any(k in combined_text for k in ["current company", "current employer", "organization", "company name", "employer"]):
-        if experiences and experiences[0].company:
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="experiences[0].company",
-                value=experiences[0].company,
-                confidence=0.92,
-                reason="Matched current or most recent employer from experiences",
-                source="deterministic"
-            )
-
-    # 19. Current / Recent Job Title
-    if any(k in combined_text for k in ["job title", "position", "current role", "designation"]):
-        if experiences and experiences[0].job_title:
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="experiences[0].job_title",
-                value=experiences[0].job_title,
-                confidence=0.92,
-                reason="Matched current or most recent job title from experiences",
-                source="deterministic"
-            )
-
-    # 20. Skills
-    if any(k in combined_text for k in ["skills", "technologies", "key skills"]):
-        if experiences and experiences[0].skills:
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="experiences[0].skills",
-                value=experiences[0].skills,
-                confidence=0.90,
-                reason="Matched skills from recent experience",
-                source="deterministic"
-            )
-
-    # 21. Salary / Compensation / Income
-    salary_keywords = [
-        "salary", "monthly salary", "current salary", "expected salary",
-        "compensation", "income", "remuneration", "monthly pay", "pay rate",
-        "annual salary", "gross salary", "take home pay"
-    ]
-    if any(k in combined_text for k in salary_keywords):
-        custom_fields = profile_data.get("custom_fields") or []
-        candidates = []
-        for cf in custom_fields:
-            cf_key_norm = _normalize_text(cf.field_key)
-            cf_label_norm = _normalize_text(cf.field_label)
-            if any(k in cf_key_norm or k in cf_label_norm for k in ["salary", "income", "compensation", "remuneration", "pay"]):
-                score = 0
-                if cf_key_norm == combined_text or cf_label_norm == combined_text:
-                    score = 100
-                elif cf_key_norm in combined_text or cf_label_norm in combined_text:
-                    score = 80
-                elif combined_text in cf_key_norm or combined_text in cf_label_norm:
-                    score = 60
-                elif "salary" in combined_text and ("salary" in cf_key_norm or "salary" in cf_label_norm):
-                    score = 50
-                elif "income" in combined_text and ("income" in cf_key_norm or "income" in cf_label_norm):
-                    score = 50
-                else:
-                    score = 20
-                candidates.append((score, cf))
-
-        if candidates:
-            candidates.sort(key=lambda x: x[0], reverse=True)
-            best_cf = candidates[0][1]
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key=f"custom_fields.{best_cf.field_key}",
-                value=best_cf.field_value,
-                confidence=0.97,
-                reason=f"Matched salary/compensation field from custom memory '{best_cf.field_label}'",
-                source="deterministic"
-            )
-
-    # 22. LinkedIn Profile URL
-    if any(k in combined_text for k in ["linkedin", "linkedin profile", "linkedin url", "linkedin link"]):
-        if personal_info and personal_info.linkedin_url:
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="personal_info.linkedin_url",
-                value=personal_info.linkedin_url,
-                confidence=0.98,
-                reason="Matched LinkedIn profile URL",
-                source="deterministic"
-            )
-
-    # 23. GitHub & Portfolio / Personal Website
-    if any(k in combined_text for k in ["github", "github profile", "github url", "github repo"]):
-        if personal_info and personal_info.github_url:
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="personal_info.github_url",
-                value=personal_info.github_url,
-                confidence=0.98,
-                reason="Matched GitHub profile URL",
-                source="deterministic"
-            )
-    if any(k in combined_text for k in ["portfolio", "personal website", "portfolio url", "website url", "personal site", "blog"]):
-        if personal_info and personal_info.github_url:
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="personal_info.github_url",
-                value=personal_info.github_url,
-                confidence=0.95,
-                reason="Matched portfolio / personal website URL",
-                source="deterministic"
-            )
-
-    # 24. Bio / Professional Summary / Cover Letter (Textarea or Text)
-    if input_type == "textarea" or any(k in combined_text for k in [
-        "bio", "about me", "about you", "about yourself", "summary",
-        "profile summary", "executive summary", "professional summary",
-        "cover letter", "statement", "objective", "tell us about yourself"
-    ]):
-        if personal_info and personal_info.bio:
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="personal_info.bio",
-                value=personal_info.bio,
-                confidence=0.96,
-                reason="Matched personal bio and professional summary",
-                source="deterministic"
-            )
-        elif experiences and personal_info:
-            title = experiences[0].job_title or "Professional"
-            comp = experiences[0].company or ""
-            skills = experiences[0].skills or ""
-            generated_bio = f"{personal_info.full_name or 'Candidate'} is a {title}{f' at {comp}' if comp else ''} with expertise in {skills or 'software engineering'}."
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key="personal_info.bio",
-                value=generated_bio,
-                confidence=0.90,
-                reason="Synthesized summary from professional experience",
-                source="deterministic"
-            )
-
-    # 25. Years of Experience (Range Slider, Number, or Text)
-    if input_type == "range" or any(k in combined_text for k in ["years of experience", "total experience", "experience in years", "work experience duration", "experience level"]):
-        custom_fields = profile_data.get("custom_fields") or []
-        for cf in custom_fields:
-            cf_key_norm = _normalize_text(cf.field_key)
-            cf_label_norm = _normalize_text(cf.field_label)
-            if any(k in cf_key_norm or k in cf_label_norm for k in ["experience", "years_of_experience", "total_experience"]):
-                return FieldMapping(
-                    field_id=field.field_id,
-                    memory_key=f"custom_fields.{cf.field_key}",
-                    value=str(cf.field_value),
-                    confidence=0.98,
-                    reason=f"Matched years of experience from custom field '{cf.field_label}'",
-                    source="deterministic"
-                )
-
-        total_years = max(1, len(experiences) * 2) if experiences else 3
-        if field.max and str(field.max).isdigit():
-            total_years = min(total_years, int(field.max))
-        if field.min and str(field.min).isdigit():
-            total_years = max(total_years, int(field.min))
-        return FieldMapping(
-            field_id=field.field_id,
-            memory_key="experiences.total_years",
-            value=str(total_years),
-            confidence=0.92,
-            reason=f"Matched years of experience ({total_years} years)",
-            source="deterministic"
-        )
-
-    # 26. Work Authorization / Relocation / Consent (Checkboxes, Toggles, Radios)
-    if any(k in combined_text for k in ["authorized to work", "work authorization", "visa sponsorship", "legally authorized", "relocate", "willing to relocate", "agree to terms", "terms and conditions", "privacy policy"]):
-        custom_fields = profile_data.get("custom_fields") or []
-        for cf in custom_fields:
-            cf_key_norm = _normalize_text(cf.field_key)
-            cf_label_norm = _normalize_text(cf.field_label)
-            if any(token in combined_text and (token in cf_key_norm or token in cf_label_norm) for token in ["relocate", "relocation", "authorization", "visa", "terms"]):
-                val = cf.field_value
-                if field.options:
-                    val = _pick_best_option(val, field.options)
-                return FieldMapping(
-                    field_id=field.field_id,
-                    memory_key=f"custom_fields.{cf.field_key}",
-                    value=val,
-                    confidence=0.98,
-                    reason=f"Matched preference from custom memory '{cf.field_label}'",
-                    source="deterministic"
-                )
-
-        is_checkbox = input_type == "checkbox" or (field.role and field.role.lower() == "switch")
-        val = "true" if is_checkbox else "Yes"
-        if field.options:
-            val = _pick_best_option("Yes", field.options)
-        return FieldMapping(
-            field_id=field.field_id,
-            memory_key="personal_info.work_authorization",
-            value=val,
-            confidence=0.95,
-            reason="Matched work authorization / preference attribute",
-            source="deterministic"
-        )
-
-    # 27. Custom Dynamic Fields (e.g. Friend's Name, Emergency Contact, Work Email)
-    custom_fields = profile_data.get("custom_fields") or []
-    for cf in custom_fields:
-        cf_label_norm = _normalize_text(cf.field_label)
-        cf_key_norm = _normalize_text(cf.field_key)
-
-        cf_words = set(cf_label_norm.split() + cf_key_norm.split()) - {"", "the", "a", "an", "of", "in", "to", "for"}
-        text_words = set(combined_text.split()) - {"", "the", "a", "an", "of", "in", "to", "for", "enter", "input", "your"}
-        has_token_overlap = bool(cf_words and text_words and (cf_words.issubset(text_words) or text_words.issubset(cf_words)))
-
-        if (
-            (cf_label_norm and cf_label_norm in combined_text)
-            or (cf_key_norm and cf_key_norm in combined_text)
-            or (cf_label_norm and len(combined_text) >= 4 and combined_text in cf_label_norm)
-            or has_token_overlap
-        ):
-            return FieldMapping(
-                field_id=field.field_id,
-                memory_key=f"custom_fields.{cf.field_key}",
-                value=cf.field_value,
-                confidence=0.96,
-                reason=f"Matched custom memory attribute '{cf.field_label}'",
-                source="deterministic"
-            )
-
+    # All other fields (Father's name, gender, dob, cnic, address, city, country, university, degree, company, skills, salary, bio, files, custom fields) are strictly NOT direct-matched!
     return None
 
 
@@ -778,6 +257,9 @@ async def match_form_fields(
             "department": personal_info.department,
             "semester": personal_info.semester,
             "registration_number": personal_info.registration_number,
+            "bio": personal_info.bio,
+            "linkedin_url": personal_info.linkedin_url,
+            "github_url": personal_info.github_url,
         }
 
     if experiences:
@@ -825,12 +307,25 @@ async def match_form_fields(
     field_lookup = {f.field_id: f for f in request.fields}
 
     # =========================================================================
-    # Step 1: PRIMARY STEP — Groq LLM Reasons Over ALL Detected Fields
-    # The extension passes all detected input fields to the LLM, which decides
-    # what to write into each field based on the user's personal memory vault.
+    # Step 1: DIRECT MATCHING — ONLY Name, Email, and Phone Number
+    # Directly match core identity fields (Name, Email, Phone) deterministically.
+    # All other fields MUST be resolved by AI logic.
     # =========================================================================
-    if user_memory and request.fields:
-        fields_for_llm = [f.model_dump() for f in request.fields]
+    for field in request.fields:
+        direct_match = _match_deterministic(field=field, profile_data=profile)
+        if direct_match:
+            mappings.append(direct_match)
+            mapped_field_ids.add(field.field_id)
+
+    # =========================================================================
+    # Step 2: AI REASONING (Groq LLM) — ALL REMAINING FIELDS
+    # As requested by user: all remaining fields (Father name, gender, DOB,
+    # cnic, address, city, country, university, degree, job title, company,
+    # skills, salary, bio, documents, etc.) are filled with AI logic.
+    # =========================================================================
+    remaining_fields = [f for f in request.fields if f.field_id not in mapped_field_ids]
+    if user_memory and remaining_fields:
+        fields_for_llm = [f.model_dump() for f in remaining_fields]
         llm_mappings = await match_ambiguous_fields_with_groq(
             unresolved_fields=fields_for_llm,
             user_memory=user_memory,
@@ -841,7 +336,7 @@ async def match_form_fields(
             try:
                 fid = item.get("field_id")
                 target_field = field_lookup.get(fid)
-                if not target_field:
+                if not target_field or fid in mapped_field_ids:
                     continue
 
                 mem_key = str(item.get("memory_key") or "")
@@ -915,7 +410,7 @@ async def match_form_fields(
                     memory_key=mem_key or "personal_memory",
                     value=val,
                     confidence=float(item.get("confidence", 0.95)),
-                    reason=str(item.get("reason", "Groq LLM semantic inference")),
+                    reason=str(item.get("reason", "Groq AI semantic matching")),
                     source="llm"
                 )
                 mappings.append(mapping)
@@ -923,18 +418,7 @@ async def match_form_fields(
             except Exception:
                 continue
 
-    # =========================================================================
-    # Step 2: SECONDARY / FALLBACK STEP — Deterministic Heuristics
-    # Applied ONLY to any remaining fields the LLM didn't resolve,
-    # or if the LLM API is unavailable / offline.
-    # =========================================================================
-    for field in request.fields:
-        if field.field_id not in mapped_field_ids:
-            fallback = _match_deterministic(field=field, profile_data=profile)
-            if fallback:
-                mappings.append(fallback)
-                mapped_field_ids.add(field.field_id)
-
+    # NO heuristic fallback for other fields: fields remain unresolved if not matched by AI
     unresolved_ids = [f.field_id for f in request.fields if f.field_id not in mapped_field_ids]
 
     return FieldMatchResponse(
