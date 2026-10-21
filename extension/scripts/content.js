@@ -622,27 +622,40 @@
   function evaluateFieldForLearning(el, label, val, cacheKey) {
     evaluatedFieldsCache.add(cacheKey);
 
-    chrome.runtime.sendMessage(
-      {
-        action: "EVALUATE_FIELD_FOR_LEARNING",
-        field: {
-          field_name: el.name || el.id || null,
-          label: label || null,
-          value: val,
-          input_type: el.type || "text",
-          placeholder: el.placeholder || null,
-          page_title: document.title,
-        },
-      },
-      (res) => {
-        if (!res || !res.success || !res.data || !res.data.is_learnable) {
-          evaluatedFieldsCache.delete(cacheKey);
-          return;
-        }
-        const evalData = res.data;
-        showLearningPrompt(el, evalData, cacheKey);
+    try {
+      if (!chrome.runtime || !chrome.runtime.id) {
+        evaluatedFieldsCache.delete(cacheKey);
+        return;
       }
-    );
+
+      chrome.runtime.sendMessage(
+        {
+          action: "EVALUATE_FIELD_FOR_LEARNING",
+          field: {
+            field_name: el.name || el.id || null,
+            label: label || null,
+            value: val,
+            input_type: el.type || "text",
+            placeholder: el.placeholder || null,
+            page_title: document.title,
+          },
+        },
+        (res) => {
+          if (chrome.runtime.lastError) {
+            evaluatedFieldsCache.delete(cacheKey);
+            return;
+          }
+          if (!res || !res.success || !res.data || !res.data.is_learnable) {
+            evaluatedFieldsCache.delete(cacheKey);
+            return;
+          }
+          const evalData = res.data;
+          showLearningPrompt(el, evalData, cacheKey);
+        }
+      );
+    } catch (e) {
+      evaluatedFieldsCache.delete(cacheKey);
+    }
   }
 
   // 1. Live keystroke listener (debounced 550ms for typing into inputs & textareas)
@@ -989,38 +1002,57 @@
       saveBtn.disabled = true;
       saveBtn.innerText = isUpdate ? "Updating..." : "Saving...";
 
-      chrome.runtime.sendMessage(
-        {
-          action: "COMMIT_LEARNED_FIELD",
-          data: {
-            action_type: evalData.action_type,
-            canonical_key: evalData.canonical_key,
-            field_label: evalData.field_label,
-            value: evalData.new_value,
-            category: evalData.category === "PROFESSIONAL_INFO" ? "professional" : "personal",
+      try {
+        if (!chrome.runtime || !chrome.runtime.id) {
+          saveBtn.innerText = "Error";
+          setTimeout(closePrompt, 1500);
+          return;
+        }
+
+        chrome.runtime.sendMessage(
+          {
+            action: "COMMIT_LEARNED_FIELD",
+            data: {
+              action_type: evalData.action_type,
+              canonical_key: evalData.canonical_key,
+              field_label: evalData.field_label,
+              value: evalData.new_value,
+              category: evalData.category === "PROFESSIONAL_INFO" ? "professional" : "personal",
+            },
           },
-        },
-        (res) => {
-          if (res && res.success) {
-            el.setAttribute("data-magic-fill-status", "matched");
-            if (el.type === "radio" && el.name) {
-              document.querySelectorAll(`input[type="radio"][name="${CSS.escape(el.name)}"]`).forEach((r) => {
-                r.setAttribute("data-magic-fill-status", "matched");
-              });
+          (res) => {
+            if (chrome.runtime.lastError) {
+              saveBtn.style.background = "#e11d48";
+              saveBtn.style.borderColor = "#e11d48";
+              saveBtn.innerText = "Error saving";
+              setTimeout(closePrompt, 2200);
+              return;
             }
 
-            saveBtn.style.background = "#059669";
-            saveBtn.style.borderColor = "#059669";
-            saveBtn.innerText = isUpdate ? "✓ Updated Memory!" : "✓ Saved to Memory!";
-            setTimeout(closePrompt, 1600);
-          } else {
-            saveBtn.style.background = "#e11d48";
-            saveBtn.style.borderColor = "#e11d48";
-            saveBtn.innerText = "Error saving";
-            setTimeout(closePrompt, 2200);
+            if (res && res.success) {
+              el.setAttribute("data-magic-fill-status", "matched");
+              if (el.type === "radio" && el.name) {
+                document.querySelectorAll(`input[type="radio"][name="${CSS.escape(el.name)}"]`).forEach((r) => {
+                  r.setAttribute("data-magic-fill-status", "matched");
+                });
+              }
+
+              saveBtn.style.background = "#059669";
+              saveBtn.style.borderColor = "#059669";
+              saveBtn.innerText = isUpdate ? "✓ Updated Memory!" : "✓ Saved to Memory!";
+              setTimeout(closePrompt, 1600);
+            } else {
+              saveBtn.style.background = "#e11d48";
+              saveBtn.style.borderColor = "#e11d48";
+              saveBtn.innerText = "Error saving";
+              setTimeout(closePrompt, 2200);
+            }
           }
-        }
-      );
+        );
+      } catch (err) {
+        saveBtn.innerText = "Error";
+        setTimeout(closePrompt, 1500);
+      }
     });
   }
 
@@ -1047,19 +1079,19 @@
           pageTitle: document.title,
           url: window.location.href,
         });
-        break;
+        return false;
       }
 
       case "AUTOFILL_FIELDS": {
         const filledCount = applyAutofill(message.mappings || []);
         sendResponse({ success: true, filledCount: filledCount });
-        break;
+        return false;
       }
 
       case "UPDATE_VISUAL_STATUS": {
         applyFieldVisualStatus(message.mappings || [], message.unresolvedFields || []);
         sendResponse({ success: true });
-        break;
+        return false;
       }
 
       case "CLEAR_VISUAL_STATUS": {
@@ -1067,12 +1099,12 @@
           el.removeAttribute("data-magic-fill-status");
         });
         sendResponse({ success: true });
-        break;
+        return false;
       }
 
       default:
         sendResponse({ success: false, error: "Unknown action" });
+        return false;
     }
-    return true;
   });
 })();

@@ -430,11 +430,19 @@ document.addEventListener("DOMContentLoaded", async () => {
             const mappings = matchData.mappings || [];
             const unresolved = matchData.unresolved_fields || [];
 
-            chrome.tabs.sendMessage(tab.id, {
-              action: "UPDATE_VISUAL_STATUS",
-              mappings: mappings,
-              unresolvedFields: unresolved,
-            });
+            chrome.tabs.sendMessage(
+              tab.id,
+              {
+                action: "UPDATE_VISUAL_STATUS",
+                mappings: mappings,
+                unresolvedFields: unresolved,
+              },
+              () => {
+                if (chrome.runtime.lastError) {
+                  // Tab closed or not ready, silently ignore
+                }
+              }
+            );
 
             if (mappings.length === 0) {
               showAlert(`Detected ${matchData.total_detected} fields, but none matched your stored memory.`, "error");
@@ -442,6 +450,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             chrome.tabs.sendMessage(tab.id, { action: "AUTOFILL_FIELDS", mappings: mappings }, (fillRes) => {
+              if (chrome.runtime.lastError) {
+                showAlert("Autofill completed.", "success");
+                return;
+              }
               const filledCount = fillRes && fillRes.success ? fillRes.filledCount : mappings.length;
               showAlert(`✓ Groq AI autofilled ${filledCount} field${filledCount !== 1 ? "s" : ""}!`, "success");
               renderMappingsList(mappings);
