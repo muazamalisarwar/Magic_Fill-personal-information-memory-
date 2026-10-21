@@ -53,6 +53,17 @@ import Base from "@/layouts/Base.astro";
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
           <span>Backup JSON</span>
         </button>
+
+        <!-- Reset Vault Button -->
+        <button
+          type="button"
+          id="btnOpenResetMemoryModal"
+          class="text-xs font-semibold text-rose-400 hover:text-white bg-rose-500/10 hover:bg-rose-600 border border-rose-500/25 px-3.5 py-2.5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-xs hover:scale-[1.02]"
+          title="Reset and clear all records in your personal memory vault"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+          <span>Reset Vault</span>
+        </button>
       </div>
     </div>
 
@@ -361,6 +372,41 @@ import Base from "@/layouts/Base.astro";
           <button type="submit" id="submitEditBtn" class="btn btn-primary text-xs py-2 px-5 font-bold rounded-xl">Update Record</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: Reset Entire Memory Vault Confirmation -->
+  <div id="resetVaultModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md" role="dialog" aria-modal="true">
+    <div class="relative w-full max-w-md bg-dark border border-rose-500/40 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-2xl">
+      <div class="size-12 rounded-2xl bg-rose-500/15 text-rose-400 flex items-center justify-center mx-auto mb-4 border border-rose-500/30 shadow-lg shadow-rose-500/10">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+
+      <h3 class="text-xl font-bold text-white text-center mb-2">Reset Entire Memory Vault?</h3>
+      <p class="text-xs text-text-light text-center leading-relaxed mb-5">
+        This will permanently erase all your stored personal records, education, career history, custom memory fields, and uploaded identity documents &amp; photos (CNIC, profile photo, CV).
+      </p>
+
+      <div class="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs mb-6 text-center font-medium">
+        ⚠️ This action cannot be undone. All autofill memory will be wiped.
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button
+          type="button"
+          id="btnCancelResetVault"
+          class="flex-1 py-2.5 px-4 rounded-xl text-xs font-semibold text-text-light hover:text-white bg-white/5 hover:bg-white/10 transition cursor-pointer"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          id="btnConfirmResetVault"
+          class="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-500 shadow-lg shadow-rose-600/30 transition cursor-pointer hover:scale-[1.02]"
+        >
+          Yes, Reset Everything
+        </button>
+      </div>
     </div>
   </div>
 
@@ -942,6 +988,55 @@ import Base from "@/layouts/Base.astro";
           dlAnchor.click();
           dlAnchor.remove();
           showToast("Vault exported as JSON backup!");
+        });
+      }
+
+      // Reset Memory Vault Controller
+      const resetModal = document.getElementById("resetVaultModal");
+      const openResetBtn = document.getElementById("btnOpenResetMemoryModal");
+      const cancelResetBtn = document.getElementById("btnCancelResetVault");
+      const confirmResetBtn = document.getElementById("btnConfirmResetVault");
+
+      if (openResetBtn && resetModal) {
+        openResetBtn.addEventListener("click", () => {
+          resetModal.classList.remove("hidden");
+          resetModal.classList.add("flex");
+        });
+      }
+
+      if (cancelResetBtn && resetModal) {
+        cancelResetBtn.addEventListener("click", () => {
+          resetModal.classList.add("hidden");
+          resetModal.classList.remove("flex");
+        });
+      }
+
+      if (confirmResetBtn && resetModal) {
+        confirmResetBtn.addEventListener("click", async () => {
+          confirmResetBtn.disabled = true;
+          confirmResetBtn.textContent = "Resetting Vault...";
+          try {
+            const res = await fetch("/api/memory/reset", {
+              method: "POST",
+              headers: { "Authorization": `Bearer ${token}` }
+            });
+            const data = await res.json();
+            if (res.ok && data.success) {
+              showToast("Personal memory vault has been reset to a clean state.");
+              resetModal.classList.add("hidden");
+              resetModal.classList.remove("flex");
+              memoryStore = [];
+              updateMetricCounters();
+              renderMemoryItems();
+            } else {
+              showToast(data.message || "Failed to reset memory vault.", false);
+            }
+          } catch (e) {
+            showToast("Network error while resetting vault.", false);
+          } finally {
+            confirmResetBtn.disabled = false;
+            confirmResetBtn.textContent = "Yes, Reset Everything";
+          }
         });
       }
 

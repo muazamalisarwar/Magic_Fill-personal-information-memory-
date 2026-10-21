@@ -35,18 +35,25 @@ import Base from "@/layouts/Base.astro";
     </div>
 
     <!-- 2. Method Selector Tabs -->
-    <div class="flex gap-2 p-1.5 rounded-2xl bg-dark/80 border border-white/10 max-w-md">
+    <div class="flex gap-2 p-1.5 rounded-2xl bg-dark/80 border border-white/10 max-w-2xl">
       <button
         type="button"
         id="tabDocUploadBtn"
-        class="flex-1 py-2.5 px-4 text-xs font-bold rounded-xl text-white bg-primary transition cursor-pointer"
+        class="flex-1 py-2.5 px-3 sm:px-4 text-xs font-bold rounded-xl text-white bg-primary transition cursor-pointer"
       >
-        📄 Upload Resume / Document
+        📄 Resume / CV Deep AI Parser
+      </button>
+      <button
+        type="button"
+        id="tabMediaUploadBtn"
+        class="flex-1 py-2.5 px-3 sm:px-4 text-xs font-bold rounded-xl text-text-light hover:text-white transition cursor-pointer"
+      >
+        🪪 ID Photos &amp; Documents
       </button>
       <button
         type="button"
         id="tabChatbotBtn"
-        class="flex-1 py-2.5 px-4 text-xs font-bold rounded-xl text-text-light hover:text-white transition cursor-pointer"
+        class="flex-1 py-2.5 px-3 sm:px-4 text-xs font-bold rounded-xl text-text-light hover:text-white transition cursor-pointer"
       >
         💬 AI Memory Chatbot
       </button>
@@ -161,6 +168,107 @@ import Base from "@/layouts/Base.astro";
       </div>
     </div>
 
+    <!-- 3B. View 2: ID Photos & Document Vault with AI Semantic Description Field -->
+    <div id="sectionMediaUpload" class="hidden space-y-6">
+      <div class="bg-dark/80 border border-white/10 rounded-3xl p-6 sm:p-8 backdrop-blur-xl">
+        <div class="mb-6">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-[#6C63FF]/15 text-[#6C63FF] border border-[#6C63FF]/30 mb-2">
+            <span>✨ AI Form Attachment Copilot</span>
+          </div>
+          <h3 class="text-xl font-extrabold text-white">Upload Identity Assets, Photos &amp; Documents</h3>
+          <p class="text-xs text-text-light mt-1 max-w-2xl">
+            Upload your CNIC front/back, professional profile photo, degree certificates, or CV. Describe the document in natural language and Magic Fill's AI will automatically categorize and attach it whenever web forms require file uploads!
+          </p>
+        </div>
+
+        <form id="mediaUploadForm" class="space-y-6" onsubmit="return false;">
+          <!-- Dropzone -->
+          <div
+            id="mediaDropzone"
+            class="border-2 border-dashed border-white/15 hover:border-[#6C63FF]/60 rounded-2xl p-8 text-center transition cursor-pointer bg-white/5 hover:bg-[#6C63FF]/5 group relative"
+          >
+            <input type="file" id="mediaFileInput" accept="image/png,image/jpeg,image/jpg,image/webp,application/pdf" class="hidden" />
+            
+            <div id="mediaDropzoneDefault">
+              <div class="size-16 rounded-2xl bg-[#6C63FF]/20 text-[#6C63FF] flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </div>
+              <h4 class="text-sm font-bold text-white mb-1">Select picture or document (CNIC, Profile Photo, CV, Degree)</h4>
+              <p class="text-xs text-text-light max-w-sm mx-auto">
+                PNG, JPG, WEBP, or PDF up to 15MB. Stored securely in your private memory vault.
+              </p>
+            </div>
+
+            <!-- Selected File Preview Container (hidden by default) -->
+            <div id="mediaFilePreviewContainer" class="hidden flex flex-col sm:flex-row items-center justify-center gap-4 text-left">
+              <div id="mediaPreviewThumb" class="size-20 rounded-xl overflow-hidden bg-black/40 border border-white/15 flex items-center justify-center shrink-0"></div>
+              <div class="space-y-1 text-center sm:text-left">
+                <p id="mediaFileName" class="text-sm font-bold text-white truncate max-w-xs">image.png</p>
+                <p id="mediaFileSize" class="text-xs text-text-light">1.2 MB</p>
+                <button type="button" id="btnChangeMediaFile" class="text-xs text-[#6C63FF] hover:underline font-semibold cursor-pointer">Choose different file</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Semantic Description Field -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <label for="mediaDescriptionInput" class="block text-xs font-bold text-white">
+                Describe What This Document / Picture Is For <span class="text-[#6C63FF]">*</span>
+              </label>
+              <span class="text-[11px] text-text-light font-medium">Magic Fill AI uses this to match form upload inputs</span>
+            </div>
+
+            <textarea
+              id="mediaDescriptionInput"
+              rows="2"
+              placeholder="e.g. This is my CNIC front picture, or This is my official profile photo, or This is my software engineering CV"
+              class="w-full bg-slate-900/60 border border-white/15 rounded-xl px-4 py-3 text-white placeholder:text-slate-500 text-sm focus:border-[#6C63FF] focus:ring-2 focus:ring-[#6C63FF]/20 focus:outline-none transition resize-none"
+              required
+            ></textarea>
+
+            <!-- Quick Semantic Suggestion Chips -->
+            <div class="flex items-center gap-2 flex-wrap pt-1">
+              <span class="text-[11px] text-text-light font-semibold">Quick Suggestions:</span>
+              <button type="button" class="media-chip text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#6C63FF]/20 hover:text-white text-text-light border border-white/10 transition cursor-pointer" data-val="This is my CNIC front picture">
+                🪪 CNIC Front
+              </button>
+              <button type="button" class="media-chip text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#6C63FF]/20 hover:text-white text-text-light border border-white/10 transition cursor-pointer" data-val="This is my CNIC back picture">
+                🪪 CNIC Back
+              </button>
+              <button type="button" class="media-chip text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#6C63FF]/20 hover:text-white text-text-light border border-white/10 transition cursor-pointer" data-val="This is my official profile photo">
+                👤 Profile Photo
+              </button>
+              <button type="button" class="media-chip text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#6C63FF]/20 hover:text-white text-text-light border border-white/10 transition cursor-pointer" data-val="This is my latest resume and CV">
+                📄 Resume / CV
+              </button>
+              <button type="button" class="media-chip text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#6C63FF]/20 hover:text-white text-text-light border border-white/10 transition cursor-pointer" data-val="This is my university degree certificate transcript">
+                🎓 Degree / Transcript
+              </button>
+              <button type="button" class="media-chip text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#6C63FF]/20 hover:text-white text-text-light border border-white/10 transition cursor-pointer" data-val="This is my international passport scan">
+                🛂 Passport
+              </button>
+            </div>
+          </div>
+
+          <!-- Alert / Status -->
+          <div id="mediaUploadAlert" class="hidden text-xs p-3.5 rounded-xl"></div>
+
+          <!-- Submit Button -->
+          <div class="flex items-center justify-end gap-3 pt-2">
+            <button
+              type="submit"
+              id="btnSubmitMediaUpload"
+              class="btn btn-primary text-xs py-3 px-6 font-bold rounded-xl flex items-center gap-2 shadow-lg shadow-[#6C63FF]/25 hover:scale-[1.02] transition cursor-pointer"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span>Upload &amp; Save to Memory Vault</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <!-- Updated Memory Attributes JSON Result Card -->
     <div id="extractUpdatedJsonBox" class="hidden bg-dark/85 border border-emerald-500/40 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl space-y-4 transition-all">
       <div class="flex items-center justify-between pb-3 border-b border-white/10">
@@ -248,25 +356,214 @@ import Base from "@/layouts/Base.astro";
         setTimeout(() => toast.classList.add("hidden"), 3000);
       }
 
-      // Tab switcher
+      // Tab switcher (3 Tabs: Deep Parser, Media/Documents, Chatbot)
       const tabUpload = document.getElementById("tabDocUploadBtn");
+      const tabMedia = document.getElementById("tabMediaUploadBtn");
       const tabChat = document.getElementById("tabChatbotBtn");
       const secUpload = document.getElementById("sectionDocUpload");
+      const secMedia = document.getElementById("sectionMediaUpload");
       const secChat = document.getElementById("sectionChatbot");
 
-      if (tabUpload && tabChat) {
-        tabUpload.addEventListener("click", () => {
-          tabUpload.className = "flex-1 py-2.5 px-4 text-xs font-bold rounded-xl text-white bg-primary transition cursor-pointer";
-          tabChat.className = "flex-1 py-2.5 px-4 text-xs font-bold rounded-xl text-text-light hover:text-white transition cursor-pointer";
-          secUpload.classList.remove("hidden");
-          secChat.classList.add("hidden");
+      function activateTab(tab) {
+        [tabUpload, tabMedia, tabChat].forEach(t => {
+          if (t) t.className = "flex-1 py-2.5 px-3 sm:px-4 text-xs font-bold rounded-xl text-text-light hover:text-white transition cursor-pointer";
+        });
+        [secUpload, secMedia, secChat].forEach(s => {
+          if (s) s.classList.add("hidden");
         });
 
-        tabChat.addEventListener("click", () => {
-          tabChat.className = "flex-1 py-2.5 px-4 text-xs font-bold rounded-xl text-white bg-primary transition cursor-pointer";
-          tabUpload.className = "flex-1 py-2.5 px-4 text-xs font-bold rounded-xl text-text-light hover:text-white transition cursor-pointer";
-          secChat.classList.remove("hidden");
-          secUpload.classList.add("hidden");
+        if (tab === "media") {
+          if (tabMedia) tabMedia.className = "flex-1 py-2.5 px-3 sm:px-4 text-xs font-bold rounded-xl text-white bg-primary transition cursor-pointer";
+          if (secMedia) secMedia.classList.remove("hidden");
+        } else if (tab === "chat") {
+          if (tabChat) tabChat.className = "flex-1 py-2.5 px-3 sm:px-4 text-xs font-bold rounded-xl text-white bg-primary transition cursor-pointer";
+          if (secChat) secChat.classList.remove("hidden");
+        } else {
+          if (tabUpload) tabUpload.className = "flex-1 py-2.5 px-3 sm:px-4 text-xs font-bold rounded-xl text-white bg-primary transition cursor-pointer";
+          if (secUpload) secUpload.classList.remove("hidden");
+        }
+      }
+
+      if (tabUpload) tabUpload.addEventListener("click", () => activateTab("upload"));
+      if (tabMedia) tabMedia.addEventListener("click", () => activateTab("media"));
+      if (tabChat) tabChat.addEventListener("click", () => activateTab("chat"));
+
+      // Check URL query param for default tab (e.g. /extract?tab=media)
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("tab") === "media") {
+        activateTab("media");
+      }
+
+      // Media / ID Documents Upload Handler
+      const mediaDropzone = document.getElementById("mediaDropzone");
+      const mediaFileInput = document.getElementById("mediaFileInput");
+      const mediaDefaultUI = document.getElementById("mediaDropzoneDefault");
+      const mediaPreviewContainer = document.getElementById("mediaFilePreviewContainer");
+      const mediaPreviewThumb = document.getElementById("mediaPreviewThumb");
+      const mediaFileName = document.getElementById("mediaFileName");
+      const mediaFileSize = document.getElementById("mediaFileSize");
+      const btnChangeMedia = document.getElementById("btnChangeMediaFile");
+      const mediaDescInput = document.getElementById("mediaDescriptionInput");
+      const mediaForm = document.getElementById("mediaUploadForm");
+      const mediaAlert = document.getElementById("mediaUploadAlert");
+      const mediaSubmitBtn = document.getElementById("btnSubmitMediaUpload");
+
+      let selectedMediaFile = null;
+
+      function updateMediaFile(file) {
+        if (!file) return;
+        selectedMediaFile = file;
+        if (mediaFileName) mediaFileName.textContent = file.name;
+        if (mediaFileSize) mediaFileSize.textContent = `${(file.size / 1024).toFixed(1)} KB`;
+
+        if (mediaPreviewThumb) {
+          mediaPreviewThumb.innerHTML = "";
+          if (file.type.startsWith("image/")) {
+            const img = document.createElement("img");
+            img.src = URL.createObjectURL(file);
+            img.className = "size-full object-cover";
+            mediaPreviewThumb.appendChild(img);
+          } else {
+            mediaPreviewThumb.innerHTML = `<span class="text-xs font-bold text-primary uppercase">${file.name.split('.').pop()}</span>`;
+          }
+        }
+
+        if (mediaDefaultUI) mediaDefaultUI.classList.add("hidden");
+        if (mediaPreviewContainer) mediaPreviewContainer.classList.remove("hidden");
+      }
+
+      if (mediaDropzone && mediaFileInput) {
+        mediaDropzone.addEventListener("click", (e) => {
+          if (e.target !== btnChangeMedia && !mediaPreviewContainer.contains(e.target)) {
+            mediaFileInput.click();
+          }
+        });
+
+        if (btnChangeMedia) {
+          btnChangeMedia.addEventListener("click", (e) => {
+            e.stopPropagation();
+            mediaFileInput.click();
+          });
+        }
+
+        mediaFileInput.addEventListener("change", (e) => {
+          const file = e.target.files?.[0];
+          if (file) updateMediaFile(file);
+        });
+
+        mediaDropzone.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          mediaDropzone.classList.add("border-primary");
+        });
+
+        mediaDropzone.addEventListener("dragleave", () => {
+          mediaDropzone.classList.remove("border-primary");
+        });
+
+        mediaDropzone.addEventListener("drop", (e) => {
+          e.preventDefault();
+          mediaDropzone.classList.remove("border-primary");
+          const file = e.dataTransfer.files?.[0];
+          if (file) updateMediaFile(file);
+        });
+      }
+
+      // Quick suggestion chips handler
+      document.querySelectorAll(".media-chip").forEach(chip => {
+        chip.addEventListener("click", () => {
+          const val = chip.getAttribute("data-val");
+          if (mediaDescInput && val) {
+            mediaDescInput.value = val;
+            mediaDescInput.focus();
+          }
+        });
+      });
+
+      // Submit Media Document Form
+      if (mediaForm) {
+        mediaForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          if (!selectedMediaFile) {
+            if (mediaAlert) {
+              mediaAlert.className = "text-xs p-3.5 rounded-xl bg-rose-500/10 text-rose-300 border border-rose-500/30 block";
+              mediaAlert.textContent = "Please select an image or document to upload.";
+            }
+            return;
+          }
+
+          const desc = (mediaDescInput?.value || "").trim();
+          if (!desc) {
+            if (mediaAlert) {
+              mediaAlert.className = "text-xs p-3.5 rounded-xl bg-rose-500/10 text-rose-300 border border-rose-500/30 block";
+              mediaAlert.textContent = "Please describe what this document or photo is for.";
+            }
+            return;
+          }
+
+          if (mediaSubmitBtn) {
+            mediaSubmitBtn.disabled = true;
+            mediaSubmitBtn.textContent = "Uploading & Classifying with AI...";
+          }
+          if (mediaAlert) mediaAlert.classList.add("hidden");
+
+          try {
+            const formData = new FormData();
+            formData.append("file", selectedMediaFile);
+            formData.append("description", desc);
+
+            const res = await fetch("/api/documents/upload", {
+              method: "POST",
+              headers: {
+                "Authorization": `Bearer ${token}`
+              },
+              body: formData
+            });
+
+            const data = await res.json();
+            if (res.ok && data.success && data.data) {
+              showToast(`Document '${data.data.title}' saved to personal memory vault!`);
+              if (mediaAlert) {
+                mediaAlert.className = "text-xs p-3.5 rounded-xl bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 block";
+                mediaAlert.innerHTML = `<strong>✓ Saved Successfully:</strong> Stored as <code>${data.data.doc_key}</code> (${data.data.title}) and synchronized to your personal autofill memory.`;
+              }
+
+              // Display updated JSON output
+              displayUpdatedJson({
+                document_id: data.data.id,
+                canonical_key: data.data.doc_key,
+                title: data.data.title,
+                category: data.data.category,
+                description: data.data.description,
+                file_name: data.data.file_name,
+                file_size_kb: (data.data.file_size_bytes / 1024).toFixed(1)
+              }, `Document Asset '${data.data.title}' Saved`);
+
+              // Reset form fields
+              selectedMediaFile = null;
+              if (mediaDescInput) mediaDescInput.value = "";
+              if (mediaDefaultUI) mediaDefaultUI.classList.remove("hidden");
+              if (mediaPreviewContainer) mediaPreviewContainer.classList.add("hidden");
+              if (mediaFileInput) mediaFileInput.value = "";
+
+              // Refresh document table
+              loadStoredDocuments();
+            } else {
+              if (mediaAlert) {
+                mediaAlert.className = "text-xs p-3.5 rounded-xl bg-rose-500/10 text-rose-300 border border-rose-500/30 block";
+                mediaAlert.textContent = data.message || "Failed to upload document.";
+              }
+            }
+          } catch (err) {
+            if (mediaAlert) {
+              mediaAlert.className = "text-xs p-3.5 rounded-xl bg-rose-500/10 text-rose-300 border border-rose-500/30 block";
+              mediaAlert.textContent = "Network error during upload. Please verify the backend is running.";
+            }
+          } finally {
+            if (mediaSubmitBtn) {
+              mediaSubmitBtn.disabled = false;
+              mediaSubmitBtn.textContent = "Upload & Save to Memory Vault";
+            }
+          }
         });
       }
 

@@ -167,6 +167,12 @@ def update_document(
 
 
 @router.delete(
+    "/me/{doc_id}",
+    response_model=APIResponse[None],
+    status_code=status.HTTP_200_OK,
+    include_in_schema=False
+)
+@router.delete(
     "/{doc_id}",
     response_model=APIResponse[None],
     status_code=status.HTTP_200_OK,

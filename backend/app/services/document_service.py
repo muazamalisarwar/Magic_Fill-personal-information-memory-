@@ -113,12 +113,38 @@ def save_user_document(db: Session, doc_in: DocumentCreate) -> UserDocument:
         db.add(new_doc)
         target_doc = new_doc
 
-    # Mirror canonical documents to PersonalInfo if present
-    if user.personal_info:
-        if doc_key in ("profile_photo", "passport_photo"):
-            user.personal_info.profile_photo = doc_in.file_data
-        elif doc_key in ("cnic_front", "cnic_photo"):
-            user.personal_info.cnic_photo = doc_in.file_data
+    # Mirror canonical documents to PersonalInfo (create if not yet existing)
+    if not user.personal_info:
+        user.personal_info = PersonalInfo(
+            user_id=user.id,
+            full_name=user.full_name or user.username or "User",
+            email=user.email
+        )
+        db.add(user.personal_info)
+
+    if doc_key in ("profile_photo", "passport_photo", "avatar"):
+        user.personal_info.profile_photo = doc_in.file_data
+    elif doc_key in ("cnic_front", "cnic_photo", "cnic"):
+        user.personal_info.cnic_photo = doc_in.file_data
+
+    # Also mirror as custom field for immediate accessibility across all form matching
+    from app.database.models import CustomField
+    cf_key = f"doc_{doc_key}"
+    existing_cf = db.query(CustomField).filter(
+        CustomField.user_id == doc_in.user_id,
+        CustomField.field_key == cf_key
+    ).first()
+    if existing_cf:
+        existing_cf.field_value = doc_in.file_data
+        existing_cf.field_label = title
+    else:
+        db.add(CustomField(
+            user_id=doc_in.user_id,
+            field_key=cf_key,
+            field_label=f"{title} (Asset)",
+            field_value=doc_in.file_data,
+            category=category
+        ))
 
     db.commit()
     db.refresh(target_doc)

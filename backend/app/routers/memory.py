@@ -378,3 +378,54 @@ def update_memory_generic_endpoint(
     )
 
 
+@router.post(
+    "/reset",
+    response_model=APIResponse[Dict[str, Any]],
+    status_code=status.HTTP_200_OK,
+    summary="Reset and wipe all personal memory for the user",
+    description="Resets all personal info, work experiences, custom fields, and uploaded user documents/assets for the current user."
+)
+@router.delete(
+    "/reset",
+    response_model=APIResponse[Dict[str, Any]],
+    status_code=status.HTTP_200_OK,
+    include_in_schema=False
+)
+def reset_memory_endpoint(
+    current_user: Optional[User] = Depends(auth_service.get_optional_current_user),
+    db: Session = Depends(get_db)
+) -> APIResponse[Dict[str, Any]]:
+    """Wipes all personal memory records (personal info, experiences, custom fields, documents) for the authenticated user."""
+    target_user_id = current_user.id if current_user else 1
+
+    # 1. Delete all experiences
+    deleted_exp = db.query(Experience).filter(Experience.user_id == target_user_id).delete()
+
+    # 2. Delete all custom fields
+    deleted_cf = db.query(CustomField).filter(CustomField.user_id == target_user_id).delete()
+
+    # 3. Delete all uploaded documents / media assets
+    deleted_docs = db.query(UserDocument).filter(UserDocument.user_id == target_user_id).delete()
+
+    # 4. Reset personal info entity
+    from app.database.models import PersonalInfo
+    info = db.query(PersonalInfo).filter(PersonalInfo.user_id == target_user_id).first()
+    if info:
+        db.delete(info)
+
+    db.commit()
+
+    return APIResponse(
+        success=True,
+        message="Personal memory vault has been completely reset to a clean slate.",
+        data={
+            "user_id": target_user_id,
+            "status": "cleared",
+            "deleted_experiences": deleted_exp,
+            "deleted_custom_fields": deleted_cf,
+            "deleted_documents": deleted_docs
+        }
+    )
+
+
+
