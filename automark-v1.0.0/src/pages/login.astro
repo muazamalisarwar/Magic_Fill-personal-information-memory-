@@ -1,5 +1,6 @@
 ---
 import Base from "@/layouts/Base.astro";
+import Logo from "@/components/Logo.astro";
 ---
 
 <Base
@@ -7,7 +8,7 @@ import Base from "@/layouts/Base.astro";
   meta_title="Sign In to Magic Fill Personal Memory Vault"
   description="Sign in to your private personal memory vault and access intelligent browser form autofill."
 >
-  <section class="min-h-[85vh] flex items-center justify-center py-16 px-4 relative overflow-hidden">
+  <section class="min-h-screen pt-32 sm:pt-40 pb-20 px-4 flex flex-col items-center justify-center relative overflow-hidden">
     <!-- Ambient radial glow background -->
     <div
       class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 size-140 lg:size-200 -z-10 rounded-full blur-3xl pointer-events-none opacity-40 dark:opacity-30"
@@ -16,18 +17,16 @@ import Base from "@/layouts/Base.astro";
 
     <div class="w-full max-w-md mx-auto relative z-10">
       <!-- Card Container (Stunning dual-theme: Pure elevated white in Light, Sleek glass in Dark) -->
-      <div class="bg-white/95 dark:bg-[#121826]/95 border border-slate-200/90 dark:border-white/10 rounded-3xl p-8 sm:p-10 shadow-xl dark:shadow-2xl backdrop-blur-2xl transition-all duration-300">
-        <!-- Brand Header -->
-        <div class="text-center mb-8">
-          <div class="size-14 rounded-2xl bg-indigo-50 dark:bg-[#6C63FF]/15 border border-indigo-100 dark:border-[#6C63FF]/30 text-[#6C63FF] flex items-center justify-center mx-auto mb-4 shadow-sm dark:shadow-lg dark:shadow-[#6C63FF]/10">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-            </svg>
+      <div class="relative bg-white/95 dark:bg-[#121826]/95 border border-slate-200/90 dark:border-white/10 rounded-3xl p-8 sm:p-10 shadow-xl dark:shadow-2xl backdrop-blur-2xl transition-all duration-300">
+        <!-- Brand Header with Official Magic Fill Logo -->
+        <div class="flex flex-col items-center justify-center text-center mb-8">
+          <div class="p-3 sm:p-3.5 rounded-2xl bg-slate-50 dark:bg-white/[0.04] border border-slate-200/90 dark:border-white/10 shadow-xs dark:shadow-inner mb-4 transition-transform hover:scale-105 inline-flex items-center justify-center">
+            <Logo class="h-10 sm:h-12 w-auto" />
           </div>
           <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mb-2 font-display tracking-tight">
             Welcome Back
           </h1>
-          <p class="text-sm text-slate-600 dark:text-slate-400 font-body">
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-body max-w-xs leading-relaxed">
             Sign in to access your personal memory vault &amp; autofill copilot
           </p>
         </div>

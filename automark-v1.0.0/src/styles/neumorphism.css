@@ -3,8 +3,10 @@
    Monochromatic Cool Grey (#E0E5EC) with Dual Opposing RGB Shadows
    ========================================================================== */
 
-:root {
-  /* Surface Tokens */
+/* Surface Tokens (Light / Neumorphic Theme) */
+:root,
+[data-theme="light"],
+[data-theme="neumorphic"] {
   --neu-bg: #E0E5EC;
   --neu-fg: #3D4852;
   --neu-muted: #6B7280;
@@ -24,6 +26,29 @@
   --neu-shadow-btn-primary: 6px 6px 14px rgb(163, 177, 198, 0.6), -6px -6px 14px rgba(255, 255, 255, 0.5);
   --neu-shadow-btn-primary-hover: 8px 8px 18px rgb(163, 177, 198, 0.7), -8px -8px 18px rgba(255, 255, 255, 0.6);
   --neu-shadow-btn-primary-active: inset 4px 4px 8px rgba(0, 0, 0, 0.28), inset -4px -4px 8px rgba(255, 255, 255, 0.2);
+}
+
+/* Dark Mode Neumorphic & Ambient Surfaces */
+[data-theme="dark"],
+:root:not([data-theme="light"]):not([data-theme="neumorphic"]) {
+  --neu-bg: #0F172A;
+  --neu-fg: #F8FAFC;
+  --neu-muted: #94A3B8;
+  --neu-accent: #6C63FF;
+  --neu-accent-light: #8B84FF;
+  --neu-accent-secondary: #38B2AC;
+
+  /* Refined dark opposing shadows */
+  --neu-shadow-extruded: 8px 8px 20px rgba(0, 0, 0, 0.65), -6px -6px 16px rgba(255, 255, 255, 0.04);
+  --neu-shadow-extruded-hover: 12px 12px 24px rgba(0, 0, 0, 0.8), -8px -8px 20px rgba(255, 255, 255, 0.06);
+  --neu-shadow-extruded-sm: 4px 4px 10px rgba(0, 0, 0, 0.65), -4px -4px 10px rgba(255, 255, 255, 0.04);
+  --neu-shadow-inset: inset 5px 5px 10px rgba(0, 0, 0, 0.75), inset -5px -5px 10px rgba(255, 255, 255, 0.04);
+  --neu-shadow-inset-deep: inset 8px 8px 16px rgba(0, 0, 0, 0.85), inset -8px -8px 16px rgba(255, 255, 255, 0.05);
+  --neu-shadow-inset-sm: inset 3px 3px 6px rgba(0, 0, 0, 0.7), inset -3px -3px 6px rgba(255, 255, 255, 0.04);
+
+  --neu-shadow-btn-primary: 6px 6px 16px rgba(0, 0, 0, 0.6), -4px -4px 12px rgba(255, 255, 255, 0.05);
+  --neu-shadow-btn-primary-hover: 8px 8px 20px rgba(0, 0, 0, 0.7), -6px -6px 16px rgba(255, 255, 255, 0.07);
+  --neu-shadow-btn-primary-active: inset 4px 4px 8px rgba(0, 0, 0, 0.5), inset -4px -4px 8px rgba(255, 255, 255, 0.05);
 }
 
 /* Typography Classes */
