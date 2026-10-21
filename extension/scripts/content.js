@@ -95,28 +95,7 @@
   }
 
   function getElementLabel(el) {
-    // 1. Check aria-labelledby (Handles space-separated IDs used by Google Forms, Microsoft Forms, ARIA)
-    const labelledby = el.getAttribute("aria-labelledby");
-    if (labelledby) {
-      const ids = labelledby.trim().split(/\s+/);
-      const textParts = [];
-      for (const id of ids) {
-        try {
-          const target = document.getElementById(id);
-          if (target) {
-            const raw = cleanLabelText(target.innerText || target.textContent);
-            if (raw && !isGenericPlaceholder(raw)) {
-              textParts.push(raw);
-            }
-          }
-        } catch (e) {}
-      }
-      if (textParts.length > 0) {
-        return textParts[0]; // The primary question title
-      }
-    }
-
-    // 2. Google Forms / Job Portals Question Item Container Heading
+    // 1. Google Forms / Enterprise Job Portals Question Item Container Heading (Top priority: direct title)
     const questionContainer = el.closest(
       '[role="listitem"], .Qr7Oae, .geS5n, [jsmodel], .freebirdFormviewerViewNumberedItemContainer, .form-group, .field, .form-field, fieldset'
     );
@@ -127,6 +106,23 @@
       if (titleEl && !titleEl.contains(el)) {
         const cleaned = cleanLabelText(titleEl.innerText || titleEl.textContent);
         if (cleaned && !isGenericPlaceholder(cleaned)) return cleaned;
+      }
+    }
+
+    // 2. Check aria-labelledby (Handles space-separated IDs used by Google Forms, Microsoft Forms, ARIA)
+    const labelledby = el.getAttribute("aria-labelledby");
+    if (labelledby) {
+      const ids = labelledby.trim().split(/\s+/);
+      for (const id of ids) {
+        try {
+          const target = document.getElementById(id);
+          if (target) {
+            const raw = cleanLabelText(target.innerText || target.textContent);
+            if (raw && !isGenericPlaceholder(raw)) {
+              return raw;
+            }
+          }
+        } catch (e) {}
       }
     }
 
@@ -202,10 +198,14 @@
       const type = (el.type || el.getAttribute("type") || "text").toLowerCase();
       if (SENSITIVE_TYPES.has(type)) return;
 
-      // Exclude hidden or non-interactive fields
+      // Exclude hidden or non-interactive fields (allow file inputs which are standardly hidden/styled)
       const style = window.getComputedStyle(el);
-      if (style.display === "none" || style.visibility === "hidden" || el.disabled || el.readOnly) {
-        return;
+      if (type !== "file") {
+        if (style.display === "none" || style.visibility === "hidden" || el.disabled || el.readOnly) {
+          return;
+        }
+      } else {
+        if (el.disabled) return;
       }
 
       // Assign or retrieve unique Magic Fill DOM tracking ID
@@ -394,26 +394,35 @@
         el.value = isoMatch ? isoMatch[1] : rawDate;
       } else if (type === "file") {
         try {
-          const rawVal = String(mapping.value);
-          let fileObj = null;
-          if (rawVal.startsWith("data:image")) {
-            const arr = rawVal.split(",");
-            const mimeMatch = arr[0].match(/:(.*?);/);
-            const mime = mimeMatch ? mimeMatch[1] : "image/png";
-            const bstr = atob(arr[1]);
+          const rawVal = String(mapping.value || "");
+          if (rawVal.startsWith("data:") || rawVal.length > 50) {
+            const mimeMatch = rawVal.match(/^data:([^;]+);base64,/);
+            const mime = mimeMatch ? mimeMatch[1] : (rawVal.startsWith("data:image") ? "image/png" : "application/pdf");
+            const base64Data = rawVal.includes(",") ? rawVal.split(",")[1] : rawVal;
+            const bstr = atob(base64Data);
             let n = bstr.length;
             const u8arr = new Uint8Array(n);
             while (n--) u8arr[n] = bstr.charCodeAt(n);
-            fileObj = new File([u8arr], "photograph.png", { type: mime });
-          } else {
-            const blob = new Blob([rawVal], { type: "image/svg+xml" });
-            fileObj = new File([blob], "document_image.svg", { type: "image/svg+xml" });
-          }
 
-          if (fileObj && window.DataTransfer) {
-            const dt = new DataTransfer();
-            dt.items.add(fileObj);
-            el.files = dt.files;
+            let filename = "document.pdf";
+            const memKey = (mapping.memory_key || "").toLowerCase();
+            if (mime.includes("pdf")) filename = "resume_cv.pdf";
+            else if (mime.includes("png")) filename = "photograph.png";
+            else if (mime.includes("jpeg") || mime.includes("jpg")) filename = "photograph.jpg";
+            else if (mime.includes("word") || mime.includes("officedocument")) filename = "resume_cv.docx";
+            else if (memKey.includes("resume") || memKey.includes("cv")) filename = "resume_cv.pdf";
+            else if (memKey.includes("photo") || memKey.includes("avatar")) filename = "photograph.jpg";
+            else if (memKey.includes("cnic")) filename = "cnic_document.jpg";
+
+            const fileObj = new File([u8arr], filename, { type: mime, lastModified: Date.now() });
+
+            if (window.DataTransfer) {
+              const dt = new DataTransfer();
+              dt.items.add(fileObj);
+              el.files = dt.files;
+              el.dispatchEvent(new Event("input", { bubbles: true, composed: true }));
+              el.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
+            }
           }
         } catch (e) {
           console.warn("[Magic Fill] Could not populate file input:", e);
@@ -436,6 +445,11 @@
         } catch (e) {
           el.value = mapping.value;
         }
+
+        try {
+          el.setAttribute("data-initial-value", mapping.value);
+          el.setAttribute("value", mapping.value);
+        } catch (e) {}
       } else {
         el.value = mapping.value;
       }
@@ -451,6 +465,8 @@
       }
 
       // Dispatch comprehensive event sequence for Google Forms (Google Closure), React, and Angular
+      el.dispatchEvent(new Event("focus", { bubbles: true, composed: true }));
+      el.dispatchEvent(new Event("beforeinput", { bubbles: true, composed: true }));
       el.dispatchEvent(new Event("input", { bubbles: true, composed: true }));
       el.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
       try {
@@ -460,10 +476,10 @@
       } catch (e) {}
 
       // Clean up Google Forms Material container error messages and float label
-      const gfContainer = el.closest(".quantumWizTextinputPaperinputEl, .o3G8cc, .nd91id, .geS5n, .Qr7Oae, [role='listitem']");
+      const gfContainer = el.closest(".quantumWizTextinputPaperinputEl, .o3G8cc, .nd91id, .geS5n, .Qr7Oae, [role='listitem'], .AgroD");
       if (gfContainer) {
-        gfContainer.classList.add("is-filled");
-        gfContainer.classList.remove("is-invalid");
+        gfContainer.classList.add("is-filled", "has-value");
+        gfContainer.classList.remove("is-invalid", "badInput");
         const errorAlerts = gfContainer.querySelectorAll(".RxsGPe, [role='alert'], .freebirdFormviewerViewItemsItemErrorMessage");
         errorAlerts.forEach((ea) => {
           ea.style.display = "none";
@@ -480,7 +496,7 @@
   // 4. Intelligent Form Learning & Memory Updates
   // ---------------------------------------------------------------------------
   const evaluatedFieldsCache = new Set();
-  let evaluateDebounceTimer = null;
+  const fieldDebounceTimers = new Map();
 
   function isExcludedField(el, label, val) {
     if (!el || !val) return true;
@@ -488,7 +504,7 @@
     if (v.length < 2 && !/^\d+$/.test(v)) return true;
 
     // Exclude if element explicitly opts out of Magic Fill auto-learning
-    if (el.getAttribute("data-magic-fill-ignore") === "true" || el.getAttribute("data-no-learn") === "true") return true;
+    if (el.getAttribute && (el.getAttribute("data-magic-fill-ignore") === "true" || el.getAttribute("data-no-learn") === "true")) return true;
 
     // Exclude Magic Fill's own web app pages on localhost
     const host = window.location.hostname;
@@ -502,8 +518,8 @@
       return true;
     }
 
-    const type = (el.type || "text").toLowerCase();
-    if (SENSITIVE_TYPES.has(type) || type === "search" || type === "color" || type === "file") {
+    const type = (el.type || el.getAttribute("type") || "").toLowerCase();
+    if (type === "submit" || type === "reset" || SENSITIVE_TYPES.has(type) || type === "search" || type === "color" || type === "file") {
       return true;
     }
 
@@ -529,12 +545,12 @@
     }
 
     // Chat DOM container heuristic (e.g. ChatGPT, Claude, Discord, Intercom)
-    if (el.closest('[data-testid*="chat"], [aria-label*="chat"], [role="log"], [role="feed"], form[action*="chat"]')) {
+    if (el.closest && el.closest('[data-testid*="chat"], [aria-label*="chat"], [role="log"], [role="feed"], form[action*="chat"]')) {
       return true;
     }
 
     // Multi-line communication text in textareas (unless explicitly address or bio)
-    if (el.tagName.toLowerCase() === "textarea" && (v.length > 200 || v.includes("\n"))) {
+    if (el.tagName && el.tagName.toLowerCase() === "textarea" && (v.length > 200 || v.includes("\n"))) {
       if (!/address|street|bio|summary|about/i.test(combinedDesc)) {
         return true;
       }
@@ -548,41 +564,58 @@
     return false;
   }
 
-  function handleUserInput(e) {
-    const el = e.target;
-    if (!el || !el.tagName) return;
-    const tag = el.tagName.toLowerCase();
-    const type = (el.type || "text").toLowerCase();
-
-    if (tag !== "input" && tag !== "select" && tag !== "textarea") return;
-    if (type === "radio" && !el.checked) return;
+  function triggerFieldEvaluation(el, immediate = false) {
+    if (!el) return;
+    const tag = (el.tagName || "").toLowerCase();
+    const type = (el.type || el.getAttribute("type") || "text").toLowerCase();
+    const role = (el.getAttribute("role") || "").toLowerCase();
 
     // If edited by user, clear the autofill marker
-    if (el.getAttribute("data-magic-fill-autofilled") === "true") {
+    if (el.getAttribute && el.getAttribute("data-magic-fill-autofilled") === "true") {
       el.removeAttribute("data-magic-fill-autofilled");
     }
 
     let val = "";
     if (tag === "select") {
-      val = el.options[el.selectedIndex]?.text?.trim() || (el.value || "").trim();
-    } else if (type === "checkbox") {
-      val = el.checked ? "Yes" : "No";
-    } else if (type === "radio") {
-      val = el.value || "Yes";
+      val = el.options && el.selectedIndex >= 0 ? (el.options[el.selectedIndex]?.text?.trim() || el.options[el.selectedIndex]?.value?.trim()) : (el.value || "").trim();
+    } else if (type === "checkbox" || role === "checkbox") {
+      val = (el.checked || el.getAttribute("aria-checked") === "true") ? "Yes" : "No";
+    } else if (type === "radio" || role === "radio") {
+      if (!el.checked && el.getAttribute("aria-checked") !== "true") return;
+      val = el.value || el.getAttribute("data-value") || el.innerText?.trim() || "Yes";
+    } else if (role === "option") {
+      val = el.getAttribute("data-value") || el.innerText?.trim() || "";
+    } else if (tag === "button" || role === "button") {
+      val = el.getAttribute("data-value") || el.innerText?.trim() || "";
     } else {
       val = (el.value || "").trim();
     }
 
+    if (!val || (val.length < 2 && !/^\d+$/.test(val))) return;
+
     const label = getElementLabel(el);
     if (isExcludedField(el, label, val)) return;
 
-    const cacheKey = `${el.name || el.id || label}_${val.toLowerCase()}`;
+    const fieldKey = el.name || el.id || label || "field";
+    const cacheKey = `${fieldKey}_${val.toLowerCase()}`;
     if (evaluatedFieldsCache.has(cacheKey)) return;
 
-    if (evaluateDebounceTimer) clearTimeout(evaluateDebounceTimer);
-    evaluateDebounceTimer = setTimeout(() => {
+    const doEval = () => {
       evaluateFieldForLearning(el, label, val, cacheKey);
-    }, 1200);
+    };
+
+    if (immediate) {
+      doEval();
+    } else {
+      if (fieldDebounceTimers.has(fieldKey)) {
+        clearTimeout(fieldDebounceTimers.get(fieldKey));
+      }
+      fieldDebounceTimers.set(fieldKey, setTimeout(doEval, 350));
+    }
+  }
+
+  function handleUserInput(e) {
+    triggerFieldEvaluation(e.target, false);
   }
 
   function evaluateFieldForLearning(el, label, val, cacheKey) {
@@ -610,8 +643,53 @@
     );
   }
 
+  // 1. Native change event (fired on selects, radios, checkboxes, and inputs on commit)
+  document.addEventListener("change", (e) => {
+    triggerFieldEvaluation(e.target, true);
+  }, true);
+
+  // 2. Blur event for text and textarea
   document.addEventListener("blur", handleUserInput, true);
-  document.addEventListener("change", handleUserInput, true);
+
+  // 3. Click event for custom dropdown options, radios, checkboxes, and choice buttons
+  document.addEventListener("click", (e) => {
+    const target = e.target;
+    if (!target) return;
+
+    // A. Option clicked in custom dropdown
+    const option = target.closest('[role="option"], .select-option, [data-value]');
+    if (option) {
+      const container = option.closest('[role="combobox"], [role="listbox"], .form-group') || option.parentElement;
+      setTimeout(() => triggerFieldEvaluation(container || option, true), 100);
+      return;
+    }
+
+    // B. Custom radio or checkbox widget clicked
+    const customWidget = target.closest('[role="radio"], [role="checkbox"], [role="switch"]');
+    if (customWidget) {
+      setTimeout(() => triggerFieldEvaluation(customWidget, true), 100);
+      return;
+    }
+
+    // C. Choice buttons in button groups
+    const choiceBtn = target.closest('button, [role="button"]');
+    if (choiceBtn && choiceBtn.type !== "submit") {
+      const group = choiceBtn.closest('.btn-group, [role="group"], .button-group, .choices, [role="listitem"]');
+      if (group) {
+        setTimeout(() => triggerFieldEvaluation(choiceBtn, true), 100);
+      }
+    }
+  }, true);
+
+  // 4. Form Submit event: scan and evaluate any remaining filled fields
+  document.addEventListener("submit", (e) => {
+    const form = e.target;
+    if (!form || !form.querySelectorAll) return;
+    const inputs = form.querySelectorAll("input, select, textarea, [role='combobox'], [role='radio']:checked, [role='checkbox'][aria-checked='true']");
+    inputs.forEach((input) => {
+      triggerFieldEvaluation(input, true);
+    });
+  }, true);
 
   function showLearningPrompt(el, evalData, cacheKey) {
     const existing = document.getElementById("magic-fill-learning-prompt");

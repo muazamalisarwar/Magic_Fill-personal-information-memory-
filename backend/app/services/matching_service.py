@@ -314,6 +314,17 @@ def _match_deterministic(field: DetectedField, profile_data: Dict[str, Any]) -> 
                     reason="Matched saved Resume / CV",
                     source="deterministic"
                 )
+            custom_fields = profile_data.get("custom_fields") or []
+            for cf in custom_fields:
+                if cf.field_key in ("doc_resume", "resume", "cv") or "resume" in cf.field_key.lower():
+                    return FieldMapping(
+                        field_id=field.field_id,
+                        memory_key=f"custom_fields.{cf.field_key}",
+                        value=cf.field_value,
+                        confidence=0.98,
+                        reason="Matched saved Resume / CV from memory",
+                        source="deterministic"
+                    )
 
         # 9f. Profile Photograph / Avatar Image
         if any(k in combined_text for k in ["photo", "photograph", "picture", "avatar", "headshot", "profile image", "user photo", "applicant photo"]):
@@ -865,10 +876,31 @@ async def match_form_fields(
                         c_doc = doc_by_key.get("cnic_front") or doc_by_key.get("cnic_photo")
                         val = c_doc.file_data if c_doc else (personal_info.cnic_photo if (personal_info and personal_info.cnic_photo) else val)
                         mem_key = "personal_info.cnic_photo" if (personal_info and personal_info.cnic_photo) else mem_key
-                    elif any(k in (target_field.name or "").lower() or k in (target_field.label or "").lower() for k in ["photo", "avatar", "headshot", "picture"]):
+                    elif any(k in (target_field.name or "").lower() or k in (target_field.label or "").lower() or k in mem_key.lower() for k in ["resume", "cv", "curriculum vitae"]):
+                        r_doc = doc_by_key.get("resume") or doc_by_key.get("cv")
+                        if r_doc and r_doc.file_data:
+                            val = r_doc.file_data
+                            mem_key = "documents.resume"
+                        elif custom_fields:
+                            for cf in custom_fields:
+                                if cf.field_key in ("doc_resume", "resume", "cv") or "resume" in cf.field_key.lower():
+                                    val = cf.field_value
+                                    mem_key = f"custom_fields.{cf.field_key}"
+                                    break
+                    elif any(k in (target_field.name or "").lower() or k in (target_field.label or "").lower() or k in mem_key.lower() for k in ["photo", "avatar", "headshot", "picture"]):
                         p_doc = doc_by_key.get("profile_photo")
-                        val = p_doc.file_data if p_doc else (personal_info.profile_photo if (personal_info and personal_info.profile_photo) else val)
-                        mem_key = "personal_info.profile_photo" if (personal_info and personal_info.profile_photo) else mem_key
+                        if p_doc and p_doc.file_data:
+                            val = p_doc.file_data
+                            mem_key = "documents.profile_photo"
+                        elif personal_info and personal_info.profile_photo:
+                            val = personal_info.profile_photo
+                            mem_key = "personal_info.profile_photo"
+                        elif custom_fields:
+                            for cf in custom_fields:
+                                if cf.field_key in ("doc_profile_photo", "profile_photo") or "photo" in cf.field_key.lower():
+                                    val = cf.field_value
+                                    mem_key = f"custom_fields.{cf.field_key}"
+                                    break
 
                 # Select dropdown or radio group option normalization
                 if target_field.options and target_field.input_type in ("select", "select-one", "radio"):

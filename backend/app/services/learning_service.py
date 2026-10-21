@@ -126,10 +126,17 @@ SEMANTIC_CANONICAL_MAP = {
 
     # Academic
     "university": ("university", "University / Institution", FieldCategory.PROFESSIONAL_INFO, "academic"),
+    "university_name": ("university", "University / Institution", FieldCategory.PROFESSIONAL_INFO, "academic"),
     "institution": ("university", "Institution / University", FieldCategory.PROFESSIONAL_INFO, "academic"),
     "alma_mater": ("university", "Alma Mater", FieldCategory.PROFESSIONAL_INFO, "academic"),
     "degree": ("degree", "Degree", FieldCategory.PROFESSIONAL_INFO, "academic"),
+    "degree_name": ("degree", "Degree", FieldCategory.PROFESSIONAL_INFO, "academic"),
+    "major": ("major", "Major / Field of Study", FieldCategory.PROFESSIONAL_INFO, "academic"),
+    "field_of_study": ("major", "Field of Study", FieldCategory.PROFESSIONAL_INFO, "academic"),
     "department": ("department", "Academic Department", FieldCategory.PROFESSIONAL_INFO, "academic"),
+    "graduation_year": ("graduation_year", "Graduation Year", FieldCategory.PROFESSIONAL_INFO, "academic"),
+    "semester": ("semester", "Semester", FieldCategory.PROFESSIONAL_INFO, "academic"),
+    "registration_number": ("registration_number", "Registration Number", FieldCategory.PROFESSIONAL_INFO, "academic"),
 
     # Employment
     "job_title": ("job_title", "Job Title / Designation", FieldCategory.PROFESSIONAL_INFO, "employment"),
@@ -260,6 +267,10 @@ def classify_field_deterministically(
     # 5. Check Semantic Canonical Dictionary for Matches
     def _validate_candidate_value(k: str, v: str) -> bool:
         """Ensures that detected canonical key matches the shape of the user-entered value."""
+        if k in ("full_name", "first_name", "last_name"):
+            # A field like "Degree Name", "University Name", or "Company Name" is NOT the user's name
+            if any(tok in combined_desc for tok in ["degree", "university", "college", "school", "institution", "company", "employer", "department", "program", "course", "subject", "file", "document", "photo"]):
+                return False
         if k in ("cnic", "national_id"):
             # National IDs are numbers/hyphens (e.g. 35405-0542380-2 or 3540505423802).
             # A text sentence like "This is my official profile photo" can NEVER be a CNIC.
@@ -343,10 +354,11 @@ async def classify_field_with_groq_llm(
     }
 
     try:
+        import json
         res = await query_groq_llm(
             messages=[
                 {"role": "system", "content": system_prompt},
-                {"role": "user", "content": str(user_prompt)}
+                {"role": "user", "content": json.dumps(user_prompt)}
             ],
             temperature=0.1
         )
