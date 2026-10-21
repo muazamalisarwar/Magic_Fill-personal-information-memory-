@@ -1,45 +1,75 @@
 ---
-// Hero Video Showcase (Neumorphism Design System)
+// Hero Video Showcase (Silent Ambient Demo)
 ---
 
 <div
-  class="relative w-full max-w-280 mx-auto rounded-[32px] overflow-hidden"
+  class="relative w-full max-w-280 mx-auto rounded-[24px] sm:rounded-[32px] overflow-hidden group"
   data-gsap-video-showcase
 >
-  <video
-    id="videoPlayer"
-    class="w-full aspect-video object-cover rounded-[28px]"
-    autoplay
-    muted
-    loop
-    width="1000px"
-    playsinline
-    preload="metadata"
-  >
-    <source src="/showcase.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-
-  <!-- Sound toggle overlay — visible = muted (shows icon to unmute) -->
-  <button
-    id="soundToggle"
-    class="absolute inset-0 grid place-items-center group bg-black/20 cursor-pointer transition-opacity duration-300 rounded-[28px]"
-    aria-label="Unmute video"
-  >
-    <div
-      id="mutedIcon"
-      class="w-16 h-16 rounded-full bg-indigo-600/90 hover:bg-indigo-600 text-white backdrop-blur-sm grid place-items-center group-hover:scale-110 transition-all shadow-lg shadow-indigo-600/30"
+  <div class="relative rounded-[22px] sm:rounded-[28px] overflow-hidden border border-slate-200/80 dark:border-white/10 bg-slate-900 shadow-2xl">
+    <video
+      id="videoPlayer"
+      class="w-full aspect-video object-cover block cursor-pointer"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
     >
-      <!-- Play icon -->
-      <svg
-        width="28"
-        height="28"
-        class="size-7 text-white ml-1"
-        fill="currentColor"
-        viewBox="0 0 24 24"
-      >
+      <source src="/showcase.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+
+    <!-- Discreet Play/Pause Indicator (Always Silent) -->
+    <button
+      id="videoPlayPauseBtn"
+      class="absolute bottom-4 right-4 z-20 size-9 rounded-full bg-slate-950/75 hover:bg-slate-950 text-white backdrop-blur-md flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-105 shadow-md cursor-pointer border border-white/15"
+      aria-label="Pause or play video"
+      title="Pause / Play"
+    >
+      <!-- Pause Icon (shown when playing) -->
+      <svg id="iconPause" class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+        <rect x="6" y="4" width="4" height="16" rx="1"></rect>
+        <rect x="14" y="4" width="4" height="16" rx="1"></rect>
+      </svg>
+      <!-- Play Icon (shown when paused) -->
+      <svg id="iconPlay" class="size-4 hidden ml-0.5" fill="currentColor" viewBox="0 0 24 24">
         <polygon points="5 3 19 12 5 21 5 3"></polygon>
       </svg>
-    </div>
-  </button>
+    </button>
+  </div>
 </div>
+
+<script is:inline>
+  (function() {
+    const video = document.getElementById("videoPlayer");
+    const btn = document.getElementById("videoPlayPauseBtn");
+    const iconPause = document.getElementById("iconPause");
+    const iconPlay = document.getElementById("iconPlay");
+
+    if (video) {
+      // Enforce 100% silent playback
+      video.muted = true;
+      video.volume = 0;
+      video.defaultMuted = true;
+
+      const togglePlay = () => {
+        if (video.paused) {
+          video.play();
+          if (iconPause) iconPause.classList.remove("hidden");
+          if (iconPlay) iconPlay.classList.add("hidden");
+        } else {
+          video.pause();
+          if (iconPause) iconPause.classList.add("hidden");
+          if (iconPlay) iconPlay.classList.remove("hidden");
+        }
+      };
+
+      if (btn) btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        togglePlay();
+      });
+      video.addEventListener("click", togglePlay);
+    }
+  })();
+</script>

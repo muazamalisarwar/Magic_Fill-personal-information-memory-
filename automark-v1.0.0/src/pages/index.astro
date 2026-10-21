@@ -34,10 +34,11 @@ const homepageData: Homepage = homepage.data;
     <div class="container relative z-10">
       <div class="row justify-center">
         <div class="mb-14 text-center relative z-10">
-          <!-- Plain Typography Eyebrow (No pill, no dot) -->
-          <p class="text-xs font-semibold uppercase tracking-[0.12em] text-indigo-600 dark:text-indigo-400 mb-2 font-display">
-            Next-Gen Autofill &bull; Personal Memory Studio
-          </p>
+          <!-- Modern Glowing Pill Eyebrow -->
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50/80 dark:bg-indigo-500/10 border border-indigo-200/80 dark:border-indigo-500/20 text-indigo-700 dark:text-indigo-300 text-xs font-semibold tracking-wide mb-4 shadow-xs backdrop-blur-sm transition-all duration-300 hover:border-indigo-400/50">
+            <span class="flex h-2 w-2 rounded-full bg-indigo-600 animate-pulse"></span>
+            <span>Next-Gen Autofill &bull; Personal Memory Studio</span>
+          </div>
 
           <!-- Hero Headline -->
           <h1
@@ -53,15 +54,15 @@ const homepageData: Homepage = homepage.data;
           <!-- Primary & Secondary CTA Buttons -->
           <div class="flex gap-3 justify-center items-center flex-wrap">
             <a
-              class="py-3 px-6 text-sm font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white transition-colors flex items-center gap-2 cursor-pointer shadow-xs"
+              class="group px-7 py-3.5 text-sm sm:text-[15px] font-semibold rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center gap-2.5 cursor-pointer"
               rel="noopener noreferrer"
               href={homepageData.banner.button_primary.link}
             >
               <span>{homepageData.banner.button_primary.label}</span>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="transition-transform duration-200 group-hover:translate-x-0.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
             <a
-              class="py-3 px-6 text-sm font-semibold rounded-lg bg-white dark:bg-white/5 hover:bg-slate-50 dark:hover:bg-white/10 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-white/10 transition-colors shadow-2xs cursor-pointer"
+              class="px-7 py-3.5 text-sm sm:text-[15px] font-semibold rounded-xl bg-white/90 dark:bg-slate-900/80 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/90 dark:border-white/10 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 backdrop-blur-sm cursor-pointer"
               rel="noopener noreferrer"
               href={homepageData.banner.button_secondary.link}
             >
@@ -73,7 +74,7 @@ const homepageData: Homepage = homepage.data;
         <!-- Video Showcase Container -->
         <div class="col-12">
           <div class="flex justify-center w-full">
-            <div class="border border-slate-200/80 dark:border-white/10 rounded-2xl p-2 sm:p-3 bg-white/70 dark:bg-slate-900/60 shadow-sm backdrop-blur-md w-full max-w-5xl">
+            <div class="border border-slate-200/80 dark:border-white/10 rounded-2xl p-2 sm:p-3 bg-white/70 dark:bg-slate-900/60 shadow-xl shadow-slate-900/5 dark:shadow-black/40 backdrop-blur-md w-full max-w-5xl transition-all duration-300 hover:border-indigo-500/30">
               <VideoShowcase />
             </div>
           </div>

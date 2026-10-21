@@ -183,24 +183,9 @@
     );
     if (heroVideoShowcase) {
       const video = heroVideoShowcase.querySelector("video");
-      const toggleBtn = document.getElementById("soundToggle");
-      const mutedIcon = document.getElementById("mutedIcon");
-
-      if (video && toggleBtn && mutedIcon) {
-        toggleBtn.addEventListener("click", () => {
-          video.muted = !video.muted;
-          if (video.muted) {
-            mutedIcon.classList.remove("hidden");
-            toggleBtn.classList.add("bg-dark/40");
-            toggleBtn.style.opacity = "1";
-            toggleBtn.setAttribute("aria-label", "Unmute video");
-          } else {
-            mutedIcon.classList.add("hidden");
-            toggleBtn.classList.remove("bg-dark/40");
-            toggleBtn.style.opacity = "0";
-            toggleBtn.setAttribute("aria-label", "Mute video");
-          }
-        });
+      if (video) {
+        video.muted = true;
+        video.volume = 0;
       }
     }
 
