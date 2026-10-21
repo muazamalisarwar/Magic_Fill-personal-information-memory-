@@ -1,208 +1,246 @@
 ---
-// Live Interactive Form Autofill Simulator for Magic Fill (Neumorphism Design System)
+// Live Interactive Form Autofill Simulator for Magic Fill
 ---
 
 <section id="live-simulator" class="section relative overflow-hidden py-24">
   <div class="container">
     <div class="section-container">
       <div class="section-intro centralize text-center mb-16">
-        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-indigo-600 mb-2">
-          Interactive Live Playground
+        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-indigo-600 dark:text-indigo-400 mb-2 font-display">
+          Interactive Form Simulator
         </p>
         <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-slate-900 dark:text-white hasHighlight mb-4">
           Experience Instant <strong>1-Click Form Autofill</strong>
         </h2>
         <p class="font-body text-slate-600 dark:text-slate-400 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-          Test our intelligent form copilot live on this simulated enterprise application. Watch how Magic Fill maps and completes complex fields with 100% semantic accuracy.
+          Test Magic Fill on a simulated engineering job application. See how personal identity, credentials, and custom career experiences map with exact accuracy.
         </p>
       </div>
 
       <div class="section-content max-w-4xl mx-auto">
         <!-- Simulator Card Container -->
-        <div class="bg-white dark:bg-[#0f1422] border border-slate-200/80 dark:border-white/10 rounded-2xl p-6 sm:p-10 shadow-xs relative overflow-hidden">
-          <!-- Top portal simulation bar -->
-          <div class="flex items-center justify-between pb-6 mb-8 flex-wrap gap-4 border-b border-slate-100 dark:border-white/5">
+        <div class="bg-white dark:bg-[#0f1422] border border-slate-200/80 dark:border-white/10 rounded-2xl shadow-sm relative overflow-hidden">
+          
+          <!-- Top simulated browser navigation bar -->
+          <div class="flex items-center justify-between px-5 py-3.5 border-b border-slate-100 dark:border-white/5 bg-slate-50/80 dark:bg-white/[0.02] flex-wrap gap-3">
             <div class="flex items-center gap-3">
-              <div class="flex gap-1.5">
-                <span class="w-3 h-3 rounded-full bg-rose-400"></span>
-                <span class="w-3 h-3 rounded-full bg-amber-400"></span>
-                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+              <!-- Window dots -->
+              <div class="flex gap-1.5 items-center">
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-white/20"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-white/20"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-white/20"></span>
               </div>
-              <!-- Inset Browser Address Well -->
-              <div class="bg-slate-100 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 rounded-lg px-3 py-1.5 text-xs text-slate-600 dark:text-slate-300 font-mono flex items-center gap-2">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              
+              <!-- Address Well -->
+              <div class="bg-white dark:bg-[#0b0f19] border border-slate-200/80 dark:border-white/10 rounded-md px-3 py-1 text-xs text-slate-600 dark:text-slate-300 font-mono flex items-center gap-2 shadow-2xs">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-emerald-500">
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                   <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                 </svg>
-                <span>careers.techcorp.global/apply/senior-engineer</span>
+                <span class="text-slate-500 dark:text-slate-400">careers.acme-cloud.io/apply/platform-architect</span>
               </div>
             </div>
 
             <!-- Simulator Actions -->
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2.5">
               <button
                 type="button"
                 id="btnSimulateAutofill"
-                class="rounded-lg px-4 py-2 text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs transition-all cursor-pointer flex items-center gap-1.5"
+                class="rounded-lg px-3.5 py-1.5 text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-sm hover:shadow transition-all cursor-pointer flex items-center gap-1.5 group"
               >
-                <span>✨</span>
-                <span>Test 1-Click Autofill</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="group-hover:rotate-12 transition-transform">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+                <span>Run Autofill</span>
               </button>
+              
               <button
                 type="button"
                 id="btnClearSimForm"
-                class="rounded-lg px-3.5 py-2 text-xs font-medium bg-white dark:bg-white/5 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-white/10 shadow-2xs hover:bg-slate-50 dark:hover:bg-white/10 transition-all cursor-pointer"
+                class="rounded-lg px-3 py-1.5 text-xs font-medium bg-white dark:bg-white/5 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10 transition-all cursor-pointer"
               >
                 Reset
               </button>
             </div>
           </div>
 
-          <!-- Status Banner (Hidden initially) -->
-          <div id="simAutofillSuccess" class="hidden mb-6 p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800/30 text-emerald-800 dark:text-emerald-300 text-sm flex items-center justify-between transition-all duration-300">
-            <div class="flex items-center gap-2.5 font-bold">
-              <span class="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 grid place-items-center text-xs">✓</span>
-              <span>7 fields filled in 0.14s — 100% semantic confidence across all ATS fields.</span>
+          <!-- Status Banner -->
+          <div id="simAutofillSuccess" class="hidden px-5 py-3 border-b border-emerald-200/80 dark:border-emerald-800/30 bg-emerald-50/60 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-300 text-xs flex items-center justify-between">
+            <div class="flex items-center gap-2 font-medium">
+              <span class="w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 grid place-items-center text-[10px] font-bold">✓</span>
+              <span>All 7 fields completed from verified personal memory vault.</span>
             </div>
-            <span class="text-xs text-emerald-700 dark:text-emerald-400 font-semibold">Zero Errors</span>
+            <span class="text-[11px] font-mono font-semibold text-emerald-600 dark:text-emerald-400">0.12s execution</span>
           </div>
 
-          <!-- Simulated Application Form -->
-          <form id="simulatedJobForm" class="grid sm:grid-cols-2 gap-6" onsubmit="return false;">
-            <!-- Full Name -->
-            <div class="relative">
-              <label for="simName" class="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-2 font-display">
-                Legal Full Name <span class="text-[#6C63FF]">*</span>
-              </label>
-              <input
-                type="text"
-                id="simName"
-                placeholder="e.g. Alex Morgan"
-                class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 transition-all"
-              />
-              <span id="badge-simName" class="hidden absolute right-3 top-9 text-[11px] font-medium bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40 rounded-md px-2 py-0.5">
-                ✓ 99.9%
-              </span>
+          <!-- Simulated Application Form Body -->
+          <div class="p-6 sm:p-8">
+            <div class="mb-6 pb-4 border-b border-slate-100 dark:border-white/5">
+              <h3 class="text-lg font-bold font-display text-slate-900 dark:text-white">
+                Application for Senior Platform Architect
+              </h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                San Francisco, CA &bull; Full-time &bull; Platform Engineering
+              </p>
             </div>
 
-            <!-- Email Address -->
-            <div class="relative">
-              <label for="simEmail" class="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-2 font-display">
-                Work Email Address <span class="text-[#6C63FF]">*</span>
-              </label>
-              <input
-                type="email"
-                id="simEmail"
-                placeholder="alex.morgan@domain.com"
-                class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 transition-all"
-              />
-              <span id="badge-simEmail" class="hidden absolute right-3 top-9 text-[11px] font-medium bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40 rounded-md px-2 py-0.5">
-                ✓ 100%
-              </span>
-            </div>
+            <form id="simulatedJobForm" class="grid sm:grid-cols-2 gap-5" onsubmit="return false;">
+              <!-- Full Name -->
+              <div class="relative">
+                <div class="flex justify-between items-center mb-1.5">
+                  <label for="simName" class="block text-xs font-semibold text-slate-700 dark:text-slate-200 font-display">
+                    Legal Full Name <span class="text-rose-500">*</span>
+                  </label>
+                  <span id="badge-simName" class="hidden text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                    ✓ Matched
+                  </span>
+                </div>
+                <input
+                  type="text"
+                  id="simName"
+                  placeholder="e.g. Alex Morgan"
+                  class="sim-input-field w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
+                />
+              </div>
 
-            <!-- Phone Number -->
-            <div class="relative">
-              <label for="simPhone" class="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-2 font-display">
-                Primary Phone Number <span class="text-[#6C63FF]">*</span>
-              </label>
-              <input
-                type="tel"
-                id="simPhone"
-                placeholder="+1 (555) 349-2041"
-                class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 transition-all"
-              />
-              <span id="badge-simPhone" class="hidden absolute right-3 top-9 text-[11px] font-medium bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40 rounded-md px-2 py-0.5">
-                ✓ 99.8%
-              </span>
-            </div>
+              <!-- Email Address -->
+              <div class="relative">
+                <div class="flex justify-between items-center mb-1.5">
+                  <label for="simEmail" class="block text-xs font-semibold text-slate-700 dark:text-slate-200 font-display">
+                    Email Address <span class="text-rose-500">*</span>
+                  </label>
+                  <span id="badge-simEmail" class="hidden text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                    ✓ Matched
+                  </span>
+                </div>
+                <input
+                  type="email"
+                  id="simEmail"
+                  placeholder="alex.morgan@domain.com"
+                  class="sim-input-field w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
+                />
+              </div>
 
-            <!-- Highest Degree & Major -->
-            <div class="relative">
-              <label for="simEducation" class="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-2 font-display">
-                Highest Degree &amp; Major <span class="text-[#6C63FF]">*</span>
-              </label>
-              <input
-                type="text"
-                id="simEducation"
-                placeholder="M.S. in Computer Science — Stanford University"
-                class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 transition-all"
-              />
-              <span id="badge-simEducation" class="hidden absolute right-3 top-9 text-[11px] font-medium bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40 rounded-md px-2 py-0.5">
-                ✓ 99.7%
-              </span>
-            </div>
+              <!-- Phone Number -->
+              <div class="relative">
+                <div class="flex justify-between items-center mb-1.5">
+                  <label for="simPhone" class="block text-xs font-semibold text-slate-700 dark:text-slate-200 font-display">
+                    Phone Number <span class="text-rose-500">*</span>
+                  </label>
+                  <span id="badge-simPhone" class="hidden text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                    ✓ Matched
+                  </span>
+                </div>
+                <input
+                  type="tel"
+                  id="simPhone"
+                  placeholder="+1 (555) 349-2041"
+                  class="sim-input-field w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
+                />
+              </div>
 
-            <!-- Recent Experience -->
-            <div class="relative sm:col-span-2">
-              <label for="simExperience" class="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-2 font-display">
-                Current / Most Recent Role &amp; Organization <span class="text-[#6C63FF]">*</span>
-              </label>
-              <input
-                type="text"
-                id="simExperience"
-                placeholder="Staff Distributed Systems Architect at Stripe (2022 – Present)"
-                class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 transition-all"
-              />
-              <span id="badge-simExperience" class="hidden absolute right-3 top-9 text-[11px] font-medium bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40 rounded-md px-2 py-0.5">
-                ✓ 100%
-              </span>
-            </div>
+              <!-- Education -->
+              <div class="relative">
+                <div class="flex justify-between items-center mb-1.5">
+                  <label for="simEducation" class="block text-xs font-semibold text-slate-700 dark:text-slate-200 font-display">
+                    Degree &amp; Institution <span class="text-rose-500">*</span>
+                  </label>
+                  <span id="badge-simEducation" class="hidden text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                    ✓ Matched
+                  </span>
+                </div>
+                <input
+                  type="text"
+                  id="simEducation"
+                  placeholder="M.S. in Computer Science — Stanford University"
+                  class="sim-input-field w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
+                />
+              </div>
 
-            <!-- Portfolio / GitHub URL -->
-            <div class="relative">
-              <label for="simPortfolio" class="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-2 font-display">
-                Portfolio or GitHub Profile URL
-              </label>
-              <input
-                type="url"
-                id="simPortfolio"
-                placeholder="https://github.com/alexmorgan-dev"
-                class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 transition-all"
-              />
-              <span id="badge-simPortfolio" class="hidden absolute right-3 top-9 text-[11px] font-medium bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40 rounded-md px-2 py-0.5">
-                ✓ 99.9%
-              </span>
-            </div>
+              <!-- Recent Experience -->
+              <div class="relative sm:col-span-2">
+                <div class="flex justify-between items-center mb-1.5">
+                  <label for="simExperience" class="block text-xs font-semibold text-slate-700 dark:text-slate-200 font-display">
+                    Current / Most Recent Organization <span class="text-rose-500">*</span>
+                  </label>
+                  <span id="badge-simExperience" class="hidden text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                    ✓ Matched
+                  </span>
+                </div>
+                <input
+                  type="text"
+                  id="simExperience"
+                  placeholder="Staff Distributed Systems Architect at Stripe (2022 – Present)"
+                  class="sim-input-field w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
+                />
+              </div>
 
-            <!-- LinkedIn Profile -->
-            <div class="relative">
-              <label for="simLinkedin" class="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-2 font-display">
-                LinkedIn Profile URL
-              </label>
-              <input
-                type="url"
-                id="simLinkedin"
-                placeholder="https://linkedin.com/in/alexmorgan"
-                class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 transition-all"
-              />
-              <span id="badge-simLinkedin" class="hidden absolute right-3 top-9 text-[11px] font-medium bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40 rounded-md px-2 py-0.5">
-                ✓ 100%
-              </span>
-            </div>
+              <!-- Portfolio / GitHub URL -->
+              <div class="relative">
+                <div class="flex justify-between items-center mb-1.5">
+                  <label for="simPortfolio" class="block text-xs font-semibold text-slate-700 dark:text-slate-200 font-display">
+                    GitHub / Portfolio URL
+                  </label>
+                  <span id="badge-simPortfolio" class="hidden text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                    ✓ Matched
+                  </span>
+                </div>
+                <input
+                  type="url"
+                  id="simPortfolio"
+                  placeholder="https://github.com/alexmorgan-dev"
+                  class="sim-input-field w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
+                />
+              </div>
 
-            <!-- Custom Question -->
-            <div class="relative sm:col-span-2">
-              <label for="simCustomQuestion" class="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-2 font-display flex items-center justify-between">
-                <span>Custom ATS Prompt: Scaling high-throughput APIs</span>
-                <span class="text-[11px] font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Learned Memory</span>
-              </label>
-              <textarea
-                id="simCustomQuestion"
-                rows="3"
-                placeholder="Over 7 years leading high-throughput distributed architectures processing 15,000+ RPS..."
-                class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 transition-all resize-none"
-              ></textarea>
-              <span id="badge-simCustomQuestion" class="hidden absolute right-3 bottom-4 text-[11px] font-medium bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40 rounded-md px-2 py-0.5">
-                ✓ Autonomous Match
-              </span>
-            </div>
-          </form>
+              <!-- LinkedIn Profile -->
+              <div class="relative">
+                <div class="flex justify-between items-center mb-1.5">
+                  <label for="simLinkedin" class="block text-xs font-semibold text-slate-700 dark:text-slate-200 font-display">
+                    LinkedIn Profile
+                  </label>
+                  <span id="badge-simLinkedin" class="hidden text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                    ✓ Matched
+                  </span>
+                </div>
+                <input
+                  type="url"
+                  id="simLinkedin"
+                  placeholder="https://linkedin.com/in/alexmorgan"
+                  class="sim-input-field w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
+                />
+              </div>
 
-          <!-- Bottom Micro-Footnote -->
-          <div class="mt-8 pt-6 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-body flex-wrap gap-3 border-t border-slate-100 dark:border-white/5">
-            <span class="flex items-center gap-1.5 font-medium">⚡ Powered by Magic Fill Deterministic Semantic Engine</span>
-            <span class="flex items-center gap-1.5 font-medium">🔒 Zero Data Transmitted Unencrypted</span>
+              <!-- Custom Question -->
+              <div class="relative sm:col-span-2">
+                <div class="flex justify-between items-center mb-1.5">
+                  <label for="simCustomQuestion" class="block text-xs font-semibold text-slate-700 dark:text-slate-200 font-display">
+                    Custom Prompt: Describe high-throughput architecture experience
+                  </label>
+                  <span id="badge-simCustomQuestion" class="hidden text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                    ✓ Matched from Custom Q&amp;A
+                  </span>
+                </div>
+                <textarea
+                  id="simCustomQuestion"
+                  rows="3"
+                  placeholder="Over 7 years leading distributed architectures processing 15,000+ RPS..."
+                  class="sim-input-field w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all resize-none"
+                ></textarea>
+              </div>
+            </form>
+          </div>
+
+          <!-- Bottom Footnote -->
+          <div class="px-6 py-3.5 bg-slate-50/80 dark:bg-white/[0.02] border-t border-slate-100 dark:border-white/5 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-body flex-wrap gap-3">
+            <span class="flex items-center gap-1.5">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>Personal data remains private and local to your vault</span>
+            </span>
+            <a href="/playground" class="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1">
+              <span>Open full 10-field testing lab</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
           </div>
         </div>
       </div>
@@ -218,13 +256,13 @@
 
     const sampleData = {
       simName: "Alex Morgan",
-      simEmail: "alex.morgan@engineer.io",
+      simEmail: "alex.morgan@domain.com",
       simPhone: "+1 (415) 890-4219",
-      simEducation: "M.S. in Computer Science — Stanford University (GPA 3.92)",
+      simEducation: "M.S. in Computer Science — Stanford University",
       simExperience: "Senior Staff Distributed Systems Architect at Stripe (2022 – Present)",
       simPortfolio: "https://github.com/alexmorgan-dev",
       simLinkedin: "https://linkedin.com/in/alexmorgan",
-      simCustomQuestion: "Over 7 years architecting high-throughput distributed APIs handling 25,000+ RPS across AWS & GCP. Reduced latency by 42% through optimized caching and connection pooling."
+      simCustomQuestion: "Over 7 years architecting high-throughput distributed APIs handling 25,000+ RPS across AWS & GCP. Reduced p99 latency by 42% through optimized caching and connection pooling."
     };
 
     if (btnSimulate) {
@@ -238,9 +276,9 @@
             const badge = document.getElementById(`badge-${id}`);
             if (input) {
               input.value = sampleData[id];
-              input.style.outline = "2px solid #6C63FF";
+              input.classList.add("border-emerald-500/70", "bg-emerald-50/20", "dark:bg-emerald-950/20");
               setTimeout(() => {
-                input.style.outline = "";
+                input.classList.remove("border-emerald-500/70", "bg-emerald-50/20", "dark:bg-emerald-950/20");
               }, 1200);
             }
             if (badge) {
@@ -253,7 +291,7 @@
               }
             }
           }, delay);
-          delay += 70;
+          delay += 60;
         });
       });
     }
@@ -266,7 +304,7 @@
           const badge = document.getElementById(`badge-${id}`);
           const input = document.getElementById(id);
           if (badge) badge.classList.add("hidden");
-          if (input) input.style.outline = "";
+          if (input) input.classList.remove("border-emerald-500/70", "bg-emerald-50/20", "dark:bg-emerald-950/20");
         });
         if (successBanner) {
           successBanner.classList.add("hidden");

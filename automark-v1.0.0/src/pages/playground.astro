@@ -7,120 +7,120 @@ import Base from "@/layouts/Base.astro";
   meta_title="Live Form Autofill Simulator & Testing Lab"
   description="Test Magic Fill intelligent AI form matching and autofill on a comprehensive multi-type application form."
 >
-  <section class="pt-32 pb-24 relative overflow-hidden min-h-screen">
-    <!-- Glow accents -->
-    <div class="pointer-events-none absolute -top-40 right-1/4 w-[650px] h-[650px] bg-gradient-to-tr from-purple-600/15 via-indigo-600/10 to-transparent blur-[140px] rounded-full"></div>
-    <div class="pointer-events-none absolute bottom-10 left-10 w-[450px] h-[450px] bg-emerald-500/10 blur-[120px] rounded-full"></div>
-
+  <section class="pt-28 pb-20 relative overflow-hidden min-h-screen">
     <div class="container mx-auto px-4 max-w-5xl relative z-10">
       
       <!-- Top Navigation Bar -->
-      <div class="flex items-center justify-between mb-8 pb-4 border-b border-white/5">
-        <div class="flex items-center gap-3">
-          <a href="/dashboard" class="text-xs uppercase tracking-wider text-slate-400 hover:text-slate-200 font-semibold flex items-center gap-1.5 transition-colors">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="flex items-center justify-between mb-8 pb-4 border-b border-slate-200/80 dark:border-white/5">
+        <div class="flex items-center gap-2.5 text-xs font-semibold">
+          <a href="/dashboard" class="text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white flex items-center gap-1.5 transition-colors">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            Dashboard
+            <span>Dashboard</span>
           </a>
-          <span class="text-white/20">/</span>
-          <span class="text-xs uppercase tracking-wider text-white/50">Live Form Simulator</span>
+          <span class="text-slate-300 dark:text-white/20">/</span>
+          <span class="text-slate-900 dark:text-white font-medium">Form Simulator</span>
         </div>
 
-        <div class="flex items-center gap-3">
-          <a href="/memory" class="rounded-lg px-3.5 py-1.5 text-xs font-medium bg-white dark:bg-white/5 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-white/10 shadow-2xs hover:bg-slate-50 dark:hover:bg-white/10 transition-all">
+        <div class="flex items-center gap-2.5">
+          <a href="/memory" class="rounded-lg px-3 py-1.5 text-xs font-medium bg-white dark:bg-white/5 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10 transition-all">
             Inspect Vault
           </a>
-          <a href="/extension" class="rounded-lg px-3.5 py-1.5 text-xs font-medium bg-white dark:bg-white/5 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-white/10 shadow-2xs hover:bg-slate-50 dark:hover:bg-white/10 transition-all">
+          <a href="/extension" class="rounded-lg px-3 py-1.5 text-xs font-medium bg-white dark:bg-white/5 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10 transition-all">
             Extension Setup
           </a>
         </div>
       </div>
 
       <!-- Header & Intro -->
-      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
         <div>
-          <p class="text-xs font-semibold uppercase tracking-[0.12em] text-indigo-500 mb-2">
-            All 10 Input Types Supported
+          <p class="text-xs font-semibold uppercase tracking-[0.12em] text-indigo-600 dark:text-indigo-400 mb-2 font-display">
+            Testing Environment &bull; 10 Input Types
           </p>
-          <h1 class="text-2xl md:text-4xl font-bold tracking-tight text-white mb-2">
-            AI Form Autofill Simulator
+          <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white font-display">
+            Form Autofill Simulator
           </h1>
-          <p class="text-sm text-slate-300 max-w-xl">
-            Simulate a realistic job application form to see how Magic Fill performs semantic mapping, visual status highlights (<span class="text-emerald-400 font-medium">Green = Matched</span>, <span class="text-rose-400 font-medium">Red = Missing</span>), and consent-based learning.
+          <p class="text-sm text-slate-600 dark:text-slate-400 max-w-xl mt-2 leading-relaxed">
+            Test how Magic Fill maps and fills complex inputs across text fields, dropdowns, radios, sliders, checkboxes, and custom questions.
           </p>
         </div>
 
         <!-- Simulation Toolbar -->
-        <div class="flex items-center gap-3 shrink-0">
+        <div class="flex items-center gap-2.5 shrink-0">
           <button
+            type="button"
             id="clearFormBtn"
-            class="px-4 py-2.5 rounded-xl text-xs font-semibold text-white/70 bg-white/5 border border-white/10 hover:bg-white/10 hover:text-white transition-all flex items-center gap-2"
+            class="px-3.5 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-white/5 border border-slate-200/90 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10 transition-all cursor-pointer flex items-center gap-1.5"
           >
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
             </svg>
-            Reset Form
+            <span>Reset Form</span>
           </button>
+          
           <button
+            type="button"
             id="simulateAutofillBtn"
-            class="px-5 py-2.5 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 hover:from-purple-500 hover:to-indigo-500 shadow-lg shadow-purple-600/30 transition-all flex items-center gap-2"
+            class="px-4 py-2 rounded-lg text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 shadow-sm hover:shadow transition-all cursor-pointer flex items-center gap-2"
           >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
             </svg>
-            <span id="autofillBtnText">Simulate Magic Fill</span>
+            <span id="autofillBtnText">Simulate Autofill</span>
+            <span class="hidden sm:inline-block px-1.5 py-0.5 rounded bg-white/20 text-[10px] font-mono">Alt+F</span>
           </button>
         </div>
       </div>
 
       <!-- Live Match Summary Banner -->
-      <div id="matchSummaryBanner" class="p-4 rounded-xl bg-white/[0.03] border border-white/10 mb-8 flex flex-wrap items-center justify-between gap-4">
-        <div class="flex items-center gap-6">
-          <span class="text-xs font-medium text-slate-400">Status Key:</span>
-          <span class="inline-flex items-center gap-2 text-xs font-medium text-slate-300">
+      <div id="matchSummaryBanner" class="p-4 rounded-xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200/80 dark:border-white/10 mb-8 flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-5">
+          <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Status:</span>
+          <span class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-700 dark:text-slate-300">
             <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-            Stored in Vault
+            Matched from Vault
           </span>
-          <span class="inline-flex items-center gap-2 text-xs font-medium text-slate-300">
-            <span class="w-2 h-2 rounded-full bg-rose-500"></span>
-            Missing from Vault
+          <span class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-700 dark:text-slate-300">
+            <span class="w-2 h-2 rounded-full bg-slate-300 dark:bg-white/30"></span>
+            Unmapped / Optional
           </span>
         </div>
-        <div id="statsBadge" class="text-xs text-white/50">
-          Press <strong>Simulate Magic Fill</strong> or use your Extension shortcut (<kbd class="px-1.5 py-0.5 rounded bg-white/10 text-white font-mono text-[10px]">Alt + F</kbd>).
+        <div id="statsBadge" class="text-xs text-slate-500 dark:text-slate-400">
+          Ready to test. Click <strong>Simulate Autofill</strong> or press <kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-mono text-[10px] border border-slate-200 dark:border-white/10">Alt + F</kbd>.
         </div>
       </div>
 
       <!-- The Simulated Form Container -->
-      <form id="jobAppForm" class="bg-gradient-to-b from-white/[0.06] to-white/[0.02] border border-white/10 rounded-2xl p-6 md:p-10 backdrop-blur-xl shadow-2xl space-y-8">
+      <form id="jobAppForm" class="bg-white dark:bg-[#0f1422] border border-slate-200/80 dark:border-white/10 rounded-2xl p-6 md:p-9 shadow-xs space-y-9">
         
         <!-- Section 1: Personal & Contact Information (Text Inputs) -->
         <div>
-          <div class="flex items-center gap-2.5 mb-4 pb-2 border-b border-white/5">
-            <span class="w-6 h-6 rounded-lg bg-purple-500/20 text-purple-400 font-bold text-xs flex items-center justify-center">1</span>
-            <h2 class="text-base font-semibold text-white">Applicant Identity & Contact (Text Inputs)</h2>
+          <div class="flex items-center gap-2 mb-5 pb-3 border-b border-slate-100 dark:border-white/5">
+            <span class="w-5 h-5 rounded-md bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-bold text-xs flex items-center justify-center border border-indigo-100 dark:border-indigo-800/40">1</span>
+            <h2 class="text-sm font-bold text-slate-900 dark:text-white font-display">Applicant Identity &amp; Contact</h2>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <!-- Field: Full Name -->
             <div class="space-y-1.5">
-              <label for="applicant_legal_name" class="block text-xs font-medium text-white/70">
-                Applicant Legal Full Name <span class="text-rose-400">*</span>
+              <label for="applicant_legal_name" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display">
+                Legal Full Name <span class="text-rose-500">*</span>
               </label>
               <input
                 type="text"
                 id="applicant_legal_name"
                 name="applicant_legal_name"
                 placeholder="e.g. Johnathan Doe"
-                class="sim-input w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/10 text-sm text-white placeholder-white/20 focus:outline-none transition-all"
+                class="sim-input w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
               />
-              <span class="field-hint text-[10px] text-white/40 block">Maps semantically to: personal_info.full_name</span>
+              <span class="field-hint text-[11px] text-slate-500 dark:text-slate-400 block">Vault target: personal_info.full_name</span>
             </div>
 
             <!-- Field: Father Name -->
             <div class="space-y-1.5">
-              <label for="parent_guardian_name" class="block text-xs font-medium text-white/70">
+              <label for="parent_guardian_name" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display">
                 Father / Guardian Name
               </label>
               <input
@@ -128,29 +128,29 @@ import Base from "@/layouts/Base.astro";
                 id="parent_guardian_name"
                 name="parent_guardian_name"
                 placeholder="e.g. Robert Doe"
-                class="sim-input w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/10 text-sm text-white placeholder-white/20 focus:outline-none transition-all"
+                class="sim-input w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
               />
-              <span class="field-hint text-[10px] text-white/40 block">Maps semantically to: personal_info.father_name</span>
+              <span class="field-hint text-[11px] text-slate-500 dark:text-slate-400 block">Vault target: personal_info.father_name</span>
             </div>
 
             <!-- Field: Email -->
             <div class="space-y-1.5">
-              <label for="applicant_email_address" class="block text-xs font-medium text-white/70">
-                Contact Email Address <span class="text-rose-400">*</span>
+              <label for="applicant_email_address" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display">
+                Contact Email Address <span class="text-rose-500">*</span>
               </label>
               <input
                 type="email"
                 id="applicant_email_address"
                 name="applicant_email_address"
                 placeholder="you@domain.com"
-                class="sim-input w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/10 text-sm text-white placeholder-white/20 focus:outline-none transition-all"
+                class="sim-input w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
               />
-              <span class="field-hint text-[10px] text-white/40 block">Maps semantically to: personal_info.email</span>
+              <span class="field-hint text-[11px] text-slate-500 dark:text-slate-400 block">Vault target: personal_info.email</span>
             </div>
 
             <!-- Field: Phone Number -->
             <div class="space-y-1.5">
-              <label for="contact_telephone" class="block text-xs font-medium text-white/70">
+              <label for="contact_telephone" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display">
                 Mobile / Primary Phone
               </label>
               <input
@@ -158,14 +158,14 @@ import Base from "@/layouts/Base.astro";
                 id="contact_telephone"
                 name="contact_telephone"
                 placeholder="+1 (555) 000-0000"
-                class="sim-input w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/10 text-sm text-white placeholder-white/20 focus:outline-none transition-all"
+                class="sim-input w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
               />
-              <span class="field-hint text-[10px] text-white/40 block">Maps semantically to: personal_info.phone</span>
+              <span class="field-hint text-[11px] text-slate-500 dark:text-slate-400 block">Vault target: personal_info.phone</span>
             </div>
 
             <!-- Field: National ID / CNIC -->
             <div class="space-y-1.5">
-              <label for="national_identity_number" class="block text-xs font-medium text-white/70">
+              <label for="national_identity_number" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display">
                 National ID / CNIC / Government ID
               </label>
               <input
@@ -173,45 +173,45 @@ import Base from "@/layouts/Base.astro";
                 id="national_identity_number"
                 name="national_identity_number"
                 placeholder="35201-1234567-1"
-                class="sim-input w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/10 text-sm text-white placeholder-white/20 focus:outline-none transition-all"
+                class="sim-input w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
               />
-              <span class="field-hint text-[10px] text-white/40 block">Maps semantically to: personal_info.cnic</span>
+              <span class="field-hint text-[11px] text-slate-500 dark:text-slate-400 block">Vault target: personal_info.cnic</span>
             </div>
 
             <!-- Field: Date of Birth (Date Picker) -->
             <div class="space-y-1.5">
-              <label for="date_of_birth" class="block text-xs font-medium text-white/70">
-                Date of Birth (Date Picker)
+              <label for="date_of_birth" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display">
+                Date of Birth
               </label>
               <input
                 type="date"
                 id="date_of_birth"
                 name="date_of_birth"
-                class="sim-input w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/10 text-sm text-white placeholder-white/20 focus:outline-none transition-all [color-scheme:dark]"
+                class="sim-input w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
               />
-              <span class="field-hint text-[10px] text-white/40 block">Input Type: date (ISO YYYY-MM-DD)</span>
+              <span class="field-hint text-[11px] text-slate-500 dark:text-slate-400 block">ISO date standard (YYYY-MM-DD)</span>
             </div>
           </div>
         </div>
 
         <!-- Section 2: Dropdowns & Radios (Select & Radio Options) -->
         <div>
-          <div class="flex items-center gap-2.5 mb-4 pb-2 border-b border-white/5">
-            <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 font-bold text-xs flex items-center justify-center">2</span>
-            <h2 class="text-base font-semibold text-white">Academic Level & Demographics (Dropdowns & Radios)</h2>
+          <div class="flex items-center gap-2 mb-5 pb-3 border-b border-slate-100 dark:border-white/5">
+            <span class="w-5 h-5 rounded-md bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-bold text-xs flex items-center justify-center border border-indigo-100 dark:border-indigo-800/40">2</span>
+            <h2 class="text-sm font-bold text-slate-900 dark:text-white font-display">Academic Level &amp; Demographics</h2>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             
             <!-- Dropdown: Highest Completed Degree -->
             <div class="space-y-1.5">
-              <label for="highest_degree_level" class="block text-xs font-medium text-white/70">
-                Highest Completed Degree (Dropdown)
+              <label for="highest_degree_level" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display">
+                Highest Completed Degree
               </label>
               <select
                 id="highest_degree_level"
                 name="highest_degree_level"
-                class="sim-input w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/10 text-sm text-white focus:outline-none transition-all [color-scheme:dark]"
+                class="sim-input w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
               >
                 <option value="">-- Choose Degree Level --</option>
                 <option value="High School">High School / Matriculation</option>
@@ -220,18 +220,18 @@ import Base from "@/layouts/Base.astro";
                 <option value="Master of Science">Master of Science / MS</option>
                 <option value="Doctorate">Doctorate / Ph.D.</option>
               </select>
-              <span class="field-hint text-[10px] text-white/40 block">Input Type: select-one (Exact option value matching)</span>
+              <span class="field-hint text-[11px] text-slate-500 dark:text-slate-400 block">Exact &amp; semantic option matching</span>
             </div>
 
             <!-- Dropdown: Country of Residence -->
             <div class="space-y-1.5">
-              <label for="country_residence" class="block text-xs font-medium text-white/70">
-                Country of Residence (Dropdown)
+              <label for="country_residence" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display">
+                Country of Residence
               </label>
               <select
                 id="country_residence"
                 name="country_residence"
-                class="sim-input w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/10 text-sm text-white focus:outline-none transition-all [color-scheme:dark]"
+                class="sim-input w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
               >
                 <option value="">-- Select Country --</option>
                 <option value="Pakistan">Pakistan</option>
@@ -241,47 +241,45 @@ import Base from "@/layouts/Base.astro";
                 <option value="Germany">Germany</option>
                 <option value="United Arab Emirates">United Arab Emirates</option>
               </select>
-              <span class="field-hint text-[10px] text-white/40 block">Maps to: personal_info.country</span>
+              <span class="field-hint text-[11px] text-slate-500 dark:text-slate-400 block">Vault target: personal_info.country</span>
             </div>
 
             <!-- Radio: Gender Selection -->
-            <div class="space-y-2 p-4 rounded-xl bg-black/30 border border-white/5">
-              <label class="block text-xs font-medium text-white/70 mb-1">
-                Gender Identification (Radio Buttons)
+            <div class="space-y-2 p-4 rounded-lg bg-slate-50/60 dark:bg-white/[0.02] border border-slate-200/80 dark:border-white/10">
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display mb-1">
+                Gender Identification
               </label>
               <div class="flex items-center gap-6">
-                <label class="flex items-center gap-2 cursor-pointer text-xs text-white/80">
-                  <input type="radio" name="gender" value="Male" class="sim-radio text-purple-600 focus:ring-0" />
+                <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-700 dark:text-slate-300">
+                  <input type="radio" name="gender" value="Male" class="sim-radio text-indigo-600 focus:ring-indigo-500" />
                   <span>Male</span>
                 </label>
-                <label class="flex items-center gap-2 cursor-pointer text-xs text-white/80">
-                  <input type="radio" name="gender" value="Female" class="sim-radio text-purple-600 focus:ring-0" />
+                <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-700 dark:text-slate-300">
+                  <input type="radio" name="gender" value="Female" class="sim-radio text-indigo-600 focus:ring-indigo-500" />
                   <span>Female</span>
                 </label>
-                <label class="flex items-center gap-2 cursor-pointer text-xs text-white/80">
-                  <input type="radio" name="gender" value="Other" class="sim-radio text-purple-600 focus:ring-0" />
-                  <span>Other / Prefer not to say</span>
+                <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-700 dark:text-slate-300">
+                  <input type="radio" name="gender" value="Other" class="sim-radio text-indigo-600 focus:ring-indigo-500" />
+                  <span>Other</span>
                 </label>
               </div>
-              <span class="field-hint text-[10px] text-white/40 block">Input Type: radio</span>
             </div>
 
             <!-- Radio: Work Authorization -->
-            <div class="space-y-2 p-4 rounded-xl bg-black/30 border border-white/5">
-              <label class="block text-xs font-medium text-white/70 mb-1">
-                Legally Authorized to Work? (Radio)
+            <div class="space-y-2 p-4 rounded-lg bg-slate-50/60 dark:bg-white/[0.02] border border-slate-200/80 dark:border-white/10">
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display mb-1">
+                Legally Authorized to Work?
               </label>
               <div class="flex items-center gap-6">
-                <label class="flex items-center gap-2 cursor-pointer text-xs text-white/80">
-                  <input type="radio" name="work_auth" value="Yes" class="sim-radio text-purple-600 focus:ring-0" />
+                <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-700 dark:text-slate-300">
+                  <input type="radio" name="work_auth" value="Yes" class="sim-radio text-indigo-600 focus:ring-indigo-500" />
                   <span>Yes, Authorized</span>
                 </label>
-                <label class="flex items-center gap-2 cursor-pointer text-xs text-white/80">
-                  <input type="radio" name="work_auth" value="No" class="sim-radio text-purple-600 focus:ring-0" />
+                <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-700 dark:text-slate-300">
+                  <input type="radio" name="work_auth" value="No" class="sim-radio text-indigo-600 focus:ring-indigo-500" />
                   <span>Requires Visa Sponsorship</span>
                 </label>
               </div>
-              <span class="field-hint text-[10px] text-white/40 block">Input Type: radio</span>
             </div>
 
           </div>
@@ -289,20 +287,20 @@ import Base from "@/layouts/Base.astro";
 
         <!-- Section 3: Sliders, Checkboxes, Toggles & Files -->
         <div>
-          <div class="flex items-center gap-2.5 mb-4 pb-2 border-b border-white/5">
-            <span class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 font-bold text-xs flex items-center justify-center">3</span>
-            <h2 class="text-base font-semibold text-white">Experience, Preferences & Attachments (Sliders, Toggles, Files)</h2>
+          <div class="flex items-center gap-2 mb-5 pb-3 border-b border-slate-100 dark:border-white/5">
+            <span class="w-5 h-5 rounded-md bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-bold text-xs flex items-center justify-center border border-indigo-100 dark:border-indigo-800/40">3</span>
+            <h2 class="text-sm font-bold text-slate-900 dark:text-white font-display">Experience, Preferences &amp; Files</h2>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             
-            <!-- Slider / Range: Years of Experience -->
-            <div class="space-y-2 p-4 rounded-xl bg-black/30 border border-white/5">
+            <!-- Slider: Years of Experience -->
+            <div class="space-y-2 p-4 rounded-lg bg-slate-50/60 dark:bg-white/[0.02] border border-slate-200/80 dark:border-white/10">
               <div class="flex items-center justify-between">
-                <label for="years_experience" class="text-xs font-medium text-white/70">
-                  Years of Professional Experience (Slider)
+                <label for="years_experience" class="text-xs font-semibold text-slate-700 dark:text-slate-300 font-display">
+                  Years of Experience
                 </label>
-                <span id="expDisplay" class="font-mono text-xs font-bold text-emerald-400">0 Years</span>
+                <span id="expDisplay" class="font-mono text-xs font-bold text-indigo-600 dark:text-indigo-400">0 Years</span>
               </div>
               <input
                 type="range"
@@ -311,63 +309,60 @@ import Base from "@/layouts/Base.astro";
                 min="0"
                 max="15"
                 value="0"
-                class="sim-input w-full accent-purple-500 cursor-pointer"
+                class="sim-input w-full accent-indigo-600 cursor-pointer"
               />
-              <div class="flex justify-between text-[10px] text-white/30">
+              <div class="flex justify-between text-[10px] text-slate-400 font-mono">
                 <span>0 yrs</span>
                 <span>5 yrs</span>
                 <span>10 yrs</span>
                 <span>15+ yrs</span>
               </div>
-              <span class="field-hint text-[10px] text-white/40 block">Input Type: range (Dynamically computed from experiences)</span>
             </div>
 
             <!-- Toggle Switch: Willingness to Relocate -->
-            <div class="space-y-2 p-4 rounded-xl bg-black/30 border border-white/5 flex flex-col justify-between">
+            <div class="space-y-2 p-4 rounded-lg bg-slate-50/60 dark:bg-white/[0.02] border border-slate-200/80 dark:border-white/10 flex flex-col justify-between">
               <div>
-                <label class="block text-xs font-medium text-white/70 mb-1">
-                  Willing to Relocate or Travel? (Toggle Switch)
+                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display mb-1">
+                  Willing to Relocate or Travel?
                 </label>
-                <p class="text-[11px] text-white/40 leading-relaxed">
-                  Toggle on if you are open to hybrid or relocated employment opportunities.
+                <p class="text-[11px] text-slate-500 dark:text-slate-400">
+                  Open to hybrid or relocated employment opportunities.
                 </p>
               </div>
               <label class="relative inline-flex items-center cursor-pointer mt-2">
                 <input type="checkbox" id="relocate_toggle" name="relocate_toggle" class="sr-only peer" />
-                <div class="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
-                <span class="ml-3 text-xs text-white/60 peer-checked:text-emerald-400 font-medium">Relocation Permitted</span>
+                <div class="w-10 h-5 bg-slate-300 dark:bg-white/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+                <span class="ml-2.5 text-xs text-slate-600 dark:text-slate-300 font-medium">Relocation Permitted</span>
               </label>
-              <span class="field-hint text-[10px] text-white/40 block mt-1">Input Type: toggle switch</span>
             </div>
 
-            <!-- Checkbox: Remote Preference & Notifications -->
-            <div class="space-y-3 p-4 rounded-xl bg-black/30 border border-white/5">
-              <label class="block text-xs font-medium text-white/70 mb-1">
-                Candidate Preferences (Checkboxes)
+            <!-- Checkbox: Remote Preference -->
+            <div class="space-y-3 p-4 rounded-lg bg-slate-50/60 dark:bg-white/[0.02] border border-slate-200/80 dark:border-white/10">
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display mb-1">
+                Candidate Preferences
               </label>
-              <label class="flex items-center gap-2 cursor-pointer text-xs text-white/80">
-                <input type="checkbox" id="remote_preference" name="remote_preference" class="sim-checkbox rounded border-white/20 text-purple-600 focus:ring-0 bg-black/50" />
+              <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-700 dark:text-slate-300">
+                <input type="checkbox" id="remote_preference" name="remote_preference" class="sim-checkbox rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
                 <span>Prefer fully remote or flexible work environment</span>
               </label>
-              <label class="flex items-center gap-2 cursor-pointer text-xs text-white/80">
-                <input type="checkbox" id="immediate_joiner" name="immediate_joiner" class="sim-checkbox rounded border-white/20 text-purple-600 focus:ring-0 bg-black/50" />
+              <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-700 dark:text-slate-300">
+                <input type="checkbox" id="immediate_joiner" name="immediate_joiner" class="sim-checkbox rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
                 <span>Available to start immediately (within 2 weeks)</span>
               </label>
-              <span class="field-hint text-[10px] text-white/40 block">Input Type: checkbox</span>
             </div>
 
-            <!-- File Upload: Resume / Document -->
-            <div class="space-y-1.5 p-4 rounded-xl bg-black/30 border border-white/5">
-              <label for="applicant_resume_file" class="block text-xs font-medium text-white/70">
-                Attach Resume / CV Document (File Upload)
+            <!-- File Upload: Resume -->
+            <div class="space-y-1.5 p-4 rounded-lg bg-slate-50/60 dark:bg-white/[0.02] border border-slate-200/80 dark:border-white/10">
+              <label for="applicant_resume_file" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display">
+                Resume / CV Document
               </label>
               <input
                 type="file"
                 id="applicant_resume_file"
                 name="applicant_resume_file"
-                class="sim-input block w-full text-xs text-white/60 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-purple-500/20 file:text-purple-300 hover:file:bg-purple-500/30 cursor-pointer"
+                class="sim-input block w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 dark:file:bg-indigo-950/40 file:text-indigo-600 dark:file:text-indigo-400 hover:file:bg-indigo-100 cursor-pointer"
               />
-              <span class="field-hint text-[10px] text-white/40 block">Input Type: file (Pulls from stored user documents)</span>
+              <span class="field-hint text-[11px] text-slate-500 dark:text-slate-400 block">Pulls from stored user resumes</span>
             </div>
 
           </div>
@@ -375,40 +370,38 @@ import Base from "@/layouts/Base.astro";
 
         <!-- Section 4: Professional Summary (Text Area) -->
         <div>
-          <div class="flex items-center gap-2.5 mb-4 pb-2 border-b border-white/5">
-            <span class="w-6 h-6 rounded-lg bg-pink-500/20 text-pink-400 font-bold text-xs flex items-center justify-center">4</span>
-            <h2 class="text-base font-semibold text-white">Cover Note & Summary (Text Area)</h2>
+          <div class="flex items-center gap-2 mb-5 pb-3 border-b border-slate-100 dark:border-white/5">
+            <span class="w-5 h-5 rounded-md bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-bold text-xs flex items-center justify-center border border-indigo-100 dark:border-indigo-800/40">4</span>
+            <h2 class="text-sm font-bold text-slate-900 dark:text-white font-display">Professional Summary</h2>
           </div>
 
           <div class="space-y-1.5">
-            <label for="applicant_cover_note" class="block text-xs font-medium text-white/70">
-              Professional Bio & Executive Summary (Text Area)
+            <label for="applicant_cover_note" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display">
+              Cover Note &amp; Executive Summary
             </label>
             <textarea
               id="applicant_cover_note"
               name="applicant_cover_note"
               rows="4"
               placeholder="A brief 2-3 sentence overview of your career, skills, and background..."
-              class="sim-input w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 text-sm text-white placeholder-white/20 focus:outline-none transition-all leading-relaxed"
+              class="sim-input w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all resize-none leading-relaxed"
             ></textarea>
-            <span class="field-hint text-[10px] text-white/40 block">Input Type: textarea (Synthesizes professional bio & skills)</span>
+            <span class="field-hint text-[11px] text-slate-500 dark:text-slate-400 block">Synthesizes professional experience and skills</span>
           </div>
         </div>
 
         <!-- Form Submit & Test Action -->
-        <div class="pt-4 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p class="text-xs text-white/50">
-            Submit form to test Magic Fill's <strong>continuous learning</strong> confirmation prompt.
+        <div class="pt-5 border-t border-slate-100 dark:border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p class="text-xs text-slate-500 dark:text-slate-400">
+            Submit form to test continuous memory learning confirmation.
           </p>
 
-          <div class="flex items-center gap-3">
-            <button
-              type="submit"
-              class="px-6 py-3 rounded-xl text-xs font-semibold text-white bg-white/10 hover:bg-white/15 border border-white/10 transition-all"
-            >
-              Simulate Form Submit
-            </button>
-          </div>
+          <button
+            type="submit"
+            class="px-5 py-2.5 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 transition-all cursor-pointer"
+          >
+            Simulate Form Submit
+          </button>
         </div>
 
       </form>
@@ -435,17 +428,19 @@ import Base from "@/layouts/Base.astro";
       }
 
       // Reset form
-      clearBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        form.reset();
-        expDisplay.textContent = "0 Years";
-        resetVisualStatus();
-        statsBadge.innerHTML = "Form reset. Ready to test.";
-      });
+      if (clearBtn) {
+        clearBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          if (form) form.reset();
+          if (expDisplay) expDisplay.textContent = "0 Years";
+          resetVisualStatus();
+          if (statsBadge) statsBadge.innerHTML = "Form reset. Ready to test.";
+        });
+      }
 
       function resetVisualStatus() {
         document.querySelectorAll(".sim-input, .sim-radio, .sim-checkbox").forEach((el) => {
-          el.classList.remove("border-emerald-500", "shadow-[0_0_12px_rgba(16,185,129,0.3)]", "border-rose-500/60");
+          el.classList.remove("border-emerald-500/80", "bg-emerald-50/20", "dark:bg-emerald-950/20");
           el.style.borderColor = "";
         });
       }
@@ -453,166 +448,154 @@ import Base from "@/layouts/Base.astro";
       function highlightField(el, isMatched) {
         if (!el) return;
         if (isMatched) {
+          el.classList.add("border-emerald-500/80", "bg-emerald-50/20", "dark:bg-emerald-950/20");
           el.style.borderColor = "#10b981";
-          el.style.boxShadow = "0 0 12px rgba(16, 185, 129, 0.25)";
         } else {
-          el.style.borderColor = "#f43f5e";
-          el.style.boxShadow = "0 0 8px rgba(244, 63, 94, 0.2)";
+          el.style.borderColor = "";
         }
       }
 
       // Simulate Autofill (Calls API directly for testing without extension)
-      simulateBtn.addEventListener("click", async (e) => {
-        e.preventDefault();
-        const token = localStorage.getItem("magic_fill_token");
-        if (!token) {
-          alert("Please sign in to test live autofill from your personal memory vault.");
-          window.location.href = "/login?redirect=/playground";
-          return;
-        }
+      if (simulateBtn) {
+        simulateBtn.addEventListener("click", async (e) => {
+          e.preventDefault();
+          const token = localStorage.getItem("magic_fill_token");
+          if (!token) {
+            alert("Please sign in to test live autofill from your personal memory vault.");
+            window.location.href = "/login?redirect=/playground";
+            return;
+          }
 
-        try {
-          autofillBtnText.textContent = "Matching Fields...";
-          simulateBtn.disabled = true;
+          try {
+            if (autofillBtnText) autofillBtnText.textContent = "Matching Fields...";
+            simulateBtn.disabled = true;
 
-          // Harvest all simulated input fields
-          const fields = [
-            { field_id: "f_legal_name", name: "applicant_legal_name", label: "Applicant Legal Full Name", input_type: "text", tag_name: "input" },
-            { field_id: "f_father_name", name: "parent_guardian_name", label: "Father / Guardian Name", input_type: "text", tag_name: "input" },
-            { field_id: "f_email", name: "applicant_email_address", label: "Contact Email Address", input_type: "email", tag_name: "input" },
-            { field_id: "f_phone", name: "contact_telephone", label: "Mobile / Primary Phone", input_type: "tel", tag_name: "input" },
-            { field_id: "f_cnic", name: "national_identity_number", label: "National ID / CNIC / Government ID", input_type: "text", tag_name: "input" },
-            { field_id: "f_dob", name: "date_of_birth", label: "Date of Birth", input_type: "date", tag_name: "input" },
-            { field_id: "f_degree", name: "highest_degree_level", label: "Highest Completed Degree", input_type: "select-one", tag_name: "select", options: ["High School", "Associate Degree", "Bachelor of Science", "Master of Science", "Doctorate"] },
-            { field_id: "f_country", name: "country_residence", label: "Country of Residence", input_type: "select-one", tag_name: "select", options: ["Pakistan", "United States", "United Kingdom", "Canada", "Germany", "United Arab Emirates"] },
-            { field_id: "f_gender", name: "gender", label: "Gender Identification", input_type: "radio", tag_name: "input", options: ["Male", "Female", "Other"] },
-            { field_id: "f_work_auth", name: "work_auth", label: "Legally Authorized to Work?", input_type: "radio", tag_name: "input", options: ["Yes", "No"] },
-            { field_id: "f_exp", name: "years_experience", label: "Years of Professional Experience", input_type: "range", tag_name: "input" },
-            { field_id: "f_relocate", name: "relocate_toggle", label: "Willing to Relocate or Travel", input_type: "checkbox", tag_name: "input" },
-            { field_id: "f_bio", name: "applicant_cover_note", label: "Professional Bio & Executive Summary", input_type: "textarea", tag_name: "textarea" },
-          ];
+            // Harvest all simulated input fields
+            const fields = [
+              { field_id: "f_legal_name", name: "applicant_legal_name", label: "Applicant Legal Full Name", input_type: "text", tag_name: "input" },
+              { field_id: "f_father_name", name: "parent_guardian_name", label: "Father / Guardian Name", input_type: "text", tag_name: "input" },
+              { field_id: "f_email", name: "applicant_email_address", label: "Contact Email Address", input_type: "email", tag_name: "input" },
+              { field_id: "f_phone", name: "contact_telephone", label: "Mobile / Primary Phone", input_type: "tel", tag_name: "input" },
+              { field_id: "f_cnic", name: "national_identity_number", label: "National ID / CNIC / Government ID", input_type: "text", tag_name: "input" },
+              { field_id: "f_dob", name: "date_of_birth", label: "Date of Birth", input_type: "date", tag_name: "input" },
+              { field_id: "f_degree", name: "highest_degree_level", label: "Highest Completed Degree", input_type: "select-one", tag_name: "select", options: ["High School", "Associate Degree", "Bachelor of Science", "Master of Science", "Doctorate"] },
+              { field_id: "f_country", name: "country_residence", label: "Country of Residence", input_type: "select-one", tag_name: "select", options: ["Pakistan", "United States", "United Kingdom", "Canada", "Germany", "United Arab Emirates"] },
+              { field_id: "f_gender", name: "gender", label: "Gender Identification", input_type: "radio", tag_name: "input", options: ["Male", "Female", "Other"] },
+              { field_id: "f_work_auth", name: "work_auth", label: "Legally Authorized to Work?", input_type: "radio", tag_name: "input", options: ["Yes", "No"] },
+              { field_id: "f_exp", name: "years_experience", label: "Years of Professional Experience", input_type: "range", tag_name: "input" },
+              { field_id: "f_relocate", name: "relocate_toggle", label: "Willing to Relocate or Travel", input_type: "checkbox", tag_name: "input" },
+              { field_id: "f_bio", name: "applicant_cover_note", label: "Professional Bio & Executive Summary", input_type: "textarea", tag_name: "textarea" },
+            ];
 
-          const res = await fetch("/api/matching/fields", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({
-              fields: fields,
-              page_url: window.location.href,
-              form_context: "Software Engineering Job Application"
-            })
-          });
+            const res = await fetch("/api/matching/fields", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+              },
+              body: JSON.stringify({
+                fields: fields,
+                page_url: window.location.href,
+                form_context: "Software Engineering Job Application"
+              })
+            });
 
-          const data = await res.json();
-          resetVisualStatus();
+            const data = await res.json();
+            resetVisualStatus();
 
-          if (res.ok && data.success && data.data) {
-            const mappings = data.data.mappings || [];
-            const mappedIds = new Set(mappings.map(m => m.field_id));
-            let filledCount = 0;
+            if (res.ok && data.success && data.data) {
+              const mappings = data.data.mappings || [];
+              let filledCount = 0;
 
-            mappings.forEach(m => {
-              const val = m.value;
-              if (m.field_id === "f_legal_name") {
-                const el = document.getElementById("applicant_legal_name");
-                if (el && val) { el.value = val; highlightField(el, true); filledCount++; }
-              } else if (m.field_id === "f_father_name") {
-                const el = document.getElementById("parent_guardian_name");
-                if (el && val) { el.value = val; highlightField(el, true); filledCount++; }
-              } else if (m.field_id === "f_email") {
-                const el = document.getElementById("applicant_email_address");
-                if (el && val) { el.value = val; highlightField(el, true); filledCount++; }
-              } else if (m.field_id === "f_phone") {
-                const el = document.getElementById("contact_telephone");
-                if (el && val) { el.value = val; highlightField(el, true); filledCount++; }
-              } else if (m.field_id === "f_cnic") {
-                const el = document.getElementById("national_identity_number");
-                if (el && val) { el.value = val; highlightField(el, true); filledCount++; }
-              } else if (m.field_id === "f_dob") {
-                const el = document.getElementById("date_of_birth");
-                if (el && val) { el.value = val; highlightField(el, true); filledCount++; }
-              } else if (m.field_id === "f_degree") {
-                const el = document.getElementById("highest_degree_level");
-                if (el && val) {
-                  // select option
-                  Array.from(el.options).forEach(opt => {
-                    if (opt.value.toLowerCase().includes(val.toLowerCase()) || val.toLowerCase().includes(opt.value.toLowerCase())) {
-                      el.value = opt.value;
-                    }
-                  });
-                  highlightField(el, true);
-                  filledCount++;
-                }
-              } else if (m.field_id === "f_country") {
-                const el = document.getElementById("country_residence");
-                if (el && val) {
-                  Array.from(el.options).forEach(opt => {
-                    if (opt.value.toLowerCase().includes(val.toLowerCase()) || val.toLowerCase().includes(opt.value.toLowerCase())) {
-                      el.value = opt.value;
-                    }
-                  });
-                  highlightField(el, true);
-                  filledCount++;
-                }
-              } else if (m.field_id === "f_gender") {
-                const radios = document.getElementsByName("gender");
-                radios.forEach(r => {
-                  if (r.value.toLowerCase() === String(val).toLowerCase()) {
-                    r.checked = true;
-                    highlightField(r.closest("div"), true);
+              mappings.forEach(m => {
+                const val = m.value;
+                if (m.field_id === "f_legal_name") {
+                  const el = document.getElementById("applicant_legal_name");
+                  if (el && val) { el.value = val; highlightField(el, true); filledCount++; }
+                } else if (m.field_id === "f_father_name") {
+                  const el = document.getElementById("parent_guardian_name");
+                  if (el && val) { el.value = val; highlightField(el, true); filledCount++; }
+                } else if (m.field_id === "f_email") {
+                  const el = document.getElementById("applicant_email_address");
+                  if (el && val) { el.value = val; highlightField(el, true); filledCount++; }
+                } else if (m.field_id === "f_phone") {
+                  const el = document.getElementById("contact_telephone");
+                  if (el && val) { el.value = val; highlightField(el, true); filledCount++; }
+                } else if (m.field_id === "f_cnic") {
+                  const el = document.getElementById("national_identity_number");
+                  if (el && val) { el.value = val; highlightField(el, true); filledCount++; }
+                } else if (m.field_id === "f_dob") {
+                  const el = document.getElementById("date_of_birth");
+                  if (el && val) { el.value = val; highlightField(el, true); filledCount++; }
+                } else if (m.field_id === "f_degree") {
+                  const el = document.getElementById("highest_degree_level");
+                  if (el && val) {
+                    Array.from(el.options).forEach(opt => {
+                      if (opt.value.toLowerCase().includes(val.toLowerCase()) || val.toLowerCase().includes(opt.value.toLowerCase())) {
+                        el.value = opt.value;
+                      }
+                    });
+                    highlightField(el, true);
                     filledCount++;
                   }
-                });
-              } else if (m.field_id === "f_exp") {
-                const num = parseInt(val) || 0;
-                if (expSlider && expDisplay) {
-                  expSlider.value = num;
-                  expDisplay.textContent = `${num} Years`;
-                  highlightField(expSlider.closest("div"), true);
-                  filledCount++;
+                } else if (m.field_id === "f_country") {
+                  const el = document.getElementById("country_residence");
+                  if (el && val) {
+                    Array.from(el.options).forEach(opt => {
+                      if (opt.value.toLowerCase().includes(val.toLowerCase()) || val.toLowerCase().includes(opt.value.toLowerCase())) {
+                        el.value = opt.value;
+                      }
+                    });
+                    highlightField(el, true);
+                    filledCount++;
+                  }
+                } else if (m.field_id === "f_gender") {
+                  const radios = document.getElementsByName("gender");
+                  radios.forEach(r => {
+                    if (r.value.toLowerCase() === String(val).toLowerCase()) {
+                      r.checked = true;
+                      highlightField(r.closest("div"), true);
+                      filledCount++;
+                    }
+                  });
+                } else if (m.field_id === "f_exp") {
+                  const num = parseInt(val) || 0;
+                  if (expSlider && expDisplay) {
+                    expSlider.value = num;
+                    expDisplay.textContent = `${num} Years`;
+                    highlightField(expSlider.closest("div"), true);
+                    filledCount++;
+                  }
+                } else if (m.field_id === "f_bio") {
+                  const el = document.getElementById("applicant_cover_note");
+                  if (el && val) { el.value = val; highlightField(el, true); filledCount++; }
                 }
-              } else if (m.field_id === "f_bio") {
-                const el = document.getElementById("applicant_cover_note");
-                if (el && val) { el.value = val; highlightField(el, true); filledCount++; }
-              }
-            });
+              });
 
-            // Highlight unmapped fields in red
-            fields.forEach(f => {
-              if (!mappedIds.has(f.field_id)) {
-                if (f.field_id === "f_work_auth") {
-                  highlightField(document.querySelector("input[name='work_auth']")?.closest("div"), false);
-                } else if (f.field_id === "f_relocate") {
-                  highlightField(document.getElementById("relocate_toggle")?.closest(".sim-input, div"), false);
-                } else {
-                  const el = document.getElementsByName(f.name)[0];
-                  if (el) highlightField(el, false);
-                }
+              if (statsBadge) {
+                statsBadge.innerHTML = `<span class="text-emerald-600 dark:text-emerald-400 font-bold">${filledCount} Fields Completed</span> from Vault &bull; <span class="text-slate-500">${fields.length - filledCount} Unmapped</span>`;
               }
-            });
-
-            statsBadge.innerHTML = `<span class="text-emerald-400 font-bold">${filledCount} Fields Filled</span> from Vault &bull; <span class="text-white/60">${fields.length - filledCount} Unmapped</span>`;
-          } else {
-            alert(data.message || "Failed to match fields. Check server logs.");
+            } else {
+              alert(data.message || "Failed to match fields. Check server logs.");
+            }
+          } catch (err) {
+            console.error(err);
+            alert("Network error connecting to Magic Fill backend.");
+          } finally {
+            if (autofillBtnText) autofillBtnText.textContent = "Simulate Autofill";
+            simulateBtn.disabled = false;
           }
-        } catch (err) {
-          console.error(err);
-          alert("Network error connecting to Magic Fill backend.");
-        } finally {
-          autofillBtnText.textContent = "Simulate Magic Fill";
-          simulateBtn.disabled = false;
-        }
-      });
+        });
+      }
 
       // Submit demonstration of consent-based learning
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const email = document.getElementById("applicant_email_address").value;
-        const name = document.getElementById("applicant_legal_name").value;
-        alert(`Form simulation complete! \n\nIn live browsing, when you complete a new field (e.g. "${name || 'New Value'}"), Magic Fill prompts:\n"Save this to your Personal Memory Vault?"\n\nYour data remains sovereign and never shared.`);
-      });
+      if (form) {
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const name = document.getElementById("applicant_legal_name")?.value;
+          alert(`Form simulation complete!\n\nWhen you fill in unmapped fields (e.g. "${name || 'New Detail'}"), Magic Fill automatically prompts:\n"Save this new information to your vault?"\n\nYour data remains sovereign and private.`);
+        });
+      }
     });
   </script>
 </Base>
