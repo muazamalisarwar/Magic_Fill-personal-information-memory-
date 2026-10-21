@@ -21,52 +21,56 @@ const { pathname } = Astro.url;
 ---
 
 <header
-  class={`header z-50 w-full transition-all duration-300 ${settings.sticky_header ? "fixed top-0" : ""} bg-white/90 dark:bg-[#0B0F19]/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-white/10 shadow-xs dark:shadow-none`}
+  id="mainHeader"
+  class={`header z-50 w-full transition-all duration-300 ${settings.sticky_header ? "fixed top-0" : ""} bg-white/80 dark:bg-[#0B0F19]/80 backdrop-blur-xl border-b border-slate-200/70 dark:border-white/[0.08]`}
 >
-  <nav class="navbar max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-30 flex items-center justify-between h-20">
-    <!-- Logo -->
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-30 flex items-center justify-between h-16">
+    <!-- Brand Logo -->
     <div class="flex items-center shrink-0">
       <Logo />
     </div>
 
-    <!-- 1. PUBLIC MARKETING MENU (Visible ONLY when Logged Out) -->
+    <!-- 1. PUBLIC MARKETING MENU (Visible When Logged Out) -->
     <ul
       id="publicNavMenu"
-      class="navbar-nav hidden lg:flex items-center gap-x-2"
+      class="navbar-nav hidden lg:flex items-center gap-1 bg-slate-100/60 dark:bg-white/[0.04] p-1 rounded-xl border border-slate-200/50 dark:border-white/[0.06]"
     >
       {
-        main.map((item) => (
-          <li class="nav-item">
-            <a
-              href={item.url}
-              class={`text-xs font-bold tracking-tight uppercase px-4 py-2.5 rounded-xl transition-all duration-200 cursor-pointer ${
-                (pathname === `${item.url}/` || pathname === item.url)
-                  ? "bg-[#6C63FF]/15 text-[#6C63FF] font-extrabold"
-                  : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10"
-              }`}
-            >
-              {item.name}
-            </a>
-          </li>
-        ))
+        main.map((item) => {
+          const isActive = pathname === `${item.url}/` || pathname === item.url;
+          return (
+            <li class="nav-item">
+              <a
+                href={item.url}
+                class={`text-[13px] font-medium px-3.5 py-1.5 rounded-lg transition-all duration-150 cursor-pointer block ${
+                  isActive
+                    ? "bg-white dark:bg-white/10 text-slate-950 dark:text-white font-semibold shadow-2xs"
+                    : "text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-white/50 dark:hover:bg-white/[0.06]"
+                }`}
+              >
+                {item.name}
+              </a>
+            </li>
+          );
+        })
       }
     </ul>
 
-    <!-- 2. AUTHENTICATED PLATFORM MENU (Visible ONLY when Logged In) -->
+    <!-- 2. AUTHENTICATED PLATFORM MENU (Visible When Logged In) -->
     <ul
       id="authNavMenu"
-      class="navbar-nav hidden items-center gap-x-2"
+      class="navbar-nav hidden items-center gap-1 bg-slate-100/60 dark:bg-white/[0.04] p-1 rounded-xl border border-slate-200/50 dark:border-white/[0.06]"
     >
       <li class="nav-item">
         <a
           href="/memory"
-          class={`text-xs px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
+          class={`text-[13px] px-3.5 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-1.5 cursor-pointer ${
             pathname === "/memory" || pathname === "/memory/"
-              ? "bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white font-semibold"
-              : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 font-medium"
+              ? "bg-white dark:bg-white/10 text-slate-950 dark:text-white font-semibold shadow-2xs"
+              : "text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-white/50 dark:hover:bg-white/[0.06] font-medium"
           }`}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+          <svg width="13.5" height="13.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
           <span>Memory Vault</span>
         </a>
       </li>
@@ -74,13 +78,13 @@ const { pathname } = Astro.url;
       <li class="nav-item">
         <a
           href="/dashboard"
-          class={`text-xs px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
+          class={`text-[13px] px-3.5 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-1.5 cursor-pointer ${
             pathname === "/dashboard" || pathname === "/dashboard/"
-              ? "bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white font-semibold"
-              : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 font-medium"
+              ? "bg-white dark:bg-white/10 text-slate-950 dark:text-white font-semibold shadow-2xs"
+              : "text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-white/50 dark:hover:bg-white/[0.06] font-medium"
           }`}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          <svg width="13.5" height="13.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
           <span>Dashboard</span>
         </a>
       </li>
@@ -88,13 +92,13 @@ const { pathname } = Astro.url;
       <li class="nav-item">
         <a
           href="/extract"
-          class={`text-xs px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
+          class={`text-[13px] px-3.5 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-1.5 cursor-pointer ${
             pathname === "/extract" || pathname === "/extract/"
-              ? "bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white font-semibold"
-              : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 font-medium"
+              ? "bg-white dark:bg-white/10 text-slate-950 dark:text-white font-semibold shadow-2xs"
+              : "text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-white/50 dark:hover:bg-white/[0.06] font-medium"
           }`}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <svg width="13.5" height="13.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
           <span>AI Extraction</span>
         </a>
       </li>
@@ -102,13 +106,13 @@ const { pathname } = Astro.url;
       <li class="nav-item">
         <a
           href="/playground"
-          class={`text-xs px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
+          class={`text-[13px] px-3.5 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-1.5 cursor-pointer ${
             pathname === "/playground" || pathname === "/playground/"
-              ? "bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white font-semibold"
-              : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 font-medium"
+              ? "bg-white dark:bg-white/10 text-slate-950 dark:text-white font-semibold shadow-2xs"
+              : "text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-white/50 dark:hover:bg-white/[0.06] font-medium"
           }`}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          <svg width="13.5" height="13.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
           <span>Simulator</span>
         </a>
       </li>
@@ -116,31 +120,44 @@ const { pathname } = Astro.url;
       <li class="nav-item">
         <a
           href="/extension"
-          class={`text-xs px-3 py-2 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
+          class={`text-[13px] px-3.5 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-1.5 cursor-pointer ${
             pathname === "/extension" || pathname === "/extension/"
-              ? "bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white font-semibold"
-              : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 font-medium"
+              ? "bg-white dark:bg-white/10 text-slate-950 dark:text-white font-semibold shadow-2xs"
+              : "text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-white/50 dark:hover:bg-white/[0.06] font-medium"
           }`}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+          <svg width="13.5" height="13.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
           <span>Extension</span>
         </a>
       </li>
     </ul>
 
-    <!-- 3. RIGHT CONTROLS: Theme Toggle & Auth Buttons -->
-    <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
-      <!-- Active Dark / Light Theme Toggle Button -->
+    <!-- 3. RIGHT CONTROLS: Extension Quick Link, Theme Toggle & Auth Buttons -->
+    <div class="flex items-center gap-2 sm:gap-2.5 shrink-0">
+      <!-- Chrome Extension Quick Link -->
+      <a
+        href="/extension"
+        class="hidden sm:inline-flex items-center gap-1.5 h-8.5 px-2.5 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-white/5 transition-colors"
+        title="Download Chrome Extension"
+      >
+        <svg class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+        </svg>
+        <span>Extension</span>
+      </a>
+
+      <!-- Minimal Theme Toggle Button -->
       <button
         type="button"
         id="themeToggleBtn"
-        class="size-10 rounded-2xl flex items-center justify-center transition-all bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 border border-slate-300 dark:border-white/10 text-slate-700 dark:text-white cursor-pointer shadow-xs hover:scale-105 active:scale-95"
+        class="size-8.5 rounded-lg flex items-center justify-center transition-colors bg-transparent hover:bg-slate-100/80 dark:hover:bg-white/10 text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white cursor-pointer"
         title="Toggle Dark / Light Theme"
         aria-label="Toggle Theme"
       >
         <!-- Sun icon (shown in dark theme) -->
         <svg id="themeIconSun" class="w-4 h-4 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="5" stroke-width="2"></circle>
+          <circle cx="12" cy="12" r="4.5" stroke-width="2"></circle>
           <line x1="12" y1="1" x2="12" y2="3" stroke-width="2" stroke-linecap="round"></line>
           <line x1="12" y1="21" x2="12" y2="23" stroke-width="2" stroke-linecap="round"></line>
           <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke-width="2" stroke-linecap="round"></line>
@@ -157,40 +174,39 @@ const { pathname } = Astro.url;
       </button>
 
       <!-- Logged Out Actions -->
-      <div id="headerLoggedOutArea" class="flex items-center gap-2">
+      <div id="headerLoggedOutArea" class="flex items-center gap-1.5 sm:gap-2">
         <a
           href="/login"
           id="btnHeaderSignIn"
-          class="h-9 px-3.5 text-xs font-medium rounded-lg cursor-pointer bg-white hover:bg-slate-50 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200 dark:border-white/15 text-slate-700 dark:text-white transition-colors flex items-center justify-center shadow-2xs"
+          class="h-8.5 px-3 text-[13px] font-medium rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-white/5 transition-colors flex items-center justify-center cursor-pointer"
         >
           Sign In
         </a>
         <a
           href="/register"
           id="btnHeaderGetStarted"
-          class="h-9 px-4 text-xs font-semibold rounded-lg cursor-pointer bg-indigo-600 hover:bg-indigo-700 text-white transition-colors flex items-center justify-center shadow-xs"
+          class="h-8.5 px-3.5 text-[13px] font-semibold rounded-lg bg-slate-950 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-950 transition-all duration-150 flex items-center gap-1.5 shadow-2xs hover:shadow-xs cursor-pointer active:scale-98"
         >
-          Get Started
+          <span>Get Started</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
       </div>
 
       <!-- Logged In Actions -->
       <div id="headerLoggedInArea" class="hidden items-center gap-2">
-        <!-- User profile button without status dot -->
         <a
           href="/dashboard"
-          class="h-9 px-3 rounded-lg flex items-center gap-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200 transition-colors"
+          class="h-8.5 px-3 rounded-lg flex items-center gap-1.5 text-xs font-semibold bg-slate-100/80 dark:bg-white/10 hover:bg-slate-200/80 dark:hover:bg-white/15 text-slate-900 dark:text-white transition-colors border border-slate-200/60 dark:border-white/10"
           title="Go to Dashboard"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-          <span id="headerUserDisplayName" class="truncate max-w-28 font-medium text-slate-900 dark:text-white">Account</span>
+          <svg width="13.5" height="13.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span id="headerUserDisplayName" class="truncate max-w-28 font-semibold">Account</span>
         </a>
 
-        <!-- Sign Out button -->
         <button
           type="button"
           id="btnHeaderSignOut"
-          class="h-9 px-3 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 border border-transparent transition-colors cursor-pointer"
+          class="h-8.5 px-2.5 rounded-lg text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors cursor-pointer"
           title="Sign Out"
         >
           Sign Out
@@ -201,10 +217,10 @@ const { pathname } = Astro.url;
       <button
         type="button"
         id="mobileNavToggleBtn"
-        class="lg:hidden size-10 rounded-2xl flex items-center justify-center text-slate-800 dark:text-white bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 border border-slate-300 dark:border-white/10"
+        class="lg:hidden size-8.5 rounded-lg flex items-center justify-center text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 border border-slate-200/80 dark:border-white/10"
         aria-label="Toggle navigation"
       >
-        <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="size-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
         </svg>
       </button>
@@ -215,42 +231,42 @@ const { pathname } = Astro.url;
   <div id="mobileDrawerBackdrop" class="fixed inset-0 z-40 bg-black/40 backdrop-blur-xs hidden lg:hidden"></div>
   <div
     id="mobileDrawer"
-    class="fixed inset-y-0 right-0 z-50 w-72 bg-white dark:bg-[#0B0F19] border-l border-slate-200 dark:border-white/10 p-6 shadow-2xl transform translate-x-full transition-transform duration-300 lg:hidden flex flex-col justify-between"
+    class="fixed inset-y-0 right-0 z-50 w-72 bg-white dark:bg-[#0B0F19] border-l border-slate-200/80 dark:border-white/10 p-6 shadow-2xl transform translate-x-full transition-transform duration-300 lg:hidden flex flex-col justify-between"
   >
     <div>
-      <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-white/10 mb-6">
-        <span class="text-xs font-extrabold uppercase tracking-wider text-[#6C63FF] font-display">Magic Fill</span>
-        <button type="button" id="mobileDrawerCloseBtn" class="size-8 rounded-xl flex items-center justify-center text-lg font-bold text-slate-700 dark:text-white bg-slate-100 dark:bg-white/10">&times;</button>
+      <div class="flex items-center justify-between pb-4 border-b border-slate-200/80 dark:border-white/10 mb-5">
+        <Logo />
+        <button type="button" id="mobileDrawerCloseBtn" class="size-8 rounded-lg flex items-center justify-center text-lg font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white bg-slate-100 dark:bg-white/10">&times;</button>
       </div>
 
       <!-- Mobile Logged Out Links -->
-      <div id="mobileLoggedOutLinks" class="flex flex-col gap-2">
-        <a href="/features" class="px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">Features</a>
-        <a href="/integrations" class="px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">Supported Portals</a>
-        <a href="/pricing" class="px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">Pricing</a>
-        <a href="/about" class="px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">How It Works</a>
-        <a href="/playground" class="px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">Form Simulator</a>
-        <a href="/contact" class="px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">Contact</a>
+      <div id="mobileLoggedOutLinks" class="flex flex-col gap-1">
+        <a href="/features" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-lg transition-colors">Features</a>
+        <a href="/playground" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-lg transition-colors">Live Simulator</a>
+        <a href="/integrations" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-lg transition-colors">Supported Portals</a>
+        <a href="/pricing" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-lg transition-colors">Pricing</a>
+        <a href="/about" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-lg transition-colors">How It Works</a>
+        <a href="/extension" class="px-3.5 py-2 text-[13.5px] font-medium text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 rounded-lg transition-colors">Browser Extension</a>
       </div>
 
       <!-- Mobile Logged In Links -->
-      <div id="mobileLoggedInLinks" class="hidden flex-col gap-2">
-        <a href="/dashboard" class="px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">Dashboard</a>
-        <a href="/memory" class="px-4 py-2.5 text-xs font-bold text-[#6C63FF] bg-[#6C63FF]/10 rounded-xl">Memory Vault</a>
-        <a href="/extract" class="px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">AI Extraction</a>
-        <a href="/playground" class="px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">Live Simulator</a>
-        <a href="/extension" class="px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">Extension Setup</a>
+      <div id="mobileLoggedInLinks" class="hidden flex-col gap-1">
+        <a href="/dashboard" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-lg transition-colors">Dashboard</a>
+        <a href="/memory" class="px-3.5 py-2 text-[13.5px] font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 rounded-lg transition-colors">Memory Vault</a>
+        <a href="/extract" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-lg transition-colors">AI Extraction</a>
+        <a href="/playground" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-lg transition-colors">Live Simulator</a>
+        <a href="/extension" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-lg transition-colors">Extension Setup</a>
       </div>
     </div>
 
     <!-- Mobile Drawer Bottom Actions -->
-    <div class="pt-4 border-t border-slate-200 dark:border-white/10 space-y-2.5">
+    <div class="pt-4 border-t border-slate-200/80 dark:border-white/10 space-y-2">
       <div id="mobileDrawerLoggedOutBtns" class="flex flex-col gap-2">
-        <a href="/login" class="w-full text-center py-2.5 text-xs font-bold text-slate-800 dark:text-white bg-slate-100 dark:bg-white/10 rounded-xl">Sign In</a>
-        <a href="/register" class="w-full text-center py-2.5 text-xs font-bold text-white bg-gradient-to-r from-[#6C63FF] to-indigo-600 rounded-xl">Get Started</a>
+        <a href="/login" class="w-full text-center py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-white/10 hover:bg-slate-200 rounded-lg transition-colors">Sign In</a>
+        <a href="/register" class="w-full text-center py-2 text-xs font-semibold text-white bg-slate-950 dark:bg-white dark:text-slate-950 rounded-lg transition-colors shadow-2xs">Get Started Free</a>
       </div>
       <div id="mobileDrawerLoggedInBtns" class="hidden flex-col gap-2">
-        <button type="button" id="mobileDrawerSignOutBtn" class="w-full text-center py-2.5 text-xs font-bold text-rose-500 bg-rose-500/10 rounded-xl">Sign Out</button>
+        <button type="button" id="mobileDrawerSignOutBtn" class="w-full text-center py-2 text-xs font-semibold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10 rounded-lg transition-colors">Sign Out</button>
       </div>
     </div>
   </div>
@@ -416,6 +432,19 @@ const { pathname } = Astro.url;
         if (toggleBtn) toggleBtn.addEventListener("click", openDrawer);
         if (closeBtn) closeBtn.addEventListener("click", closeDrawer);
         if (backdrop) backdrop.addEventListener("click", closeDrawer);
+
+        // Scroll Elevation
+        const mainHeader = document.getElementById("mainHeader");
+        function handleScroll() {
+          if (!mainHeader) return;
+          if (window.scrollY > 12) {
+            mainHeader.classList.add("shadow-xs", "dark:shadow-[0_4px_24px_rgba(0,0,0,0.35)]");
+          } else {
+            mainHeader.classList.remove("shadow-xs", "dark:shadow-[0_4px_24px_rgba(0,0,0,0.35)]");
+          }
+        }
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        handleScroll();
       }
 
       if (document.readyState === "loading") {

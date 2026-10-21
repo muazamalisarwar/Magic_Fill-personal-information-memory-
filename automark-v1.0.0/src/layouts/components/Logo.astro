@@ -9,16 +9,16 @@ const { class: className = "", showBadge = false } = Astro.props;
 
 <a
   href="/"
-  class={`group inline-flex items-center select-none transition-transform duration-200 hover:scale-[1.03] ${className}`}
+  class={`group inline-flex items-center select-none transition-opacity duration-150 hover:opacity-90 ${className}`}
   aria-label="Magic Fill — Home"
 >
   <!-- Light Mode Brand Logo -->
   <img
     src="/images/for_light_mode.png"
     alt="Magic Fill — Fill Forms With Magic"
-    class="magic-fill-logo-light h-11 sm:h-12 w-auto object-contain"
-    width="168"
-    height="120"
+    class="magic-fill-logo-light h-8 sm:h-8.5 w-auto object-contain"
+    width="140"
+    height="34"
     loading="eager"
   />
 
@@ -26,9 +26,9 @@ const { class: className = "", showBadge = false } = Astro.props;
   <img
     src="/images/for_dark_mode.png"
     alt="Magic Fill — Fill Forms With Magic"
-    class="magic-fill-logo-dark h-11 sm:h-12 w-auto object-contain"
-    width="168"
-    height="120"
+    class="magic-fill-logo-dark h-8 sm:h-8.5 w-auto object-contain"
+    width="140"
+    height="34"
     loading="eager"
   />
 </a>
