@@ -35,13 +35,16 @@ body,
   width: 7px;
   height: 7px;
 }
+
 ::-webkit-scrollbar-track {
   background: #0B0D0C;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #2B312C;
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #3A423C;
 }
@@ -110,6 +113,7 @@ html:not([data-theme="light"]):not(.light-theme) .hasHighlight strong {
 
 /* Responsive Desktop Navigation Strict Guard */
 @media (max-width: 1023px) {
+
   #publicNavMenu,
   #authNavMenu {
     display: none !important;
@@ -117,10 +121,12 @@ html:not([data-theme="light"]):not(.light-theme) .hasHighlight strong {
 }
 
 @media (min-width: 1024px) {
+
   #publicNavMenu.active-desktop-menu,
   #authNavMenu.active-desktop-menu {
     display: flex !important;
   }
+
   #publicNavMenu:not(.active-desktop-menu),
   #authNavMenu:not(.active-desktop-menu) {
     display: none !important;
@@ -207,7 +213,7 @@ tr:hover td {
 }
 
 /* Modals */
-[role="dialog"] > div {
+[role="dialog"]>div {
   background-color: #191D1A !important;
   border: 1px solid #2B312C !important;
   box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.7) !important;
@@ -263,10 +269,12 @@ html[data-theme="light"] ::-webkit-scrollbar-track,
 html.light-theme ::-webkit-scrollbar-track {
   background: #F8FAF9;
 }
+
 html[data-theme="light"] ::-webkit-scrollbar-thumb,
 html.light-theme ::-webkit-scrollbar-thumb {
   background: #CBD5D0;
 }
+
 html[data-theme="light"] ::-webkit-scrollbar-thumb:hover,
 html.light-theme ::-webkit-scrollbar-thumb:hover {
   background: #9AAEA4;
@@ -401,6 +409,74 @@ html.light-theme [class*="border-[#3A423C]"] {
   border-color: #CBD5E1 !important;
 }
 
+/* Universal White Text & Muted Text Normalization in Light Mode */
+html[data-theme="light"] .text-white:not(.keep-white):not([class*="bg-black"]):not([class*="bg-slate-900"]):not(.btn-danger):not([role="tooltip"]):not(.btn-primary):not([class*="B7F34A"]),
+html[data-theme="light"] [class*="text-white"]:not(.keep-white):not([class*="bg-black"]):not([class*="bg-slate-900"]):not(.btn-danger):not([role="tooltip"]):not(.btn-primary):not([class*="B7F34A"]),
+html.light-theme .text-white:not(.keep-white):not([class*="bg-black"]):not([class*="bg-slate-900"]):not(.btn-danger):not([role="tooltip"]):not(.btn-primary):not([class*="B7F34A"]),
+html.light-theme [class*="text-white"]:not(.keep-white):not([class*="bg-black"]):not([class*="bg-slate-900"]):not(.btn-danger):not([role="tooltip"]):not(.btn-primary):not([class*="B7F34A"]) {
+  color: #0F1713 !important;
+}
+
+html[data-theme="light"] .text-white\/90,
+html[data-theme="light"] .text-white\/80,
+html[data-theme="light"] .text-white\/70,
+html[data-theme="light"] [class*="text-white/90"],
+html[data-theme="light"] [class*="text-white/80"],
+html[data-theme="light"] [class*="text-white/70"],
+html.light-theme .text-white\/90,
+html.light-theme .text-white\/80,
+html.light-theme .text-white\/70,
+html.light-theme [class*="text-white/90"],
+html.light-theme [class*="text-white/80"],
+html.light-theme [class*="text-white/70"] {
+  color: #334155 !important;
+}
+
+html[data-theme="light"] .text-white\/60,
+html[data-theme="light"] .text-white\/50,
+html[data-theme="light"] [class*="text-white/60"],
+html[data-theme="light"] [class*="text-white/50"],
+html.light-theme .text-white\/60,
+html.light-theme .text-white\/50,
+html.light-theme [class*="text-white/60"],
+html.light-theme [class*="text-white/50"] {
+  color: #64748B !important;
+}
+
+/* Hover text-white overrides in Light Mode */
+html[data-theme="light"] .hover\:text-white:hover,
+html[data-theme="light"] [class*="hover:text-white"]:hover,
+html[data-theme="light"] .group:hover .group-hover\:text-white,
+html[data-theme="light"] .group:hover [class*="group-hover:text-white"],
+html.light-theme .hover\:text-white:hover,
+html.light-theme [class*="hover:text-white"]:hover,
+html.light-theme .group:hover .group-hover\:text-white,
+html.light-theme .group:hover [class*="group-hover:text-white"] {
+  color: #0F1713 !important;
+}
+
+/* White SVG Icons Filter in Light Mode */
+html[data-theme="light"] img[src*="values-icon"],
+html[data-theme="light"] img[src*="platforms-logo"],
+html[data-theme="light"] .light-mode-icon,
+html[data-theme="light"] [data-card-spotlight] .w-14 img,
+html[data-theme="light"] [data-card-spotlight] .w-10 img,
+html.light-theme img[src*="values-icon"],
+html.light-theme img[src*="platforms-logo"],
+html.light-theme .light-mode-icon,
+html.light-theme [data-card-spotlight] .w-14 img,
+html.light-theme [data-card-spotlight] .w-10 img {
+  filter: brightness(0) opacity(0.85);
+  transition: filter 0.2s ease;
+}
+
+html[data-theme="light"] [data-card-spotlight]:hover .w-14 img,
+html[data-theme="light"] [data-card-spotlight]:hover .w-10 img,
+html.light-theme [data-card-spotlight]:hover .w-14 img,
+html.light-theme [data-card-spotlight]:hover .w-10 img {
+  filter: brightness(0) saturate(100%) invert(26%) sepia(85%) saturate(700%) hue-rotate(65deg) brightness(90%) contrast(95%);
+}
+
 html[data-theme="light"] [class*="text-[#FFFFFF]"],
 html.light-theme [class*="text-[#FFFFFF]"] {
   color: #0F1713 !important;
@@ -416,6 +492,32 @@ html.light-theme [class*="text-[#5E665E]"] {
   color: #64748B !important;
 }
 
+/* Global scroll margin for smooth anchors under sticky header */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+}
+
+section[id],
+div[id] {
+  scroll-margin-top: 5.5rem;
+}
+
+/* Copilot Chips & Interactive Buttons in Light Mode */
+html[data-theme="light"] .mem-copilot-chip,
+html.light-theme .mem-copilot-chip {
+  background-color: #F1F5F4 !important;
+  border-color: #CBD5E1 !important;
+  color: #334155 !important;
+}
+
+html[data-theme="light"] .mem-copilot-chip:hover,
+html.light-theme .mem-copilot-chip:hover {
+  background-color: #E2E8F0 !important;
+  color: #0F1713 !important;
+  border-color: #2F6307 !important;
+}
+
 /* Primary CTA & Buttons in Light Mode */
 html[data-theme="light"] .btn-primary,
 html.light-theme .btn-primary,
@@ -423,6 +525,7 @@ html[data-theme="light"] [class*="bg-[#B7F34A]"],
 html.light-theme [class*="bg-[#B7F34A]"] {
   color: #0B0D0C !important;
 }
+
 html[data-theme="light"] .btn-primary svg,
 html.light-theme .btn-primary svg {
   color: #0B0D0C !important;
@@ -435,6 +538,7 @@ html.light-theme .btn-outline {
   border: 1px solid #CBD5E1 !important;
   color: #0F1713 !important;
 }
+
 html[data-theme="light"] .btn-outline:hover,
 html.light-theme .btn-outline:hover {
   background-color: #F1F5F9 !important;
@@ -471,10 +575,12 @@ html.light-theme #mobileDrawer {
   background-color: #FFFFFF !important;
   border-left: 1px solid #E2E8E4 !important;
 }
+
 html[data-theme="light"] #mobileDrawer a,
 html.light-theme #mobileDrawer a {
   color: #475569 !important;
 }
+
 html[data-theme="light"] #mobileDrawer a:hover,
 html.light-theme #mobileDrawer a:hover {
   color: #0F1713 !important;
@@ -539,8 +645,8 @@ html.light-theme tr:hover td {
 }
 
 /* Modals in Light Mode */
-html[data-theme="light"] [role="dialog"] > div,
-html.light-theme [role="dialog"] > div {
+html[data-theme="light"] [role="dialog"]>div,
+html.light-theme [role="dialog"]>div {
   background-color: #FFFFFF !important;
   border: 1px solid #CBD5D0 !important;
   box-shadow: 0 20px 45px -10px rgba(15, 23, 19, 0.15) !important;

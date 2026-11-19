@@ -19,10 +19,10 @@ const pricingData: Pricing = pricing.data;
       <div class="row justify-center">
         <div class="mb-10 text-center relative z-10">
           <h1
-            class="mb-6 lg:col-9 mx-auto text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white hasHighlight"
+            class="mb-6 lg:col-9 mx-auto text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white hasHighlight"
             set:html={markdownify(pricingData.page_header.title)}
           />
-          <p class="mb-10 lg:col-6 mx-auto text-[#A1AAA1] text-base">
+          <p class="mb-10 lg:col-6 mx-auto text-slate-600 dark:text-[#A1AAA1] text-base">
             {pricingData.page_header.content}
           </p>
         </div>
@@ -38,21 +38,21 @@ const pricingData: Pricing = pricing.data;
         <div class="container">
           <div class="section-container">
             <div class="section-intro centralize text-center mb-16">
-              <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[#B7F34A] mb-2 font-mono">
+              <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[#2F6307] dark:text-[#B7F34A] mb-2 font-mono">
                 {pricingData.comparison.badge || "Feature Breakdown"}
               </p>
               <h2
-                class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white hasHighlight mb-4"
+                class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white hasHighlight mb-4"
                 set:html={markdownify(pricingData.comparison.title)}
               />
             </div>
             <div class="section-content">
               <div class="overflow-x-auto">
                 <div class="relative min-w-275 overflow-hidden rounded-2xl border border-[#2B312C] bg-[#191D1A] text-[#A1AAA1] shadow-xl">
-                  <div class="grid grid-cols-[1.2fr_1fr_1fr_1fr] items-center text-sm md:text-base text-[#A1AAA1] relative z-10 bg-[#141715] border-b border-[#2B312C]">
+                  <div class="grid grid-cols-[1.2fr_1fr_1fr_1fr] items-center text-sm md:text-base text-slate-700 dark:text-[#A1AAA1] relative z-10 bg-[#141715] border-b border-[#2B312C]">
                     {pricingData.comparison.headers.map((h: any, i: number) => (
                       <div
-                        class={`px-6 py-5 text-sm font-bold text-white ${i === 0 ? "" : "text-center"}`}
+                        class={`px-6 py-5 text-sm font-bold text-slate-900 dark:text-white ${i === 0 ? "" : "text-center"}`}
                       >
                         {h.label}
                       </div>
@@ -64,7 +64,7 @@ const pricingData: Pricing = pricing.data;
                       <div
                         class={`grid grid-cols-[1.2fr_1fr_1fr_1fr] items-center border-t border-[#2B312C] ${i % 2 === 0 ? "bg-[#141715]/40" : ""}`}
                       >
-                        <div class="px-6 py-4 text-white font-medium">{row.feature}</div>
+                        <div class="px-6 py-4 text-slate-900 dark:text-white font-medium">{row.feature}</div>
                         {row.values.map((val: any, valIndex: number) => (
                           <div class="px-6 py-4 text-center">
                             {typeof val === "boolean" ? (
@@ -90,7 +90,7 @@ const pricingData: Pricing = pricing.data;
                               )
                             ) : (
                               <span
-                                class={`text-sm font-medium ${valIndex === 1 ? "text-[#B7F34A]" : "text-[#A1AAA1]"}`}
+                                class={`text-sm font-medium ${valIndex === 1 ? "text-[#2F6307] dark:text-[#B7F34A]" : "text-slate-600 dark:text-[#A1AAA1]"}`}
                               >
                                 {val}
                               </span>

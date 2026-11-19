@@ -15,7 +15,7 @@ const { logo, step, title, content } = Astro.props;
 >
   <!-- Step number label -->
   {step && (
-    <span class="text-xs font-semibold uppercase tracking-[0.12em] text-[#B7F34A] font-mono mb-4 block">
+    <span class="text-xs font-semibold uppercase tracking-[0.12em] text-[#2F6307] dark:text-[#B7F34A] font-mono mb-4 block">
       Step {step}
     </span>
   )}
@@ -26,12 +26,12 @@ const { logo, step, title, content } = Astro.props;
   </div>
 
   <!-- Title -->
-  <h3 class="text-xl font-bold text-white group-hover:text-[#B7F34A] transition-colors leading-snug mb-3">
+  <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-[#2F6307] dark:group-hover:text-[#B7F34A] transition-colors leading-snug mb-3">
     {title}
   </h3>
 
   <!-- Content -->
-  <p class="text-[#A1AAA1] text-sm leading-relaxed max-w-sm mt-1">
+  <p class="text-slate-600 dark:text-[#A1AAA1] text-sm leading-relaxed max-w-sm mt-1">
     {content}
   </p>
 </div>

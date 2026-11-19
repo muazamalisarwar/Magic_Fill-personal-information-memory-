@@ -9,8 +9,8 @@ const { title, subtitle } = Astro.props;
 <section class="pt-28 pb-16 bg-[#0B0D0C] relative overflow-hidden">
   <div class="container relative z-10">
     <div class="lg:max-w-3xl mx-auto text-center">
-      <h1 class="hasHighlight mb-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white" set:html={title} />
-      <p class="text-[#A1AAA1] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed" set:html={subtitle} />
+      <h1 class="hasHighlight mb-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white" set:html={title} />
+      <p class="text-slate-600 dark:text-[#A1AAA1] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed" set:html={subtitle} />
     </div>
   </div>
 </section>

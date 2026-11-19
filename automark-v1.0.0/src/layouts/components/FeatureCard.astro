@@ -16,14 +16,14 @@ const { logo, title, content, is_starred } = Astro.props;
 >
   <!-- Clean Flat Icon Container -->
   <div class="w-14 h-14 rounded-xl border border-[#2B312C] bg-[#141715] flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-300">
-    <ImageMod src={logo} alt={`${title} icon`} class="size-7 object-contain" />
+    <ImageMod src={logo} alt={`${title} icon`} class="size-7 object-contain light-mode-icon" />
   </div>
 
-  <h3 class="text-lg font-bold text-white group-hover:text-[#B7F34A] transition-colors mb-3">
+  <h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-[#2F6307] dark:group-hover:text-[#B7F34A] transition-colors mb-3">
     {title}
   </h3>
 
-  <p class="text-sm text-[#A1AAA1] leading-relaxed">
+  <p class="text-sm text-slate-600 dark:text-[#A1AAA1] leading-relaxed">
     {content || "Proactively matches your verified personal memory to complex form fields with zero errors."}
   </p>
 </div>

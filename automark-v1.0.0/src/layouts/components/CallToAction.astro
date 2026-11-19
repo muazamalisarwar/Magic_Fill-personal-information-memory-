@@ -13,11 +13,11 @@ if (!ctaData.enable) return;
       <!-- Ambient Radiant Core Glow behind CTA -->
       <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-[#B7F34A]/10 dark:bg-[#B7F34A]/10 blur-[90px] pointer-events-none"></div>
       <div class="relative z-10 flex flex-col items-center">
-        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[#B7F34A] mb-4 font-mono">
+        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[#2F6307] dark:text-[#B7F34A] mb-4 font-mono">
           {ctaData.badge || "Start In 60 Seconds"}
         </p>
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white hasHighlight mb-6 max-w-3xl leading-tight" set:html={ctaData.title} />
-        <p class="text-[#A1AAA1] text-base sm:text-lg max-w-2xl leading-relaxed mb-10">{ctaData.description}</p>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white hasHighlight mb-6 max-w-3xl leading-tight" set:html={ctaData.title} />
+        <p class="text-slate-600 dark:text-[#A1AAA1] text-base sm:text-lg max-w-2xl leading-relaxed mb-10">{ctaData.description}</p>
         {
           ctaData.button && ctaData.button.enable && ctaData.button.link && (
             <a

@@ -8,19 +8,19 @@ const faqData: FaqSection = faqEntry.data;
 if (!faqData.enable) return;
 ---
 
-<section class="section py-24 relative overflow-hidden bg-[#0B0D0C]" id="faq">
+<section class="section py-24 relative overflow-hidden bg-[#0B0D0C] scroll-mt-20" id="faq">
   <div class="container">
     <div class="section-container grid lg:grid-cols-12 gap-12 items-start">
       <div class="section-intro max-lg:text-center lg:col-span-5">
         <div class="sticky top-28">
-          <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[#B7F34A] mb-2 font-mono">
+          <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[#2F6307] dark:text-[#B7F34A] mb-2 font-mono">
             Frequently Asked Questions
           </p>
-          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white hasHighlight mb-4" set:html={faqData.title} />
-          <p class="text-[#A1AAA1] text-base leading-relaxed">{faqData.description}</p>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white hasHighlight mb-4" set:html={faqData.title} />
+          <p class="text-slate-600 dark:text-[#A1AAA1] text-base leading-relaxed">{faqData.description}</p>
           {
             faqData.button && faqData.button.enable && faqData.button.link && (
-              <a href={faqData.button.link} class="rounded-xl px-4 py-2.5 text-xs font-medium bg-[#141715] text-white border border-[#2B312C] hover:border-[#B7F34A]/40 hover:bg-[#191D1A] mt-8 inline-flex transition-all">
+              <a href={faqData.button.link} class="rounded-xl px-4 py-2.5 text-xs font-medium bg-white dark:bg-[#141715] text-slate-800 dark:text-white border border-slate-300 dark:border-[#2B312C] hover:border-[#2F6307] dark:hover:border-[#B7F34A]/40 hover:bg-slate-50 dark:hover:bg-[#191D1A] mt-8 inline-flex transition-all">
                 {faqData.button.label}
               </a>
             )
