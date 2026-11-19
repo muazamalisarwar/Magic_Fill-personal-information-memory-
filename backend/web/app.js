@@ -2260,41 +2260,9 @@ Education: BS Computer Science from University of Education, Lahore in 2024.`;
 
           matchedDropdown = true;
         } else if (isFile) {
-          try {
-            const rawVal = String(m.value);
-            let fileObj = null;
-            let previewSrc = rawVal;
-            const targetFilename = el.id === "p_profile_photo" ? "profile_photo.png" : el.id === "p_cnic_front" ? "cnic_front.jpg" : el.id === "p_cnic_back" ? "cnic_back.jpg" : "document.pdf";
-
-            if (rawVal.startsWith("data:image")) {
-              const arr = rawVal.split(",");
-              const mime = (arr[0].match(/:(.*?);/) || [])[1] || "image/png";
-              const bstr = atob(arr[1]);
-              let n = bstr.length;
-              const u8arr = new Uint8Array(n);
-              while (n--) u8arr[n] = bstr.charCodeAt(n);
-              fileObj = new File([u8arr], targetFilename, { type: mime });
-            } else if (rawVal.startsWith("http://") || rawVal.startsWith("https://")) {
-              previewSrc = rawVal;
-              const blob = new Blob([rawVal], { type: "text/plain" });
-              fileObj = new File([blob], targetFilename, { type: "image/jpeg" });
-            } else {
-              const blob = new Blob([rawVal], { type: "image/svg+xml" });
-              fileObj = new File([blob], `${targetFilename}.svg`, { type: "image/svg+xml" });
-              previewSrc = "data:image/svg+xml;utf8," + encodeURIComponent(rawVal);
-            }
-
-            if (fileObj && window.DataTransfer) {
-              const dt = new DataTransfer();
-              dt.items.add(fileObj);
-              el.files = dt.files;
-            }
-
-            updateSimulatorFilePreview(el.id, previewSrc, targetFilename, "✓ Attached via Magic Fill Memory");
-            matchedFile = true;
-          } catch (err) {
-            console.warn("File attachment simulation error:", err);
-          }
+          showInPageFileSuggestion(el, m);
+          matchedFile = true;
+          return;
         } else if (isRadio) {
           const targetVal = String(m.value).toLowerCase().trim();
           const radios = document.querySelectorAll(`#playgroundForm input[type="radio"][name="${CSS.escape(el.name)}"]`);
@@ -2603,62 +2571,148 @@ Education: BS Computer Science from University of Education, Lahore in 2024.`;
     }, 1000);
   }
 
+  function showInPageFileSuggestion(el, m) {
+    if (!el) return;
+    const cell = el.closest(".portal-file-cell, div") || el.parentElement;
+    const existing = cell.querySelector(".sim-file-suggestion");
+    if (existing) existing.remove();
+
+    const label = el.id === "p_profile_photo" ? "Profile picture" : (el.id === "p_cnic_front" || el.id === "p_cnic_back" ? "CNIC document" : "Document");
+    const promptText = `${label} found. Do you want to attach it?`;
+
+    const suggestion = document.createElement("div");
+    suggestion.className = "sim-file-suggestion";
+    suggestion.style.cssText = "margin-top:8px; display:inline-flex; align-items:center; gap:8px; padding:6px 10px; background:#191D1A; border:1px solid #2B312C; border-radius:8px; font-size:11.5px; color:#FFFFFF; z-index:10;";
+    suggestion.innerHTML = `
+      <span style="color:#B7F34A; font-weight:600;">${escapeHtml(promptText)}</span>
+      <div style="display:flex; align-items:center; gap:6px;">
+        <button type="button" class="btn-sug-attach" style="background:#B7F34A; color:#0B0D0C; border:none; border-radius:5px; padding:3px 9px; font-weight:700; font-size:11px; cursor:pointer;">Attach</button>
+        <button type="button" class="btn-sug-dismiss" style="background:none; border:none; color:#5E665E; font-size:15px; cursor:pointer; line-height:1;">&times;</button>
+      </div>
+    `;
+
+    const btnAttach = suggestion.querySelector(".btn-sug-attach");
+    const btnDismiss = suggestion.querySelector(".btn-sug-dismiss");
+
+    btnAttach.addEventListener("click", () => {
+      btnAttach.disabled = true;
+      btnAttach.textContent = "Attaching...";
+      try {
+        const rawVal = String(m.value);
+        let fileObj = null;
+        let previewSrc = rawVal;
+        const targetFilename = el.id === "p_profile_photo" ? "profile_photo.png" : el.id === "p_cnic_front" ? "cnic_front.jpg" : el.id === "p_cnic_back" ? "cnic_back.jpg" : "document.pdf";
+
+        if (rawVal.startsWith("data:image")) {
+          const arr = rawVal.split(",");
+          const mime = (arr[0].match(/:(.*?);/) || [])[1] || "image/png";
+          const bstr = atob(arr[1]);
+          let n = bstr.length;
+          const u8arr = new Uint8Array(n);
+          while (n--) u8arr[n] = bstr.charCodeAt(n);
+          fileObj = new File([u8arr], targetFilename, { type: mime });
+        } else if (rawVal.startsWith("http://") || rawVal.startsWith("https://")) {
+          previewSrc = rawVal;
+          const blob = new Blob([rawVal], { type: "text/plain" });
+          fileObj = new File([blob], targetFilename, { type: "image/jpeg" });
+        } else {
+          const blob = new Blob([rawVal], { type: "image/svg+xml" });
+          fileObj = new File([blob], `${targetFilename}.svg`, { type: "image/svg+xml" });
+          previewSrc = "data:image/svg+xml;utf8," + encodeURIComponent(rawVal);
+        }
+
+        if (fileObj && window.DataTransfer) {
+          const dt = new DataTransfer();
+          dt.items.add(fileObj);
+          el.files = dt.files;
+        }
+
+        updateSimulatorFilePreview(el.id, previewSrc, targetFilename, "✓ Attached via Magic Fill Memory");
+        el.setAttribute("data-magic-fill-status", "matched");
+        if (cell) cell.setAttribute("data-magic-fill-status", "matched");
+        btnAttach.textContent = "✓ Attached!";
+        setTimeout(() => suggestion.remove(), 1500);
+      } catch (err) {
+        btnAttach.textContent = "Error";
+        setTimeout(() => suggestion.remove(), 1200);
+      }
+    });
+
+    btnDismiss.addEventListener("click", () => {
+      suggestion.remove();
+      el.setAttribute("data-magic-fill-status", "missing");
+      if (cell) cell.setAttribute("data-magic-fill-status", "missing");
+    });
+
+    cell.appendChild(suggestion);
+  }
+
   function showManualLearningConsentBanner(el, evalData) {
     const existing = document.getElementById("inPageConsentBanner");
     if (existing) existing.remove();
 
     const isUpdate = evalData.action_type === "UPDATE_ATTRIBUTE";
-    const titleText = isUpdate ? "Update saved information?" : "Save to Magic Fill memory?";
+    const titleText = isUpdate ? "Update Saved Information" : "Save to Memory Vault";
+    const badgeText = isUpdate ? "🔄 Changed Data Detected" : "✨ New Information";
 
     let contentHtml = "";
     let buttonsHtml = "";
 
     if (isUpdate) {
       contentHtml = `
-        <div style="font-size:12.5px; color:#475569; margin-bottom:12px; line-height:1.45;">
-          Your saved <strong>${escapeHtml(evalData.field_label)}</strong> (<em>${escapeHtml(evalData.existing_value || "")}</em>) is different from the value you just entered (<strong>${escapeHtml(evalData.new_value)}</strong>). Would you like to update your Magic Fill memory?
+        <div style="font-size:12.5px; color:#FFFFFF; margin-bottom:10px; line-height:1.45;">
+          Your previously saved information is '<strong style="color:#f43f5e;">${escapeHtml(evalData.existing_value || "Empty")}</strong>'. Do you want to update it to '<strong style="color:#B7F34A;">${escapeHtml(evalData.new_value)}</strong>'?
+        </div>
+        <div style="background:#141715; border:1px solid #2B312C; border-radius:8px; padding:10px 12px; margin-bottom:12px; font-size:12px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+            <span style="font-size:10px; font-weight:700; text-transform:uppercase; color:#f43f5e; width:52px; flex-shrink:0; font-family:'JetBrains Mono',monospace;">Saved</span>
+            <span style="color:#f43f5e; opacity:0.85; text-decoration:line-through; font-family:'JetBrains Mono',monospace; word-break:break-all;">${escapeHtml(evalData.existing_value || "Empty")}</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:10px; font-weight:700; text-transform:uppercase; color:#B7F34A; width:52px; flex-shrink:0; font-family:'JetBrains Mono',monospace;">Entered</span>
+            <span style="color:#B7F34A; font-weight:700; font-family:'JetBrains Mono',monospace; word-break:break-all;">${escapeHtml(evalData.new_value)}</span>
+          </div>
         </div>
       `;
       buttonsHtml = `
-        <button id="bannerDismissBtn" style="background:#ffffff; border:1px solid #cbd5e1; color:#475569; border-radius:9999px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer;">Not Now</button>
-        <button id="bannerKeepBtn" style="background:#f1f5f9; border:1px solid #cbd5e1; color:#334155; border-radius:9999px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer;">Keep Existing</button>
-        <button id="bannerSaveBtn" style="background:#0f172a; border:none; color:#ffffff; border-radius:9999px; padding:6px 16px; font-size:12px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(15,23,42,0.15);">Update Memory</button>
+        <button id="bannerDismissBtn" style="background:#141715; border:1px solid #2B312C; color:#A1AAA1; border-radius:8px; padding:7px 14px; font-size:12px; font-weight:600; cursor:pointer; transition:all 0.15s ease;">No</button>
+        <button id="bannerSaveBtn" style="background:#B7F34A; border:1px solid #B7F34A; color:#0B0D0C; border-radius:8px; padding:7px 16px; font-size:12px; font-weight:700; cursor:pointer; box-shadow:0 2px 10px rgba(183,243,74,0.18); transition:all 0.15s ease;">Yes, Update</button>
       `;
     } else {
       contentHtml = `
-        <div style="font-size:12.5px; color:#475569; margin-bottom:8px; line-height:1.45;">
-          Magic Fill detected a new personal information field:
+        <div style="font-size:12.5px; color:#FFFFFF; margin-bottom:8px; line-height:1.45;">
+          Magic Fill detected new information for <strong style="color:#FFFFFF;">${escapeHtml(evalData.field_label)}</strong>: '<strong style="color:#B7F34A;">${escapeHtml(evalData.new_value)}</strong>'. Do you want to save it to your memory?
         </div>
-        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:9px 12px; font-size:12px; color:#1e293b; margin-bottom:12px; line-height:1.5;">
-          <div style="font-weight:700; color:#0f172a; margin-bottom:2px;">${escapeHtml(evalData.field_label)}</div>
-          <div style="color:#0284c7; word-break:break-all; font-family:monospace; font-size:11.5px;">${escapeHtml(evalData.new_value)}</div>
-        </div>
-        <div style="font-size:12px; color:#64748b; margin-bottom:12px;">
-          Would you like to save it for future autofill?
+        <div style="background:#141715; border:1px solid #2B312C; border-radius:8px; padding:10px 12px; margin-bottom:10px;">
+          <div style="font-weight:700; color:#FFFFFF; font-size:12.5px; margin-bottom:3px;">${escapeHtml(evalData.field_label)}</div>
+          <div style="color:#B7F34A; word-break:break-all; font-family:'JetBrains Mono',monospace; font-size:12px;">${escapeHtml(evalData.new_value)}</div>
         </div>
       `;
       buttonsHtml = `
-        <button id="bannerDismissBtn" style="background:#ffffff; border:1px solid #cbd5e1; color:#475569; border-radius:9999px; padding:6px 14px; font-size:12px; font-weight:600; cursor:pointer;">Not Now</button>
-        <button id="bannerSaveBtn" style="background:#0f172a; border:none; color:#ffffff; border-radius:9999px; padding:6px 16px; font-size:12px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(15,23,42,0.15);">Save to Memory</button>
+        <button id="bannerDismissBtn" style="background:#141715; border:1px solid #2B312C; color:#A1AAA1; border-radius:8px; padding:7px 14px; font-size:12px; font-weight:600; cursor:pointer; transition:all 0.15s ease;">No</button>
+        <button id="bannerSaveBtn" style="background:#B7F34A; border:1px solid #B7F34A; color:#0B0D0C; border-radius:8px; padding:7px 16px; font-size:12px; font-weight:700; cursor:pointer; box-shadow:0 2px 10px rgba(183,243,74,0.18); transition:all 0.15s ease;">Yes, Save</button>
       `;
     }
 
     const banner = document.createElement("div");
     banner.id = "inPageConsentBanner";
-    banner.style.cssText = "position:fixed; top:24px; right:24px; z-index:9999; animation:toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);";
+    banner.style.cssText = "position:fixed; top:24px; right:24px; z-index:9999; animation:toastSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);";
     banner.innerHTML = `
-      <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:14px; box-shadow:0 20px 45px -10px rgba(15,23,42,0.22), 0 2px 4px rgba(15,23,42,0.06); padding:16px 18px; width:350px; color:#0f172a; font-family:inherit;">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+      <div style="background:#191D1A; border:1px solid #2B312C; border-radius:14px; box-shadow:0 20px 45px -10px rgba(0,0,0,0.7), 0 4px 12px rgba(0,0,0,0.4); padding:16px 18px; width:350px; color:#FFFFFF; font-family:'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; padding-bottom:10px; border-bottom:1px solid #2B312C;">
           <div style="display:flex; align-items:center; gap:8px;">
-            <div style="background:#0f172a; width:26px; height:26px; border-radius:7px; display:flex; align-items:center; justify-content:center; color:#fff;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            <div style="background:rgba(183,243,74,0.12); border:1px solid rgba(183,243,74,0.25); width:24px; height:24px; border-radius:6px; display:flex; align-items:center; justify-content:center; color:#B7F34A; flex-shrink:0;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
             </div>
-            <strong style="font-size:13.5px; color:#0f172a;">${titleText}</strong>
+            <div>
+              <strong style="font-size:13px; color:#FFFFFF; display:block; line-height:1.2;">${titleText}</strong>
+              <span style="font-size:10px; font-family:'JetBrains Mono',monospace; color:#B7F34A; font-weight:600;">${badgeText}</span>
+            </div>
           </div>
-          <button id="bannerCloseBtn" style="background:none; border:none; color:#94a3b8; font-size:20px; cursor:pointer; line-height:1;">&times;</button>
+          <button id="bannerCloseBtn" style="background:none; border:none; color:#5E665E; font-size:20px; cursor:pointer; line-height:1; padding:0 4px; transition:color 0.15s ease;">&times;</button>
         </div>
         ${contentHtml}
-        <div style="display:flex; gap:8px; justify-content:flex-end;">
+        <div style="display:flex; gap:8px; justify-content:flex-end; align-items:center;">
           ${buttonsHtml}
         </div>
       </div>
@@ -2670,48 +2724,71 @@ Education: BS Computer Science from University of Education, Lahore in 2024.`;
       if (banner && banner.parentNode) banner.parentNode.removeChild(banner);
     };
 
-    banner.querySelector("#bannerCloseBtn").addEventListener("click", close);
+    const closeBtn = banner.querySelector("#bannerCloseBtn");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", close);
+      closeBtn.addEventListener("mouseenter", () => { closeBtn.style.color = "#FFFFFF"; });
+      closeBtn.addEventListener("mouseleave", () => { closeBtn.style.color = "#5E665E"; });
+    }
+
     const dismissBtn = banner.querySelector("#bannerDismissBtn");
-    if (dismissBtn) dismissBtn.addEventListener("click", close);
+    if (dismissBtn) {
+      dismissBtn.addEventListener("click", close);
+      dismissBtn.addEventListener("mouseenter", () => { dismissBtn.style.borderColor = "#B7F34A"; dismissBtn.style.color = "#FFFFFF"; });
+      dismissBtn.addEventListener("mouseleave", () => { dismissBtn.style.borderColor = "#2B312C"; dismissBtn.style.color = "#A1AAA1"; });
+    }
+
     const keepBtn = banner.querySelector("#bannerKeepBtn");
-    if (keepBtn) keepBtn.addEventListener("click", close);
+    if (keepBtn) {
+      keepBtn.addEventListener("click", close);
+      keepBtn.addEventListener("mouseenter", () => { keepBtn.style.borderColor = "#B7F34A"; keepBtn.style.color = "#FFFFFF"; });
+      keepBtn.addEventListener("mouseleave", () => { keepBtn.style.borderColor = "#2B312C"; keepBtn.style.color = "#A1AAA1"; });
+    }
 
     const saveBtn = banner.querySelector("#bannerSaveBtn");
-    saveBtn.addEventListener("click", async () => {
-      saveBtn.disabled = true;
-      saveBtn.innerText = isUpdate ? "Updating..." : "Saving...";
+    if (saveBtn) {
+      saveBtn.addEventListener("mouseenter", () => { saveBtn.style.background = "#c9f66d"; });
+      saveBtn.addEventListener("mouseleave", () => { saveBtn.style.background = "#B7F34A"; });
+      saveBtn.addEventListener("click", async () => {
+        saveBtn.disabled = true;
+        saveBtn.innerText = isUpdate ? "Updating..." : "Saving...";
 
-      try {
-        const res = await authFetch("/api/memory/commit-learning", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            action_type: evalData.action_type,
-            canonical_key: evalData.canonical_key,
-            field_label: evalData.field_label,
-            value: evalData.new_value,
-            category: evalData.category === "PROFESSIONAL_INFO" ? "professional" : "personal"
-          }),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message);
+        try {
+          const res = await authFetch("/api/memory/commit-learning", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              action_type: evalData.action_type,
+              canonical_key: evalData.canonical_key,
+              field_label: evalData.field_label,
+              value: evalData.new_value,
+              category: evalData.category === "PROFESSIONAL_INFO" ? "professional" : "personal"
+            }),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.message);
 
-        // Dynamically update field indicator from red (missing) to green (matched)
-        el.setAttribute("data-magic-fill-status", "matched");
-        const wrap = el.closest(".modern-radio-group, .modern-checkbox-wrap, .toggle-switch-wrap, .modern-range-wrap, .portal-file-cell");
-        if (wrap) wrap.setAttribute("data-magic-fill-status", "matched");
+          // Dynamically update field indicator from red (missing) to green (matched)
+          el.setAttribute("data-magic-fill-status", "matched");
+          const wrap = el.closest(".modern-radio-group, .modern-checkbox-wrap, .toggle-switch-wrap, .modern-range-wrap, .portal-file-cell");
+          if (wrap) wrap.setAttribute("data-magic-fill-status", "matched");
 
-        saveBtn.style.background = "#059669";
-        saveBtn.innerText = isUpdate ? "✓ Updated Memory!" : "✓ Saved to Memory!";
-        showToast(isUpdate ? "Saved information updated in memory!" : "New information learned & saved! (Field indicator updated to Green)", "success");
-        loadStoredMemory();
-        setTimeout(close, 1800);
-      } catch (err) {
-        saveBtn.style.background = "#e11d48";
-        saveBtn.innerText = "Error saving";
-        setTimeout(close, 2200);
-      }
-    });
+          saveBtn.style.background = "#B7F34A";
+          saveBtn.style.borderColor = "#B7F34A";
+          saveBtn.style.color = "#0B0D0C";
+          saveBtn.innerText = isUpdate ? "✓ Updated Memory!" : "✓ Saved to Memory!";
+          showToast(isUpdate ? "Saved information updated in memory!" : "New information learned & saved! (Field indicator updated to Green)", "success");
+          loadStoredMemory();
+          setTimeout(close, 1800);
+        } catch (err) {
+          saveBtn.style.background = "#f43f5e";
+          saveBtn.style.borderColor = "#f43f5e";
+          saveBtn.style.color = "#FFFFFF";
+          saveBtn.innerText = "Error saving";
+          setTimeout(close, 2200);
+        }
+      });
+    }
   }
 
   // -------------------------------------------------------------------------

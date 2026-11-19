@@ -4,23 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Magic Fill</title>
-  <!-- Instant local font stack rendering (<10ms) -->
   <link rel="stylesheet" href="popup.css">
 </head>
 <body class="dark-theme">
   <div class="popup-container">
     
-    <!-- Top Header -->
+    <!-- Header -->
     <header class="header">
       <div class="header-brand">
         <img src="../icons/for_light_mode.png" alt="Magic Fill" class="header-logo logo-light">
         <img src="../icons/for_dark_mode.png" alt="Magic Fill" class="header-logo logo-dark">
-        <div class="header-titles">
-          <div class="brand-row">
-            <span class="title">Magic Fill</span>
-            <span class="brand-version">v1.0</span>
-          </div>
-          <span class="subtitle">Personal Memory Vault</span>
+        <div class="brand-row">
+          <span class="title">Magic Fill</span>
+          <span class="brand-version">v1.2</span>
         </div>
       </div>
       <div class="header-actions">
@@ -43,12 +39,12 @@
         </button>
         <div id="backendStatus" class="status-badge status-checking">
           <span class="status-dot"></span>
-          <span class="status-text">Checking...</span>
+          <span class="status-text">Connected</span>
         </div>
       </div>
     </header>
 
-    <!-- Global Notification Alert -->
+    <!-- Global Alert Notification -->
     <div id="alertBox" class="alert hidden"></div>
 
     <!-- ==================================================================== -->
@@ -59,32 +55,27 @@
         <img src="../icons/for_light_mode.png" alt="Magic Fill" class="unauth-icon logo-light">
         <img src="../icons/for_dark_mode.png" alt="Magic Fill" class="unauth-icon logo-dark">
       </div>
-      <h2 class="unauth-title">Connect Your Memory Vault</h2>
-      <p class="unauth-desc">
-        Sign in to enable intelligent, sovereign form autofill across job boards, universities, and government portals.
-      </p>
+      <h2 class="unauth-title">Connect Memory Vault</h2>
+      <p class="unauth-desc">Sign in to enable 1-click sovereign form autofill.</p>
 
       <button type="button" id="btnSignInWebsite" class="btn-signin-website">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
-        <span>Sign In to Magic Fill</span>
+        <span>Sign In via Website</span>
       </button>
 
       <a href="http://localhost:4321/register" target="_blank" id="linkCreateAccount" class="unauth-create-link">
         New here? <strong>Create an account</strong>
       </a>
 
-      <!-- Code Connection Sub-Card -->
+      <!-- Quick Pairing Row -->
       <div class="code-connect-subcard">
-        <div class="code-divider">
-          <span>or connect via pairing code</span>
-        </div>
         <div class="code-input-row">
-          <input type="text" id="inputAuthCode" class="input-auth-code" placeholder="MF-XXXXXX" maxlength="32" autocomplete="off" spellcheck="false">
+          <input type="text" id="inputAuthCode" class="input-auth-code" placeholder="Pairing Code (e.g. MF-XXXX)" maxlength="32" autocomplete="off" spellcheck="false">
           <button type="button" id="btnExchangeCode" class="btn-connect-code">Link</button>
         </div>
-        <button type="button" id="btnSyncFromTab" class="btn-sync-tab" title="Detect active website tab session">
+        <button type="button" id="btnSyncFromTab" class="btn-sync-tab" title="Sync session from open website tab">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 2v6h-6"></path><path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path><path d="M3 22v-6h6"></path><path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path></svg>
-          <span>1-Click Sync from Browser Tab</span>
+          <span>Sync from Open Web Tab</span>
         </button>
       </div>
 
@@ -96,20 +87,20 @@
     <!-- ==================================================================== -->
     <main id="authenticatedSection" class="auth-section hidden">
       
-      <!-- User Profile Snapshot Card -->
+      <!-- User Profile Card -->
       <section class="card profile-card">
         <div class="card-header">
-          <span class="card-label">Active Memory Vault</span>
+          <span class="card-label">Active Vault</span>
           <span id="userIdBadge" class="user-badge">User Profile</span>
         </div>
         <div id="profileSummary" class="profile-details">
           <div class="loading-state">
             <div class="mini-spinner"></div>
-            <span>Loading vault profile...</span>
+            <span>Loading vault...</span>
           </div>
         </div>
 
-        <!-- Quick Vault Counts Strip -->
+        <!-- Compact Stats Strip -->
         <div id="vaultStatsStrip" class="vault-stats-strip hidden">
           <div class="stat-item">
             <span class="stat-num" id="statDocCount">0</span>
@@ -118,7 +109,7 @@
           <div class="stat-divider"></div>
           <div class="stat-item">
             <span class="stat-num" id="statCustomCount">0</span>
-            <span class="stat-name">Custom Q&amp;A</span>
+            <span class="stat-name">Custom Fields</span>
           </div>
           <div class="stat-divider"></div>
           <div class="stat-item">
@@ -128,7 +119,7 @@
         </div>
       </section>
 
-      <!-- Primary Action Buttons -->
+      <!-- Primary Action -->
       <section class="action-section">
         <button id="autofillBtn" class="btn btn-primary" disabled>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -144,7 +135,7 @@
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
               <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
             </svg>
-            <span>Manage Vault</span>
+            <span>Open Vault</span>
           </button>
 
           <button type="button" id="btnSignOut" class="btn-signout" title="Sign out of extension">
@@ -165,25 +156,123 @@
         <div id="mappingsList" class="mappings-list"></div>
       </section>
 
-      <!-- In-Page Learning Notice -->
-      <div class="learning-hint-card">
-        <div class="hint-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="16" x2="12" y2="12"></line>
-            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-          </svg>
+      <!-- Compact Feature Setting: Auto-Detect Updates -->
+      <section class="card feature-toggle-card">
+        <div class="toggle-main">
+          <div class="toggle-text-block">
+            <div class="toggle-label-row">
+              <span class="toggle-title">Auto-Detect Updates</span>
+              <span id="detectionStatusBadge" class="detection-badge badge-on">ON</span>
+            </div>
+            <p class="toggle-subtext" id="hintNoticeText">
+              Prompt to save new info when typing in forms
+            </p>
+          </div>
+          <label class="toggle-switch" for="toggleNewDataDetection" title="Toggle Auto-Detect Updates">
+            <input type="checkbox" id="toggleNewDataDetection" checked aria-label="Toggle Auto-Detect Updates">
+            <span class="toggle-slider"></span>
+          </label>
         </div>
-        <div class="hint-text">
-          New details you enter in web forms are automatically detected so you can save them to your vault with 1 click.
-        </div>
-      </div>
-    </main>
+      </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <span class="footer-status-label">Encrypted &bull; Sovereign Vault</span>
-    </footer>
+      <!-- AI Provider Section (Collapsible & Compact) -->
+      <section class="card ai-config-card" id="aiConfigCard">
+        <div class="ai-config-header" id="aiConfigToggleHeader">
+          <div class="ai-config-header-left">
+            <div class="ai-config-icon-badge">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L13 14h-2l.25-4.07A4.002 4.002 0 0 1 12 2z"></path>
+                <path d="M9 18h6"></path>
+                <path d="M10 22h4"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="ai-config-title-row">
+                <span class="ai-config-title">AI Provider</span>
+                <span id="aiActiveBadge" class="ai-provider-badge">Default (Groq)</span>
+              </div>
+            </div>
+          </div>
+          <button type="button" id="btnToggleAiSettings" class="btn-icon-collapse" title="Expand or collapse AI settings" aria-expanded="false">
+            <svg class="chevron-icon" id="aiChevronIcon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+        </div>
+
+        <div id="aiSettingsBody" class="ai-settings-body hidden">
+          <!-- Provider Selector -->
+          <div class="ai-field-group">
+            <label for="aiProviderSelect" class="ai-field-label">Provider</label>
+            <select id="aiProviderSelect" class="ai-select-input">
+              <option value="groq">Default Magic Fill AI (Groq)</option>
+              <option value="openai">OpenAI</option>
+              <option value="gemini">Google Gemini</option>
+              <option value="openrouter">OpenRouter</option>
+              <option value="ollama">Ollama (Local LLM)</option>
+              <option value="custom">Custom API Endpoint</option>
+            </select>
+          </div>
+
+          <!-- API Base URL -->
+          <div class="ai-field-group hidden" id="aiBaseUrlGroup">
+            <label for="aiBaseUrlInput" class="ai-field-label">API Base URL</label>
+            <input type="text" id="aiBaseUrlInput" class="ai-text-input font-mono" placeholder="http://localhost:11434/v1" autocomplete="off" spellcheck="false">
+          </div>
+
+          <!-- Model Name -->
+          <div class="ai-field-group" id="aiModelGroup">
+            <label for="aiModelInput" class="ai-field-label">Model Name</label>
+            <input type="text" id="aiModelInput" class="ai-text-input font-mono" placeholder="llama-3.3-70b-versatile" autocomplete="off" spellcheck="false">
+          </div>
+
+          <!-- API Key -->
+          <div class="ai-field-group hidden" id="aiApiKeyGroup">
+            <div class="ai-label-meta-row">
+              <label for="aiApiKeyInput" class="ai-field-label">API Key</label>
+              <a href="#" id="aiKeyHelpLink" target="_blank" class="ai-key-link">Get Key &rarr;</a>
+            </div>
+            <div class="password-input-wrap">
+              <input type="password" id="aiApiKeyInput" class="ai-text-input font-mono" placeholder="Paste your API key" autocomplete="off" spellcheck="false">
+              <button type="button" id="btnToggleApiKeyMask" class="btn-pwd-mask" title="Show or hide API key">
+                <svg id="iconEye" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <svg id="iconEyeOff" class="hidden" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                  <line x1="1" y1="1" x2="23" y2="23"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Ollama Local LLM Instructions Card -->
+          <div id="aiOllamaHelpCard" class="ai-ollama-help-card hidden">
+            <p class="ollama-help-text">
+              Run <code class="font-mono">ollama serve</code> in terminal, then pull your model. Magic Fill connects locally with zero cloud data transmission.
+            </p>
+          </div>
+
+          <!-- Test Connection Inline Feedback -->
+          <div id="aiTestFeedback" class="ai-test-feedback hidden"></div>
+
+          <!-- Action Buttons Row -->
+          <div class="ai-actions-row">
+            <button type="button" id="btnTestAiConnection" class="btn-ai-secondary" title="Verify endpoint reachability">
+              <span class="btn-spinner hidden" id="spinnerTestAi"></span>
+              <span id="textTestAi">Test</span>
+            </button>
+            <button type="button" id="btnSaveAiConfig" class="btn-ai-primary" title="Save AI configuration">
+              <span>Save</span>
+            </button>
+            <button type="button" id="btnResetAiConfig" class="btn-ai-reset" title="Reset to default">
+              <span>Reset</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
 
   <script src="popup.js"></script>

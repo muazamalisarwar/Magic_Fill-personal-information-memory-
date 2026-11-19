@@ -7,6 +7,7 @@ from app.routers.memory import router as memory_router
 from app.routers.custom_fields import router as custom_fields_router
 from app.routers.documents import router as documents_router
 from app.routers.auth import router as auth_router
+from app.routers.ai_config import router as ai_config_router
 
 __all__ = [
     "users_router",
@@ -17,6 +18,7 @@ __all__ = [
     "custom_fields_router",
     "documents_router",
     "auth_router",
+    "ai_config_router",
 ]
 
 

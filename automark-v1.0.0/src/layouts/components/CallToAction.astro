@@ -7,20 +7,20 @@ const ctaData: CtaSection = ctaEntry.data;
 if (!ctaData.enable) return;
 ---
 
-<section class="section py-24 relative overflow-hidden">
+<section class="section py-24 relative overflow-hidden bg-[#0B0D0C]">
   <div class="container max-w-6xl">
-    <div class="bg-slate-50 dark:bg-[#0f1422] border border-slate-200/80 dark:border-white/10 rounded-3xl p-12 sm:p-20 text-center relative overflow-hidden shadow-xs">
+    <div class="bg-[#191D1A] border border-[#2B312C] rounded-3xl p-12 sm:p-20 text-center relative overflow-hidden shadow-xl">
       <div class="relative z-10 flex flex-col items-center">
-        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-indigo-600 mb-4">
+        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[#B7F34A] mb-4 font-mono">
           {ctaData.badge || "Start In 60 Seconds"}
         </p>
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-slate-900 dark:text-white hasHighlight mb-6 max-w-3xl leading-tight" set:html={ctaData.title} />
-        <p class="font-body text-slate-600 dark:text-slate-400 text-base sm:text-lg max-w-2xl leading-relaxed mb-10">{ctaData.description}</p>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white hasHighlight mb-6 max-w-3xl leading-tight" set:html={ctaData.title} />
+        <p class="text-[#A1AAA1] text-base sm:text-lg max-w-2xl leading-relaxed mb-10">{ctaData.description}</p>
         {
           ctaData.button && ctaData.button.enable && ctaData.button.link && (
             <a
               href={ctaData.button.link}
-              class="rounded-xl py-3.5 px-8 text-sm font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm flex items-center gap-2.5 transition-all cursor-pointer"
+              class="rounded-xl py-3.5 px-8 text-sm font-bold bg-[#B7F34A] hover:bg-[#c9f66d] text-[#0B0D0C] shadow-[0_0_20px_rgba(183,243,74,0.15)] flex items-center gap-2.5 transition-all cursor-pointer"
             >
               <span>{ctaData.button.label}</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>

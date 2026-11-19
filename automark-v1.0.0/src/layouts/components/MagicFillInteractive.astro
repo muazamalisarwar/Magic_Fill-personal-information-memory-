@@ -1,6 +1,6 @@
 ---
 // Magic Fill Interactive Modals & Memory Studio Drawer
-// Styled strictly with Automark design system tokens: #03010E body, #937AFF primary, glassmorphism, Urbanist & Inter Tight fonts
+// Strict Design System: #0B0D0C body, #B7F34A primary, #191D1A cards, #141715 subpanels, #2B312C borders
 import Logo from "@/components/Logo.astro";
 ---
 
@@ -17,12 +17,12 @@ import Logo from "@/components/Logo.astro";
   aria-modal="true"
   aria-labelledby="authModalTitle"
 >
-  <div class="relative w-full max-w-md my-auto bg-dark/95 border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-2xl">
+  <div class="relative w-full max-w-md my-auto bg-[#191D1A] border border-[#2B312C] rounded-2xl p-6 sm:p-8 shadow-2xl">
     <!-- Close button -->
     <button
       type="button"
       id="closeAuthModalBtn"
-      class="absolute top-5 right-5 size-8 rounded-full bg-white/5 hover:bg-white/10 text-text-light hover:text-white grid place-items-center transition cursor-pointer"
+      class="absolute top-5 right-5 size-8 rounded-full bg-[#141715] hover:bg-[#2B312C] text-[#A1AAA1] hover:text-white grid place-items-center transition cursor-pointer"
       aria-label="Close dialog"
     >
       &times;
@@ -30,30 +30,30 @@ import Logo from "@/components/Logo.astro";
 
     <!-- Modal Header with Official Logo -->
     <div class="flex flex-col items-center justify-center text-center mb-6">
-      <div class="p-2.5 rounded-2xl bg-white/5 border border-white/10 shadow-sm mb-3 inline-flex items-center justify-center">
+      <div class="p-2.5 rounded-2xl bg-[#141715] border border-[#2B312C] shadow-sm mb-3 inline-flex items-center justify-center">
         <Logo class="h-10 w-auto" />
       </div>
       <h3 id="authModalTitle" class="text-xl font-extrabold text-white mb-1">
         Welcome to Magic Fill
       </h3>
-      <p class="text-xs text-text-light max-w-xs leading-relaxed">
+      <p class="text-xs text-[#A1AAA1] max-w-xs leading-relaxed">
         Access your personal memory vault &amp; browser autofill engine.
       </p>
     </div>
 
     <!-- Auth Tabs Switcher -->
-    <div class="grid grid-cols-2 p-1 rounded-xl bg-dark/80 border border-white/10 mb-6">
+    <div class="grid grid-cols-2 p-1 rounded-xl bg-[#141715] border border-[#2B312C] mb-6">
       <button
         type="button"
         id="tabBtnLogin"
-        class="py-2 text-xs font-semibold rounded-lg text-white bg-primary transition"
+        class="py-2 text-xs font-bold rounded-lg text-[#0B0D0C] bg-primary transition"
       >
         Sign In
       </button>
       <button
         type="button"
         id="tabBtnRegister"
-        class="py-2 text-xs font-semibold rounded-lg text-text-light hover:text-white transition"
+        class="py-2 text-xs font-semibold rounded-lg text-[#A1AAA1] hover:text-white transition"
       >
         Create Account
       </button>
@@ -67,7 +67,7 @@ import Logo from "@/components/Logo.astro";
           <button
             type="button"
             id="fallbackGoogleSignInBtn"
-            class="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-white text-xs font-semibold transition cursor-pointer"
+            class="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl border border-[#2B312C] bg-[#141715] hover:bg-[#2B312C] text-white text-xs font-semibold transition cursor-pointer"
           >
             <svg width="18" height="18" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -81,29 +81,29 @@ import Logo from "@/components/Logo.astro";
       </div>
 
       <div class="flex items-center gap-3 my-2">
-        <span class="h-px bg-white/10 flex-1"></span>
-        <span class="text-[10px] tracking-wider font-semibold text-text-light/70 uppercase">OR SIGN IN WITH EMAIL</span>
-        <span class="h-px bg-white/10 flex-1"></span>
+        <span class="h-px bg-[#2B312C] flex-1"></span>
+        <span class="text-[10px] tracking-wider font-semibold text-[#5E665E] uppercase font-mono">OR SIGN IN WITH EMAIL</span>
+        <span class="h-px bg-[#2B312C] flex-1"></span>
       </div>
 
       <div>
-        <label for="loginEmail" class="block text-xs font-medium text-text-light mb-1">Email Address</label>
+        <label for="loginEmail" class="block text-xs font-medium text-[#A1AAA1] mb-1">Email Address</label>
         <input
           type="email"
           id="loginEmail"
           placeholder="you@domain.com"
           required
-          class="w-full bg-dark/50 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder:text-text-dark text-sm focus:border-primary focus:outline-none transition"
+          class="w-full bg-[#141715] border border-[#2B312C] rounded-xl px-4 py-2.5 text-white placeholder:text-[#5E665E] text-sm focus:border-primary focus:outline-none transition"
         />
       </div>
       <div>
-        <label for="loginPassword" class="block text-xs font-medium text-text-light mb-1">Password</label>
+        <label for="loginPassword" class="block text-xs font-medium text-[#A1AAA1] mb-1">Password</label>
         <input
           type="password"
           id="loginPassword"
           placeholder="Enter your password"
           required
-          class="w-full bg-dark/50 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder:text-text-dark text-sm focus:border-primary focus:outline-none transition"
+          class="w-full bg-[#141715] border border-[#2B312C] rounded-xl px-4 py-2.5 text-white placeholder:text-[#5E665E] text-sm focus:border-primary focus:outline-none transition"
         />
       </div>
 
@@ -112,14 +112,14 @@ import Logo from "@/components/Logo.astro";
       <button
         type="submit"
         id="submitLoginBtn"
-        class="w-full btn btn-primary py-3 text-sm font-semibold rounded-xl text-center cursor-pointer"
+        class="w-full btn btn-primary py-3 text-sm font-bold rounded-xl text-center cursor-pointer"
       >
         Sign In to Memory Vault
       </button>
 
-      <p class="text-center text-xs text-text-light pt-1">
+      <p class="text-center text-xs text-[#A1AAA1] pt-1">
         Don't have an account?{" "}
-        <button type="button" id="linkToRegister" class="text-primary-light hover:underline font-semibold cursor-pointer">
+        <button type="button" id="linkToRegister" class="text-primary hover:underline font-semibold cursor-pointer">
           Create an account
         </button>
       </p>
@@ -133,7 +133,7 @@ import Logo from "@/components/Logo.astro";
           <button
             type="button"
             id="fallbackGoogleSignUpBtn"
-            class="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-white text-xs font-semibold transition cursor-pointer"
+            class="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl border border-[#2B312C] bg-[#141715] hover:bg-[#2B312C] text-white text-xs font-semibold transition cursor-pointer"
           >
             <svg width="18" height="18" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -147,40 +147,40 @@ import Logo from "@/components/Logo.astro";
       </div>
 
       <div class="flex items-center gap-3 my-2">
-        <span class="h-px bg-white/10 flex-1"></span>
-        <span class="text-[10px] tracking-wider font-semibold text-text-light/70 uppercase">OR REGISTER WITH EMAIL</span>
-        <span class="h-px bg-white/10 flex-1"></span>
+        <span class="h-px bg-[#2B312C] flex-1"></span>
+        <span class="text-[10px] tracking-wider font-semibold text-[#5E665E] uppercase font-mono">OR REGISTER WITH EMAIL</span>
+        <span class="h-px bg-[#2B312C] flex-1"></span>
       </div>
 
       <div>
-        <label for="regFullName" class="block text-xs font-medium text-text-light mb-1">Full Legal Name</label>
+        <label for="regFullName" class="block text-xs font-medium text-[#A1AAA1] mb-1">Full Legal Name</label>
         <input
           type="text"
           id="regFullName"
           placeholder="e.g. Alex Morgan"
           required
-          class="w-full bg-dark/50 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder:text-text-dark text-sm focus:border-primary focus:outline-none transition"
+          class="w-full bg-[#141715] border border-[#2B312C] rounded-xl px-4 py-2.5 text-white placeholder:text-[#5E665E] text-sm focus:border-primary focus:outline-none transition"
         />
       </div>
       <div>
-        <label for="regEmail" class="block text-xs font-medium text-text-light mb-1">Email Address</label>
+        <label for="regEmail" class="block text-xs font-medium text-[#A1AAA1] mb-1">Email Address</label>
         <input
           type="email"
           id="regEmail"
           placeholder="alex@domain.com"
           required
-          class="w-full bg-dark/50 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder:text-text-dark text-sm focus:border-primary focus:outline-none transition"
+          class="w-full bg-[#141715] border border-[#2B312C] rounded-xl px-4 py-2.5 text-white placeholder:text-[#5E665E] text-sm focus:border-primary focus:outline-none transition"
         />
       </div>
       <div>
-        <label for="regPassword" class="block text-xs font-medium text-text-light mb-1">Create Password (min 6 characters)</label>
+        <label for="regPassword" class="block text-xs font-medium text-[#A1AAA1] mb-1">Create Password (min 6 characters)</label>
         <input
           type="password"
           id="regPassword"
           placeholder="••••••••"
           required
           minlength="6"
-          class="w-full bg-dark/50 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder:text-text-dark text-sm focus:border-primary focus:outline-none transition"
+          class="w-full bg-[#141715] border border-[#2B312C] rounded-xl px-4 py-2.5 text-white placeholder:text-[#5E665E] text-sm focus:border-primary focus:outline-none transition"
         />
       </div>
 
@@ -189,14 +189,14 @@ import Logo from "@/components/Logo.astro";
       <button
         type="submit"
         id="submitRegisterBtn"
-        class="w-full btn btn-primary py-3 text-sm font-semibold rounded-xl text-center cursor-pointer"
+        class="w-full btn btn-primary py-3 text-sm font-bold rounded-xl text-center cursor-pointer"
       >
         Create Free Vault
       </button>
 
-      <p class="text-center text-xs text-text-light pt-1">
+      <p class="text-center text-xs text-[#A1AAA1] pt-1">
         Already have an account?{" "}
-        <button type="button" id="linkToLogin" class="text-primary-light hover:underline font-semibold cursor-pointer">
+        <button type="button" id="linkToLogin" class="text-primary hover:underline font-semibold cursor-pointer">
           Sign In
         </button>
       </p>
@@ -538,7 +538,12 @@ import Logo from "@/components/Logo.astro";
           ? "bg-rose-950/95 border-rose-500/40 text-rose-200"
           : "bg-dark/95 border-primary/40 text-primary-light"
       }`;
-      toast.innerHTML = `<span class="text-sm">${type === "success" ? "✓" : type === "error" ? "✕" : "⚡"}</span><span>${message}</span>`;
+      const iconSvg = type === "success"
+        ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="shrink-0"><polyline points="20 6 9 17 4 12"/></svg>'
+        : type === "error"
+        ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="shrink-0"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>'
+        : '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="shrink-0"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>';
+      toast.innerHTML = `<span class="shrink-0 flex items-center">${iconSvg}</span><span>${message}</span>`;
       hub.appendChild(toast);
       setTimeout(() => {
         toast.style.opacity = "0";
@@ -591,22 +596,22 @@ import Logo from "@/components/Logo.astro";
 
       if (tab === "register") {
         if (tabBtnRegister) {
-          tabBtnRegister.classList.add("bg-primary", "text-white");
-          tabBtnRegister.classList.remove("text-text-light");
+          tabBtnRegister.classList.add("bg-primary", "text-[#0B0D0C]", "font-bold");
+          tabBtnRegister.classList.remove("text-text-light", "text-white");
         }
         if (tabBtnLogin) {
-          tabBtnLogin.classList.remove("bg-primary", "text-white");
+          tabBtnLogin.classList.remove("bg-primary", "text-[#0B0D0C]", "font-bold");
           tabBtnLogin.classList.add("text-text-light");
         }
         if (registerForm) registerForm.classList.remove("hidden");
         if (loginForm) loginForm.classList.add("hidden");
       } else {
         if (tabBtnLogin) {
-          tabBtnLogin.classList.add("bg-primary", "text-white");
-          tabBtnLogin.classList.remove("text-text-light");
+          tabBtnLogin.classList.add("bg-primary", "text-[#0B0D0C]", "font-bold");
+          tabBtnLogin.classList.remove("text-text-light", "text-white");
         }
         if (tabBtnRegister) {
-          tabBtnRegister.classList.remove("bg-primary", "text-white");
+          tabBtnRegister.classList.remove("bg-primary", "text-[#0B0D0C]", "font-bold");
           tabBtnRegister.classList.add("text-text-light");
         }
         if (loginForm) loginForm.classList.remove("hidden");

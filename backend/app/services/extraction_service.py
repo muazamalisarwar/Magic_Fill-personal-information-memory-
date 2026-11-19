@@ -107,10 +107,17 @@ def _clean_extracted_strings(data: Any) -> Any:
     return data
 
 
-async def extract_structured_memory_from_text(raw_text: str) -> Dict[str, Any]:
-    """Uses Groq LLM to parse unstructured text into structured profile records."""
+async def extract_structured_memory_from_text(
+    raw_text: str,
+    user_id: Optional[int] = None,
+    db: Optional[Session] = None
+) -> Dict[str, Any]:
+    """Uses configured AI provider (or Groq default) to parse unstructured text into structured profile records."""
     if not raw_text or not raw_text.strip():
         return {"personal_info": None, "experiences": [], "custom_fields": []}
+
+    from app.ai.provider_manager import AIProviderManager
+    user_config = AIProviderManager.get_user_ai_config(db, user_id) if db and user_id else None
 
     messages = [
         {"role": "system", "content": EXTRACTION_SYSTEM_PROMPT},
@@ -120,7 +127,7 @@ async def extract_structured_memory_from_text(raw_text: str) -> Dict[str, Any]:
         }
     ]
 
-    response = await query_groq_llm(messages=messages, temperature=0.1)
+    response = await query_groq_llm(messages=messages, temperature=0.1, config=user_config)
     if not response or not isinstance(response, dict):
         # Fallback heuristic extraction if LLM is offline or unavailable
         raw_res = _fallback_heuristic_extraction(raw_text)

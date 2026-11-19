@@ -34,10 +34,99 @@ document.addEventListener("DOMContentLoaded", async () => {
   const mappingsListEl = document.getElementById("mappingsList");
   const matchCountBadgeEl = document.getElementById("matchCountBadge");
 
+  // Detection Toggle Elements
+  const toggleNewDataDetection = document.getElementById("toggleNewDataDetection");
+  const detectionStatusBadge = document.getElementById("detectionStatusBadge");
+  const hintNoticeText = document.getElementById("hintNoticeText");
+
   // Theme Elements
   const themeToggleBtn = document.getElementById("themeToggleBtn");
   const iconSun = document.getElementById("iconSun");
   const iconMoon = document.getElementById("iconMoon");
+
+  // AI Configuration Elements
+  const btnToggleAiSettings = document.getElementById("btnToggleAiSettings");
+  const aiSettingsBody = document.getElementById("aiSettingsBody");
+  const aiChevronIcon = document.getElementById("aiChevronIcon");
+  const aiActiveBadge = document.getElementById("aiActiveBadge");
+  const aiProviderSelect = document.getElementById("aiProviderSelect");
+  const aiBaseUrlGroup = document.getElementById("aiBaseUrlGroup");
+  const aiBaseUrlInput = document.getElementById("aiBaseUrlInput");
+  const aiBaseUrlHint = document.getElementById("aiBaseUrlHint");
+  const aiModelGroup = document.getElementById("aiModelGroup");
+  const aiModelInput = document.getElementById("aiModelInput");
+  const aiModelHint = document.getElementById("aiModelHint");
+  const aiApiKeyGroup = document.getElementById("aiApiKeyGroup");
+  const aiApiKeyInput = document.getElementById("aiApiKeyInput");
+  const aiKeyHelpLink = document.getElementById("aiKeyHelpLink");
+  const btnToggleApiKeyMask = document.getElementById("btnToggleApiKeyMask");
+  const iconEye = document.getElementById("iconEye");
+  const iconEyeOff = document.getElementById("iconEyeOff");
+  const aiKeyStatusHint = document.getElementById("aiKeyStatusHint");
+  const aiOllamaHelpCard = document.getElementById("aiOllamaHelpCard");
+  const aiTestFeedback = document.getElementById("aiTestFeedback");
+  const btnTestAiConnection = document.getElementById("btnTestAiConnection");
+  const spinnerTestAi = document.getElementById("spinnerTestAi");
+  const textTestAi = document.getElementById("textTestAi");
+  const btnSaveAiConfig = document.getElementById("btnSaveAiConfig");
+  const btnResetAiConfig = document.getElementById("btnResetAiConfig");
+
+  const AI_METADATA = {
+    groq: {
+      defaultModel: "llama-3.3-70b-versatile",
+      defaultUrl: "",
+      needsKey: false,
+      needsUrl: false,
+      badgeText: "Default (Groq)",
+      helpUrl: "https://console.groq.com/keys",
+      placeholder: "llama-3.3-70b-versatile",
+    },
+    openai: {
+      defaultModel: "gpt-4o-mini",
+      defaultUrl: "https://api.openai.com/v1",
+      needsKey: true,
+      needsUrl: false,
+      badgeText: "OpenAI",
+      helpUrl: "https://platform.openai.com/api-keys",
+      placeholder: "gpt-4o-mini",
+    },
+    gemini: {
+      defaultModel: "gemini-1.5-flash",
+      defaultUrl: "https://generativelanguage.googleapis.com",
+      needsKey: true,
+      needsUrl: false,
+      badgeText: "Gemini",
+      helpUrl: "https://aistudio.google.com/app/apikey",
+      placeholder: "gemini-1.5-flash",
+    },
+    openrouter: {
+      defaultModel: "meta-llama/llama-3.3-70b-instruct",
+      defaultUrl: "https://openrouter.ai/api/v1",
+      needsKey: true,
+      needsUrl: false,
+      badgeText: "OpenRouter",
+      helpUrl: "https://openrouter.ai/keys",
+      placeholder: "meta-llama/llama-3.3-70b-instruct",
+    },
+    ollama: {
+      defaultModel: "llama3.2",
+      defaultUrl: "http://localhost:11434/v1",
+      needsKey: false,
+      needsUrl: true,
+      badgeText: "Ollama (Local)",
+      helpUrl: "https://ollama.com",
+      placeholder: "llama3.2",
+    },
+    custom: {
+      defaultModel: "custom-model",
+      defaultUrl: "http://localhost:8000/v1",
+      needsKey: true,
+      needsUrl: true,
+      badgeText: "Custom AI",
+      helpUrl: "",
+      placeholder: "model-identifier",
+    },
+  };
 
   const WEBSITE_BASE_URL = "http://localhost:4321";
 
@@ -71,15 +160,82 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  function updateDetectionToggleUI(enabled) {
+    if (toggleNewDataDetection) {
+      toggleNewDataDetection.checked = enabled;
+    }
+    if (detectionStatusBadge) {
+      detectionStatusBadge.textContent = enabled ? "ON" : "OFF";
+      detectionStatusBadge.className = `detection-badge ${enabled ? "badge-on" : "badge-off"}`;
+    }
+    if (hintNoticeText) {
+      if (enabled) {
+        hintNoticeText.textContent = "New details you enter in web forms are automatically detected so you can save them to your vault with 1 click.";
+      } else {
+        hintNoticeText.textContent = "New data detection is turned OFF. Web forms will not prompt for changes. 1-click autofill remains fully active.";
+      }
+    }
+  }
+
+  if (toggleNewDataDetection) {
+    toggleNewDataDetection.addEventListener("change", (e) => {
+      const isEnabled = e.target.checked;
+      updateDetectionToggleUI(isEnabled);
+
+      // Save preference to chrome.storage.local
+      if (chrome.storage && chrome.storage.local) {
+        chrome.storage.local.set({ new_data_detection_enabled: isEnabled }, () => {
+          // Immediately notify all active browser tabs
+          if (chrome.tabs && chrome.tabs.query) {
+            chrome.tabs.query({}, (tabs) => {
+              tabs.forEach((tab) => {
+                if (tab.id) {
+                  chrome.tabs.sendMessage(
+                    tab.id,
+                    { action: "TOGGLE_NEW_DATA_DETECTION", enabled: isEnabled },
+                    () => {
+                      if (chrome.runtime.lastError) {}
+                    }
+                  );
+                }
+              });
+            });
+          }
+        });
+      }
+    });
+  }
+
+  function escapeHtml(str) {
+    if (!str) return "";
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
   function showAlert(message, type = "success") {
     if (!alertBoxEl) return;
     alertBoxEl.className = `alert alert-${type}`;
-    alertBoxEl.textContent = message;
+    const cleanMsg = (message || "").replace(/^[✓✕\s]+/, "");
+    const icon = type === "success"
+      ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0"><polyline points="20 6 9 17 4 12"/></svg>`
+      : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+    alertBoxEl.innerHTML = `<div style="display:flex; align-items:center; gap:8px;">${icon}<span>${escapeHtml(cleanMsg)}</span></div>`;
     alertBoxEl.classList.remove("hidden");
   }
 
   function hideAlert() {
     if (alertBoxEl) alertBoxEl.classList.add("hidden");
+  }
+
+  function setStatus(status, label) {
+    if (!backendStatusEl) return;
+    backendStatusEl.className = `status-badge status-${status}`;
+    const txt = backendStatusEl.querySelector(".status-text");
+    if (txt) txt.textContent = label;
   }
 
   function showAuthError(message) {
@@ -95,11 +251,248 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  function setStatus(status, label) {
-    if (!backendStatusEl) return;
-    backendStatusEl.className = `status-badge status-${status}`;
-    const txt = backendStatusEl.querySelector(".status-text");
-    if (txt) txt.textContent = label;
+  // -------------------------------------------------------------------------
+  // AI Configuration UI Logic
+  // -------------------------------------------------------------------------
+  function updateAiSettingsVisibility(provider) {
+    const meta = AI_METADATA[provider] || AI_METADATA.groq;
+
+    // Model Group
+    if (aiModelInput) {
+      aiModelInput.placeholder = meta.placeholder;
+      if (!aiModelInput.value || Object.values(AI_METADATA).some((m) => m.defaultModel === aiModelInput.value)) {
+        aiModelInput.value = meta.defaultModel;
+      }
+    }
+
+    // Base URL Group
+    if (aiBaseUrlGroup) {
+      if (meta.needsUrl) {
+        aiBaseUrlGroup.classList.remove("hidden");
+        if (aiBaseUrlInput && (!aiBaseUrlInput.value || Object.values(AI_METADATA).some((m) => m.defaultUrl === aiBaseUrlInput.value))) {
+          aiBaseUrlInput.value = meta.defaultUrl;
+        }
+      } else {
+        aiBaseUrlGroup.classList.add("hidden");
+      }
+    }
+
+    // API Key Group
+    if (aiApiKeyGroup) {
+      if (meta.needsKey) {
+        aiApiKeyGroup.classList.remove("hidden");
+        if (aiKeyHelpLink) {
+          if (meta.helpUrl) {
+            aiKeyHelpLink.href = meta.helpUrl;
+            aiKeyHelpLink.classList.remove("hidden");
+          } else {
+            aiKeyHelpLink.classList.add("hidden");
+          }
+        }
+      } else {
+        aiApiKeyGroup.classList.add("hidden");
+      }
+    }
+
+    // Ollama Setup Help Card
+    if (aiOllamaHelpCard) {
+      if (provider === "ollama") {
+        aiOllamaHelpCard.classList.remove("hidden");
+      } else {
+        aiOllamaHelpCard.classList.add("hidden");
+      }
+    }
+
+    hideAiTestFeedback();
+  }
+
+  function showAiTestFeedback(message, isSuccess = true) {
+    if (!aiTestFeedback) return;
+    aiTestFeedback.className = `ai-test-feedback ${isSuccess ? "feedback-success" : "feedback-error"}`;
+    const cleanMsg = (message || "").replace(/^[✓✕\s]+/, "");
+    const icon = isSuccess
+      ? `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0"><polyline points="20 6 9 17 4 12"/></svg>`
+      : `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+    aiTestFeedback.innerHTML = `<div style="display:flex; align-items:center; gap:6px;">${icon}<span>${escapeHtml(cleanMsg)}</span></div>`;
+    aiTestFeedback.classList.remove("hidden");
+  }
+
+  function hideAiTestFeedback() {
+    if (aiTestFeedback) {
+      aiTestFeedback.classList.add("hidden");
+      aiTestFeedback.textContent = "";
+    }
+  }
+
+  function updateAiBadge(provider, modelName, isActive = false) {
+    if (!aiActiveBadge) return;
+    if (!isActive || provider === "groq") {
+      aiActiveBadge.textContent = "Default (Groq)";
+      aiActiveBadge.className = "ai-provider-badge badge-default";
+    } else {
+      const meta = AI_METADATA[provider];
+      const provName = meta ? meta.badgeText : provider.toUpperCase();
+      aiActiveBadge.textContent = `${provName}`;
+      aiActiveBadge.className = "ai-provider-badge badge-custom";
+    }
+  }
+
+  // AI Settings Collapsible Panel Toggle
+  if (btnToggleAiSettings && aiSettingsBody) {
+    btnToggleAiSettings.addEventListener("click", () => {
+      const isExpanded = btnToggleAiSettings.getAttribute("aria-expanded") === "true";
+      const nextExpanded = !isExpanded;
+      btnToggleAiSettings.setAttribute("aria-expanded", String(nextExpanded));
+      if (nextExpanded) {
+        aiSettingsBody.classList.remove("hidden");
+        if (aiChevronIcon) aiChevronIcon.style.transform = "rotate(180deg)";
+      } else {
+        aiSettingsBody.classList.add("hidden");
+        if (aiChevronIcon) aiChevronIcon.style.transform = "rotate(0deg)";
+      }
+    });
+  }
+
+  // Provider Dropdown Change
+  if (aiProviderSelect) {
+    aiProviderSelect.addEventListener("change", (e) => {
+      const selected = e.target.value;
+      updateAiSettingsVisibility(selected);
+    });
+  }
+
+  // API Key Visibility Eye Toggle
+  if (btnToggleApiKeyMask && aiApiKeyInput) {
+    btnToggleApiKeyMask.addEventListener("click", () => {
+      const isPassword = aiApiKeyInput.type === "password";
+      aiApiKeyInput.type = isPassword ? "text" : "password";
+      if (iconEye) iconEye.classList.toggle("hidden", isPassword);
+      if (iconEyeOff) iconEyeOff.classList.toggle("hidden", !isPassword);
+    });
+  }
+
+  // Test Connection Action
+  if (btnTestAiConnection) {
+    btnTestAiConnection.addEventListener("click", async () => {
+      const provider = aiProviderSelect ? aiProviderSelect.value : "groq";
+      const modelName = (aiModelInput && aiModelInput.value) ? aiModelInput.value.trim() : "";
+      const baseUrl = (aiBaseUrlInput && aiBaseUrlInput.value) ? aiBaseUrlInput.value.trim() : "";
+      const apiKey = (aiApiKeyInput && aiApiKeyInput.value) ? aiApiKeyInput.value.trim() : "";
+
+      btnTestAiConnection.disabled = true;
+      if (spinnerTestAi) spinnerTestAi.classList.remove("hidden");
+      if (textTestAi) textTestAi.textContent = "Testing...";
+      hideAiTestFeedback();
+
+      chrome.runtime.sendMessage(
+        {
+          action: "TEST_AI_CONFIG",
+          config: {
+            provider: provider,
+            model_name: modelName,
+            api_base_url: baseUrl,
+            api_key: apiKey,
+          },
+        },
+        (res) => {
+          btnTestAiConnection.disabled = false;
+          if (spinnerTestAi) spinnerTestAi.classList.add("hidden");
+          if (textTestAi) textTestAi.textContent = "Test Connection";
+
+          if (chrome.runtime.lastError) {
+            showAiTestFeedback(`Connection test error: ${chrome.runtime.lastError.message}`, false);
+            return;
+          }
+
+          if (res && res.success) {
+            const lat = res.latency_ms ? ` (${res.latency_ms}ms)` : "";
+            showAiTestFeedback(`${res.message || "Connection verified"}${lat}`, true);
+          } else {
+            showAiTestFeedback(`${res && res.error ? res.error : "Failed to connect to provider"}`, false);
+          }
+        }
+      );
+    });
+  }
+
+  // Save AI Config Action
+  if (btnSaveAiConfig) {
+    btnSaveAiConfig.addEventListener("click", () => {
+      const provider = aiProviderSelect ? aiProviderSelect.value : "groq";
+      const modelName = (aiModelInput && aiModelInput.value) ? aiModelInput.value.trim() : "";
+      const baseUrl = (aiBaseUrlInput && aiBaseUrlInput.value) ? aiBaseUrlInput.value.trim() : "";
+      const apiKey = (aiApiKeyInput && aiApiKeyInput.value) ? aiApiKeyInput.value.trim() : "";
+
+      btnSaveAiConfig.disabled = true;
+      btnSaveAiConfig.textContent = "Saving...";
+
+      chrome.runtime.sendMessage(
+        {
+          action: "SAVE_AI_CONFIG",
+          config: {
+            provider: provider,
+            model_name: modelName,
+            api_base_url: baseUrl,
+            api_key: apiKey,
+          },
+        },
+        (res) => {
+          btnSaveAiConfig.disabled = false;
+          btnSaveAiConfig.textContent = "Save Config";
+
+          if (chrome.runtime.lastError || (res && !res.success)) {
+            showAlert(res && res.error ? res.error : "Failed to save AI configuration", "error");
+            return;
+          }
+
+          updateAiBadge(provider, modelName, provider !== "groq");
+          showAlert(`Saved ${provider.toUpperCase()} configuration!`, "success");
+        }
+      );
+    });
+  }
+
+  // Reset to Default AI Action
+  if (btnResetAiConfig) {
+    btnResetAiConfig.addEventListener("click", () => {
+      btnResetAiConfig.disabled = true;
+      chrome.runtime.sendMessage({ action: "RESET_AI_CONFIG" }, (res) => {
+        btnResetAiConfig.disabled = false;
+        if (aiProviderSelect) aiProviderSelect.value = "groq";
+        if (aiModelInput) aiModelInput.value = AI_METADATA.groq.defaultModel;
+        if (aiBaseUrlInput) aiBaseUrlInput.value = "";
+        if (aiApiKeyInput) {
+          aiApiKeyInput.value = "";
+          aiApiKeyInput.placeholder = "Paste your API key here";
+        }
+        updateAiSettingsVisibility("groq");
+        updateAiBadge("groq", AI_METADATA.groq.defaultModel, false);
+        showAlert("Reset to Default Magic Fill AI (Groq)", "success");
+      });
+    });
+  }
+
+  function loadAiConfigOnOpen() {
+    chrome.runtime.sendMessage({ action: "GET_AI_CONFIG" }, (res) => {
+      if (chrome.runtime.lastError || !res || !res.success || !res.data) return;
+      const cfg = res.data;
+      if (aiProviderSelect) aiProviderSelect.value = cfg.provider || "groq";
+      updateAiSettingsVisibility(cfg.provider || "groq");
+
+      if (aiModelInput && cfg.model_name) {
+        aiModelInput.value = cfg.model_name;
+      }
+      if (aiBaseUrlInput && cfg.api_base_url) {
+        aiBaseUrlInput.value = cfg.api_base_url;
+      }
+      if (aiApiKeyInput) {
+        if (cfg.masked_api_key) {
+          aiApiKeyInput.placeholder = `Saved: ${cfg.masked_api_key}`;
+        }
+      }
+
+      updateAiBadge(cfg.provider || "groq", cfg.model_name, cfg.is_active || cfg.provider !== "groq");
+    });
   }
 
   // -------------------------------------------------------------------------
@@ -112,21 +505,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Query storage directly without waking background worker first
     if (chrome.storage && chrome.storage.local) {
       chrome.storage.local.get(
-        ["magic_fill_token", "magic_fill_user", "magic_fill_theme", "cached_profile"],
+        ["magic_fill_token", "magic_fill_user", "magic_fill_theme", "cached_profile", "new_data_detection_enabled"],
         (items) => {
           // A. Synchronously apply theme
           const theme = items.magic_fill_theme || "dark";
           applyTheme(theme);
 
-          // B. Instantly render auth view from cached data
+          // B. Apply New Data Detection toggle state (default: ON / true)
+          const isDetectionOn = items.new_data_detection_enabled !== false;
+          updateDetectionToggleUI(isDetectionOn);
+
+          // C. Instantly render auth view from cached data
           if (items.magic_fill_token && items.magic_fill_user) {
             renderAuthenticatedView(items.magic_fill_user, items.cached_profile);
           } else {
             renderUnauthenticatedView();
           }
 
-          // C. Background non-blocking network checks
+          // D. Background non-blocking network checks
           checkHealthNonBlocking();
+          loadAiConfigOnOpen();
           if (items.magic_fill_token) {
             refreshUserProfileNonBlocking();
           }
@@ -271,7 +669,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         btnExchangeCode.textContent = "Link";
 
         if (res && res.success) {
-          showAlert("✓ Extension connected successfully!", "success");
+          showAlert("Extension connected successfully!", "success");
           if (inputAuthCode) inputAuthCode.value = "";
           fastInit();
         } else {
@@ -340,7 +738,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         chrome.runtime.sendMessage({ action: "EXCHANGE_AUTH_CODE", code: code }, (res) => {
           btnSyncFromTab.disabled = false;
           if (res && res.success) {
-            showAlert("✓ Automatically synced and linked with website session!", "success");
+            showAlert("Automatically synced and linked with website session!", "success");
             fastInit();
           } else {
             showAuthError(res ? res.error : "Failed to sync session.");
@@ -455,7 +853,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 return;
               }
               const filledCount = fillRes && fillRes.success ? fillRes.filledCount : mappings.length;
-              showAlert(`✓ Groq AI autofilled ${filledCount} field${filledCount !== 1 ? "s" : ""}!`, "success");
+              showAlert(`Autofilled ${filledCount} field${filledCount !== 1 ? "s" : ""} from memory!`, "success");
               renderMappingsList(mappings);
             });
           }

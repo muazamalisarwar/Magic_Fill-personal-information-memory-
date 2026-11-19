@@ -7,27 +7,27 @@ import Base from "@/layouts/Base.astro";
   meta_title="Live Form Autofill Simulator & Testing Lab"
   description="Test Magic Fill intelligent AI form matching and autofill on a comprehensive multi-type application form."
 >
-  <section class="pt-28 pb-20 relative overflow-hidden min-h-screen">
+  <section class="pt-28 pb-20 relative overflow-hidden min-h-screen bg-[#0B0D0C]">
     <div class="container mx-auto px-4 max-w-5xl relative z-10">
       
       <!-- Top Navigation Bar -->
-      <div class="flex items-center justify-between mb-8 pb-4 border-b border-slate-200/80 dark:border-white/5">
+      <div class="flex items-center justify-between mb-8 pb-4 border-b border-[#2B312C]">
         <div class="flex items-center gap-2.5 text-xs font-semibold">
-          <a href="/dashboard" class="text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white flex items-center gap-1.5 transition-colors">
+          <a href="/dashboard" class="text-[#A1AAA1] hover:text-[#B7F34A] flex items-center gap-1.5 transition-colors">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             <span>Dashboard</span>
           </a>
-          <span class="text-slate-300 dark:text-white/20">/</span>
-          <span class="text-slate-900 dark:text-white font-medium">Form Simulator</span>
+          <span class="text-[#5E665E]">/</span>
+          <span class="text-white font-medium">Form Simulator</span>
         </div>
 
         <div class="flex items-center gap-2.5">
-          <a href="/memory" class="rounded-lg px-3 py-1.5 text-xs font-medium bg-white dark:bg-white/5 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10 transition-all">
+          <a href="/memory" class="rounded-lg px-3 py-1.5 text-xs font-medium bg-[#141715] text-[#A1AAA1] border border-[#2B312C] hover:text-white hover:border-[#B7F34A]/40 transition-all">
             Inspect Vault
           </a>
-          <a href="/extension" class="rounded-lg px-3 py-1.5 text-xs font-medium bg-white dark:bg-white/5 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10 transition-all">
+          <a href="/extension" class="rounded-lg px-3 py-1.5 text-xs font-medium bg-[#141715] text-[#A1AAA1] border border-[#2B312C] hover:text-white hover:border-[#B7F34A]/40 transition-all">
             Extension Setup
           </a>
         </div>
@@ -36,13 +36,13 @@ import Base from "@/layouts/Base.astro";
       <!-- Header & Intro -->
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
         <div>
-          <p class="text-xs font-semibold uppercase tracking-[0.12em] text-indigo-600 dark:text-indigo-400 mb-2 font-display">
+          <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[#B7F34A] mb-2 font-mono">
             Testing Environment &bull; 10 Input Types
           </p>
-          <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white font-display">
+          <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white">
             Form Autofill Simulator
           </h1>
-          <p class="text-sm text-slate-600 dark:text-slate-400 max-w-xl mt-2 leading-relaxed">
+          <p class="text-sm text-[#A1AAA1] max-w-xl mt-2 leading-relaxed">
             Test how Magic Fill maps and fills complex inputs across text fields, dropdowns, radios, sliders, checkboxes, and custom questions.
           </p>
         </div>
@@ -52,9 +52,11 @@ import Base from "@/layouts/Base.astro";
           <button
             type="button"
             id="clearFormBtn"
-            class="px-3.5 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-white/5 border border-slate-200/90 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10 transition-all cursor-pointer flex items-center gap-1.5"
+            data-magic-fill-ignore="true"
+            data-no-learn="true"
+            class="px-3.5 py-2.5 rounded-xl text-xs font-medium text-[#A1AAA1] bg-[#141715] border border-[#2B312C] hover:bg-[#191D1A] hover:text-white transition-all cursor-pointer flex items-center gap-1.5"
           >
-            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-3.5 h-3.5 text-[#5E665E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
             </svg>
             <span>Reset Form</span>
@@ -63,64 +65,66 @@ import Base from "@/layouts/Base.astro";
           <button
             type="button"
             id="simulateAutofillBtn"
-            class="px-4 py-2 rounded-lg text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 shadow-sm hover:shadow transition-all cursor-pointer flex items-center gap-2"
+            data-magic-fill-ignore="true"
+            data-no-learn="true"
+            class="px-4 py-2.5 rounded-xl text-xs font-bold text-[#0B0D0C] bg-[#B7F34A] hover:bg-[#c9f66d] shadow-[0_0_20px_rgba(183,243,74,0.15)] transition-all cursor-pointer flex items-center gap-2"
           >
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="currentColor"></polygon>
             </svg>
             <span id="autofillBtnText">Simulate Autofill</span>
-            <span class="hidden sm:inline-block px-1.5 py-0.5 rounded bg-white/20 text-[10px] font-mono">Alt+F</span>
+            <span class="hidden sm:inline-block px-1.5 py-0.5 rounded bg-black/20 text-[#0B0D0C] text-[10px] font-mono font-semibold">Alt+F</span>
           </button>
         </div>
       </div>
 
       <!-- Live Match Summary Banner -->
-      <div id="matchSummaryBanner" class="p-4 rounded-xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200/80 dark:border-white/10 mb-8 flex flex-wrap items-center justify-between gap-4">
+      <div id="matchSummaryBanner" class="p-4 rounded-xl bg-[#141715] border border-[#2B312C] mb-8 flex flex-wrap items-center justify-between gap-4">
         <div class="flex items-center gap-5">
-          <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Status:</span>
-          <span class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-700 dark:text-slate-300">
-            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span class="text-xs font-semibold text-[#5E665E] uppercase tracking-wider font-mono">Status:</span>
+          <span class="inline-flex items-center gap-1.5 text-xs font-medium text-white">
+            <span class="w-2 h-2 rounded-full bg-[#B7F34A] shadow-[0_0_8px_rgba(183,243,74,0.6)]"></span>
             Matched from Vault
           </span>
-          <span class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-700 dark:text-slate-300">
-            <span class="w-2 h-2 rounded-full bg-slate-300 dark:bg-white/30"></span>
+          <span class="inline-flex items-center gap-1.5 text-xs font-medium text-[#A1AAA1]">
+            <span class="w-2 h-2 rounded-full bg-[#2B312C]"></span>
             Unmapped / Optional
           </span>
         </div>
-        <div id="statsBadge" class="text-xs text-slate-500 dark:text-slate-400">
-          Ready to test. Click <strong>Simulate Autofill</strong> or press <kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-mono text-[10px] border border-slate-200 dark:border-white/10">Alt + F</kbd>.
+        <div id="statsBadge" class="text-xs text-[#A1AAA1]">
+          Ready to test. Click <strong class="text-white">Simulate Autofill</strong> or press <kbd class="px-1.5 py-0.5 rounded bg-[#191D1A] text-white font-mono text-[10px] border border-[#2B312C]">Alt + F</kbd>.
         </div>
       </div>
 
       <!-- The Simulated Form Container -->
-      <form id="jobAppForm" class="bg-white dark:bg-[#0f1422] border border-slate-200/80 dark:border-white/10 rounded-2xl p-6 md:p-9 shadow-xs space-y-9">
+      <form id="jobAppForm" class="bg-[#191D1A] border border-[#2B312C] rounded-2xl p-6 sm:p-9 shadow-sm space-y-9">
         
         <!-- Section 1: Personal & Contact Information (Text Inputs) -->
         <div>
-          <div class="flex items-center gap-2 mb-5 pb-3 border-b border-slate-100 dark:border-white/5">
-            <span class="w-5 h-5 rounded-md bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-bold text-xs flex items-center justify-center border border-indigo-100 dark:border-indigo-800/40">1</span>
-            <h2 class="text-sm font-bold text-slate-900 dark:text-white font-display">Applicant Identity &amp; Contact</h2>
+          <div class="flex items-center gap-2.5 mb-5 pb-3 border-b border-[#2B312C]">
+            <span class="w-6 h-6 rounded-md bg-[#B7F34A]/10 text-[#B7F34A] font-bold text-xs flex items-center justify-center border border-[#B7F34A]/30 font-mono">1</span>
+            <h2 class="text-sm font-bold text-white">Applicant Identity &amp; Contact</h2>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <!-- Field: Full Name -->
             <div class="space-y-1.5">
-              <label for="applicant_legal_name" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display">
-                Legal Full Name <span class="text-rose-500">*</span>
+              <label for="applicant_legal_name" class="block text-xs font-semibold text-white">
+                Legal Full Name <span class="text-[#B7F34A]">*</span>
               </label>
               <input
                 type="text"
                 id="applicant_legal_name"
                 name="applicant_legal_name"
                 placeholder="e.g. Johnathan Doe"
-                class="sim-input w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
+                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-[#2B312C] bg-[#141715] text-sm text-white placeholder-[#5E665E] focus:outline-none focus:border-[#B7F34A] focus:ring-1 focus:ring-[#B7F34A]/30 transition-all"
               />
-              <span class="field-hint text-[11px] text-slate-500 dark:text-slate-400 block">Vault target: personal_info.full_name</span>
+              <span class="field-hint text-[11px] text-[#5E665E] block font-mono">Vault target: personal_info.full_name</span>
             </div>
 
             <!-- Field: Father Name -->
             <div class="space-y-1.5">
-              <label for="parent_guardian_name" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display">
+              <label for="parent_guardian_name" class="block text-xs font-semibold text-white">
                 Father / Guardian Name
               </label>
               <input
@@ -128,29 +132,29 @@ import Base from "@/layouts/Base.astro";
                 id="parent_guardian_name"
                 name="parent_guardian_name"
                 placeholder="e.g. Robert Doe"
-                class="sim-input w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
+                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-[#2B312C] bg-[#141715] text-sm text-white placeholder-[#5E665E] focus:outline-none focus:border-[#B7F34A] focus:ring-1 focus:ring-[#B7F34A]/30 transition-all"
               />
-              <span class="field-hint text-[11px] text-slate-500 dark:text-slate-400 block">Vault target: personal_info.father_name</span>
+              <span class="field-hint text-[11px] text-[#5E665E] block font-mono">Vault target: personal_info.father_name</span>
             </div>
 
             <!-- Field: Email -->
             <div class="space-y-1.5">
-              <label for="applicant_email_address" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display">
-                Contact Email Address <span class="text-rose-500">*</span>
+              <label for="applicant_email_address" class="block text-xs font-semibold text-white">
+                Contact Email Address <span class="text-[#B7F34A]">*</span>
               </label>
               <input
                 type="email"
                 id="applicant_email_address"
                 name="applicant_email_address"
                 placeholder="you@domain.com"
-                class="sim-input w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
+                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-[#2B312C] bg-[#141715] text-sm text-white placeholder-[#5E665E] focus:outline-none focus:border-[#B7F34A] focus:ring-1 focus:ring-[#B7F34A]/30 transition-all"
               />
-              <span class="field-hint text-[11px] text-slate-500 dark:text-slate-400 block">Vault target: personal_info.email</span>
+              <span class="field-hint text-[11px] text-[#5E665E] block font-mono">Vault target: personal_info.email</span>
             </div>
 
             <!-- Field: Phone Number -->
             <div class="space-y-1.5">
-              <label for="contact_telephone" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display">
+              <label for="contact_telephone" class="block text-xs font-semibold text-white">
                 Mobile / Primary Phone
               </label>
               <input
@@ -158,14 +162,14 @@ import Base from "@/layouts/Base.astro";
                 id="contact_telephone"
                 name="contact_telephone"
                 placeholder="+1 (555) 000-0000"
-                class="sim-input w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
+                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-[#2B312C] bg-[#141715] text-sm text-white placeholder-[#5E665E] focus:outline-none focus:border-[#B7F34A] focus:ring-1 focus:ring-[#B7F34A]/30 transition-all"
               />
-              <span class="field-hint text-[11px] text-slate-500 dark:text-slate-400 block">Vault target: personal_info.phone</span>
+              <span class="field-hint text-[11px] text-[#5E665E] block font-mono">Vault target: personal_info.phone</span>
             </div>
 
             <!-- Field: National ID / CNIC -->
             <div class="space-y-1.5">
-              <label for="national_identity_number" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display">
+              <label for="national_identity_number" class="block text-xs font-semibold text-white">
                 National ID / CNIC / Government ID
               </label>
               <input
@@ -173,111 +177,125 @@ import Base from "@/layouts/Base.astro";
                 id="national_identity_number"
                 name="national_identity_number"
                 placeholder="35201-1234567-1"
-                class="sim-input w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
+                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-[#2B312C] bg-[#141715] text-sm text-white placeholder-[#5E665E] focus:outline-none focus:border-[#B7F34A] focus:ring-1 focus:ring-[#B7F34A]/30 transition-all"
               />
-              <span class="field-hint text-[11px] text-slate-500 dark:text-slate-400 block">Vault target: personal_info.cnic</span>
+              <span class="field-hint text-[11px] text-[#5E665E] block font-mono">Vault target: personal_info.cnic</span>
             </div>
 
             <!-- Field: Date of Birth (Date Picker) -->
             <div class="space-y-1.5">
-              <label for="date_of_birth" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display">
+              <label for="date_of_birth" class="block text-xs font-semibold text-white">
                 Date of Birth
               </label>
               <input
                 type="date"
                 id="date_of_birth"
                 name="date_of_birth"
-                class="sim-input w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
+                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-[#2B312C] bg-[#141715] text-sm text-white placeholder-[#5E665E] focus:outline-none focus:border-[#B7F34A] focus:ring-1 focus:ring-[#B7F34A]/30 transition-all"
               />
-              <span class="field-hint text-[11px] text-slate-500 dark:text-slate-400 block">ISO date standard (YYYY-MM-DD)</span>
+              <span class="field-hint text-[11px] text-[#5E665E] block font-mono">ISO date standard (YYYY-MM-DD)</span>
+            </div>
+
+            <!-- Field: Preferred Interview Time (Time Picker) -->
+            <div class="space-y-1.5">
+              <label for="interview_time" class="block text-xs font-semibold text-white">
+                Preferred Interview Time
+              </label>
+              <input
+                type="time"
+                id="interview_time"
+                name="interview_time"
+                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-[#2B312C] bg-[#141715] text-sm text-white placeholder-[#5E665E] focus:outline-none focus:border-[#B7F34A] focus:ring-1 focus:ring-[#B7F34A]/30 transition-all"
+              />
+              <span class="field-hint text-[11px] text-[#5E665E] block font-mono">Standard 24-hr time (HH:MM)</span>
             </div>
           </div>
         </div>
 
         <!-- Section 2: Dropdowns & Radios (Select & Radio Options) -->
         <div>
-          <div class="flex items-center gap-2 mb-5 pb-3 border-b border-slate-100 dark:border-white/5">
-            <span class="w-5 h-5 rounded-md bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-bold text-xs flex items-center justify-center border border-indigo-100 dark:border-indigo-800/40">2</span>
-            <h2 class="text-sm font-bold text-slate-900 dark:text-white font-display">Academic Level &amp; Demographics</h2>
+          <div class="flex items-center gap-2.5 mb-5 pb-3 border-b border-[#2B312C]">
+            <span class="w-6 h-6 rounded-md bg-[#B7F34A]/10 text-[#B7F34A] font-bold text-xs flex items-center justify-center border border-[#B7F34A]/30 font-mono">2</span>
+            <h2 class="text-sm font-bold text-white">Academic Level &amp; Demographics</h2>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             
             <!-- Dropdown: Highest Completed Degree -->
             <div class="space-y-1.5">
-              <label for="highest_degree_level" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display">
+              <label for="highest_degree_level" class="block text-xs font-semibold text-white">
                 Highest Completed Degree
               </label>
               <select
                 id="highest_degree_level"
                 name="highest_degree_level"
-                class="sim-input w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
+                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-[#2B312C] bg-[#141715] text-sm text-white focus:outline-none focus:border-[#B7F34A] focus:ring-1 focus:ring-[#B7F34A]/30 transition-all"
               >
-                <option value="">-- Choose Degree Level --</option>
-                <option value="High School">High School / Matriculation</option>
-                <option value="Associate Degree">Associate Degree / Diploma</option>
-                <option value="Bachelor of Science">Bachelor of Science / BS</option>
-                <option value="Master of Science">Master of Science / MS</option>
-                <option value="Doctorate">Doctorate / Ph.D.</option>
+                <option value="" class="bg-[#141715] text-[#A1AAA1]">-- Choose Degree Level --</option>
+                <option value="High School" class="bg-[#141715] text-white">High School / Matriculation</option>
+                <option value="Associate Degree" class="bg-[#141715] text-white">Associate Degree / Diploma</option>
+                <option value="Bachelor of Science" class="bg-[#141715] text-white">Bachelor of Science / BS</option>
+                <option value="Master of Science" class="bg-[#141715] text-white">Master of Science / MS</option>
+                <option value="Doctorate" class="bg-[#141715] text-white">Doctorate / Ph.D.</option>
               </select>
-              <span class="field-hint text-[11px] text-slate-500 dark:text-slate-400 block">Exact &amp; semantic option matching</span>
+              <span class="field-hint text-[11px] text-[#5E665E] block font-mono">Exact &amp; semantic option matching</span>
             </div>
 
             <!-- Dropdown: Country of Residence -->
             <div class="space-y-1.5">
-              <label for="country_residence" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display">
+              <label for="country_residence" class="block text-xs font-semibold text-white">
                 Country of Residence
               </label>
               <select
                 id="country_residence"
                 name="country_residence"
-                class="sim-input w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all"
+                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-[#2B312C] bg-[#141715] text-sm text-white focus:outline-none focus:border-[#B7F34A] focus:ring-1 focus:ring-[#B7F34A]/30 transition-all"
               >
-                <option value="">-- Select Country --</option>
-                <option value="Pakistan">Pakistan</option>
-                <option value="United States">United States</option>
-                <option value="United Kingdom">United Kingdom</option>
-                <option value="Canada">Canada</option>
-                <option value="Germany">Germany</option>
-                <option value="United Arab Emirates">United Arab Emirates</option>
+                <option value="" class="bg-[#141715] text-[#A1AAA1]">-- Select Country --</option>
+                <option value="Pakistan" class="bg-[#141715] text-white">Pakistan</option>
+                <option value="United States" class="bg-[#141715] text-white">United States</option>
+                <option value="United Kingdom" class="bg-[#141715] text-white">United Kingdom</option>
+                <option value="Canada" class="bg-[#141715] text-white">Canada</option>
+                <option value="Germany" class="bg-[#141715] text-white">Germany</option>
+                <option value="United Arab Emirates" class="bg-[#141715] text-white">United Arab Emirates</option>
               </select>
-              <span class="field-hint text-[11px] text-slate-500 dark:text-slate-400 block">Vault target: personal_info.country</span>
+              <span class="field-hint text-[11px] text-[#5E665E] block font-mono">Vault target: personal_info.country</span>
             </div>
 
             <!-- Radio: Gender Selection -->
-            <div class="space-y-2 p-4 rounded-lg bg-slate-50/60 dark:bg-white/[0.02] border border-slate-200/80 dark:border-white/10">
-              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display mb-1">
+            <div class="space-y-2 p-4 rounded-xl bg-[#141715] border border-[#2B312C]">
+              <label class="block text-xs font-semibold text-white mb-1">
                 Gender Identification
               </label>
               <div class="flex items-center gap-6">
-                <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-700 dark:text-slate-300">
-                  <input type="radio" name="gender" value="Male" class="sim-radio text-indigo-600 focus:ring-indigo-500" />
+                <label class="flex items-center gap-2 cursor-pointer text-xs text-[#A1AAA1] hover:text-white transition-colors">
+                  <input type="radio" name="gender" value="Male" class="sim-radio accent-[#B7F34A] cursor-pointer" />
                   <span>Male</span>
                 </label>
-                <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-700 dark:text-slate-300">
-                  <input type="radio" name="gender" value="Female" class="sim-radio text-indigo-600 focus:ring-indigo-500" />
+                <label class="flex items-center gap-2 cursor-pointer text-xs text-[#A1AAA1] hover:text-white transition-colors">
+                  <input type="radio" name="gender" value="Female" class="sim-radio accent-[#B7F34A] cursor-pointer" />
                   <span>Female</span>
                 </label>
-                <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-700 dark:text-slate-300">
-                  <input type="radio" name="gender" value="Other" class="sim-radio text-indigo-600 focus:ring-indigo-500" />
+                <label class="flex items-center gap-2 cursor-pointer text-xs text-[#A1AAA1] hover:text-white transition-colors">
+                  <input type="radio" name="gender" value="Other" class="sim-radio accent-[#B7F34A] cursor-pointer" />
                   <span>Other</span>
                 </label>
               </div>
             </div>
 
             <!-- Radio: Work Authorization -->
-            <div class="space-y-2 p-4 rounded-lg bg-slate-50/60 dark:bg-white/[0.02] border border-slate-200/80 dark:border-white/10">
-              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display mb-1">
+            <div class="space-y-2 p-4 rounded-xl bg-[#141715] border border-[#2B312C]">
+              <label class="block text-xs font-semibold text-white mb-1">
                 Legally Authorized to Work?
               </label>
               <div class="flex items-center gap-6">
-                <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-700 dark:text-slate-300">
-                  <input type="radio" name="work_auth" value="Yes" class="sim-radio text-indigo-600 focus:ring-indigo-500" />
+                <label class="flex items-center gap-2 cursor-pointer text-xs text-[#A1AAA1] hover:text-white transition-colors">
+                  <input type="radio" name="work_auth" value="Yes" class="sim-radio accent-[#B7F34A] cursor-pointer" />
                   <span>Yes, Authorized</span>
                 </label>
-                <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-700 dark:text-slate-300">
-                  <input type="radio" name="work_auth" value="No" class="sim-radio text-indigo-600 focus:ring-indigo-500" />
-                  <span>Requires Visa Sponsorship</span>
+                <label class="flex items-center gap-2 cursor-pointer text-xs text-[#A1AAA1] hover:text-white transition-colors">
+                  <input type="radio" name="work_auth" value="No" class="sim-radio accent-[#B7F34A] cursor-pointer" />
+                  <span>Requires Sponsorship</span>
                 </label>
               </div>
             </div>
@@ -287,20 +305,20 @@ import Base from "@/layouts/Base.astro";
 
         <!-- Section 3: Sliders, Checkboxes, Toggles & Files -->
         <div>
-          <div class="flex items-center gap-2 mb-5 pb-3 border-b border-slate-100 dark:border-white/5">
-            <span class="w-5 h-5 rounded-md bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-bold text-xs flex items-center justify-center border border-indigo-100 dark:border-indigo-800/40">3</span>
-            <h2 class="text-sm font-bold text-slate-900 dark:text-white font-display">Experience, Preferences &amp; Files</h2>
+          <div class="flex items-center gap-2.5 mb-5 pb-3 border-b border-[#2B312C]">
+            <span class="w-6 h-6 rounded-md bg-[#B7F34A]/10 text-[#B7F34A] font-bold text-xs flex items-center justify-center border border-[#B7F34A]/30 font-mono">3</span>
+            <h2 class="text-sm font-bold text-white">Experience, Preferences &amp; Files</h2>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             
             <!-- Slider: Years of Experience -->
-            <div class="space-y-2 p-4 rounded-lg bg-slate-50/60 dark:bg-white/[0.02] border border-slate-200/80 dark:border-white/10">
+            <div class="space-y-2 p-4 rounded-xl bg-[#141715] border border-[#2B312C]">
               <div class="flex items-center justify-between">
-                <label for="years_experience" class="text-xs font-semibold text-slate-700 dark:text-slate-300 font-display">
+                <label for="years_experience" class="text-xs font-semibold text-white">
                   Years of Experience
                 </label>
-                <span id="expDisplay" class="font-mono text-xs font-bold text-indigo-600 dark:text-indigo-400">0 Years</span>
+                <span id="expDisplay" class="font-mono text-xs font-bold text-[#B7F34A]">0 Years</span>
               </div>
               <input
                 type="range"
@@ -309,9 +327,9 @@ import Base from "@/layouts/Base.astro";
                 min="0"
                 max="15"
                 value="0"
-                class="sim-input w-full accent-indigo-600 cursor-pointer"
+                class="sim-input w-full accent-[#B7F34A] cursor-pointer"
               />
-              <div class="flex justify-between text-[10px] text-slate-400 font-mono">
+              <div class="flex justify-between text-[10px] text-[#5E665E] font-mono">
                 <span>0 yrs</span>
                 <span>5 yrs</span>
                 <span>10 yrs</span>
@@ -320,49 +338,105 @@ import Base from "@/layouts/Base.astro";
             </div>
 
             <!-- Toggle Switch: Willingness to Relocate -->
-            <div class="space-y-2 p-4 rounded-lg bg-slate-50/60 dark:bg-white/[0.02] border border-slate-200/80 dark:border-white/10 flex flex-col justify-between">
+            <div class="space-y-2 p-4 rounded-xl bg-[#141715] border border-[#2B312C] flex flex-col justify-between">
               <div>
-                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display mb-1">
+                <label class="block text-xs font-semibold text-white mb-1">
                   Willing to Relocate or Travel?
                 </label>
-                <p class="text-[11px] text-slate-500 dark:text-slate-400">
+                <p class="text-[11px] text-[#5E665E]">
                   Open to hybrid or relocated employment opportunities.
                 </p>
               </div>
               <label class="relative inline-flex items-center cursor-pointer mt-2">
                 <input type="checkbox" id="relocate_toggle" name="relocate_toggle" class="sr-only peer" />
-                <div class="w-10 h-5 bg-slate-300 dark:bg-white/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
-                <span class="ml-2.5 text-xs text-slate-600 dark:text-slate-300 font-medium">Relocation Permitted</span>
+                <div class="w-10 h-5 bg-[#2B312C] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[#0B0D0C] after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#B7F34A]"></div>
+                <span class="ml-2.5 text-xs text-[#A1AAA1] font-medium">Relocation Permitted</span>
               </label>
             </div>
 
             <!-- Checkbox: Remote Preference -->
-            <div class="space-y-3 p-4 rounded-lg bg-slate-50/60 dark:bg-white/[0.02] border border-slate-200/80 dark:border-white/10">
-              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display mb-1">
+            <div class="space-y-3 p-4 rounded-xl bg-[#141715] border border-[#2B312C]">
+              <label class="block text-xs font-semibold text-white mb-1">
                 Candidate Preferences
               </label>
-              <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-700 dark:text-slate-300">
-                <input type="checkbox" id="remote_preference" name="remote_preference" class="sim-checkbox rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
+              <label class="flex items-center gap-2 cursor-pointer text-xs text-[#A1AAA1] hover:text-white transition-colors">
+                <input type="checkbox" id="remote_preference" name="remote_preference" class="sim-checkbox rounded border-[#2B312C] accent-[#B7F34A] cursor-pointer" />
                 <span>Prefer fully remote or flexible work environment</span>
               </label>
-              <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-700 dark:text-slate-300">
-                <input type="checkbox" id="immediate_joiner" name="immediate_joiner" class="sim-checkbox rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
+              <label class="flex items-center gap-2 cursor-pointer text-xs text-[#A1AAA1] hover:text-white transition-colors">
+                <input type="checkbox" id="immediate_joiner" name="immediate_joiner" class="sim-checkbox rounded border-[#2B312C] accent-[#B7F34A] cursor-pointer" />
                 <span>Available to start immediately (within 2 weeks)</span>
               </label>
             </div>
 
             <!-- File Upload: Resume -->
-            <div class="space-y-1.5 p-4 rounded-lg bg-slate-50/60 dark:bg-white/[0.02] border border-slate-200/80 dark:border-white/10">
-              <label for="applicant_resume_file" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display">
+            <div class="space-y-1.5 p-4 rounded-xl bg-[#141715] border border-[#2B312C] relative" id="resumeFileCell">
+              <label for="applicant_resume_file" class="block text-xs font-semibold text-white">
                 Resume / CV Document
               </label>
               <input
                 type="file"
                 id="applicant_resume_file"
                 name="applicant_resume_file"
-                class="sim-input block w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 dark:file:bg-indigo-950/40 file:text-indigo-600 dark:file:text-indigo-400 hover:file:bg-indigo-100 cursor-pointer"
+                accept=".pdf,.doc,.docx"
+                class="sim-input block w-full text-xs text-[#A1AAA1] file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#B7F34A]/10 file:text-[#B7F34A] hover:file:bg-[#B7F34A]/20 cursor-pointer"
               />
-              <span class="field-hint text-[11px] text-slate-500 dark:text-slate-400 block">Pulls from stored user resumes</span>
+              <span class="field-hint text-[11px] text-[#5E665E] block font-mono">Pulls from stored user resumes</span>
+
+              <!-- Live Resume Preview -->
+              <div id="resumePreviewContainer" class="hidden mt-3 p-3 rounded-xl bg-[#0B0D0C] border border-[#2B312C] flex items-center justify-between gap-3 animate-[magicFillSlideUp_0.25s_cubic-bezier(0.16,1,0.3,1)]">
+                <div class="flex items-center gap-3 min-w-0">
+                  <div class="w-10 h-10 rounded-lg border border-[#B7F34A]/30 bg-[#141715] flex items-center justify-center text-[#B7F34A] shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                  </div>
+                  <div class="min-w-0">
+                    <div class="flex items-center gap-1.5">
+                      <span class="text-xs font-semibold text-white truncate max-w-[170px]" id="resumePreviewName">applicant_resume.pdf</span>
+                      <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-[#B7F34A]/10 text-[#B7F34A] border border-[#B7F34A]/30">Attached</span>
+                    </div>
+                    <span class="text-[11px] text-[#A1AAA1] block truncate font-mono">Memory Vault Document</span>
+                  </div>
+                </div>
+                <button type="button" id="resumePreviewRemove" class="px-2 py-1 text-xs text-[#A1AAA1] hover:text-[#f43f5e] hover:bg-[#f43f5e]/10 rounded-lg transition-colors cursor-pointer" title="Remove attachment">
+                  &times; Remove
+                </button>
+              </div>
+            </div>
+
+            <!-- File Upload: Profile Picture -->
+            <div class="space-y-1.5 p-4 rounded-xl bg-[#141715] border border-[#2B312C] relative" id="photoFileCell">
+              <label for="applicant_profile_photo" class="block text-xs font-semibold text-white">
+                Profile Photo / Headshot
+              </label>
+              <input
+                type="file"
+                id="applicant_profile_photo"
+                name="applicant_profile_photo"
+                accept="image/*"
+                class="sim-input block w-full text-xs text-[#A1AAA1] file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#B7F34A]/10 file:text-[#B7F34A] hover:file:bg-[#B7F34A]/20 cursor-pointer"
+              />
+              <span class="field-hint text-[11px] text-[#5E665E] block font-mono">Pulls from stored profile photos</span>
+
+              <!-- Live Photo Preview -->
+              <div id="photoPreviewContainer" class="hidden mt-3 p-3 rounded-xl bg-[#0B0D0C] border border-[#2B312C] flex items-center justify-between gap-3 animate-[magicFillSlideUp_0.25s_cubic-bezier(0.16,1,0.3,1)]">
+                <div class="flex items-center gap-3 min-w-0">
+                  <div class="w-12 h-12 rounded-lg border border-[#B7F34A]/40 overflow-hidden shrink-0 bg-[#141715] flex items-center justify-center shadow-[0_0_12px_rgba(183,243,74,0.15)]">
+                    <img id="photoPreviewImg" src="" alt="Attached Profile Photo" class="w-full h-full object-cover" />
+                  </div>
+                  <div class="min-w-0">
+                    <div class="flex items-center gap-1.5">
+                      <span class="text-xs font-semibold text-white truncate max-w-[170px]" id="photoPreviewName">profile_picture.png</span>
+                      <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-[#B7F34A]/10 text-[#B7F34A] border border-[#B7F34A]/30">Attached</span>
+                    </div>
+                    <span class="text-[11px] text-[#A1AAA1] block truncate font-mono" id="photoPreviewSize">Memory Vault Asset</span>
+                  </div>
+                </div>
+                <button type="button" id="photoPreviewRemove" class="px-2 py-1 text-xs text-[#A1AAA1] hover:text-[#f43f5e] hover:bg-[#f43f5e]/10 rounded-lg transition-colors cursor-pointer" title="Remove attachment">
+                  &times; Remove
+                </button>
+              </div>
             </div>
 
           </div>
@@ -370,13 +444,13 @@ import Base from "@/layouts/Base.astro";
 
         <!-- Section 4: Professional Summary (Text Area) -->
         <div>
-          <div class="flex items-center gap-2 mb-5 pb-3 border-b border-slate-100 dark:border-white/5">
-            <span class="w-5 h-5 rounded-md bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 font-bold text-xs flex items-center justify-center border border-indigo-100 dark:border-indigo-800/40">4</span>
-            <h2 class="text-sm font-bold text-slate-900 dark:text-white font-display">Professional Summary</h2>
+          <div class="flex items-center gap-2.5 mb-5 pb-3 border-b border-[#2B312C]">
+            <span class="w-6 h-6 rounded-md bg-[#B7F34A]/10 text-[#B7F34A] font-bold text-xs flex items-center justify-center border border-[#B7F34A]/30 font-mono">4</span>
+            <h2 class="text-sm font-bold text-white">Professional Summary</h2>
           </div>
 
           <div class="space-y-1.5">
-            <label for="applicant_cover_note" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 font-display">
+            <label for="applicant_cover_note" class="block text-xs font-semibold text-white">
               Cover Note &amp; Executive Summary
             </label>
             <textarea
@@ -384,21 +458,23 @@ import Base from "@/layouts/Base.astro";
               name="applicant_cover_note"
               rows="4"
               placeholder="A brief 2-3 sentence overview of your career, skills, and background..."
-              class="sim-input w-full px-3.5 py-2.5 rounded-lg border border-slate-200/90 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:bg-white dark:focus:bg-[#0b0f19] focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/15 transition-all resize-none leading-relaxed"
+              class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-[#2B312C] bg-[#141715] text-sm text-white placeholder-[#5E665E] focus:outline-none focus:border-[#B7F34A] focus:ring-1 focus:ring-[#B7F34A]/30 transition-all resize-none leading-relaxed"
             ></textarea>
-            <span class="field-hint text-[11px] text-slate-500 dark:text-slate-400 block">Synthesizes professional experience and skills</span>
+            <span class="field-hint text-[11px] text-[#5E665E] block font-mono">Synthesizes professional experience and skills</span>
           </div>
         </div>
 
         <!-- Form Submit & Test Action -->
-        <div class="pt-5 border-t border-slate-100 dark:border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p class="text-xs text-slate-500 dark:text-slate-400">
+        <div class="pt-5 border-t border-[#2B312C] flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p class="text-xs text-[#A1AAA1]">
             Submit form to test continuous memory learning confirmation.
           </p>
 
           <button
             type="submit"
-            class="px-5 py-2.5 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 transition-all cursor-pointer"
+            data-magic-fill-ignore="true"
+            data-no-learn="true"
+            class="px-5 py-2.5 rounded-xl text-xs font-semibold text-white bg-[#141715] hover:bg-[#191D1A] border border-[#2B312C] hover:border-[#B7F34A]/40 transition-all cursor-pointer"
           >
             Simulate Form Submit
           </button>
@@ -406,10 +482,76 @@ import Base from "@/layouts/Base.astro";
 
       </form>
 
+      <!-- In-Page Themed Consent & Changes Prompt Card -->
+      <div id="simPromptModal" class="fixed bottom-6 right-6 z-50 max-w-sm w-full hidden">
+        <div class="bg-[#191D1A] border border-[#2B312C] rounded-2xl p-5 shadow-[0_20px_45px_-10px_rgba(0,0,0,0.7),0_4px_12px_rgba(0,0,0,0.4)] space-y-3.5 animate-[magicFillSlideUp_0.25s_cubic-bezier(0.16,1,0.3,1)]">
+          <div class="flex items-center justify-between pb-3 border-b border-[#2B312C]">
+            <div class="flex items-center gap-2.5">
+              <span class="w-6 h-6 rounded-md bg-[#B7F34A]/10 text-[#B7F34A] flex items-center justify-center border border-[#B7F34A]/25 text-xs font-mono">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              </span>
+              <div>
+                <span id="simPromptTitle" class="text-xs font-bold text-white block">Update Saved Information</span>
+                <span id="simPromptBadge" class="text-[10px] font-mono text-[#B7F34A] font-semibold flex items-center gap-1">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 2v6h-6"></path><path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path><path d="M3 22v-6h6"></path><path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path></svg>
+                  <span>Changed Data Detected</span>
+                </span>
+              </div>
+            </div>
+            <button type="button" id="closeSimPrompt" class="text-[#5E665E] hover:text-white text-xl leading-none cursor-pointer">&times;</button>
+          </div>
+          <p id="simPromptDesc" class="text-xs text-white leading-relaxed">
+            Your previously saved information is '<span id="descOldVal" class="font-bold text-[#f43f5e]"></span>'. Do you want to update it to '<span id="descNewVal" class="font-bold text-[#B7F34A]"></span>'?
+          </p>
+          <div id="simPromptDiff" class="bg-[#141715] border border-[#2B312C] rounded-lg p-2.5 text-xs space-y-1.5 font-mono">
+            <!-- Diff details -->
+          </div>
+          <div class="flex items-center justify-end gap-2 pt-1">
+            <button type="button" id="dismissSimPrompt" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[#A1AAA1] bg-[#141715] border border-[#2B312C] hover:text-white hover:border-[#B7F34A] transition-all cursor-pointer">
+              No
+            </button>
+            <button type="button" id="confirmSimPrompt" class="px-4 py-1.5 rounded-lg text-xs font-bold text-[#0B0D0C] bg-[#B7F34A] hover:bg-[#c9f66d] cursor-pointer shadow-[0_2px_10px_rgba(183,243,74,0.18)] transition-all">
+              Yes, Update
+            </button>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
-  <!-- Interactive Simulator Logic -->
+  <!-- Interactive Simulator Logic & Custom Feedback Styles -->
+  <style>
+    @keyframes magicFillSuccessPop {
+      0% { transform: scale(0.99); box-shadow: 0 0 0 0 rgba(183, 243, 74, 0.6); }
+      50% { transform: scale(1.006); box-shadow: 0 0 0 5px rgba(183, 243, 74, 0.25); }
+      100% { transform: scale(1); box-shadow: 0 0 0 3px rgba(183, 243, 74, 0.25); }
+    }
+    @keyframes magicFillMissingPulse {
+      0% { transform: scale(0.99); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.6); }
+      50% { transform: scale(1.006); box-shadow: 0 0 0 5px rgba(244, 63, 94, 0.25); }
+      100% { transform: scale(1); box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.25); }
+    }
+    @keyframes magicFillSlideUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .magic-fill-matched {
+      border-color: #B7F34A !important;
+      background-color: rgba(183, 243, 74, 0.05) !important;
+      box-shadow: 0 0 0 3px rgba(183, 243, 74, 0.25) !important;
+      animation: magicFillSuccessPop 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      transition: all 0.3s ease !important;
+    }
+    .magic-fill-missing {
+      border-color: #f43f5e !important;
+      background-color: rgba(244, 63, 94, 0.05) !important;
+      box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.25) !important;
+      animation: magicFillMissingPulse 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      transition: all 0.3s ease !important;
+    }
+  </style>
+
   <script is:inline>
     document.addEventListener("DOMContentLoaded", () => {
       const form = document.getElementById("jobAppForm");
@@ -434,25 +576,215 @@ import Base from "@/layouts/Base.astro";
           if (form) form.reset();
           if (expDisplay) expDisplay.textContent = "0 Years";
           resetVisualStatus();
+          document.querySelectorAll(".sim-file-suggestion").forEach((s) => s.remove());
+          
+          const photoPreview = document.getElementById("photoPreviewContainer");
+          const resumePreview = document.getElementById("resumePreviewContainer");
+          if (photoPreview) photoPreview.classList.add("hidden");
+          if (resumePreview) resumePreview.classList.add("hidden");
+
+          const photoInput = document.getElementById("applicant_profile_photo");
+          const resumeInput = document.getElementById("applicant_resume_file");
+          if (photoInput) photoInput.value = "";
+          if (resumeInput) resumeInput.value = "";
+
           if (statsBadge) statsBadge.innerHTML = "Form reset. Ready to test.";
         });
       }
 
       function resetVisualStatus() {
-        document.querySelectorAll(".sim-input, .sim-radio, .sim-checkbox").forEach((el) => {
-          el.classList.remove("border-emerald-500/80", "bg-emerald-50/20", "dark:bg-emerald-950/20");
-          el.style.borderColor = "";
+        document.querySelectorAll(".sim-input, .sim-radio, .sim-checkbox, .space-y-1\\.5, .space-y-2, .space-y-3").forEach((el) => {
+          el.classList.remove("magic-fill-matched", "magic-fill-missing");
+          el.removeAttribute("data-magic-fill-status");
         });
       }
 
       function highlightField(el, isMatched) {
         if (!el) return;
+        el.classList.remove("magic-fill-matched", "magic-fill-missing");
+        void el.offsetWidth;
         if (isMatched) {
-          el.classList.add("border-emerald-500/80", "bg-emerald-50/20", "dark:bg-emerald-950/20");
-          el.style.borderColor = "#10b981";
+          el.classList.add("magic-fill-matched");
+          el.setAttribute("data-magic-fill-status", "matched");
         } else {
-          el.style.borderColor = "";
+          el.classList.add("magic-fill-missing");
+          el.setAttribute("data-magic-fill-status", "missing");
         }
+      }
+
+      // Preview Remove Action Handlers
+      const photoRemoveBtn = document.getElementById("photoPreviewRemove");
+      if (photoRemoveBtn) {
+        photoRemoveBtn.addEventListener("click", () => {
+          const photoInput = document.getElementById("applicant_profile_photo");
+          const photoPreview = document.getElementById("photoPreviewContainer");
+          if (photoInput) {
+            photoInput.value = "";
+            highlightField(photoInput, false);
+          }
+          if (photoPreview) photoPreview.classList.add("hidden");
+          const cell = document.getElementById("photoFileCell");
+          if (cell) highlightField(cell, false);
+        });
+      }
+
+      const resumeRemoveBtn = document.getElementById("resumePreviewRemove");
+      if (resumeRemoveBtn) {
+        resumeRemoveBtn.addEventListener("click", () => {
+          const resumeInput = document.getElementById("applicant_resume_file");
+          const resumePreview = document.getElementById("resumePreviewContainer");
+          if (resumeInput) {
+            resumeInput.value = "";
+            highlightField(resumeInput, false);
+          }
+          if (resumePreview) resumePreview.classList.add("hidden");
+          const cell = document.getElementById("resumeFileCell");
+          if (cell) highlightField(cell, false);
+        });
+      }
+
+      // Native Manual File Change Listeners (shows live preview when selected via browse)
+      const nativePhotoInput = document.getElementById("applicant_profile_photo");
+      if (nativePhotoInput) {
+        nativePhotoInput.addEventListener("change", (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (re) => {
+              const preview = document.getElementById("photoPreviewContainer");
+              const img = document.getElementById("photoPreviewImg");
+              const nameEl = document.getElementById("photoPreviewName");
+              const sizeEl = document.getElementById("photoPreviewSize");
+              if (img) img.src = re.target.result;
+              if (nameEl) nameEl.textContent = file.name;
+              if (sizeEl) sizeEl.textContent = `${(file.size / 1024).toFixed(1)} KB`;
+              if (preview) preview.classList.remove("hidden");
+              highlightField(nativePhotoInput, true);
+              const cell = document.getElementById("photoFileCell");
+              if (cell) highlightField(cell, true);
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+      }
+
+      const nativeResumeInput = document.getElementById("applicant_resume_file");
+      if (nativeResumeInput) {
+        nativeResumeInput.addEventListener("change", (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (file) {
+            const preview = document.getElementById("resumePreviewContainer");
+            const nameEl = document.getElementById("resumePreviewName");
+            if (nameEl) nameEl.textContent = file.name;
+            if (preview) preview.classList.remove("hidden");
+            highlightField(nativeResumeInput, true);
+            const cell = document.getElementById("resumeFileCell");
+            if (cell) highlightField(cell, true);
+          }
+        });
+      }
+
+      /**
+       * REQUIREMENT 4: Document & Image Attachments
+       * Show suggestion button beside the relevant upload field instead of auto-attaching.
+       * When confirmed, populates input and renders immediate visible preview!
+       */
+      function showPlaygroundFileSuggestion(inputEl, labelText, fileName, mimeType, fileData = null) {
+        if (!inputEl) return;
+        const cell = inputEl.closest(".space-y-1\\.5, div") || inputEl.parentElement;
+        const existing = cell.querySelector(".sim-file-suggestion");
+        if (existing) existing.remove();
+
+        const suggestion = document.createElement("div");
+        suggestion.className = "sim-file-suggestion mt-2.5 flex items-center justify-between gap-3 px-3 py-2 bg-[#191D1A] border border-[#2B312C] rounded-xl text-xs shadow-lg";
+        suggestion.style.animation = "magicFillSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1)";
+        
+        const isPhoto = labelText.toLowerCase().includes("photo") || labelText.toLowerCase().includes("picture");
+        const promptText = isPhoto 
+          ? "Profile picture found. Do you want to attach it?" 
+          : "Resume (PDF) found. Do you want to attach it?";
+
+        suggestion.innerHTML = `
+          <div class="flex items-center gap-2 text-[#B7F34A]">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
+            </svg>
+            <span class="text-white text-xs font-medium">${promptText}</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button type="button" class="btn-attach-now px-2.5 py-1 bg-[#B7F34A] text-[#0B0D0C] font-bold text-[11px] rounded-lg hover:bg-[#c9f66d] transition-all cursor-pointer shadow-[0_2px_8px_rgba(183,243,74,0.2)]">Attach</button>
+            <button type="button" class="btn-attach-cancel px-1.5 py-0.5 text-[#5E665E] hover:text-white text-base leading-none cursor-pointer">&times;</button>
+          </div>
+        `;
+
+        const btnAttach = suggestion.querySelector(".btn-attach-now");
+        const btnCancel = suggestion.querySelector(".btn-attach-cancel");
+
+        btnAttach.addEventListener("click", () => {
+          btnAttach.disabled = true;
+          btnAttach.textContent = "Attaching...";
+          try {
+            if (window.DataTransfer) {
+              const dt = new DataTransfer();
+              const mockFile = new File(["Magic Fill Simulated Memory File"], fileName, { type: mimeType, lastModified: Date.now() });
+              dt.items.add(mockFile);
+              inputEl.files = dt.files;
+            }
+            inputEl.dispatchEvent(new Event("input", { bubbles: true }));
+            inputEl.dispatchEvent(new Event("change", { bubbles: true }));
+
+            // Display live attached file preview card in the simulator
+            if (isPhoto) {
+              const preview = document.getElementById("photoPreviewContainer");
+              const img = document.getElementById("photoPreviewImg");
+              const nameEl = document.getElementById("photoPreviewName");
+              const sizeEl = document.getElementById("photoPreviewSize");
+              
+              if (img) {
+                if (fileData && (fileData.startsWith("data:") || fileData.startsWith("http"))) {
+                  img.src = fileData;
+                } else if (fileData && fileData.length > 50) {
+                  img.src = `data:image/jpeg;base64,${fileData}`;
+                } else {
+                  // Elegant SVG user avatar fallback
+                  img.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%23141715'/><circle cx='50' cy='38' r='18' fill='%23B7F34A'/><path d='M20 84c0-16.5 13.5-30 30-30s30 13.5 30 30' fill='%23B7F34A' opacity='0.75'/></svg>";
+                }
+              }
+              if (nameEl) nameEl.textContent = fileName || "profile_picture.png";
+              if (sizeEl) sizeEl.textContent = "Memory Vault Asset";
+              if (preview) preview.classList.remove("hidden");
+            } else {
+              const preview = document.getElementById("resumePreviewContainer");
+              const nameEl = document.getElementById("resumePreviewName");
+              if (nameEl) nameEl.textContent = fileName || "applicant_resume.pdf";
+              if (preview) preview.classList.remove("hidden");
+            }
+
+            btnAttach.textContent = "Attached";
+            btnAttach.classList.remove("bg-[#B7F34A]");
+            btnAttach.classList.add("bg-[#B7F34A]/80");
+            highlightField(inputEl, true);
+            highlightField(cell, true);
+            setTimeout(() => {
+              suggestion.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+              suggestion.style.opacity = "0";
+              suggestion.style.transform = "translateY(4px)";
+              setTimeout(() => suggestion.remove(), 300);
+            }, 1400);
+          } catch (err) {
+            btnAttach.textContent = "Attached";
+            highlightField(inputEl, true);
+            setTimeout(() => suggestion.remove(), 1200);
+          }
+        });
+
+        btnCancel.addEventListener("click", () => {
+          suggestion.remove();
+          highlightField(inputEl, false);
+          highlightField(cell, false);
+        });
+
+        cell.appendChild(suggestion);
       }
 
       // Simulate Autofill (Calls API directly for testing without extension)
@@ -470,7 +802,7 @@ import Base from "@/layouts/Base.astro";
             if (autofillBtnText) autofillBtnText.textContent = "Matching Fields...";
             simulateBtn.disabled = true;
 
-            // Harvest all simulated input fields
+            // Harvest all 10+ simulated input types
             const fields = [
               { field_id: "f_legal_name", name: "applicant_legal_name", label: "Applicant Legal Full Name", input_type: "text", tag_name: "input" },
               { field_id: "f_father_name", name: "parent_guardian_name", label: "Father / Guardian Name", input_type: "text", tag_name: "input" },
@@ -478,12 +810,17 @@ import Base from "@/layouts/Base.astro";
               { field_id: "f_phone", name: "contact_telephone", label: "Mobile / Primary Phone", input_type: "tel", tag_name: "input" },
               { field_id: "f_cnic", name: "national_identity_number", label: "National ID / CNIC / Government ID", input_type: "text", tag_name: "input" },
               { field_id: "f_dob", name: "date_of_birth", label: "Date of Birth", input_type: "date", tag_name: "input" },
+              { field_id: "f_time", name: "interview_time", label: "Preferred Interview Time", input_type: "time", tag_name: "input" },
               { field_id: "f_degree", name: "highest_degree_level", label: "Highest Completed Degree", input_type: "select-one", tag_name: "select", options: ["High School", "Associate Degree", "Bachelor of Science", "Master of Science", "Doctorate"] },
               { field_id: "f_country", name: "country_residence", label: "Country of Residence", input_type: "select-one", tag_name: "select", options: ["Pakistan", "United States", "United Kingdom", "Canada", "Germany", "United Arab Emirates"] },
               { field_id: "f_gender", name: "gender", label: "Gender Identification", input_type: "radio", tag_name: "input", options: ["Male", "Female", "Other"] },
               { field_id: "f_work_auth", name: "work_auth", label: "Legally Authorized to Work?", input_type: "radio", tag_name: "input", options: ["Yes", "No"] },
               { field_id: "f_exp", name: "years_experience", label: "Years of Professional Experience", input_type: "range", tag_name: "input" },
               { field_id: "f_relocate", name: "relocate_toggle", label: "Willing to Relocate or Travel", input_type: "checkbox", tag_name: "input" },
+              { field_id: "f_remote", name: "remote_preference", label: "Prefer Remote Work", input_type: "checkbox", tag_name: "input" },
+              { field_id: "f_immediate", name: "immediate_joiner", label: "Immediate Joiner", input_type: "checkbox", tag_name: "input" },
+              { field_id: "f_resume", name: "applicant_resume_file", label: "Resume / CV Document", input_type: "file", tag_name: "input" },
+              { field_id: "f_photo", name: "applicant_profile_photo", label: "Profile Photo / Headshot", input_type: "file", tag_name: "input" },
               { field_id: "f_bio", name: "applicant_cover_note", label: "Professional Bio & Executive Summary", input_type: "textarea", tag_name: "textarea" },
             ];
 
@@ -505,28 +842,40 @@ import Base from "@/layouts/Base.astro";
 
             if (res.ok && data.success && data.data) {
               const mappings = data.data.mappings || [];
+              const matchedFieldIds = new Set();
               let filledCount = 0;
 
               mappings.forEach(m => {
                 const val = m.value;
+                matchedFieldIds.add(m.field_id);
+
                 if (m.field_id === "f_legal_name") {
                   const el = document.getElementById("applicant_legal_name");
-                  if (el && val) { el.value = val; highlightField(el, true); filledCount++; }
+                  if (el && val) { el.value = val; el.dataset.originalVal = val; highlightField(el, true); filledCount++; }
                 } else if (m.field_id === "f_father_name") {
                   const el = document.getElementById("parent_guardian_name");
-                  if (el && val) { el.value = val; highlightField(el, true); filledCount++; }
+                  if (el && val) { el.value = val; el.dataset.originalVal = val; highlightField(el, true); filledCount++; }
                 } else if (m.field_id === "f_email") {
                   const el = document.getElementById("applicant_email_address");
-                  if (el && val) { el.value = val; highlightField(el, true); filledCount++; }
+                  if (el && val) { el.value = val; el.dataset.originalVal = val; highlightField(el, true); filledCount++; }
                 } else if (m.field_id === "f_phone") {
                   const el = document.getElementById("contact_telephone");
-                  if (el && val) { el.value = val; highlightField(el, true); filledCount++; }
+                  if (el && val) { el.value = val; el.dataset.originalVal = val; highlightField(el, true); filledCount++; }
                 } else if (m.field_id === "f_cnic") {
                   const el = document.getElementById("national_identity_number");
-                  if (el && val) { el.value = val; highlightField(el, true); filledCount++; }
+                  if (el && val) { el.value = val; el.dataset.originalVal = val; highlightField(el, true); filledCount++; }
                 } else if (m.field_id === "f_dob") {
                   const el = document.getElementById("date_of_birth");
-                  if (el && val) { el.value = val; highlightField(el, true); filledCount++; }
+                  if (el && val) { el.value = val; el.dataset.originalVal = val; highlightField(el, true); filledCount++; }
+                } else if (m.field_id === "f_time") {
+                  const el = document.getElementById("interview_time");
+                  if (el && val) {
+                    const match = String(val).match(/(\d{1,2}):(\d{2})/);
+                    el.value = match ? `${match[1].padStart(2, '0')}:${match[2]}` : "10:00";
+                    el.dataset.originalVal = el.value;
+                    highlightField(el, true);
+                    filledCount++;
+                  }
                 } else if (m.field_id === "f_degree") {
                   const el = document.getElementById("highest_degree_level");
                   if (el && val) {
@@ -535,6 +884,7 @@ import Base from "@/layouts/Base.astro";
                         el.value = opt.value;
                       }
                     });
+                    el.dataset.originalVal = el.value;
                     highlightField(el, true);
                     filledCount++;
                   }
@@ -546,6 +896,7 @@ import Base from "@/layouts/Base.astro";
                         el.value = opt.value;
                       }
                     });
+                    el.dataset.originalVal = el.value;
                     highlightField(el, true);
                     filledCount++;
                   }
@@ -554,7 +905,16 @@ import Base from "@/layouts/Base.astro";
                   radios.forEach(r => {
                     if (r.value.toLowerCase() === String(val).toLowerCase()) {
                       r.checked = true;
-                      highlightField(r.closest("div"), true);
+                      highlightField(r.closest(".space-y-2"), true);
+                      filledCount++;
+                    }
+                  });
+                } else if (m.field_id === "f_work_auth") {
+                  const radios = document.getElementsByName("work_auth");
+                  radios.forEach(r => {
+                    if (r.value.toLowerCase() === String(val).toLowerCase() || (String(val).toLowerCase() === "yes" && r.value === "Yes")) {
+                      r.checked = true;
+                      highlightField(r.closest(".space-y-2"), true);
                       filledCount++;
                     }
                   });
@@ -563,24 +923,83 @@ import Base from "@/layouts/Base.astro";
                   if (expSlider && expDisplay) {
                     expSlider.value = num;
                     expDisplay.textContent = `${num} Years`;
-                    highlightField(expSlider.closest("div"), true);
+                    highlightField(expSlider.closest(".space-y-2"), true);
+                    filledCount++;
+                  }
+                } else if (m.field_id === "f_relocate") {
+                  const toggle = document.getElementById("relocate_toggle");
+                  if (toggle) {
+                    toggle.checked = String(val).toLowerCase() === "yes" || val === true;
+                    highlightField(toggle.closest(".space-y-2"), true);
+                    filledCount++;
+                  }
+                } else if (m.field_id === "f_remote") {
+                  const cb = document.getElementById("remote_preference");
+                  if (cb) {
+                    cb.checked = true;
+                    highlightField(cb.closest(".space-y-3"), true);
+                    filledCount++;
+                  }
+                } else if (m.field_id === "f_resume") {
+                  const resumeInput = document.getElementById("applicant_resume_file");
+                  if (resumeInput) {
+                    showPlaygroundFileSuggestion(resumeInput, "Resume (PDF)", "applicant_resume.pdf", "application/pdf", val);
+                    filledCount++;
+                  }
+                } else if (m.field_id === "f_photo") {
+                  const photoInput = document.getElementById("applicant_profile_photo");
+                  if (photoInput) {
+                    showPlaygroundFileSuggestion(photoInput, "Profile picture", "profile_picture.png", "image/png", val);
                     filledCount++;
                   }
                 } else if (m.field_id === "f_bio") {
                   const el = document.getElementById("applicant_cover_note");
-                  if (el && val) { el.value = val; highlightField(el, true); filledCount++; }
+                  if (el && val) { el.value = val; el.dataset.originalVal = val; highlightField(el, true); filledCount++; }
+                }
+              });
+
+              // Also provide file suggestions if files are present in memory vault regardless of field match name
+              const resumeInput = document.getElementById("applicant_resume_file");
+              if (resumeInput && !matchedFieldIds.has("f_resume")) {
+                showPlaygroundFileSuggestion(resumeInput, "Resume (PDF)", "applicant_resume.pdf", "application/pdf");
+              }
+              const photoInput = document.getElementById("applicant_profile_photo");
+              if (photoInput && !matchedFieldIds.has("f_photo")) {
+                showPlaygroundFileSuggestion(photoInput, "Profile picture", "profile_picture.png", "image/png");
+              }
+
+              // REQUIREMENT 2: Fields that cannot be filled turn RED
+              const allInputs = form.querySelectorAll("input:not([type='submit']):not([type='button']):not([type='file']), select, textarea");
+              allInputs.forEach(input => {
+                const isAutofilled = input.getAttribute("data-magic-fill-status") === "matched";
+                const isRadio = input.type === "radio";
+                const isCheckbox = input.type === "checkbox";
+                if (!isAutofilled && !input.value && (!isRadio || !input.checked) && (!isCheckbox || !input.checked)) {
+                  highlightField(input, false);
                 }
               });
 
               if (statsBadge) {
-                statsBadge.innerHTML = `<span class="text-emerald-600 dark:text-emerald-400 font-bold">${filledCount} Fields Completed</span> from Vault &bull; <span class="text-slate-500">${fields.length - filledCount} Unmapped</span>`;
+                statsBadge.innerHTML = `<span class="text-[#B7F34A] font-bold font-mono">${filledCount} Fields Completed</span> from Vault &bull; <span class="inline-flex items-center gap-1.5"><span class="size-1.5 rounded-full bg-[#B7F34A]"></span><span class="text-xs text-[#FFFFFF]">Matched</span></span> &bull; <span class="inline-flex items-center gap-1.5"><span class="size-1.5 rounded-full bg-[#f43f5e]"></span><span class="text-xs text-[#FFFFFF]">Missing</span></span> &bull; <span class="text-[#5E665E]">${fields.length - filledCount} Unmapped</span>`;
               }
             } else {
-              alert(data.message || "Failed to match fields. Check server logs.");
+              showSimPrompt({
+                title: "Autofill Matching Alert",
+                badge: "Notice",
+                desc: data.message || "Could not match fields from vault.",
+                btnText: "Understood",
+                isSimpleNotice: true
+              });
             }
           } catch (err) {
             console.error(err);
-            alert("Network error connecting to Magic Fill backend.");
+            showSimPrompt({
+              title: "Connection Notice",
+              badge: "Network",
+              desc: "Ensure Magic Fill backend is running on http://127.0.0.1:8000.",
+              btnText: "Close",
+              isSimpleNotice: true
+            });
           } finally {
             if (autofillBtnText) autofillBtnText.textContent = "Simulate Autofill";
             simulateBtn.disabled = false;
@@ -588,12 +1007,314 @@ import Base from "@/layouts/Base.astro";
         });
       }
 
+      // Themed Prompt Controller
+      const modal = document.getElementById("simPromptModal");
+      const titleEl = document.getElementById("simPromptTitle");
+      const badgeEl = document.getElementById("simPromptBadge");
+      const descEl = document.getElementById("simPromptDesc");
+      const diffEl = document.getElementById("simPromptDiff");
+      const closeBtn = document.getElementById("closeSimPrompt");
+      const dismissBtn = document.getElementById("dismissSimPrompt");
+      const confirmBtn = document.getElementById("confirmSimPrompt");
+
+      function hideSimPrompt() {
+        if (modal) modal.classList.add("hidden");
+      }
+
+      if (closeBtn) closeBtn.addEventListener("click", hideSimPrompt);
+      if (dismissBtn) dismissBtn.addEventListener("click", hideSimPrompt);
+
+      // Canonical key dictionary mapping form elements to database memory keys
+      const canonKeyMap = {
+        applicant_legal_name: { key: "full_name", label: "Legal Full Name", category: "personal" },
+        parent_guardian_name: { key: "father_name", label: "Father / Guardian Name", category: "personal" },
+        applicant_email_address: { key: "email", label: "Contact Email Address", category: "personal" },
+        contact_telephone: { key: "phone", label: "Mobile / Primary Phone", category: "personal" },
+        national_identity_number: { key: "cnic", label: "National ID / CNIC", category: "personal" },
+        date_of_birth: { key: "date_of_birth", label: "Date of Birth", category: "personal" },
+        interview_time: { key: "interview_time", label: "Preferred Interview Slot", category: "personal" },
+        highest_degree_level: { key: "degree", label: "Highest Degree Level", category: "professional" },
+        country_residence: { key: "country", label: "Country of Residence", category: "personal" },
+        applicant_cover_note: { key: "bio", label: "Professional Bio / Executive Summary", category: "professional" }
+      };
+
+      async function commitPlaygroundLearning(canonKey, labelName, newValue, category = "personal") {
+        const token = localStorage.getItem("magic_fill_token");
+        try {
+          const res = await fetch("/api/memory/commit-learning", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              ...(token ? { "Authorization": `Bearer ${token}` } : {})
+            },
+            body: JSON.stringify({
+              action_type: "UPDATE_ATTRIBUTE",
+              canonical_key: canonKey,
+              field_label: labelName,
+              value: newValue,
+              category: category
+            })
+          });
+          const result = await res.json();
+          return result && result.success;
+        } catch (err) {
+          console.error("Failed to persist updated field to Memory Vault:", err);
+          return false;
+        }
+      }
+
+      // Preload user's existing vault information so simulator knows original values immediately
+      async function preloadVaultDataForSimulator() {
+        const token = localStorage.getItem("magic_fill_token");
+        if (!token) return;
+        try {
+          const res = await fetch("/api/users/me", {
+            headers: { "Authorization": `Bearer ${token}` }
+          });
+          if (res.ok) {
+            const json = await res.json();
+            const u = json.data || json;
+            const p = u.personal_info || {};
+            const map = {
+              applicant_legal_name: p.full_name || u.full_name,
+              parent_guardian_name: p.father_name,
+              applicant_email_address: p.email || u.email,
+              contact_telephone: p.phone,
+              national_identity_number: p.cnic,
+              date_of_birth: p.date_of_birth,
+              highest_degree_level: p.degree,
+              country_residence: p.country,
+              applicant_cover_note: p.bio
+            };
+            for (const [id, val] of Object.entries(map)) {
+              if (val) {
+                const el = document.getElementById(id);
+                if (el) el.dataset.originalVal = String(val).trim();
+              }
+            }
+          }
+        } catch (e) {}
+      }
+      preloadVaultDataForSimulator();
+
+      /**
+       * REQUIREMENT 1: Confirmation Popup for Updated or New Information
+       * "Your previously saved information is '<old>'. Do you want to update it to '<new>'?"
+       * Immediately commits approved changes to the database!
+       */
+      function showSimPrompt({ title = "Update Saved Information", badge = "Changed Data Detected", desc, savedVal, enteredVal, btnText = "Yes, Update", isSimpleNotice = false, onConfirm }) {
+        if (!modal) return;
+        if (titleEl) titleEl.textContent = title;
+        if (badgeEl) badgeEl.textContent = badge;
+        
+        if (descEl) {
+          if (desc) {
+            descEl.innerHTML = desc;
+          } else if (savedVal && enteredVal) {
+            descEl.innerHTML = `Your previously saved information is '<strong class="text-[#f43f5e]">${savedVal}</strong>'. Do you want to update it to '<strong class="text-[#B7F34A]">${enteredVal}</strong>'?`;
+          } else {
+            descEl.innerHTML = `Do you want to save '<strong class="text-[#B7F34A]">${enteredVal}</strong>' to your personal memory vault?`;
+          }
+        }
+
+        if (diffEl) {
+          if (isSimpleNotice) {
+            diffEl.classList.add("hidden");
+          } else if (savedVal) {
+            diffEl.classList.remove("hidden");
+            diffEl.innerHTML = `
+              <div class="flex items-center gap-2">
+                <span class="text-[#f43f5e] font-bold text-[10px] uppercase w-14 shrink-0">Saved:</span>
+                <span class="text-[#f43f5e]/80 line-through truncate">${savedVal}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[#B7F34A] font-bold text-[10px] uppercase w-14 shrink-0">Entered:</span>
+                <span class="text-[#B7F34A] font-semibold truncate">${enteredVal || ''}</span>
+              </div>
+            `;
+          } else {
+            diffEl.classList.remove("hidden");
+            diffEl.innerHTML = `
+              <div class="flex items-center gap-2">
+                <span class="text-[#B7F34A] font-bold text-[10px] uppercase w-14 shrink-0">New:</span>
+                <span class="text-[#B7F34A] font-semibold truncate">${enteredVal || ''}</span>
+              </div>
+            `;
+          }
+        }
+
+        if (confirmBtn) {
+          confirmBtn.textContent = btnText;
+          confirmBtn.disabled = false;
+          confirmBtn.onclick = async () => {
+            confirmBtn.disabled = true;
+            confirmBtn.textContent = "Updating Vault...";
+            try {
+              if (onConfirm) await onConfirm();
+              confirmBtn.innerHTML = `<span class="inline-flex items-center gap-1"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>Updated Memory!</span></span>`;
+              confirmBtn.classList.add("bg-[#c9f66d]");
+              setTimeout(() => {
+                confirmBtn.classList.remove("bg-[#c9f66d]");
+                confirmBtn.disabled = false;
+                hideSimPrompt();
+              }, 1200);
+            } catch (e) {
+              confirmBtn.innerHTML = `<span class="inline-flex items-center gap-1"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>Done</span></span>`;
+              setTimeout(() => {
+                confirmBtn.disabled = false;
+                hideSimPrompt();
+              }, 1000);
+            }
+          };
+        }
+
+        modal.classList.remove("hidden");
+      }
+
+      // Form inputs manual change detection
+      const allFormInputs = form ? form.querySelectorAll("input:not([type='submit']):not([type='button']):not([type='file']), select, textarea") : [];
+      allFormInputs.forEach(input => {
+        let originalVal = input.dataset.originalVal !== undefined ? input.dataset.originalVal : input.value;
+        input.addEventListener("focus", () => {
+          originalVal = input.dataset.originalVal !== undefined ? input.dataset.originalVal : input.value;
+        });
+
+        input.addEventListener("blur", async () => {
+          const currentVal = input.value.trim();
+          if (!currentVal || currentVal.length < 2) return;
+
+          const labelEl = form.querySelector(`label[for='${input.id}']`) || input.closest("div")?.querySelector("label");
+          const labelName = labelEl ? labelEl.textContent.replace('*', '').trim() : "Field";
+          const cfg = canonKeyMap[input.id] || { key: input.name || input.id, label: labelName, category: "personal" };
+          const token = localStorage.getItem("magic_fill_token");
+
+          // 1. Evaluate against actual backend Memory Vault if user is authenticated
+          if (token) {
+            try {
+              const evalRes = await fetch("/api/memory/evaluate-field", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                  field_name: input.name || input.id,
+                  label: labelName,
+                  value: currentVal,
+                  input_type: input.type || "text"
+                })
+              });
+
+              if (evalRes.ok) {
+                const evalJson = await evalRes.json();
+                if (evalJson && evalJson.success && evalJson.data) {
+                  const evalData = evalJson.data;
+
+                  // Duplicate or incomplete typing prefix -> do not show popup
+                  if (!evalData.is_learnable) {
+                    return;
+                  }
+
+                  const isUpdate = evalData.action_type === "UPDATE_ATTRIBUTE";
+                  const title = isUpdate ? "Update Saved Information" : "New Data Detected";
+                  const badge = isUpdate ? "Changed Data Detected" : "New Information";
+                  const desc = isUpdate
+                    ? `Your previously saved information is '<strong class="text-[#f43f5e]">${evalData.existing_value || "Empty"}</strong>'. Do you want to update it to '<strong class="text-[#B7F34A]">${evalData.new_value}</strong>'?`
+                    : `Magic Fill detected new information for <strong>${evalData.field_label || labelName}</strong>: '<strong class="text-[#B7F34A]">${evalData.new_value}</strong>'. Do you want to save it to your memory?`;
+
+                  showSimPrompt({
+                    title: title,
+                    badge: badge,
+                    desc: desc,
+                    savedVal: isUpdate ? evalData.existing_value : "",
+                    enteredVal: evalData.new_value,
+                    btnText: isUpdate ? "Yes, Update" : "Yes, Save",
+                    onConfirm: async () => {
+                      await commitPlaygroundLearning(
+                        evalData.canonical_key || cfg.key,
+                        evalData.field_label || cfg.label,
+                        evalData.new_value,
+                        evalData.category === "PROFESSIONAL_INFO" ? "professional" : "personal"
+                      );
+                      input.dataset.originalVal = evalData.new_value;
+                      originalVal = evalData.new_value;
+                      input.setAttribute("data-magic-fill-status", "matched");
+                      highlightField(input, true);
+                    }
+                  });
+                  return;
+                }
+              }
+            } catch (err) {
+              console.warn("API field evaluation failed, falling back to local detection", err);
+            }
+          }
+
+          // 2. Local Fallback (offline or unauthenticated simulation)
+          const prevVal = (input.dataset.originalVal !== undefined ? input.dataset.originalVal : originalVal).trim();
+          if (prevVal && currentVal !== prevVal) {
+            // Incomplete prefix check
+            if (prevVal.toLowerCase().startsWith(currentVal.toLowerCase()) && currentVal.length < prevVal.length) {
+              return;
+            }
+            showSimPrompt({
+              title: "Update Saved Information",
+              badge: "Changed Data Detected",
+              desc: `Your previously saved information is '<strong class="text-[#f43f5e]">${prevVal}</strong>'. Do you want to update it to '<strong class="text-[#B7F34A]">${currentVal}</strong>'?`,
+              savedVal: prevVal,
+              enteredVal: currentVal,
+              btnText: "Yes, Update",
+              onConfirm: async () => {
+                await commitPlaygroundLearning(cfg.key, cfg.label, currentVal, cfg.category);
+                input.dataset.originalVal = currentVal;
+                originalVal = currentVal;
+                input.setAttribute("data-magic-fill-status", "matched");
+                highlightField(input, true);
+              }
+            });
+          } else if (!prevVal && currentVal) {
+            showSimPrompt({
+              title: "New Data Detected",
+              badge: "New Information",
+              desc: `Magic Fill detected new information for <strong>${labelName}</strong>: '<strong class="text-[#B7F34A]">${currentVal}</strong>'. Do you want to save it to your memory?`,
+              savedVal: "",
+              enteredVal: currentVal,
+              btnText: "Yes, Save",
+              onConfirm: async () => {
+                await commitPlaygroundLearning(cfg.key, cfg.label, currentVal, cfg.category);
+                input.dataset.originalVal = currentVal;
+                originalVal = currentVal;
+                input.setAttribute("data-magic-fill-status", "matched");
+                highlightField(input, true);
+              }
+            });
+          }
+        });
+      });
+
       // Submit demonstration of consent-based learning
       if (form) {
         form.addEventListener("submit", (e) => {
           e.preventDefault();
-          const name = document.getElementById("applicant_legal_name")?.value;
-          alert(`Form simulation complete!\n\nWhen you fill in unmapped fields (e.g. "${name || 'New Detail'}"), Magic Fill automatically prompts:\n"Save this new information to your vault?"\n\nYour data remains sovereign and private.`);
+          const nameInput = document.getElementById("applicant_legal_name");
+          const name = nameInput?.value?.trim() || "Muazam Ali";
+          const prevName = (nameInput?.dataset?.originalVal || "Muazam Ali").trim();
+          
+          showSimPrompt({
+            title: "Update Saved Information",
+            badge: "Changed Data Detected",
+            desc: `Your previously saved information is '<strong class="text-[#f43f5e]">${prevName}</strong>'. Do you want to update it to '<strong class="text-[#B7F34A]">${name}</strong>'?`,
+            savedVal: prevName,
+            enteredVal: name,
+            btnText: "Yes, Update",
+            onConfirm: async () => {
+              await commitPlaygroundLearning("full_name", "Legal Full Name", name, "personal");
+              if (nameInput) {
+                nameInput.dataset.originalVal = name;
+                highlightField(nameInput, true);
+              }
+            }
+          });
         });
       }
     });

@@ -18,22 +18,24 @@ const {
 const { main: socialLinks } = social as SocialType;
 ---
 
-<footer class="section pb-12 pt-20 relative overflow-hidden bg-[#E0E5EC]">
-  <div class="container pb-12">
+<footer class="border-t border-[#2B312C] bg-[#141715] pt-16 pb-12 relative overflow-hidden">
+  <div class="container pb-10">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
       <!-- Column 1 - Logo & Contact -->
-      <div class="lg:col-span-2 text-base text-[#6B7280] font-body">
+      <div class="lg:col-span-2 text-sm text-[#A1AAA1] font-body">
         <Logo />
-        <p class="mt-6 text-sm leading-relaxed max-w-sm">{config.params.footer_tagline}</p>
-        <div class="mt-6 space-y-2 text-sm">
+        <p class="mt-4 text-xs sm:text-sm leading-relaxed max-w-sm text-[#A1AAA1]">
+          {config.params.footer_tagline}
+        </p>
+        <div class="mt-5 space-y-1.5 text-xs font-mono">
           <a
-            class="block text-[#3D4852] font-bold hover:text-[#6C63FF] transition-colors"
+            class="block text-[#FFFFFF] hover:text-[#B7F34A] transition-colors"
             href={`mailto:${config.params.footer_email}`}
           >
             {config.params.footer_email}
           </a>
           <a
-            class="block text-[#6B7280] hover:text-[#3D4852] transition-colors"
+            class="block text-[#A1AAA1] hover:text-[#FFFFFF] transition-colors"
             href={`tel:${config.params.footer_phone}`}
           >
             {config.params.footer_phone}
@@ -43,14 +45,14 @@ const { main: socialLinks } = social as SocialType;
 
       <!-- Column 2 - Primary -->
       <div>
-        <h3 class="text-xs font-extrabold uppercase tracking-wider text-[#3D4852] font-display mb-5">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-[#FFFFFF] font-display mb-4">
           {footer_col_1_title}
         </h3>
-        <ul class="space-y-3 font-body text-sm">
+        <ul class="space-y-2.5 font-body text-xs">
           {
             footer_primary?.map((item) => (
               <li>
-                <a href={item.url} class="text-[#6B7280] hover:text-[#6C63FF] transition-colors">
+                <a href={item.url} class="text-[#A1AAA1] hover:text-[#B7F34A] transition-colors">
                   {item.name}
                 </a>
               </li>
@@ -61,14 +63,14 @@ const { main: socialLinks } = social as SocialType;
 
       <!-- Column 3 - Resource -->
       <div>
-        <h3 class="text-xs font-extrabold uppercase tracking-wider text-[#3D4852] font-display mb-5">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-[#FFFFFF] font-display mb-4">
           {footer_col_2_title}
         </h3>
-        <ul class="space-y-3 font-body text-sm">
+        <ul class="space-y-2.5 font-body text-xs">
           {
             footer_resource?.map((item) => (
               <li>
-                <a href={item.url} class="text-[#6B7280] hover:text-[#6C63FF] transition-colors">
+                <a href={item.url} class="text-[#A1AAA1] hover:text-[#B7F34A] transition-colors">
                   {item.name}
                 </a>
               </li>
@@ -79,14 +81,14 @@ const { main: socialLinks } = social as SocialType;
 
       <!-- Column 4 - Legal -->
       <div>
-        <h3 class="text-xs font-extrabold uppercase tracking-wider text-[#3D4852] font-display mb-5">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-[#FFFFFF] font-display mb-4">
           {footer_col_3_title}
         </h3>
-        <ul class="space-y-3 font-body text-sm">
+        <ul class="space-y-2.5 font-body text-xs">
           {
             footer_legal?.map((item) => (
               <li>
-                <a href={item.url} class="text-[#6B7280] hover:text-[#6C63FF] transition-colors">
+                <a href={item.url} class="text-[#A1AAA1] hover:text-[#B7F34A] transition-colors">
                   {item.name}
                 </a>
               </li>
@@ -99,18 +101,18 @@ const { main: socialLinks } = social as SocialType;
 
   <!-- Divider Strip -->
   <div class="container">
-    <div class="border-t border-slate-200/80 dark:border-white/10 my-6"></div>
+    <div class="border-t border-[#2B312C] my-4"></div>
   </div>
 
   <!-- Bottom Area -->
-  <div class="container py-4">
-    <div class="flex justify-between items-center flex-col sm:flex-row gap-y-4 w-full">
+  <div class="container py-2">
+    <div class="flex justify-between items-center flex-col sm:flex-row gap-y-3 w-full">
       <p
-        class="text-xs font-body text-[#6B7280]"
+        class="text-xs font-body text-[#5E665E]"
         set:html={markdownify(config.params.copyright)}
       />
 
-      <Social className="social-icons flex items-center gap-3" source={socialLinks} />
+      <Social className="social-icons flex items-center gap-2" source={socialLinks} />
     </div>
   </div>
 </footer>

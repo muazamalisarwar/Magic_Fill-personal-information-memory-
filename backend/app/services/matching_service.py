@@ -784,6 +784,8 @@ async def match_form_fields(
             unresolved_fields=fields_for_llm,
             user_memory=user_memory,
             form_context=request.form_context,
+            user_id=request.user_id,
+            db=db,
         )
 
         for item in llm_mappings:

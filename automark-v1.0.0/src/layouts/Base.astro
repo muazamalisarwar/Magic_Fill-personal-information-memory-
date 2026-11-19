@@ -39,14 +39,14 @@ const { title, meta_title, description, image, noindex, canonical } =
       )
     }
     <link rel="shortcut icon" href={config.site.favicon} />
-    <meta name="theme-name" content="magic-fill-neumorphism" />
-    <meta name="theme-color" content="#E0E5EC" />
-    <meta name="msapplication-TileColor" content="#E0E5EC" />
+    <meta name="theme-name" content="magic-fill" />
+    <meta name="theme-color" content="#0B0D0C" />
+    <meta name="msapplication-TileColor" content="#0B0D0C" />
     
-    <!-- Google Fonts for Neumorphism: Plus Jakarta Sans (Display) & DM Sans (Body) -->
+    <!-- Google Fonts: Plus Jakarta Sans (Display) & Inter (Body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
     <!-- Google Identity Services -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -54,12 +54,21 @@ const { title, meta_title, description, image, noindex, canonical } =
     <script is:inline>
       (function() {
         try {
-          var saved = localStorage.getItem('magic_fill_theme') || 'dark';
-          document.documentElement.setAttribute('data-theme', saved);
-          if (saved === 'light') {
-            document.documentElement.classList.add('light-theme');
+          const p = window.location.pathname.replace(/\/$/, "");
+          const appRoutes = ["/dashboard", "/memory", "/extract", "/playground"];
+          const isAppRoute = appRoutes.includes(p);
+          if (isAppRoute) {
+            const savedTheme = localStorage.getItem("magic_fill_theme") || "dark";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+            if (savedTheme === "light") {
+              document.documentElement.classList.add("light-theme");
+            } else {
+              document.documentElement.classList.remove("light-theme");
+            }
           } else {
-            document.documentElement.classList.remove('light-theme');
+            // Public landing & marketing pages are strictly locked to dark brand theme
+            document.documentElement.setAttribute("data-theme", "dark");
+            document.documentElement.classList.remove("light-theme");
           }
         } catch(e) {}
       })();
@@ -164,13 +173,6 @@ const { title, meta_title, description, image, noindex, canonical } =
         <GoogleTagmanagerNoscript id={config.google_tag_manager.gtm_id} />
       )
     }
-
-    {/* Global Ambient Subtle Particle Canvas for Light & Dark Themes */}
-    <canvas
-      id="globalAmbientParticles"
-      class="fixed inset-0 pointer-events-none z-0 w-full h-full opacity-70"
-      aria-hidden="true"
-    ></canvas>
 
     <Header />
     <main id="main-content" class="relative z-10 overflow-x-hidden md:overflow-x-auto">

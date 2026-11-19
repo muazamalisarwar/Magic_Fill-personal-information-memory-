@@ -13,31 +13,24 @@ const integrationsData: Integrations = integrations.data;
 
 <Base {...integrationsData}>
   <!-- Page Header -->
-  <section class="section-ph pb-10 relative">
-    <div class="container relative">
-      <div class="absolute top-0 left-0 w-full">
-        <div class="h-100 w-full overflow-hidden -translate-y-10">
-          <canvas class="heroSporeCanvas w-full opacity-70"></canvas>
-        </div>
-      </div>
-      <div class="lg:max-w-4xl mx-auto text-center relative z-10">
+  <section class="section-ph pt-28 pb-14 relative bg-[#0B0D0C]">
+    <div class="container relative z-10">
+      <div class="lg:max-w-4xl mx-auto text-center">
+        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[#B7F34A] mb-2 font-mono">
+          Universal Compatibility
+        </p>
         <h1
-          class="hasHighlight mb-0"
+          class="hasHighlight mb-0 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white"
           set:html={markdownify(integrationsData.page_header.title)}
         />
       </div>
-    </div>
-    <div
-      class="absolute left-1/2 top-0 -translate-y-1/2 -translate-x-1/2 size-160 xl:size-300 -z-20 blur-2xl"
-      style="background: radial-gradient(circle, var(--color-primary) 0%, color-mix(in srgb, var(--color-primary) 78%, transparent) 20%, transparent 70%);"
-    >
     </div>
   </section>
 
   <!-- Integrations Grid -->
   {
     integrationsData.integrations.enable && (
-      <section class="section pt-0">
+      <section class="section pt-0 pb-24 bg-[#0B0D0C]">
         <div class="container">
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
             {integrationsData.integrations.items.map((item: any) => (

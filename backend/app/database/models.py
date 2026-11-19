@@ -73,6 +73,12 @@ class User(Base):
         back_populates="user",
         cascade="all, delete-orphan"
     )
+    ai_config = relationship(
+        "UserAIConfig",
+        back_populates="user",
+        uselist=False,
+        cascade="all, delete-orphan"
+    )
 
     def __repr__(self) -> str:
         return f"<User(id={self.id}, email='{self.email}')>"
@@ -301,5 +307,49 @@ class UserDocument(Base):
 
     def __repr__(self) -> str:
         return f"<UserDocument(id={self.id}, user_id={self.user_id}, doc_key='{self.doc_key}', title='{self.title}')>"
+
+
+class UserAIConfig(Base):
+    """
+    User Custom AI Provider Configuration (1-to-1 with User).
+    Stores custom BYO-LLM preferences (OpenAI, Gemini, OpenRouter, Ollama, Custom API)
+    with encrypted API keys. If no record exists or provider is 'groq', the platform
+    uses the default Groq LLM integration with zero user configuration needed.
+    """
+    __tablename__ = "user_ai_configs"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    user_id = Column(
+        Integer,
+        ForeignKey("users.id", ondelete="CASCADE"),
+        unique=True,
+        nullable=False,
+        index=True
+    )
+    provider = Column(String(50), default="groq", nullable=False)  # groq, openai, gemini, openrouter, ollama, custom
+    model_name = Column(String(100), nullable=True)
+    api_base_url = Column(String(255), nullable=True)
+    encrypted_api_key = Column(Text, nullable=True)  # Fernet encrypted token, never plaintext
+    is_active = Column(Boolean, default=True, nullable=False)
+
+    # Timestamps
+    created_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        nullable=False
+    )
+    updated_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
+        nullable=False
+    )
+
+    # Relationship back to User
+    user = relationship("User", back_populates="ai_config")
+
+    def __repr__(self) -> str:
+        return f"<UserAIConfig(id={self.id}, user_id={self.user_id}, provider='{self.provider}', model='{self.model_name}')>"
+
 
 

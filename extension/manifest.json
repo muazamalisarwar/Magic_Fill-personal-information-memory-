@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Magic Fill — Personal Memory & Intelligent Autofill",
-  "version": "1.0.0",
-  "description": "Intelligent form auto-completion powered by your personal memory and FastAPI backend.",
+  "version": "1.2.0",
+  "description": "Intelligent form auto-completion powered by your personal memory, Groq, OpenAI, Gemini, OpenRouter, and local Ollama.",
   "permissions": [
     "activeTab",
     "storage",
@@ -12,7 +12,10 @@
     "http://127.0.0.1:8000/*",
     "http://localhost:8000/*",
     "http://localhost:4321/*",
-    "http://127.0.0.1:4321/*"
+    "http://127.0.0.1:4321/*",
+    "http://localhost:11434/*",
+    "http://127.0.0.1:11434/*",
+    "https://*/*"
   ],
   "externally_connectable": {
     "matches": [

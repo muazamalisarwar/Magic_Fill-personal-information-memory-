@@ -20,12 +20,7 @@ const featuresData: Features = features.data;
 <Base {...featuresData}>
   <!-- Banner -->
   <section class="section-ph relative overflow-hidden pb-20">
-    <div class="container relative">
-      <div class="absolute top-0 left-0 w-full">
-        <div class="h-100 w-full overflow-hidden -translate-y-10">
-          <canvas class="heroSporeCanvas w-full"></canvas>
-        </div>
-      </div>
+    <div class="container relative z-10">
       <div class="row justify-center">
         <div class="mb-20 text-center relative">
           <h1
@@ -56,11 +51,6 @@ const featuresData: Features = features.data;
           />
         </div>
       </div>
-    </div>
-    <div
-      class="absolute left-1/2 top-0 -translate-y-1/2 -translate-x-1/2 size-160 xl:size-300 -z-20 blur-2xl"
-      style="background: radial-gradient(circle, var(--color-primary) 0%, color-mix(in srgb, var(--color-primary) 78%, transparent) 20%, transparent 70%);"
-    >
     </div>
   </section>
   <hr

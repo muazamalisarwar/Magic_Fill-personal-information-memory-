@@ -38,20 +38,20 @@ const {
                   return (
                     <Container
                       href={Container === "a" ? href : undefined}
-                      class={`flex flex-col gap-5 p-7 md:p-8 bg-white/5 rounded-2xl cursor-pointer hover:bg-white/10 transition-all duration-300 ring-1 ring-white/10 hover:ring-primary/50 group hover:scale-[1.02]`}
+                      class={`flex flex-col gap-4 p-7 md:p-8 bg-[#191D1A] border border-[#2B312C] rounded-2xl cursor-pointer hover:border-[#B7F34A]/40 transition-all duration-300 group`}
                       data-ghl-trigger={item.type === "calendar" ? "true" : undefined}
                     >
-                    <div class="w-10 h-10 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                    <div class="w-10 h-10 rounded-xl bg-[#141715] border border-[#2B312C] flex items-center justify-center text-[#B7F34A]">
                       <DynamicIcon
                         icon={item.icon ?? ""}
-                        className="w-10 h-10 text-white"
+                        className="w-5 h-5 text-[#B7F34A]"
                       />
                     </div>
-                    <div class="flex flex-col gap-3">
-                      <h3 class="font-secondary font-bold text-2xl text-white">
+                    <div class="flex flex-col gap-1.5">
+                      <h3 class="font-bold text-lg text-white group-hover:text-[#B7F34A] transition-colors">
                         {item.title}
                       </h3>
-                      <p class="text-text text-lg">{item.detail}</p>
+                      <p class="text-[#A1AAA1] text-sm">{item.detail}</p>
                     </div>
                     </Container>
                   );
@@ -62,16 +62,16 @@ const {
 
         <!-- Right Column - Contact Form -->
         <div class="col-12 lg:col-7">
-          <div class="p-8 md:p-10 bg-white/5 rounded-2xl">
-            <form id="contact-form" novalidate class="flex flex-col gap-10">
-              <div class="flex flex-col gap-5">
+          <div class="p-8 md:p-10 bg-[#191D1A] border border-[#2B312C] rounded-2xl">
+            <form id="contact-form" novalidate class="flex flex-col gap-8">
+              <div class="flex flex-col gap-4">
                 <div class="relative">
                   <input
                     type="text"
                     name="name"
                     placeholder="Name"
                     required
-                    class="w-full rounded-full bg-white/5 backdrop-blur-[44px] px-8 py-5 border border-border text-white placeholder:text-text-dark focus:border-primary focus:outline-none transition-colors"
+                    class="w-full rounded-xl bg-[#141715] px-4 py-3 border border-[#2B312C] text-sm text-white placeholder:text-[#5E665E] focus:border-[#B7F34A] focus:outline-none transition-colors"
                   />
                 </div>
                 <div class="relative">
@@ -80,7 +80,7 @@ const {
                     name="email"
                     placeholder="Email Address"
                     required
-                    class="w-full rounded-full bg-white/5 backdrop-blur-[44px] px-8 py-5 border border-border text-white placeholder:text-text-dark focus:border-primary focus:outline-none transition-colors"
+                    class="w-full rounded-xl bg-[#141715] px-4 py-3 border border-[#2B312C] text-sm text-white placeholder:text-[#5E665E] focus:border-[#B7F34A] focus:outline-none transition-colors"
                   />
                 </div>
                 <div class="relative">
@@ -89,7 +89,7 @@ const {
                     name="phone"
                     placeholder="Phone number"
                     required
-                    class="w-full rounded-full bg-white/5 backdrop-blur-[44px] px-8 py-5 border border-border text-white placeholder:text-text-dark focus:border-primary focus:outline-none transition-colors"
+                    class="w-full rounded-xl bg-[#141715] px-4 py-3 border border-[#2B312C] text-sm text-white placeholder:text-[#5E665E] focus:border-[#B7F34A] focus:outline-none transition-colors"
                   />
                 </div>
                 <div class="relative">
@@ -98,23 +98,23 @@ const {
                     placeholder="Write your message..."
                     rows={4}
                     required
-                    class="w-full rounded-[20px] bg-white/5 backdrop-blur-[44px] px-8 py-5 border border-border text-white placeholder:text-text-dark focus:border-primary focus:outline-none transition-colors resize-none"
+                    class="w-full rounded-xl bg-[#141715] px-4 py-3 border border-[#2B312C] text-sm text-white placeholder:text-[#5E665E] focus:border-[#B7F34A] focus:outline-none transition-colors resize-none"
                   ></textarea>
                 </div>
               </div>
-              <div class="flex flex-col gap-6">
+              <div class="flex flex-col gap-4">
                 <!-- Status messages -->
                 <div
                   id="form-success"
-                  class="hidden rounded-2xl bg-green-500/10 border border-green-500/30 px-6 py-4 text-green-400 text-base"
+                  class="hidden rounded-xl bg-[#B7F34A]/10 border border-[#B7F34A]/30 px-5 py-3 text-white text-xs font-semibold"
                 >
-                  ✅ Message sent! We'll be in touch shortly.
+                  Message sent! We'll be in touch shortly.
                 </div>
                 <div
                   id="form-error"
-                  class="hidden rounded-2xl bg-red-500/10 border border-red-500/30 px-6 py-4 text-red-400 text-base"
+                  class="hidden rounded-xl bg-rose-950/40 border border-rose-500/30 px-5 py-3 text-rose-400 text-xs"
                 >
-                  ⚠️ <span id="form-error-text"
+                  <span id="form-error-text"
                     >Something went wrong. Please try again.</span
                   >
                 </div>
@@ -122,7 +122,7 @@ const {
                 <button
                   type="submit"
                   id="contact-submit"
-                  class="btn btn-primary w-full py-4 text-lg font-medium transition-opacity disabled:opacity-60 disabled:cursor-not-allowed"
+                  class="btn btn-primary w-full py-3.5 text-sm font-bold rounded-xl transition-opacity disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   <span id="submit-label">Send Message</span>
                   <span id="submit-loading" class="hidden">Sending…</span>

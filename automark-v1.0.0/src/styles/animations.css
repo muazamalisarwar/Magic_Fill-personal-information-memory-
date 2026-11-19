@@ -243,46 +243,99 @@
   100% { transform: translateY(-8px); }
 }
 
-/* 4. Autofill Field Pulse & Glow Effect */
+/* 4. Autofill Field Feedback (Subtle Lime & Rose) */
 @keyframes fieldFillPulse {
   0% {
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-    border-color: rgba(16, 185, 129, 0.9);
+    box-shadow: 0 0 0 0 rgba(183, 243, 74, 0.6);
+    border-color: #B7F34A;
   }
   50% {
-    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0.15);
-    border-color: rgba(16, 185, 129, 0.9);
+    box-shadow: 0 0 0 4px rgba(183, 243, 74, 0.2);
+    border-color: #B7F34A;
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-    border-color: rgba(16, 185, 129, 0.4);
+    box-shadow: 0 0 0 0 rgba(183, 243, 74, 0);
+    border-color: #B7F34A;
   }
 }
 .autofill-active {
-  animation: fieldFillPulse 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fieldFillPulse 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* 5. Glassmorphism Card Hover Elevation */
-.glass-card-interactive {
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, box-shadow;
+/* 5. Production Micro-Interactions & Transitions */
+.card-interactive {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
 }
-.glass-card-interactive:hover {
-  transform: translateY(-6px) scale(1.01);
-  border-color: rgba(132, 80, 255, 0.4) !important;
-  box-shadow: 0 20px 40px -15px rgba(132, 80, 255, 0.2), 0 0 0 1px rgba(132, 80, 255, 0.15) !important;
+.card-interactive:hover {
+  transform: translateY(-2px);
+  border-color: #3A423C !important;
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.5) !important;
+}
+.card-interactive:active {
+  transform: translateY(0);
 }
 
-/* 6. Glowing Gradient Text Animation */
-.animated-gradient-text {
-  background: linear-gradient(135deg, #8450FF 0%, #6366F1 30%, #38BDF8 60%, #A855F7 100%);
-  background-size: 300% 300%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: gradientFlow 8s ease infinite;
+/* 6. High-Performance Shimmer Skeleton Loader */
+@keyframes mfSkeletonShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
-@keyframes gradientFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #141715 25%, #1D221F 50%, #141715 75%);
+  background-size: 200% 100%;
+  animation: mfSkeletonShimmer 1.8s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+/* 7. Snappy Dialog & Popover Animations */
+@keyframes mfSlideUpIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.animate-slide-up {
+  animation: mfSlideUpIn 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes mfFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fade-in {
+  animation: mfFadeIn 0.2s ease forwards;
+}
+
+/* 8. Chatbot Typing Indicator Dots */
+@keyframes typingBounce {
+  0%, 80%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  40% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+.typing-dot {
+  animation: typingBounce 1.2s infinite ease-in-out;
+}
+.typing-dot:nth-child(1) { animation-delay: 0s; }
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+/* 9. Accessibility: Honor prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

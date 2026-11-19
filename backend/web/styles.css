@@ -4,39 +4,39 @@
    ========================================================================== */
 
 :root {
-  /* Core Colors */
-  --bg-canvas: #f8fafc;
-  --bg-canvas-subtle: #f1f5f9;
-  --bg-card: #ffffff;
-  --bg-card-subtle: #f8fafc;
-  --bg-input: #ffffff;
-  --bg-glass: rgba(255, 255, 255, 0.94);
+  /* Core Colors - Midnight Black & Slate Dark */
+  --bg-canvas: #0B0D0C;
+  --bg-canvas-subtle: #141715;
+  --bg-card: #191D1A;
+  --bg-card-subtle: #141715;
+  --bg-input: #141715;
+  --bg-glass: rgba(25, 29, 26, 0.94);
 
   /* Hairline Borders */
-  --border-subtle: #e2e8f0;
-  --border-medium: #cbd5e1;
-  --border-focus: #4f46e5;
+  --border-subtle: #2B312C;
+  --border-medium: #2B312C;
+  --border-focus: #B7F34A;
 
   /* Typography Colors */
-  --text-primary: #0f172a;       /* Deep Slate 900 */
-  --text-secondary: #334155;     /* Slate 700 */
-  --text-muted: #64748b;         /* Slate 500 */
-  --text-faint: #94a3b8;         /* Slate 400 */
+  --text-primary: #FFFFFF;       /* Pure White */
+  --text-secondary: #A1AAA1;     /* Muted Grey */
+  --text-muted: #A1AAA1;         /* Muted Grey */
+  --text-faint: #5E665E;         /* Subtle Grey */
 
   /* Accents */
-  --primary: #0f172a;
-  --primary-hover: #1e293b;
-  --primary-accent: #4f46e5;     /* Electric Indigo */
-  --primary-glow: rgba(79, 70, 229, 0.14);
+  --primary: #B7F34A;            /* Lime Green */
+  --primary-hover: #c9f66d;
+  --primary-accent: #B7F34A;
+  --primary-glow: rgba(183, 243, 74, 0.14);
 
-  --accent-cyan: #0284c7;
-  --accent-cyan-subtle: rgba(2, 132, 199, 0.08);
-  --accent-emerald: #059669;
-  --accent-emerald-subtle: rgba(5, 150, 105, 0.08);
-  --accent-amber: #d97706;
-  --accent-amber-subtle: rgba(217, 119, 6, 0.08);
-  --accent-rose: #e11d48;
-  --accent-rose-subtle: rgba(225, 29, 72, 0.08);
+  --accent-cyan: #38bdf8;
+  --accent-cyan-subtle: rgba(56, 189, 248, 0.08);
+  --accent-emerald: #B7F34A;
+  --accent-emerald-subtle: rgba(183, 243, 74, 0.08);
+  --accent-amber: #f59e0b;
+  --accent-amber-subtle: rgba(245, 158, 11, 0.08);
+  --accent-rose: #f43f5e;
+  --accent-rose-subtle: rgba(244, 63, 94, 0.08);
 
   /* Typography Stacks */
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -76,12 +76,9 @@ html {
   overflow-x: hidden;
 }
 
-body.light-theme {
+body, body.light-theme {
   background-color: var(--bg-canvas);
-  background-image: 
-    radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 90% 15%, rgba(14, 165, 233, 0.03) 0%, transparent 40%);
-  background-attachment: fixed;
+  background-image: none;
   color: var(--text-primary);
   font-family: var(--font-sans);
   line-height: 1.55;
@@ -4795,83 +4792,103 @@ html {
 }
 
 .mockup-prompt-card {
-  padding: 24px;
-  background: #ffffff;
+  padding: 22px;
+  background: #191D1A;
+  border: 1px solid #2B312C;
+  border-radius: 14px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.6);
 }
 
 .prompt-badge {
   font-size: 11px;
   font-weight: 700;
-  color: #0284c7;
-  background: #e0f2fe;
-  padding: 3px 9px;
-  border-radius: 9999px;
+  color: #B7F34A;
+  background: rgba(183, 243, 74, 0.12);
+  border: 1px solid rgba(183, 243, 74, 0.25);
+  padding: 3px 10px;
+  border-radius: 6px;
   width: fit-content;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
 }
 
 .prompt-heading {
-  font-size: 16px;
-  font-weight: 800;
-  color: var(--simplify-ink);
+  font-size: 15px;
+  font-weight: 700;
+  color: #FFFFFF;
 }
 
 .prompt-field-preview {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
+  gap: 3px;
+  background: #141715;
+  border: 1px solid #2B312C;
+  border-radius: 8px;
   padding: 10px 14px;
 }
 
 .prompt-field-key {
   font-size: 11px;
-  color: var(--simplify-ink-muted);
+  color: #A1AAA1;
   font-weight: 600;
 }
 
 .prompt-field-val {
-  font-size: 13.5px;
-  color: #0369a1;
+  font-size: 13px;
+  color: #B7F34A;
   font-weight: 600;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
 }
 
 .prompt-field-desc {
-  font-size: 12.5px;
-  color: var(--simplify-ink-muted);
+  font-size: 12px;
+  color: #A1AAA1;
   margin: 0;
+  line-height: 1.45;
 }
 
 .prompt-actions-row {
   display: flex;
   gap: 10px;
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 .btn-prompt-save {
-  background: var(--simplify-ink);
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 13px;
-  padding: 8px 16px;
-  border-radius: 9999px;
-  border: none;
+  background: #B7F34A;
+  color: #0B0D0C;
+  font-weight: 700;
+  font-size: 12.5px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: 1px solid #B7F34A;
   cursor: pointer;
+  box-shadow: 0 2px 10px rgba(183, 243, 74, 0.18);
+  transition: all 0.15s ease;
+}
+
+.btn-prompt-save:hover {
+  background: #c9f66d;
 }
 
 .btn-prompt-dismiss {
-  background: #f1f5f9;
-  color: var(--simplify-ink);
+  background: #141715;
+  color: #A1AAA1;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 12.5px;
   padding: 8px 16px;
-  border-radius: 9999px;
-  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  border: 1px solid #2B312C;
   cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-prompt-dismiss:hover {
+  background: #191D1A;
+  color: #FFFFFF;
+  border-color: #B7F34A;
 }
 
 /* Gauge Mockup */

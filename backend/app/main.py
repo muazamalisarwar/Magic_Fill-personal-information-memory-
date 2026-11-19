@@ -21,6 +21,7 @@ from app.routers import (
     custom_fields_router,
     documents_router,
     auth_router,
+    ai_config_router,
 )
 
 from app.schemas.common import HealthResponse
@@ -249,6 +250,7 @@ app.include_router(matching_router, prefix=settings.API_V1_PREFIX)
 app.include_router(memory_router, prefix=settings.API_V1_PREFIX)
 app.include_router(custom_fields_router, prefix=settings.API_V1_PREFIX)
 app.include_router(documents_router, prefix=settings.API_V1_PREFIX)
+app.include_router(ai_config_router, prefix=settings.API_V1_PREFIX)
 
 
 # -----------------------------------------------------------------------------

@@ -20,24 +20,24 @@ const sectionTitle = title ?? pricingData.page_header?.title ?? "";
 const sectionContent = content ?? pricingData.page_header?.content ?? "";
 ---
 
-<section class="section relative overflow-hidden py-24" id="pricing">
+<section class="section relative overflow-hidden py-24 bg-[#0B0D0C]" id="pricing">
   <div class="container">
     <div class="section-container">
       {
         isHome && (
           <div class="section-intro centralize text-center mb-16">
-            <p class="text-xs font-semibold uppercase tracking-[0.12em] text-indigo-600 mb-2">
+            <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[#B7F34A] mb-2 font-mono">
               Transparent Pricing
             </p>
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display text-slate-900 dark:text-white hasHighlight mb-4" set:html={sectionTitle} />
-            {sectionContent && <p class="font-body text-slate-600 dark:text-slate-400 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">{sectionContent}</p>}
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white hasHighlight mb-4" set:html={sectionTitle} />
+            {sectionContent && <p class="text-[#A1AAA1] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">{sectionContent}</p>}
           </div>
         )
       }
       <div class="section-content text-center">
         <!-- Pricing Cycle Toggle -->
         <div class="inline-flex items-center justify-center mb-14">
-          <div class="bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 p-1 rounded-xl inline-flex items-center gap-1">
+          <div class="bg-[#141715] border border-[#2B312C] p-1 rounded-xl inline-flex items-center gap-1">
             <input
               type="checkbox"
               data-pricing-toggle
@@ -47,17 +47,17 @@ const sectionContent = content ?? pricingData.page_header?.content ?? "";
             <label
               for="pricing-toggle"
               id="lblToggleMonthly"
-              class="bg-white dark:bg-white/10 text-slate-900 dark:text-white shadow-2xs px-5 py-2 text-xs font-semibold rounded-lg cursor-pointer transition-all active"
+              class="bg-[#191D1A] text-white border border-[#2B312C] shadow-sm px-5 py-2 text-xs font-bold rounded-lg cursor-pointer transition-all active"
             >
               {pricingData.toggler?.monthly_label ?? "Monthly"}
             </label>
             <label
               for="pricing-toggle"
               id="lblToggleYearly"
-              class="px-5 py-2 text-xs font-semibold text-slate-500 hover:text-slate-900 dark:hover:text-white rounded-lg cursor-pointer transition-all"
+              class="px-5 py-2 text-xs font-semibold text-[#A1AAA1] hover:text-white rounded-lg cursor-pointer transition-all"
             >
               {pricingData.toggler?.yearly_label ?? "Yearly"}
-              <span class="ml-1 text-[10px] text-emerald-600 dark:text-emerald-400 font-mono font-bold">(Save 20%)</span>
+              <span class="ml-1 text-[10px] text-[#B7F34A] font-mono font-bold">(Save 20%)</span>
             </label>
           </div>
         </div>
@@ -94,19 +94,19 @@ const sectionContent = content ?? pricingData.page_header?.content ?? "";
     if (toggle && lblMonthly && lblYearly) {
       toggle.addEventListener("change", () => {
         const isYearly = toggle.checked;
-        const activeClasses = ["bg-white", "dark:bg-white/10", "text-slate-900", "dark:text-white", "shadow-2xs", "active"];
+        const activeClasses = ["bg-[#191D1A]", "text-white", "border", "border-[#2B312C]", "shadow-sm", "active"];
         if (isYearly) {
           lblMonthly.classList.remove(...activeClasses);
-          lblMonthly.classList.add("text-slate-500");
+          lblMonthly.classList.add("text-[#A1AAA1]");
           lblYearly.classList.add(...activeClasses);
-          lblYearly.classList.remove("text-slate-500");
+          lblYearly.classList.remove("text-[#A1AAA1]");
           monthlyTags.forEach(el => el.classList.add("opacity-0"));
           yearlyTags.forEach(el => el.classList.remove("opacity-0"));
         } else {
           lblYearly.classList.remove(...activeClasses);
-          lblYearly.classList.add("text-slate-500");
+          lblYearly.classList.add("text-[#A1AAA1]");
           lblMonthly.classList.add(...activeClasses);
-          lblMonthly.classList.remove("text-slate-500");
+          lblMonthly.classList.remove("text-[#A1AAA1]");
           yearlyTags.forEach(el => el.classList.add("opacity-0"));
           monthlyTags.forEach(el => el.classList.remove("opacity-0"));
         }

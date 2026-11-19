@@ -22,9 +22,9 @@ const { pathname } = Astro.url;
 
 <header
   id="mainHeader"
-  class={`header z-50 w-full transition-all duration-300 ${settings.sticky_header ? "fixed top-0" : ""} bg-white/85 dark:bg-[#0B0F19]/85 backdrop-blur-xl border-b border-slate-200/80 dark:border-white/[0.08]`}
+  class={`header z-50 w-full transition-all duration-200 ${settings.sticky_header ? "fixed top-0" : ""} bg-[#0B0D0C]/90 backdrop-blur-md border-b border-[#2B312C]`}
 >
-  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-30 flex items-center justify-between h-[70px]">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-30 flex items-center justify-between h-[68px]">
     <!-- Brand Logo -->
     <div class="flex items-center shrink-0">
       <Logo />
@@ -33,7 +33,7 @@ const { pathname } = Astro.url;
     <!-- 1. PUBLIC MARKETING MENU (Visible When Logged Out) -->
     <ul
       id="publicNavMenu"
-      class="navbar-nav hidden lg:flex items-center gap-1.5 p-1.5 rounded-2xl bg-slate-100/70 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/80 dark:border-white/10 shadow-2xs"
+      class="navbar-nav hidden lg:flex items-center gap-1 p-1 rounded-xl bg-[#141715] border border-[#2B312C]"
     >
       {
         main.map((item) => {
@@ -42,10 +42,10 @@ const { pathname } = Astro.url;
             <li class="nav-item">
               <a
                 href={item.url}
-                class={`text-[14.5px] font-semibold px-4 py-2 rounded-xl transition-all duration-200 cursor-pointer block relative ${
+                class={`text-[13.5px] font-medium px-3.5 py-1.5 rounded-lg transition-all duration-150 cursor-pointer block ${
                   isActive
-                    ? "bg-white dark:bg-white/15 text-indigo-600 dark:text-white font-bold shadow-xs border border-slate-200/70 dark:border-white/10"
-                    : "text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-white hover:bg-white/80 dark:hover:bg-white/10 hover:-translate-y-0.5 active:translate-y-0"
+                    ? "bg-[#191D1A] text-[#B7F34A] font-semibold border border-[#2B312C]"
+                    : "text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#191D1A]/50"
                 }`}
               >
                 {item.name}
@@ -59,46 +59,46 @@ const { pathname } = Astro.url;
     <!-- 2. AUTHENTICATED PLATFORM MENU (Visible When Logged In) -->
     <ul
       id="authNavMenu"
-      class="navbar-nav hidden items-center gap-1.5 p-1.5 rounded-2xl bg-slate-100/70 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/80 dark:border-white/10 shadow-2xs"
+      class="navbar-nav hidden items-center gap-1 p-1 rounded-xl bg-[#141715] border border-[#2B312C]"
     >
       <li class="nav-item">
         <a
-          href="/memory"
-          class={`text-[14px] font-semibold px-3.5 py-2 rounded-xl transition-all duration-200 flex items-center gap-2 cursor-pointer ${
-            pathname === "/memory" || pathname === "/memory/"
-              ? "bg-white dark:bg-white/15 text-indigo-600 dark:text-white font-bold shadow-xs border border-slate-200/70 dark:border-white/10"
-              : "text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-white hover:bg-white/80 dark:hover:bg-white/10 hover:-translate-y-0.5 active:translate-y-0"
-          }`}
-        >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
-          <span>Memory Vault</span>
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a
           href="/dashboard"
-          class={`text-[14px] font-semibold px-3.5 py-2 rounded-xl transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+          class={`text-[13px] font-medium px-3 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-2 cursor-pointer ${
             pathname === "/dashboard" || pathname === "/dashboard/"
-              ? "bg-white dark:bg-white/15 text-indigo-600 dark:text-white font-bold shadow-xs border border-slate-200/70 dark:border-white/10"
-              : "text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-white hover:bg-white/80 dark:hover:bg-white/10 hover:-translate-y-0.5 active:translate-y-0"
+              ? "bg-[#191D1A] text-[#B7F34A] font-semibold border border-[#2B312C]"
+              : "text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#191D1A]/50"
           }`}
         >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
           <span>Dashboard</span>
         </a>
       </li>
 
       <li class="nav-item">
         <a
-          href="/extract"
-          class={`text-[14px] font-semibold px-3.5 py-2 rounded-xl transition-all duration-200 flex items-center gap-2 cursor-pointer ${
-            pathname === "/extract" || pathname === "/extract/"
-              ? "bg-white dark:bg-white/15 text-indigo-600 dark:text-white font-bold shadow-xs border border-slate-200/70 dark:border-white/10"
-              : "text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-white hover:bg-white/80 dark:hover:bg-white/10 hover:-translate-y-0.5 active:translate-y-0"
+          href="/memory"
+          class={`text-[13px] font-medium px-3 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-2 cursor-pointer ${
+            pathname === "/memory" || pathname === "/memory/"
+              ? "bg-[#191D1A] text-[#B7F34A] font-semibold border border-[#2B312C]"
+              : "text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#191D1A]/50"
           }`}
         >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+          <span>Memory Vault</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a
+          href="/extract"
+          class={`text-[13px] font-medium px-3 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-2 cursor-pointer ${
+            pathname === "/extract" || pathname === "/extract/"
+              ? "bg-[#191D1A] text-[#B7F34A] font-semibold border border-[#2B312C]"
+              : "text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#191D1A]/50"
+          }`}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
           <span>AI Extraction</span>
         </a>
       </li>
@@ -106,13 +106,13 @@ const { pathname } = Astro.url;
       <li class="nav-item">
         <a
           href="/playground"
-          class={`text-[14px] font-semibold px-3.5 py-2 rounded-xl transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+          class={`text-[13px] font-medium px-3 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-2 cursor-pointer ${
             pathname === "/playground" || pathname === "/playground/"
-              ? "bg-white dark:bg-white/15 text-indigo-600 dark:text-white font-bold shadow-xs border border-slate-200/70 dark:border-white/10"
-              : "text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-white hover:bg-white/80 dark:hover:bg-white/10 hover:-translate-y-0.5 active:translate-y-0"
+              ? "bg-[#191D1A] text-[#B7F34A] font-semibold border border-[#2B312C]"
+              : "text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#191D1A]/50"
           }`}
         >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
           <span>Simulator</span>
         </a>
       </li>
@@ -120,93 +120,88 @@ const { pathname } = Astro.url;
       <li class="nav-item">
         <a
           href="/extension"
-          class={`text-[14px] font-semibold px-3.5 py-2 rounded-xl transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+          class={`text-[13px] font-medium px-3 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-2 cursor-pointer ${
             pathname === "/extension" || pathname === "/extension/"
-              ? "bg-white dark:bg-white/15 text-indigo-600 dark:text-white font-bold shadow-xs border border-slate-200/70 dark:border-white/10"
-              : "text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-white hover:bg-white/80 dark:hover:bg-white/10 hover:-translate-y-0.5 active:translate-y-0"
+              ? "bg-[#191D1A] text-[#B7F34A] font-semibold border border-[#2B312C]"
+              : "text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#191D1A]/50"
           }`}
         >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
           <span>Extension</span>
         </a>
       </li>
     </ul>
 
-    <!-- 3. RIGHT CONTROLS: Extension Quick Link, Theme Toggle & Auth Buttons -->
+    <!-- 3. RIGHT CONTROLS: Extension Quick Link & Auth Controls -->
     <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
       <!-- Chrome Extension Quick Link -->
       <a
         href="/extension"
-        class="hidden sm:inline-flex items-center gap-2 h-10 px-3.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100/80 dark:bg-white/5 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 hover:text-indigo-600 dark:hover:text-indigo-400 border border-slate-200/80 dark:border-white/10 hover:border-indigo-300 dark:hover:border-indigo-500/40 shadow-2xs hover:shadow-xs hover:-translate-y-0.5 transition-all duration-200"
-        title="Download Chrome Extension"
+        class="hidden sm:inline-flex items-center gap-2 h-9 px-3.5 rounded-lg text-xs font-semibold text-[#FFFFFF] bg-[#141715] hover:bg-[#191D1A] border border-[#2B312C] hover:border-[#3A423C] transition-all duration-150"
+        title="Pair Chrome Extension"
       >
-        <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
-          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-        </svg>
+        <span class="size-2 rounded-full bg-[#B7F34A]"></span>
         <span>Extension</span>
       </a>
-
-      <!-- Minimal Theme Toggle Button -->
-      <button
-        type="button"
-        id="themeToggleBtn"
-        class="size-10 rounded-xl flex items-center justify-center transition-all duration-200 bg-slate-100/80 hover:bg-slate-200/80 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200/80 dark:border-white/10 text-slate-700 dark:text-slate-200 hover:text-indigo-600 dark:hover:text-white hover:scale-105 active:scale-95 cursor-pointer shadow-2xs"
-        title="Toggle Dark / Light Theme"
-        aria-label="Toggle Theme"
-      >
-        <!-- Sun icon (shown in dark theme) -->
-        <svg id="themeIconSun" class="w-4.5 h-4.5 block transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="4.5" stroke-width="2"></circle>
-          <line x1="12" y1="1" x2="12" y2="3" stroke-width="2" stroke-linecap="round"></line>
-          <line x1="12" y1="21" x2="12" y2="23" stroke-width="2" stroke-linecap="round"></line>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke-width="2" stroke-linecap="round"></line>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke-width="2" stroke-linecap="round"></line>
-          <line x1="1" y1="12" x2="3" y2="12" stroke-width="2" stroke-linecap="round"></line>
-          <line x1="21" y1="12" x2="23" y2="12" stroke-width="2" stroke-linecap="round"></line>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke-width="2" stroke-linecap="round"></line>
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke-width="2" stroke-linecap="round"></line>
-        </svg>
-        <!-- Moon icon (shown in light theme) -->
-        <svg id="themeIconMoon" class="w-4.5 h-4.5 hidden transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-        </svg>
-      </button>
 
       <!-- Logged Out Actions -->
       <div id="headerLoggedOutArea" class="flex items-center gap-2 sm:gap-2.5">
         <a
           href="/login"
           id="btnHeaderSignIn"
-          class="h-10 px-4 text-[14px] font-semibold rounded-xl text-slate-700 dark:text-slate-200 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-white/10 border border-slate-200/80 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 transition-all duration-200 hover:-translate-y-0.5 shadow-2xs flex items-center justify-center cursor-pointer"
+          class="h-9 px-3.5 text-xs font-semibold rounded-lg text-[#FFFFFF] hover:bg-[#141715] border border-[#2B312C] hover:border-[#3A423C] transition-all duration-150 flex items-center justify-center cursor-pointer"
         >
           Sign In
         </a>
         <a
           href="/register"
           id="btnHeaderGetStarted"
-          class="h-10 px-5 text-[14px] font-bold rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white transition-all duration-200 flex items-center gap-2 shadow-md shadow-indigo-600/25 hover:shadow-lg hover:shadow-indigo-600/35 hover:-translate-y-0.5 active:translate-y-0 group cursor-pointer"
+          class="h-9 px-4 text-xs font-bold rounded-lg bg-[#B7F34A] hover:bg-[#C8FA6A] text-[#0B0D0C] transition-all duration-150 flex items-center gap-1.5 cursor-pointer shadow-sm"
         >
-          <span>Get Started Free</span>
-          <svg class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <span>Get Started</span>
+          <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
       </div>
 
       <!-- Logged In Actions -->
-      <div id="headerLoggedInArea" class="hidden items-center gap-2.5">
+      <div id="headerLoggedInArea" class="hidden items-center gap-2">
+        <!-- Theme Toggle Button (Only on Protected After-Login Platform) -->
+        <button
+          type="button"
+          id="webThemeToggleBtn"
+          class="size-9 rounded-lg flex items-center justify-center text-[#A1AAA1] hover:text-[#FFFFFF] bg-[#141715] hover:bg-[#191D1A] border border-[#2B312C] hover:border-[#3A423C] transition-all duration-150 cursor-pointer"
+          title="Toggle Light / Dark Mode"
+          aria-label="Toggle Theme"
+        >
+          <svg id="webIconSun" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg id="webIconMoon" class="size-4 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
         <a
           href="/dashboard"
-          class="h-10 px-4 rounded-xl flex items-center gap-2 text-xs font-bold bg-slate-100/90 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/15 text-slate-900 dark:text-white transition-all duration-200 hover:-translate-y-0.5 border border-slate-200/80 dark:border-white/15 shadow-2xs"
+          class="h-9 px-3.5 rounded-lg flex items-center gap-2 text-xs font-semibold bg-[#141715] hover:bg-[#191D1A] text-[#FFFFFF] border border-[#2B312C] hover:border-[#3A423C] transition-all duration-150"
           title="Go to Dashboard"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-          <span id="headerUserDisplayName" class="truncate max-w-28 font-bold">Account</span>
+          <span class="size-2 rounded-full bg-[#B7F34A] animate-pulse"></span>
+          <span id="headerUserDisplayName" class="truncate max-w-28 font-semibold">Account</span>
         </a>
 
         <button
           type="button"
           id="btnHeaderSignOut"
-          class="h-10 px-3 rounded-xl text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors cursor-pointer"
+          class="h-9 px-3 rounded-lg text-xs font-medium text-[#A1AAA1] hover:text-rose-400 hover:bg-rose-950/20 border border-transparent hover:border-rose-900/40 transition-colors cursor-pointer"
           title="Sign Out"
         >
           Sign Out
@@ -217,7 +212,7 @@ const { pathname } = Astro.url;
       <button
         type="button"
         id="mobileNavToggleBtn"
-        class="lg:hidden size-10 rounded-xl flex items-center justify-center text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 border border-slate-200/80 dark:border-white/10 shadow-2xs"
+        class="lg:hidden size-9 rounded-lg flex items-center justify-center text-[#A1AAA1] hover:text-[#FFFFFF] bg-[#141715] border border-[#2B312C]"
         aria-label="Toggle navigation"
       >
         <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -228,77 +223,52 @@ const { pathname } = Astro.url;
   </nav>
 
   <!-- 4. MOBILE SLIDEOUT DRAWER -->
-  <div id="mobileDrawerBackdrop" class="fixed inset-0 z-40 bg-black/40 backdrop-blur-xs hidden lg:hidden"></div>
+  <div id="mobileDrawerBackdrop" class="fixed inset-0 z-40 bg-black/70 backdrop-blur-xs hidden lg:hidden"></div>
   <div
     id="mobileDrawer"
-    class="fixed inset-y-0 right-0 z-50 w-72 bg-white dark:bg-[#0B0F19] border-l border-slate-200/80 dark:border-white/10 p-6 shadow-2xl transform translate-x-full transition-transform duration-300 lg:hidden flex flex-col justify-between"
+    class="fixed inset-y-0 right-0 z-50 w-72 bg-[#0B0D0C] border-l border-[#2B312C] p-6 shadow-2xl transform translate-x-full transition-transform duration-200 lg:hidden flex flex-col justify-between"
   >
     <div>
-      <div class="flex items-center justify-between pb-4 border-b border-slate-200/80 dark:border-white/10 mb-5">
+      <div class="flex items-center justify-between pb-4 border-b border-[#2B312C] mb-5">
         <Logo />
-        <button type="button" id="mobileDrawerCloseBtn" class="size-8 rounded-lg flex items-center justify-center text-lg font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white bg-slate-100 dark:bg-white/10">&times;</button>
+        <button type="button" id="mobileDrawerCloseBtn" class="size-8 rounded-lg flex items-center justify-center text-lg font-bold text-[#A1AAA1] hover:text-[#FFFFFF] bg-[#141715] border border-[#2B312C]">&times;</button>
       </div>
 
       <!-- Mobile Logged Out Links -->
       <div id="mobileLoggedOutLinks" class="flex flex-col gap-1">
-        <a href="/features" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-lg transition-colors">Features</a>
-        <a href="/playground" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-lg transition-colors">Live Simulator</a>
-        <a href="/integrations" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-lg transition-colors">Supported Portals</a>
-        <a href="/pricing" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-lg transition-colors">Pricing</a>
-        <a href="/about" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-lg transition-colors">How It Works</a>
-        <a href="/extension" class="px-3.5 py-2 text-[13.5px] font-medium text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 rounded-lg transition-colors">Browser Extension</a>
+        <a href="/features" class="px-3.5 py-2 text-xs font-semibold text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#141715] rounded-lg transition-colors">Features</a>
+        <a href="/playground" class="px-3.5 py-2 text-xs font-semibold text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#141715] rounded-lg transition-colors">Live Simulator</a>
+        <a href="/integrations" class="px-3.5 py-2 text-xs font-semibold text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#141715] rounded-lg transition-colors">Supported Portals</a>
+        <a href="/pricing" class="px-3.5 py-2 text-xs font-semibold text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#141715] rounded-lg transition-colors">Pricing</a>
+        <a href="/about" class="px-3.5 py-2 text-xs font-semibold text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#141715] rounded-lg transition-colors">How It Works</a>
+        <a href="/extension" class="px-3.5 py-2 text-xs font-semibold text-[#B7F34A] hover:bg-[#141715] rounded-lg transition-colors">Browser Extension</a>
       </div>
 
       <!-- Mobile Logged In Links -->
       <div id="mobileLoggedInLinks" class="hidden flex-col gap-1">
-        <a href="/dashboard" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-lg transition-colors">Dashboard</a>
-        <a href="/memory" class="px-3.5 py-2 text-[13.5px] font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 rounded-lg transition-colors">Memory Vault</a>
-        <a href="/extract" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-lg transition-colors">AI Extraction</a>
-        <a href="/playground" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-lg transition-colors">Live Simulator</a>
-        <a href="/extension" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-lg transition-colors">Extension Setup</a>
+        <a href="/dashboard" class="px-3.5 py-2 text-xs font-semibold text-[#FFFFFF] hover:bg-[#141715] rounded-lg transition-colors">Dashboard</a>
+        <a href="/memory" class="px-3.5 py-2 text-xs font-semibold text-[#B7F34A] bg-[#141715] rounded-lg transition-colors">Memory Vault</a>
+        <a href="/extract" class="px-3.5 py-2 text-xs font-semibold text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#141715] rounded-lg transition-colors">AI Extraction</a>
+        <a href="/playground" class="px-3.5 py-2 text-xs font-semibold text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#141715] rounded-lg transition-colors">Live Simulator</a>
+        <a href="/extension" class="px-3.5 py-2 text-xs font-semibold text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#141715] rounded-lg transition-colors">Extension Setup</a>
       </div>
     </div>
 
     <!-- Mobile Drawer Bottom Actions -->
-    <div class="pt-4 border-t border-slate-200/80 dark:border-white/10 space-y-2">
+    <div class="pt-4 border-t border-[#2B312C] space-y-2">
       <div id="mobileDrawerLoggedOutBtns" class="flex flex-col gap-2">
-        <a href="/login" class="w-full text-center py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-white/10 hover:bg-slate-200 rounded-lg transition-colors">Sign In</a>
-        <a href="/register" class="w-full text-center py-2 text-xs font-semibold text-white bg-slate-950 dark:bg-white dark:text-slate-950 rounded-lg transition-colors shadow-2xs">Get Started Free</a>
+        <a href="/login" class="w-full text-center py-2 text-xs font-semibold text-[#FFFFFF] bg-[#141715] hover:bg-[#191D1A] border border-[#2B312C] rounded-lg transition-colors">Sign In</a>
+        <a href="/register" class="w-full text-center py-2 text-xs font-bold text-[#0B0D0C] bg-[#B7F34A] hover:bg-[#C8FA6A] rounded-lg transition-colors">Get Started Free</a>
       </div>
       <div id="mobileDrawerLoggedInBtns" class="hidden flex-col gap-2">
-        <button type="button" id="mobileDrawerSignOutBtn" class="w-full text-center py-2 text-xs font-semibold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10 rounded-lg transition-colors">Sign Out</button>
+        <button type="button" id="mobileDrawerSignOutBtn" class="w-full text-center py-2 text-xs font-semibold text-rose-400 bg-rose-950/20 border border-rose-900/30 rounded-lg transition-colors">Sign Out</button>
       </div>
     </div>
   </div>
 
-  <!-- Synchronous Client Controller for Theme & Auth State -->
+  <!-- Synchronous Client Controller for Auth State -->
   <script is:inline>
     (function () {
-      // 1. Theme Management (Dark / White Theme)
-      const THEME_KEY = "magic_fill_theme";
-      const savedTheme = localStorage.getItem(THEME_KEY) || "dark";
-
-      function applyTheme(theme) {
-        if (theme === "light") {
-          document.documentElement.classList.add("light-theme");
-          document.documentElement.setAttribute("data-theme", "light");
-          const sun = document.getElementById("themeIconSun");
-          const moon = document.getElementById("themeIconMoon");
-          if (sun) sun.classList.add("hidden");
-          if (moon) moon.classList.remove("hidden");
-        } else {
-          document.documentElement.classList.remove("light-theme");
-          document.documentElement.setAttribute("data-theme", "dark");
-          const sun = document.getElementById("themeIconSun");
-          const moon = document.getElementById("themeIconMoon");
-          if (sun) sun.classList.remove("hidden");
-          if (moon) moon.classList.add("hidden");
-        }
-      }
-
-      applyTheme(savedTheme);
-
-      // 2. Authentication State Synchronization
       function syncHeader() {
         const token = localStorage.getItem("magic_fill_token");
         const rawUser = localStorage.getItem("magic_fill_user");
@@ -317,7 +287,6 @@ const { pathname } = Astro.url;
         const mobileLoggedInBtns = document.getElementById("mobileDrawerLoggedInBtns");
 
         if (token) {
-          // USER IS LOGGED IN: Show ONLY authenticated platform menu
           if (publicMenu) {
             publicMenu.classList.remove("active-desktop-menu");
             publicMenu.classList.add("hidden");
@@ -332,7 +301,6 @@ const { pathname } = Astro.url;
             loggedInArea.classList.add("flex");
           }
 
-          // Mobile Drawer: Show ONLY authenticated vault links, hide public links!
           if (mobileLoggedOut) mobileLoggedOut.classList.add("hidden");
           if (mobileLoggedIn) {
             mobileLoggedIn.classList.remove("hidden");
@@ -348,7 +316,6 @@ const { pathname } = Astro.url;
           const shortName = name.split(" ")[0] || name;
           if (userDisplay) userDisplay.textContent = shortName;
         } else {
-          // USER IS LOGGED OUT: Show public marketing menu
           if (publicMenu) {
             publicMenu.classList.add("active-desktop-menu");
             publicMenu.classList.remove("hidden");
@@ -361,99 +328,103 @@ const { pathname } = Astro.url;
             loggedOutArea.classList.remove("hidden");
             loggedOutArea.classList.add("flex");
           }
-          if (loggedInArea) {
-            loggedInArea.classList.add("hidden");
-            loggedInArea.classList.remove("flex");
-          }
+          if (loggedInArea) loggedInArea.classList.add("hidden");
 
-          // Mobile Drawer: Show public marketing links
           if (mobileLoggedOut) {
             mobileLoggedOut.classList.remove("hidden");
             mobileLoggedOut.classList.add("flex");
           }
-          if (mobileLoggedIn) {
-            mobileLoggedIn.classList.add("hidden");
-            mobileLoggedIn.classList.remove("flex");
-          }
+          if (mobileLoggedIn) mobileLoggedIn.classList.add("hidden");
           if (mobileLoggedOutBtns) {
             mobileLoggedOutBtns.classList.remove("hidden");
             mobileLoggedOutBtns.classList.add("flex");
           }
-          if (mobileLoggedInBtns) {
-            mobileLoggedInBtns.classList.add("hidden");
-            mobileLoggedInBtns.classList.remove("flex");
-          }
+          if (mobileLoggedInBtns) mobileLoggedInBtns.classList.add("hidden");
         }
       }
 
+      syncHeader();
+      window.addEventListener("storage", syncHeader);
+      window.addEventListener("magic-fill-auth-change", syncHeader);
+
+      // Sign out handlers
       function handleSignOut() {
         localStorage.removeItem("magic_fill_token");
         localStorage.removeItem("magic_fill_user");
+        window.dispatchEvent(new Event("magic-fill-auth-change"));
         window.location.href = "/login";
       }
 
-      function initHeader() {
-        applyTheme(localStorage.getItem(THEME_KEY) || "dark");
-        syncHeader();
+      const signOutBtn = document.getElementById("btnHeaderSignOut");
+      if (signOutBtn) signOutBtn.addEventListener("click", handleSignOut);
 
-        // Theme Toggle Click
-        const themeBtn = document.getElementById("themeToggleBtn");
-        if (themeBtn) {
-          themeBtn.addEventListener("click", () => {
-            const current = document.documentElement.getAttribute("data-theme") || "dark";
-            const next = current === "light" ? "dark" : "light";
-            localStorage.setItem(THEME_KEY, next);
-            applyTheme(next);
-            window.dispatchEvent(new CustomEvent("themechange", { detail: { theme: next } }));
-          });
+      const mobileSignOutBtn = document.getElementById("mobileDrawerSignOutBtn");
+      if (mobileSignOutBtn) mobileSignOutBtn.addEventListener("click", handleSignOut);
+
+      // Mobile Drawer open/close
+      const mobileToggle = document.getElementById("mobileNavToggleBtn");
+      const mobileClose = document.getElementById("mobileDrawerCloseBtn");
+      const drawer = document.getElementById("mobileDrawer");
+      const backdrop = document.getElementById("mobileDrawerBackdrop");
+
+      function openDrawer() {
+        if (drawer && backdrop) {
+          drawer.classList.remove("translate-x-full");
+          backdrop.classList.remove("hidden");
         }
-
-        // Sign Out Clicks
-        const signOutBtn = document.getElementById("btnHeaderSignOut");
-        if (signOutBtn) signOutBtn.addEventListener("click", handleSignOut);
-        const mobileSignOut = document.getElementById("mobileDrawerSignOutBtn");
-        if (mobileSignOut) mobileSignOut.addEventListener("click", handleSignOut);
-
-        // Mobile Drawer Toggle
-        const toggleBtn = document.getElementById("mobileNavToggleBtn");
-        const drawer = document.getElementById("mobileDrawer");
-        const backdrop = document.getElementById("mobileDrawerBackdrop");
-        const closeBtn = document.getElementById("mobileDrawerCloseBtn");
-
-        function openDrawer() {
-          if (drawer) drawer.classList.remove("translate-x-full");
-          if (backdrop) backdrop.classList.remove("hidden");
-        }
-        function closeDrawer() {
-          if (drawer) drawer.classList.add("translate-x-full");
-          if (backdrop) backdrop.classList.add("hidden");
-        }
-
-        if (toggleBtn) toggleBtn.addEventListener("click", openDrawer);
-        if (closeBtn) closeBtn.addEventListener("click", closeDrawer);
-        if (backdrop) backdrop.addEventListener("click", closeDrawer);
-
-        // Scroll Elevation
-        const mainHeader = document.getElementById("mainHeader");
-        function handleScroll() {
-          if (!mainHeader) return;
-          if (window.scrollY > 12) {
-            mainHeader.classList.add("shadow-xs", "dark:shadow-[0_4px_24px_rgba(0,0,0,0.35)]");
-          } else {
-            mainHeader.classList.remove("shadow-xs", "dark:shadow-[0_4px_24px_rgba(0,0,0,0.35)]");
-          }
-        }
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        handleScroll();
       }
 
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initHeader);
-      } else {
-        initHeader();
+      function closeDrawer() {
+        if (drawer && backdrop) {
+          drawer.classList.add("translate-x-full");
+          backdrop.classList.add("hidden");
+        }
       }
 
-      window.addEventListener("storage", syncHeader);
+      if (mobileToggle) mobileToggle.addEventListener("click", openDrawer);
+      if (mobileClose) mobileClose.addEventListener("click", closeDrawer);
+      if (backdrop) backdrop.addEventListener("click", closeDrawer);
+
+      // Web App Theme Toggle (Active exclusively for authenticated platform workspace)
+      const webThemeToggleBtn = document.getElementById("webThemeToggleBtn");
+      const webIconSun = document.getElementById("webIconSun");
+      const webIconMoon = document.getElementById("webIconMoon");
+
+      function syncWebThemeIcon() {
+        const p = window.location.pathname.replace(/\/$/, "");
+        const appRoutes = ["/dashboard", "/memory", "/extract", "/playground"];
+        const isApp = appRoutes.includes(p) || localStorage.getItem("magic_fill_token");
+        if (!isApp) return;
+
+        const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+        if (currentTheme === "light") {
+          if (webIconSun) webIconSun.classList.add("hidden");
+          if (webIconMoon) webIconMoon.classList.remove("hidden");
+        } else {
+          if (webIconSun) webIconSun.classList.remove("hidden");
+          if (webIconMoon) webIconMoon.classList.add("hidden");
+        }
+      }
+
+      function toggleWebTheme() {
+        const current = document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
+        const next = current === "light" ? "dark" : "light";
+        localStorage.setItem("magic_fill_theme", next);
+        document.documentElement.setAttribute("data-theme", next);
+        if (next === "light") {
+          document.documentElement.classList.add("light-theme");
+          document.body.classList.add("light-theme");
+        } else {
+          document.documentElement.classList.remove("light-theme");
+          document.body.classList.remove("light-theme");
+        }
+        syncWebThemeIcon();
+      }
+
+      if (webThemeToggleBtn) {
+        webThemeToggleBtn.addEventListener("click", toggleWebTheme);
+      }
+      syncWebThemeIcon();
     })();
   </script>
 </header>

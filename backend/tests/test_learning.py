@@ -409,3 +409,54 @@ def test_multi_user_isolation_never_leaks_or_overwrites(client):
     bob_profile = client.get(f"/api/users/{bob_id}/profile", headers=bob_headers).json()["data"]
     assert any(cf["field_value"] == "https://bob.dev" for cf in bob_profile["custom_fields"])
     assert not any(cf["field_value"] == "https://alice.dev" for cf in bob_profile["custom_fields"])
+
+
+def test_prefix_typing_does_not_trigger_premature_update(client):
+    """
+    Verify that entering a prefix (e.g., 'Muaz' or 'Muazam') when 'Muazam Ali' is saved
+    does NOT trigger an UPDATE_ATTRIBUTE suggestion, preventing premature popup interruptions.
+    Only when the final full string is genuinely different (e.g., 'Muazam Ali Sarwar')
+    is an UPDATE_ATTRIBUTE suggestion returned.
+    """
+    user_res = client.post(
+        "/api/auth/register",
+        json={"email": "muazam_test@example.com", "password": "Password123!", "full_name": "Muazam Ali"}
+    )
+    token = user_res.json()["data"]["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+
+    # 1. User types partial prefix "Muaz" -> should be NO_ACTION (suppressed)
+    res_partial = client.post(
+        "/api/memory/evaluate-field",
+        json={"field_name": "full_name", "label": "Legal Full Name", "value": "Muaz"},
+        headers=headers
+    )
+    assert res_partial.status_code == 200
+    data_partial = res_partial.json()["data"]
+    assert data_partial["is_learnable"] is False
+    assert data_partial["action_type"] == LearningActionType.NO_ACTION
+
+    # 2. User types exact saved name "Muazam Ali" -> NO_ACTION
+    res_exact = client.post(
+        "/api/memory/evaluate-field",
+        json={"field_name": "full_name", "label": "Legal Full Name", "value": "Muazam Ali"},
+        headers=headers
+    )
+    assert res_exact.status_code == 200
+    data_exact = res_exact.json()["data"]
+    assert data_exact["is_learnable"] is False
+    assert data_exact["action_type"] == LearningActionType.NO_ACTION
+
+    # 3. User types genuinely updated name "Muazam Ali Sarwar" -> UPDATE_ATTRIBUTE
+    res_update = client.post(
+        "/api/memory/evaluate-field",
+        json={"field_name": "full_name", "label": "Legal Full Name", "value": "Muazam Ali Sarwar"},
+        headers=headers
+    )
+    assert res_update.status_code == 200
+    data_update = res_update.json()["data"]
+    assert data_update["is_learnable"] is True
+    assert data_update["action_type"] == LearningActionType.UPDATE_ATTRIBUTE
+    assert data_update["existing_value"] == "Muazam Ali"
+    assert data_update["new_value"] == "Muazam Ali Sarwar"
+

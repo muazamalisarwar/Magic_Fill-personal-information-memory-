@@ -253,6 +253,21 @@ def classify_field_deterministically(
     if not val or (len(val) < 2 and not val.isdigit()) or val.lower() in ("n/a", "none", "test", "placeholder", "undefined", "null"):
         return FieldCategory.UNKNOWN, None, None, None
 
+    # 1b. Reject UI controls, buttons, triggers, simulator actions, and non-form elements
+    if norm_type in ("button", "submit", "reset", "image"):
+        return FieldCategory.UNKNOWN, None, None, None
+
+    ui_action_keywords = [
+        "simulate", "btn", "button", "submit", "clearform", "resetform", "alt+",
+        "action", "trigger", "modal", "dismiss", "close", "toggle", "switch",
+        "matching fields", "autofill"
+    ]
+    if any(k in combined_desc for k in ui_action_keywords):
+        return FieldCategory.UNKNOWN, None, None, None
+
+    if any(k in val.lower() for k in ["matching fields", "alt+f", "alt+", "simulate autofill", "submitting...", "loading..."]):
+        return FieldCategory.UNKNOWN, None, None, None
+
     # 2. Check SENSITIVE_OR_SECRET
     if norm_type in ("password", "hidden"):
         return FieldCategory.SENSITIVE_OR_SECRET, None, None, None
@@ -466,7 +481,10 @@ async def evaluate_field_for_learning(
     # labeled form field as a learnable personal or professional attribute.
     if category == FieldCategory.UNKNOWN:
         desc = (request.label or request.field_name or "").strip()
-        if desc and len(desc) >= 2:
+        norm_t = (request.input_type or "text").lower()
+        ui_words = ["simulate", "btn", "button", "submit", "clearform", "resetform", "alt+", "matching fields", "autofill"]
+        is_ui = norm_t in ("button", "submit", "reset", "image") or any(w in desc.lower() for w in ui_words) or any(w in val.lower() for w in ui_words)
+        if desc and len(desc) >= 2 and not is_ui:
             generic_placeholders = ["your answer", "short answer", "long answer", "type here", "enter text", "null", "undefined"]
             if not any(gp in desc.lower() for gp in generic_placeholders):
                 prof_signals = [
@@ -547,8 +565,19 @@ async def evaluate_field_for_learning(
                 existing_value=existing_val,
                 reason=f"Value for '{field_lbl}' is already saved in personal memory."
             )
+        elif norm_existing.startswith(norm_new) and len(norm_new) < len(norm_existing):
+            # Incomplete prefix typed (e.g. 'Muaz' while 'Muazam Ali' is saved) -> do not suggest updating
+            return EvaluateFieldResponse(
+                category=category,
+                is_learnable=False,
+                action_type=LearningActionType.NO_ACTION,
+                canonical_key=canon_key,
+                field_label=field_lbl,
+                existing_value=existing_val,
+                reason=f"Entered value is a prefix of saved '{field_lbl}'."
+            )
         else:
-            # Existing attribute has a different value -> UPDATE suggestion!
+            # Existing attribute has a genuinely different final value -> UPDATE suggestion!
             return EvaluateFieldResponse(
                 category=category,
                 is_learnable=True,
@@ -594,6 +623,16 @@ async def evaluate_field_for_learning(
                 existing_value=existing_val,
                 reason=f"Value for '{matched_cf.field_label}' is already saved in custom memory."
             )
+        elif norm_existing.startswith(norm_new) and len(norm_new) < len(norm_existing):
+            return EvaluateFieldResponse(
+                category=category,
+                is_learnable=False,
+                action_type=LearningActionType.NO_ACTION,
+                canonical_key=canon_key,
+                field_label=matched_cf.field_label,
+                existing_value=existing_val,
+                reason=f"Entered value is a prefix of saved '{matched_cf.field_label}'."
+            )
         else:
             return EvaluateFieldResponse(
                 category=category,
@@ -622,6 +661,16 @@ async def evaluate_field_for_learning(
                     field_label=field_lbl,
                     existing_value=exp_val,
                     reason=f"Value for '{field_lbl}' is already recorded in work experiences."
+                )
+            elif norm_existing.startswith(norm_new) and len(norm_new) < len(norm_existing):
+                return EvaluateFieldResponse(
+                    category=category,
+                    is_learnable=False,
+                    action_type=LearningActionType.NO_ACTION,
+                    canonical_key=canon_key,
+                    field_label=field_lbl,
+                    existing_value=exp_val,
+                    reason=f"Entered value is a prefix of saved '{field_lbl}'."
                 )
 
     # Step 5: Attribute is genuinely new!
@@ -666,7 +715,7 @@ def commit_learned_field(
     pinfo_cols = [
         "full_name", "first_name", "last_name", "father_name", "gender", "date_of_birth",
         "cnic", "phone", "email", "address", "city", "postal_code", "country",
-        "university", "degree", "department"
+        "university", "degree", "major", "profile_photo", "cnic_photo"
     ]
 
     action_taken = "CREATED"
@@ -689,6 +738,9 @@ def commit_learned_field(
 
             update_dto = PersonalInfoUpdate.model_validate(update_data)
             update_personal_info(db=db, user_id=user_id, info_in=update_dto)
+            if canon_k == "full_name" or "full_name" in update_data:
+                user.full_name = update_data.get("full_name", val)
+                db.commit()
             action_taken = "UPDATED_PERSONAL_INFO"
         else:
             init_data = {"full_name": user.full_name or val}
@@ -696,6 +748,9 @@ def commit_learned_field(
                 init_data[canon_k] = val
             create_dto = PersonalInfoCreate.model_validate(init_data)
             create_personal_info(db=db, user_id=user_id, info_in=create_dto)
+            if canon_k == "full_name":
+                user.full_name = val
+                db.commit()
             action_taken = "CREATED_PERSONAL_INFO"
     else:
         # 2. Save or update as dynamic CustomField

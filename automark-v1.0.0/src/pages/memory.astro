@@ -7,50 +7,50 @@ import Base from "@/layouts/Base.astro";
   meta_title="Personal Memory Vault — Magic Fill"
   description="Inspect, edit, search, organize, and manage your verified personal memory records for intelligent autofill."
 >
-  <div class="pt-28 md:pt-32 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8 min-h-[85vh]">
+  <div class="pt-24 md:pt-28 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8 min-h-[85vh]">
 
     <!-- 1. Header & Quick Controls -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-white/10">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-[#2B312C]">
       <div>
-        <div class="flex items-center gap-2 mb-1.5">
-          <a href="/dashboard" class="text-xs text-text-light hover:text-white transition flex items-center gap-1 font-medium">
+        <div class="flex items-center gap-2 mb-1">
+          <a href="/dashboard" class="text-xs text-[#A1AAA1] hover:text-[#FFFFFF] transition-colors flex items-center gap-1">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
             <span>Dashboard</span>
           </a>
-          <span class="text-white/20">/</span>
-          <span class="text-xs text-primary font-semibold">Personal Memory Vault</span>
+          <span class="text-[#2B312C]">/</span>
+          <span class="text-xs text-[#B7F34A] font-medium">Memory Vault</span>
         </div>
-        <h1 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Personal Memory Vault</h1>
-        <p class="text-xs sm:text-sm text-text-light mt-1">
-          Inspect, analyze, and manage the verified personal records Magic Fill uses for intelligent autofill.
+        <h1 class="text-2xl sm:text-3xl font-bold font-display text-[#FFFFFF] tracking-tight">Personal Memory Vault</h1>
+        <p class="text-xs sm:text-sm text-[#A1AAA1] mt-1">
+          Inspect, manage, and verify the personal records Magic Fill uses for intelligent autofill.
         </p>
       </div>
 
-      <div class="flex flex-wrap items-center gap-2.5">
+      <div class="flex flex-wrap items-center gap-2">
         <button
           type="button"
           id="btnOpenAddModal"
-          class="btn btn-primary text-xs py-2.5 px-4 font-semibold rounded-xl flex items-center gap-1.5 shadow-lg shadow-primary/20 hover:scale-[1.02] transition"
+          class="btn btn-primary btn-sm rounded-lg"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
           <span>Add Custom Field</span>
         </button>
 
         <a
           href="/extract"
-          class="btn btn-outline text-xs py-2.5 px-4 font-semibold rounded-xl flex items-center gap-1.5 hover:bg-white/5 transition"
+          class="btn btn-outline btn-sm rounded-lg bg-[#141715] border-[#2B312C]"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
           <span>Extract from CV</span>
         </a>
 
         <button
           type="button"
           id="btnExportJsonVault"
-          class="text-xs text-text-light hover:text-white bg-white/5 hover:bg-white/10 px-3.5 py-2.5 rounded-xl transition flex items-center gap-1.5 cursor-pointer border border-white/5"
+          class="btn btn-outline btn-sm rounded-lg bg-[#141715] border-[#2B312C]"
           title="Export entire vault as JSON backup"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
           <span>Backup JSON</span>
         </button>
 
@@ -58,108 +58,108 @@ import Base from "@/layouts/Base.astro";
         <button
           type="button"
           id="btnOpenResetMemoryModal"
-          class="text-xs font-semibold text-rose-400 hover:text-white bg-rose-500/10 hover:bg-rose-600 border border-rose-500/25 px-3.5 py-2.5 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-xs hover:scale-[1.02]"
+          class="btn btn-danger btn-sm rounded-lg"
           title="Reset and clear all records in your personal memory vault"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
           <span>Reset Vault</span>
         </button>
       </div>
     </div>
 
-    <!-- 2. AT-A-GLANCE SUMMARY METRICS STRIP (Easy to Analyze!) -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5">
+    <!-- 2. SUMMARY METRICS STRIP -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-4">
       <!-- Metric 1: Identity & Contact -->
-      <div class="glass-card-interactive p-4.5 rounded-3xl bg-dark/70 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-lg flex items-center justify-between group">
+      <div class="p-4 sm:p-5 rounded-xl bg-[#191D1A] border border-[#2B312C] flex items-center justify-between">
         <div>
-          <span class="text-[11px] font-semibold text-text-light uppercase tracking-wider block">Identity &amp; Contact</span>
-          <span id="metricIdentityCount" class="text-2xl font-bold text-white mt-0.5 block">--</span>
-          <span class="text-[10px] text-text-light">Legal Name, Phone, CNIC</span>
+          <span class="text-[11px] font-semibold text-[#A1AAA1] uppercase tracking-wider block">Identity &amp; Contact</span>
+          <span id="metricIdentityCount" class="text-2xl font-bold text-[#FFFFFF] mt-0.5 block">--</span>
+          <span class="text-[10px] text-[#5E665E]">Legal Name, Phone, CNIC</span>
         </div>
-        <div class="size-10 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <div class="size-9 rounded-lg bg-[#141715] border border-[#2B312C] text-[#B7F34A] flex items-center justify-center font-bold">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
         </div>
       </div>
 
       <!-- Metric 2: Education -->
-      <div class="glass-card-interactive p-4.5 rounded-3xl bg-dark/70 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-lg flex items-center justify-between group">
+      <div class="p-4 sm:p-5 rounded-xl bg-[#191D1A] border border-[#2B312C] flex items-center justify-between">
         <div>
-          <span class="text-[11px] font-semibold text-text-light uppercase tracking-wider block">Education &amp; Degrees</span>
-          <span id="metricEducationCount" class="text-2xl font-bold text-white mt-0.5 block">--</span>
-          <span class="text-[10px] text-text-light">Degrees, Majors, Alma Mater</span>
+          <span class="text-[11px] font-semibold text-[#A1AAA1] uppercase tracking-wider block">Education &amp; Degrees</span>
+          <span id="metricEducationCount" class="text-2xl font-bold text-[#FFFFFF] mt-0.5 block">--</span>
+          <span class="text-[10px] text-[#5E665E]">Degrees, Majors, Alma Mater</span>
         </div>
-        <div class="size-10 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+        <div class="size-9 rounded-lg bg-[#141715] border border-[#2B312C] text-[#B7F34A] flex items-center justify-center font-bold">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
         </div>
       </div>
 
       <!-- Metric 3: Experiences -->
-      <div class="glass-card-interactive p-4.5 rounded-3xl bg-dark/70 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-lg flex items-center justify-between group">
+      <div class="p-4 sm:p-5 rounded-xl bg-[#191D1A] border border-[#2B312C] flex items-center justify-between">
         <div>
-          <span class="text-[11px] font-semibold text-text-light uppercase tracking-wider block">Career Milestones</span>
-          <span id="metricExperienceCount" class="text-2xl font-bold text-white mt-0.5 block">--</span>
-          <span class="text-[10px] text-text-light">Roles, Companies, Skills</span>
+          <span class="text-[11px] font-semibold text-[#A1AAA1] uppercase tracking-wider block">Career Milestones</span>
+          <span id="metricExperienceCount" class="text-2xl font-bold text-[#FFFFFF] mt-0.5 block">--</span>
+          <span class="text-[10px] text-[#5E665E]">Roles, Companies, Skills</span>
         </div>
-        <div class="size-10 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+        <div class="size-9 rounded-lg bg-[#141715] border border-[#2B312C] text-[#B7F34A] flex items-center justify-center font-bold">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
         </div>
       </div>
 
       <!-- Metric 4: Custom Q&A -->
-      <div class="glass-card-interactive p-4.5 rounded-3xl bg-dark/70 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-lg flex items-center justify-between group">
+      <div class="p-4 sm:p-5 rounded-xl bg-[#191D1A] border border-[#2B312C] flex items-center justify-between">
         <div>
-          <span class="text-[11px] font-semibold text-text-light uppercase tracking-wider block">Custom Q&amp;A Attributes</span>
-          <span id="metricCustomCount" class="text-2xl font-bold text-white mt-0.5 block">--</span>
-          <span class="text-[10px] text-text-light">Learned &amp; Manual Answers</span>
+          <span class="text-[11px] font-semibold text-[#A1AAA1] uppercase tracking-wider block">Custom Q&amp;A Attributes</span>
+          <span id="metricCustomCount" class="text-2xl font-bold text-[#FFFFFF] mt-0.5 block">--</span>
+          <span class="text-[10px] text-[#5E665E]">Learned &amp; Manual Answers</span>
         </div>
-        <div class="size-10 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+        <div class="size-9 rounded-lg bg-[#141715] border border-[#2B312C] text-[#B7F34A] flex items-center justify-center font-bold">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
         </div>
       </div>
     </div>
 
     <!-- 3. CATEGORY TABS & SEARCH CONTROLS -->
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-3.5">
       <!-- Search Input -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div class="relative flex-1 max-w-md">
-          <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-text-light pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-[#A1AAA1] pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
           <input
             type="text"
             id="memorySearchInput"
             placeholder="Search by label, value, or memory key..."
-            class="w-full bg-dark/70 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder:text-text-dark focus:border-primary focus:outline-none transition"
+            class="w-full bg-[#141715] border border-[#2B312C] rounded-xl pl-10 pr-4 py-2 text-xs text-[#FFFFFF] placeholder:text-[#5E665E] focus:border-[#B7F34A] focus:outline-none transition"
           />
         </div>
 
-        <div class="text-xs text-text-light flex items-center gap-2">
+        <div class="text-xs text-[#A1AAA1] flex items-center gap-1.5">
           <span>Active View:</span>
-          <span id="activeViewLabel" class="font-bold text-white">All Records</span>
+          <span id="activeViewLabel" class="font-semibold text-[#FFFFFF]">All Records</span>
         </div>
       </div>
 
-      <!-- Navigation Tabs (Clear & Easy to Navigate) -->
-      <div id="categoryTabsBar" class="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-white/10 text-xs font-semibold">
-        <button type="button" class="tab-item py-2 px-3.5 rounded-lg border-b-2 border-primary text-white bg-white/5 transition" data-tab="all">
+      <!-- Navigation Tabs -->
+      <div id="categoryTabsBar" class="flex items-center gap-1 overflow-x-auto pb-1 border-b border-[#2B312C] text-xs font-medium">
+        <button type="button" class="tab-item py-2 px-3 rounded-lg border-b-2 border-[#B7F34A] text-[#B7F34A] bg-[#141715] transition cursor-pointer" data-tab="all">
           All Records (<span id="tabCountAll">0</span>)
         </button>
-        <button type="button" class="tab-item py-2 px-3.5 rounded-lg border-b-2 border-transparent text-text-light hover:text-white transition" data-tab="identity">
-          👤 Identity &amp; Contact (<span id="tabCountIdentity">0</span>)
+        <button type="button" class="tab-item py-2 px-3 rounded-lg border-b-2 border-transparent text-[#A1AAA1] hover:text-[#FFFFFF] transition cursor-pointer" data-tab="identity">
+          Identity &amp; Contact (<span id="tabCountIdentity">0</span>)
         </button>
-        <button type="button" class="tab-item py-2 px-3.5 rounded-lg border-b-2 border-transparent text-text-light hover:text-white transition" data-tab="education">
-          🎓 Education (<span id="tabCountEducation">0</span>)
+        <button type="button" class="tab-item py-2 px-3 rounded-lg border-b-2 border-transparent text-[#A1AAA1] hover:text-[#FFFFFF] transition cursor-pointer" data-tab="education">
+          Education (<span id="tabCountEducation">0</span>)
         </button>
-        <button type="button" class="tab-item py-2 px-3.5 rounded-lg border-b-2 border-transparent text-text-light hover:text-white transition" data-tab="experience">
-          💼 Experiences (<span id="tabCountExperience">0</span>)
+        <button type="button" class="tab-item py-2 px-3 rounded-lg border-b-2 border-transparent text-[#A1AAA1] hover:text-[#FFFFFF] transition cursor-pointer" data-tab="experience">
+          Experiences (<span id="tabCountExperience">0</span>)
         </button>
-        <button type="button" class="tab-item py-2 px-3.5 rounded-lg border-b-2 border-transparent text-text-light hover:text-white transition" data-tab="custom">
-          ⚡ Custom Q&amp;A (<span id="tabCountCustom">0</span>)
+        <button type="button" class="tab-item py-2 px-3 rounded-lg border-b-2 border-transparent text-[#A1AAA1] hover:text-[#FFFFFF] transition cursor-pointer" data-tab="custom">
+          Custom Q&amp;A (<span id="tabCountCustom">0</span>)
         </button>
-        <button type="button" class="tab-item py-2 px-3.5 rounded-lg border-b-2 border-transparent text-text-light hover:text-white transition" data-tab="chat">
-          💬 AI Memory Assistant (Chat)
+        <button type="button" class="tab-item py-2 px-3 rounded-lg border-b-2 border-transparent text-[#A1AAA1] hover:text-[#FFFFFF] transition cursor-pointer" data-tab="chat">
+          AI Copilot Assistant
         </button>
-        <button type="button" class="tab-item py-2 px-3.5 rounded-lg border-b-2 border-transparent text-text-light hover:text-white transition" data-tab="documents">
-          📄 Documents (<span id="tabCountDocs">0</span>)
+        <button type="button" class="tab-item py-2 px-3 rounded-lg border-b-2 border-transparent text-[#A1AAA1] hover:text-[#FFFFFF] transition cursor-pointer" data-tab="documents">
+          Documents (<span id="tabCountDocs">0</span>)
         </button>
       </div>
     </div>
@@ -168,157 +168,261 @@ import Base from "@/layouts/Base.astro";
     <!-- View A: Structured Memory Table / Cards Grid -->
     <div id="memoryViewContainer" class="space-y-4">
       <div id="memoryItemsList" class="space-y-2.5">
-        <div class="py-16 text-center text-text-light bg-dark/40 border border-white/5 rounded-3xl p-8">
-          <div class="inline-block size-6 border-2 border-primary border-t-transparent rounded-full animate-spin mb-3"></div>
-          <div class="text-sm">Analyzing and loading personal memory records...</div>
+        <div class="py-14 text-center text-[#A1AAA1] bg-[#191D1A] border border-[#2B312C] rounded-2xl p-6">
+          <div class="inline-block size-5 border-2 border-[#B7F34A] border-t-transparent rounded-full animate-spin mb-2"></div>
+          <div class="text-xs">Analyzing and loading personal memory records...</div>
         </div>
       </div>
 
       <!-- Direct Edit/Add Updated JSON Output Container -->
-      <div id="vaultUpdatedJsonBox" class="hidden p-5 rounded-2xl bg-[#070b16] border border-emerald-500/40 shadow-2xl space-y-3 transition-all">
-        <div class="flex items-center justify-between pb-2 border-b border-white/10">
+      <div id="vaultUpdatedJsonBox" class="hidden p-5 rounded-xl bg-[#141715] border border-[#2B312C] shadow-lg space-y-3 transition-all">
+        <div class="flex items-center justify-between pb-2 border-b border-[#2B312C]">
           <div class="flex items-center gap-2">
-            <span class="size-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span class="text-xs font-bold text-emerald-300 uppercase tracking-wider">
+            <span class="size-2 rounded-full bg-[#B7F34A] animate-pulse"></span>
+            <span class="text-xs font-semibold text-[#B7F34A] uppercase tracking-wider">
               Updated Memory Record (JSON Payload)
             </span>
-            <span id="vaultUpdatedBadge" class="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              ✓ Updated
+            <span id="vaultUpdatedBadge" class="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-[#B7F34A]/10 text-[#B7F34A] border border-[#B7F34A]/20 flex items-center gap-1">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Updated</span>
             </span>
           </div>
           <button
             type="button"
             id="btnCopyVaultJson"
-            class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-text-light hover:text-white text-xs font-mono transition flex items-center gap-1.5 border border-white/10 cursor-pointer"
+            class="px-2.5 py-1 rounded-lg bg-[#191D1A] hover:bg-[#222723] text-[#A1AAA1] hover:text-[#FFFFFF] text-xs font-mono transition flex items-center gap-1.5 border border-[#2B312C] cursor-pointer"
             title="Copy JSON to clipboard"
           >
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
             <span id="copyVaultJsonText">Copy JSON</span>
           </button>
         </div>
-        <pre class="bg-black/60 p-4 rounded-xl border border-white/5 overflow-x-auto text-[11px] font-mono text-emerald-300 leading-relaxed select-all max-h-60"><code id="vaultUpdatedJsonCode">{}</code></pre>
+        <pre class="bg-[#0B0D0C] p-4 rounded-lg border border-[#2B312C] overflow-x-auto text-[11px] font-mono text-[#B7F34A] leading-relaxed select-all max-h-60"><code id="vaultUpdatedJsonCode">{}</code></pre>
       </div>
     </div>
 
-    <!-- View B: Integrated AI Memory Chat Assistant (Easy to find!) -->
-    <div id="chatAssistantContainer" class="hidden bg-dark/70 border border-white/10 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl space-y-6">
-      <div class="flex items-center gap-3 pb-4 border-b border-white/10">
-        <div class="size-11 rounded-2xl bg-primary/20 border border-primary/30 text-primary flex items-center justify-center font-bold">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+    <!-- View B: Integrated AI Memory Chat Assistant (Interactive AI Memory Copilot) -->
+    <div id="chatAssistantContainer" class="hidden space-y-6">
+      <div class="bg-[#191D1A] border border-[#2B312C] rounded-2xl p-6 sm:p-8 shadow-sm space-y-5">
+        <!-- Copilot Top Header Strip -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#2B312C]">
+          <div class="flex items-center gap-3">
+            <div class="size-10 rounded-xl bg-[#B7F34A] text-[#0B0D0C] flex items-center justify-center font-bold shadow-[0_0_15px_rgba(183,243,74,0.3)] shrink-0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a10 10 0 1 0 10 10H12V2z"></path>
+                <circle cx="12" cy="12" r="3" fill="currentColor"></circle>
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 class="text-base font-bold font-display text-[#FFFFFF]">AI Memory Copilot</h2>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-medium bg-[#B7F34A]/10 text-[#B7F34A] border border-[#B7F34A]/30">
+                  <span class="size-1.5 rounded-full bg-[#B7F34A] animate-pulse"></span>
+                  Vault Connected
+                </span>
+              </div>
+              <p class="text-xs text-[#A1AAA1]">
+                Query stored education, career, and contact facts or instruct real-time memory updates.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              id="btnResetMemCopilotChat"
+              class="px-3 py-1.5 text-xs text-[#A1AAA1] hover:text-white bg-[#141715] hover:bg-[#2B312C] border border-[#2B312C] rounded-lg transition cursor-pointer flex items-center gap-1.5"
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+                <path d="M21 3v5h-5"></path>
+                <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+                <path d="M3 21v-5h5"></path>
+              </svg>
+              <span>Clear Chat</span>
+            </button>
+          </div>
         </div>
+
+        <!-- Quick Prompt Chips -->
         <div>
-          <h2 class="text-lg font-bold text-white">AI Memory Assistant &amp; Fast Ingestion</h2>
-          <p class="text-xs text-text-light">
-            Tell Magic Fill anything about your background in plain English. The AI recognizes fields, lets you review them, and saves them to your vault.
-          </p>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-[#5E665E] block mb-2 font-mono">Suggested Questions &amp; Commands</span>
+          <div class="flex flex-wrap gap-2" id="memCopilotChipContainer">
+            <button type="button" class="mem-copilot-chip px-3 py-1.5 rounded-lg bg-[#141715] hover:bg-[#2B312C] border border-[#2B312C] hover:border-[#B7F34A]/50 text-xs text-[#A1AAA1] hover:text-white transition cursor-pointer flex items-center gap-1.5" data-prompt="What are my educational experiences?">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+              <span>What are my educational experiences?</span>
+            </button>
+            <button type="button" class="mem-copilot-chip px-3 py-1.5 rounded-lg bg-[#141715] hover:bg-[#2B312C] border border-[#2B312C] hover:border-[#B7F34A]/50 text-xs text-[#A1AAA1] hover:text-white transition cursor-pointer flex items-center gap-1.5" data-prompt="What contact details are in my vault?">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              <span>What contact details are saved?</span>
+            </button>
+            <button type="button" class="mem-copilot-chip px-3 py-1.5 rounded-lg bg-[#141715] hover:bg-[#2B312C] border border-[#2B312C] hover:border-[#B7F34A]/50 text-xs text-[#A1AAA1] hover:text-white transition cursor-pointer flex items-center gap-1.5" data-prompt="What technical skills do I have?">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              <span>What technical skills are stored?</span>
+            </button>
+            <button type="button" class="mem-copilot-chip px-3 py-1.5 rounded-lg bg-[#141715] hover:bg-[#2B312C] border border-[#2B312C] hover:border-[#B7F34A]/50 text-xs text-[#A1AAA1] hover:text-white transition cursor-pointer flex items-center gap-1.5" data-prompt="Update my name to Muazam Ali Sarwar">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+              <span>Update my legal name</span>
+            </button>
+            <button type="button" class="mem-copilot-chip px-3 py-1.5 rounded-lg bg-[#141715] hover:bg-[#2B312C] border border-[#2B312C] hover:border-[#B7F34A]/50 text-xs text-[#A1AAA1] hover:text-white transition cursor-pointer flex items-center gap-1.5" data-prompt="Change my phone number to 0326-8848703">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+              <span>Update my phone number</span>
+            </button>
+          </div>
         </div>
-      </div>
 
-      <!-- Chat Prompt Input -->
-      <div class="space-y-3">
-        <label for="aiMemoryChatInput" class="block text-xs font-semibold text-text-light">
-          Describe any skills, credentials, or answers in natural language:
-        </label>
-        <textarea
-          id="aiMemoryChatInput"
-          rows="3"
-          placeholder="e.g. 'I graduated from Stanford with a BS in Computer Science in 2022. My expected salary is $150,000 and my notice period is 2 weeks.'"
-          class="w-full bg-dark/80 border border-white/10 rounded-2xl p-4 text-xs text-white placeholder:text-text-dark focus:border-primary focus:outline-none transition leading-relaxed resize-none"
-        ></textarea>
+        <!-- Chat Messages Feed -->
+        <div
+          id="memCopilotChatFeed"
+          class="h-[380px] overflow-y-auto space-y-4 p-4 rounded-xl bg-[#141715] border border-[#2B312C] scroll-smooth"
+        >
+          <!-- Messages dynamically populated -->
+        </div>
 
-        <div class="flex items-center justify-between">
-          <span class="text-[11px] text-text-light italic">
-            Tip: You can paste employment history, contact details, or test scores here.
-          </span>
-          <button
-            type="button"
-            id="btnAiExtractChat"
-            class="btn btn-primary text-xs py-2.5 px-5 font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] transition"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-            <span id="btnAiExtractChatText">Extract &amp; Preview Memory</span>
-          </button>
+        <!-- Chat Input Form Composer -->
+        <form id="memCopilotChatForm" class="space-y-2.5">
+          <div class="relative flex items-center">
+            <input
+              type="text"
+              id="memCopilotChatInput"
+              placeholder="Ask about your memory or command an update (e.g. 'What are my educational experiences?' or 'Update my name to...')..."
+              autocomplete="off"
+              class="w-full bg-[#141715] border border-[#2B312C] rounded-xl pl-4 pr-12 py-3 text-xs text-[#FFFFFF] placeholder:text-[#5E665E] focus:border-[#B7F34A] focus:outline-none transition shadow-inner"
+            />
+            <button
+              type="button"
+              id="memCopilotSendBtn"
+              class="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-[#B7F34A] text-[#0B0D0C] hover:bg-[#c9f66d] transition cursor-pointer shadow-[0_0_10px_rgba(183,243,74,0.3)] disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </div>
+
+          <div class="flex items-center justify-between text-[11px] text-[#5E665E] px-1">
+            <span>Press <kbd class="px-1.5 py-0.5 rounded bg-[#191D1A] border border-[#2B312C] font-mono text-[10px] text-[#A1AAA1]">Enter</kbd> to send. Live grounded reasoning with multi-provider AI support.</span>
+            <div id="memCopilotTypingStatus" class="hidden items-center gap-1.5 text-[#B7F34A] font-medium">
+              <span class="size-1.5 rounded-full bg-[#B7F34A] animate-ping"></span>
+              <span>Thinking &amp; querying vault...</span>
+            </div>
+          </div>
+        </form>
+
+        <!-- Fast Raw Text Parser Fallback / Expandable Ingestion Option -->
+        <div class="pt-4 border-t border-[#2B312C]/60">
+          <details class="group">
+            <summary class="flex items-center justify-between text-xs text-[#A1AAA1] hover:text-[#FFFFFF] cursor-pointer py-1 font-medium transition select-none">
+              <span class="flex items-center gap-1.5">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                <span>Advanced: Raw Text Batch Ingestion &amp; Attribute Parser</span>
+              </span>
+              <svg class="size-4 transition-transform group-open:rotate-180 text-[#5E665E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+
+            <div class="mt-3 space-y-3 pt-2">
+              <textarea
+                id="aiMemoryChatInput"
+                rows="3"
+                placeholder="Paste unformatted career notes, bio, or test scores to parse attributes in batch..."
+                class="w-full bg-[#141715] border border-[#2B312C] rounded-xl p-3 text-xs text-[#FFFFFF] placeholder:text-[#5E665E] focus:border-[#B7F34A] focus:outline-none transition leading-relaxed resize-none"
+              ></textarea>
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] text-[#5E665E] italic">Batch parser recognizes fields and lets you preview before saving.</span>
+                <button
+                  type="button"
+                  id="btnAiExtractChat"
+                  class="btn btn-outline btn-sm rounded-lg"
+                >
+                  <span id="btnAiExtractChatText">Parse &amp; Preview</span>
+                </button>
+              </div>
+            </div>
+          </details>
         </div>
       </div>
 
       <!-- Extracted Memory Review Box -->
-      <div id="aiChatPreviewBox" class="hidden p-5 rounded-2xl bg-white/5 border border-primary/30 space-y-4">
+      <div id="aiChatPreviewBox" class="hidden p-5 rounded-xl bg-[#141715] border border-[#2B312C] space-y-4">
         <div class="flex items-center justify-between">
-          <span class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-            <span class="size-2 rounded-full bg-emerald-400"></span>
+          <span class="text-xs font-bold text-[#FFFFFF] uppercase tracking-wider flex items-center gap-1.5">
+            <span class="size-2 rounded-full bg-[#B7F34A]"></span>
             Recognized Memory Attributes
           </span>
-          <span class="text-[11px] text-text-light">Review before saving to vault</span>
+          <span class="text-[11px] text-[#A1AAA1]">Review before saving to vault</span>
         </div>
 
         <div id="aiChatPreviewItems" class="space-y-2">
           <!-- Rendered dynamically -->
         </div>
 
-        <div class="pt-3 border-t border-white/10 flex justify-end gap-3">
-          <button type="button" id="btnCancelChatPreview" class="btn-outline text-xs py-2 px-4 rounded-xl">Discard</button>
-          <button type="button" id="btnCommitChatPreview" class="btn btn-primary text-xs py-2 px-5 font-bold rounded-xl shadow-lg shadow-primary/20">
-            ✓ Confirm &amp; Save to Vault
+        <div class="pt-3 border-t border-[#2B312C] flex justify-end gap-2.5">
+          <button type="button" id="btnCancelChatPreview" class="btn btn-outline btn-sm rounded-lg">Discard</button>
+          <button type="button" id="btnCommitChatPreview" class="btn btn-primary btn-sm rounded-lg flex items-center gap-1.5">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span id="btnCommitChatPreviewText">Confirm &amp; Save to Vault</span>
           </button>
         </div>
       </div>
 
-      <!-- Updated Attributes JSON Output Container (Shows what has been updated) -->
-      <div id="aiChatUpdatedJsonBox" class="hidden p-5 rounded-2xl bg-[#070b16] border border-emerald-500/40 shadow-2xl space-y-3 transition-all">
-        <div class="flex items-center justify-between pb-2 border-b border-white/10">
+      <!-- Updated Attributes JSON Output Container -->
+      <div id="aiChatUpdatedJsonBox" class="hidden p-5 rounded-xl bg-[#141715] border border-[#2B312C] shadow-lg space-y-3 transition-all">
+        <div class="flex items-center justify-between pb-2 border-b border-[#2B312C]">
           <div class="flex items-center gap-2">
-            <span class="size-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span class="text-xs font-bold text-emerald-300 uppercase tracking-wider">
+            <span class="size-2 rounded-full bg-[#B7F34A] animate-pulse"></span>
+            <span class="text-xs font-semibold text-[#B7F34A] uppercase tracking-wider">
               Updated Memory Attributes (JSON Output)
             </span>
-            <span id="aiChatUpdatedBadge" class="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              ✓ Saved to Vault
+            <span id="aiChatUpdatedBadge" class="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-[#B7F34A]/10 text-[#B7F34A] border border-[#B7F34A]/20 flex items-center gap-1">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Saved to Vault</span>
             </span>
           </div>
           <button
             type="button"
             id="btnCopyUpdatedJson"
-            class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-text-light hover:text-white text-xs font-mono transition flex items-center gap-1.5 border border-white/10 cursor-pointer"
+            class="px-2.5 py-1 rounded-lg bg-[#191D1A] hover:bg-[#222723] text-[#A1AAA1] hover:text-[#FFFFFF] text-xs font-mono transition flex items-center gap-1.5 border border-[#2B312C] cursor-pointer"
             title="Copy JSON to clipboard"
           >
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
             <span id="copyUpdatedJsonText">Copy JSON</span>
           </button>
         </div>
-        <p class="text-[11px] text-text-light">
+        <p class="text-[11px] text-[#A1AAA1]">
           The following records were recognized and updated in your memory vault:
         </p>
-        <pre class="bg-black/60 p-4 rounded-xl border border-white/5 overflow-x-auto text-[11px] font-mono text-emerald-300 leading-relaxed select-all max-h-72"><code id="aiChatUpdatedJsonCode">{}</code></pre>
+        <pre class="bg-[#0B0D0C] p-4 rounded-lg border border-[#2B312C] overflow-x-auto text-[11px] font-mono text-[#B7F34A] leading-relaxed select-all max-h-72"><code id="aiChatUpdatedJsonCode">{}</code></pre>
       </div>
     </div>
 
     <!-- 5. Global Toast -->
-    <div id="memoryToast" class="fixed bottom-6 right-6 z-50 hidden max-w-sm px-4 py-3 rounded-2xl bg-dark border border-white/15 text-xs text-white shadow-2xl backdrop-blur-xl flex items-center gap-2"></div>
+    <div id="memoryToast" class="fixed bottom-6 right-6 z-50 hidden max-w-sm px-4 py-3 rounded-xl bg-[#191D1A] border border-[#2B312C] text-xs text-[#FFFFFF] shadow-2xl flex items-center gap-2"></div>
   </div>
 
   <!-- Modal 1: Add Custom Attribute -->
-  <div id="addCustomModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm" role="dialog" aria-modal="true">
-    <div class="relative w-full max-w-md bg-dark border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl">
-      <div class="flex items-center justify-between mb-5">
-        <h3 class="text-lg font-bold text-white">Add Memory Attribute</h3>
-        <button type="button" id="closeAddModalBtn" class="text-text-light hover:text-white text-xl leading-none">&times;</button>
+  <div id="addCustomModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-xs" role="dialog" aria-modal="true">
+    <div class="relative w-full max-w-md bg-[#191D1A] border border-[#2B312C] rounded-2xl p-6 sm:p-7 shadow-2xl">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-[#2B312C]">
+        <h3 class="text-base font-bold font-display text-[#FFFFFF]">Add Memory Attribute</h3>
+        <button type="button" id="closeAddModalBtn" class="text-[#A1AAA1] hover:text-[#FFFFFF] text-xl leading-none cursor-pointer">&times;</button>
       </div>
 
       <form id="addCustomForm" class="space-y-4" onsubmit="return false;">
         <div>
-          <label class="block text-xs font-semibold text-text-light mb-1">Attribute Label</label>
-          <input type="text" id="addAttrLabel" placeholder="e.g. Target Annual Salary, Notice Period, Portfolio URL" required class="w-full bg-dark/60 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:border-primary focus:outline-none" />
+          <label class="block text-xs font-semibold text-[#A1AAA1] mb-1">Attribute Label</label>
+          <input type="text" id="addAttrLabel" placeholder="e.g. Target Annual Salary, Notice Period, Portfolio URL" required class="w-full bg-[#141715] border border-[#2B312C] rounded-xl px-3.5 py-2 text-xs text-[#FFFFFF] focus:border-[#B7F34A] focus:outline-none" />
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-text-light mb-1">Stored Value</label>
-          <textarea id="addAttrValue" rows="3" placeholder="Enter the exact answer or value to autofill..." required class="w-full bg-dark/60 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:border-primary focus:outline-none"></textarea>
+          <label class="block text-xs font-semibold text-[#A1AAA1] mb-1">Stored Value</label>
+          <textarea id="addAttrValue" rows="3" placeholder="Enter the exact answer or value to autofill..." required class="w-full bg-[#141715] border border-[#2B312C] rounded-xl px-3.5 py-2 text-xs text-[#FFFFFF] focus:border-[#B7F34A] focus:outline-none"></textarea>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-text-light mb-1">Category</label>
-            <select id="addAttrCategory" class="w-full bg-dark/60 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:border-primary focus:outline-none">
+            <label class="block text-xs font-semibold text-[#A1AAA1] mb-1">Category</label>
+            <select id="addAttrCategory" class="w-full bg-[#141715] border border-[#2B312C] rounded-xl px-3 py-2 text-xs text-[#FFFFFF] focus:border-[#B7F34A] focus:outline-none">
               <option value="professional">Professional</option>
               <option value="personal">Personal</option>
               <option value="academic">Academic</option>
@@ -327,27 +431,27 @@ import Base from "@/layouts/Base.astro";
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-text-light mb-1">Field Key (Optional)</label>
-            <input type="text" id="addAttrKey" placeholder="auto-generated" class="w-full bg-dark/60 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:border-primary focus:outline-none" />
+            <label class="block text-xs font-semibold text-[#A1AAA1] mb-1">Field Key (Optional)</label>
+            <input type="text" id="addAttrKey" placeholder="auto-generated" class="w-full bg-[#141715] border border-[#2B312C] rounded-xl px-3 py-2 text-xs text-[#FFFFFF] focus:border-[#B7F34A] focus:outline-none" />
           </div>
         </div>
 
-        <div id="addModalError" class="hidden text-xs text-rose-300 bg-rose-950/50 p-2.5 rounded-xl border border-rose-500/30"></div>
+        <div id="addModalError" class="hidden text-xs text-rose-300 bg-rose-950/40 p-2.5 rounded-xl border border-rose-900/40"></div>
 
-        <div class="flex justify-end gap-2 pt-3 border-t border-white/10">
-          <button type="button" id="cancelAddBtn" class="btn-outline text-xs py-2 px-4 rounded-xl">Cancel</button>
-          <button type="submit" id="submitAddBtn" class="btn btn-primary text-xs py-2 px-5 font-bold rounded-xl">Save to Vault</button>
+        <div class="flex justify-end gap-2 pt-3 border-t border-[#2B312C]">
+          <button type="button" id="cancelAddBtn" class="btn btn-outline btn-sm rounded-lg">Cancel</button>
+          <button type="submit" id="submitAddBtn" class="btn btn-primary btn-sm rounded-lg">Save to Vault</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- Modal 2: Edit Attribute Value -->
-  <div id="editAttributeModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm" role="dialog" aria-modal="true">
-    <div class="relative w-full max-w-md bg-dark border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl">
-      <div class="flex items-center justify-between mb-5">
-        <h3 id="editModalTitle" class="text-lg font-bold text-white">Edit Memory Attribute</h3>
-        <button type="button" id="closeEditModalBtn" class="text-text-light hover:text-white text-xl leading-none">&times;</button>
+  <div id="editAttributeModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-xs" role="dialog" aria-modal="true">
+    <div class="relative w-full max-w-md bg-[#191D1A] border border-[#2B312C] rounded-2xl p-6 sm:p-7 shadow-2xl">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-[#2B312C]">
+        <h3 id="editModalTitle" class="text-base font-bold font-display text-[#FFFFFF]">Edit Memory Attribute</h3>
+        <button type="button" id="closeEditModalBtn" class="text-[#A1AAA1] hover:text-[#FFFFFF] text-xl leading-none cursor-pointer">&times;</button>
       </div>
 
       <form id="editAttributeForm" class="space-y-4" onsubmit="return false;">
@@ -356,53 +460,54 @@ import Base from "@/layouts/Base.astro";
         <input type="hidden" id="editItemKey" />
 
         <div>
-          <label class="block text-xs font-semibold text-text-light mb-1">Field Label</label>
-          <input type="text" id="editItemLabel" readonly class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs text-text-light cursor-not-allowed" />
+          <label class="block text-xs font-semibold text-[#A1AAA1] mb-1">Field Label</label>
+          <input type="text" id="editItemLabel" readonly class="w-full bg-[#141715] border border-[#2B312C] rounded-xl px-3.5 py-2 text-xs text-[#A1AAA1] cursor-not-allowed" />
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-text-light mb-1">Canonical Stored Value</label>
-          <textarea id="editItemValue" rows="4" required class="w-full bg-dark/60 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:border-primary focus:outline-none leading-relaxed"></textarea>
+          <label class="block text-xs font-semibold text-[#A1AAA1] mb-1">Canonical Stored Value</label>
+          <textarea id="editItemValue" rows="4" required class="w-full bg-[#141715] border border-[#2B312C] rounded-xl px-3.5 py-2 text-xs text-[#FFFFFF] focus:border-[#B7F34A] focus:outline-none leading-relaxed"></textarea>
         </div>
 
-        <div id="editModalError" class="hidden text-xs text-rose-300 bg-rose-950/50 p-2.5 rounded-xl border border-rose-500/30"></div>
+        <div id="editModalError" class="hidden text-xs text-rose-300 bg-rose-950/40 p-2.5 rounded-xl border border-rose-900/40"></div>
 
-        <div class="flex justify-end gap-2 pt-3 border-t border-white/10">
-          <button type="button" id="cancelEditBtn" class="btn-outline text-xs py-2 px-4 rounded-xl">Cancel</button>
-          <button type="submit" id="submitEditBtn" class="btn btn-primary text-xs py-2 px-5 font-bold rounded-xl">Update Record</button>
+        <div class="flex justify-end gap-2 pt-3 border-t border-[#2B312C]">
+          <button type="button" id="cancelEditBtn" class="btn btn-outline btn-sm rounded-lg">Cancel</button>
+          <button type="submit" id="submitEditBtn" class="btn btn-primary btn-sm rounded-lg">Update Record</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- Modal 3: Reset Entire Memory Vault Confirmation -->
-  <div id="resetVaultModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md" role="dialog" aria-modal="true">
-    <div class="relative w-full max-w-md bg-dark border border-rose-500/40 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-2xl">
-      <div class="size-12 rounded-2xl bg-rose-500/15 text-rose-400 flex items-center justify-center mx-auto mb-4 border border-rose-500/30 shadow-lg shadow-rose-500/10">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+  <div id="resetVaultModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-xs" role="dialog" aria-modal="true">
+    <div class="relative w-full max-w-md bg-[#191D1A] border border-rose-500/30 rounded-2xl p-6 sm:p-7 shadow-2xl">
+      <div class="size-11 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center mx-auto mb-3 border border-rose-500/20">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
       </div>
 
-      <h3 class="text-xl font-bold text-white text-center mb-2">Reset Entire Memory Vault?</h3>
-      <p class="text-xs text-text-light text-center leading-relaxed mb-5">
-        This will permanently erase all your stored personal records, education, career history, custom memory fields, and uploaded identity documents &amp; photos (CNIC, profile photo, CV).
+      <h3 class="text-lg font-bold font-display text-[#FFFFFF] text-center mb-1.5">Reset Entire Memory Vault?</h3>
+      <p class="text-xs text-[#A1AAA1] text-center leading-relaxed mb-4">
+        This will permanently erase all your stored personal records, education, career history, custom memory fields, and uploaded identity documents &amp; photos.
       </p>
 
-      <div class="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs mb-6 text-center font-medium">
-        ⚠️ This action cannot be undone. All autofill memory will be wiped.
+      <div class="p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs mb-5 text-center font-medium flex items-center justify-center gap-2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="shrink-0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>This action cannot be undone. All autofill memory will be wiped.</span>
       </div>
 
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2.5">
         <button
           type="button"
           id="btnCancelResetVault"
-          class="flex-1 py-2.5 px-4 rounded-xl text-xs font-semibold text-text-light hover:text-white bg-white/5 hover:bg-white/10 transition cursor-pointer"
+          class="btn btn-outline btn-sm rounded-lg flex-1"
         >
           Cancel
         </button>
         <button
           type="button"
           id="btnConfirmResetVault"
-          class="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-500 shadow-lg shadow-rose-600/30 transition cursor-pointer hover:scale-[1.02]"
+          class="btn btn-danger btn-sm rounded-lg flex-1"
         >
           Yes, Reset Everything
         </button>
@@ -419,6 +524,16 @@ import Base from "@/layouts/Base.astro";
         return;
       }
 
+      function escapeHtml(str) {
+        if (str == null) return "";
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
       let activeCategory = "all";
       let searchQuery = "";
       let memoryStore = [];
@@ -427,9 +542,12 @@ import Base from "@/layouts/Base.astro";
       function showToast(msg, isSuccess = true) {
         const t = document.getElementById("memoryToast");
         if (!t) return;
-        t.textContent = (isSuccess ? "✓ " : "✕ ") + msg;
-        t.className = `fixed bottom-6 right-6 z-50 max-w-sm px-4 py-3 rounded-2xl text-xs font-semibold shadow-2xl backdrop-blur-xl border ${
-          isSuccess ? "bg-emerald-950/90 text-emerald-200 border-emerald-500/30" : "bg-rose-950/90 text-rose-200 border-rose-500/30"
+        const icon = isSuccess
+          ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="shrink-0"><polyline points="20 6 9 17 4 12"/></svg>`
+          : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="shrink-0"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+        t.innerHTML = `<div class="flex items-center gap-2">${icon}<span>${escapeHtml(msg)}</span></div>`;
+        t.className = `fixed bottom-6 right-6 z-50 max-w-sm px-4 py-3 rounded-xl text-xs font-semibold shadow-2xl border ${
+          isSuccess ? "bg-[#141715] text-[#B7F34A] border-[#B7F34A]/30" : "bg-rose-950 text-rose-300 border-rose-900/40"
         }`;
         t.classList.remove("hidden");
         setTimeout(() => t.classList.add("hidden"), 3500);
@@ -553,15 +671,15 @@ import Base from "@/layouts/Base.astro";
           console.error("Vault loading error:", e);
           if (container) {
             container.innerHTML = `
-              <div class="py-12 text-center text-text-light bg-dark/40 border border-rose-500/30 rounded-3xl p-8">
-                <div class="size-12 rounded-2xl bg-rose-500/10 text-rose-400 flex items-center justify-center mx-auto mb-3">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <div class="py-12 text-center text-[#A1AAA1] bg-[#191D1A] border border-rose-900/30 rounded-2xl p-6">
+                <div class="size-10 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center mx-auto mb-3">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
                 </div>
-                <h4 class="text-base font-bold text-white mb-1">Backend Connection Error</h4>
-                <p class="text-xs text-text-light max-w-sm mx-auto mb-4">
+                <h4 class="text-sm font-bold text-[#FFFFFF] mb-1">Backend Connection Error</h4>
+                <p class="text-xs text-[#A1AAA1] max-w-sm mx-auto mb-4">
                   Could not connect to the Magic Fill API server. Please verify the backend is running.
                 </p>
-                <button type="button" id="btnRetryVault" class="btn btn-primary text-xs py-2 px-5 font-semibold rounded-xl shadow-lg shadow-primary/20 hover:scale-105 transition">
+                <button type="button" id="btnRetryVault" class="btn btn-primary btn-sm rounded-lg">
                   Retry Connection
                 </button>
               </div>
@@ -613,46 +731,45 @@ import Base from "@/layouts/Base.astro";
 
         if (filtered.length === 0) {
           container.innerHTML = `
-            <div class="py-16 text-center text-text-light bg-dark/40 border border-white/5 rounded-3xl p-8">
-              <div class="size-12 rounded-2xl bg-white/5 text-text-light flex items-center justify-center mx-auto mb-3">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <div class="py-14 text-center text-[#A1AAA1] bg-[#191D1A] border border-[#2B312C] rounded-2xl p-6">
+              <div class="size-10 rounded-xl bg-[#141715] border border-[#2B312C] text-[#A1AAA1] flex items-center justify-center mx-auto mb-3">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
               </div>
-              <h4 class="text-base font-bold text-white mb-1">No matching memory attributes found</h4>
-              <p class="text-xs text-text-light max-w-sm mx-auto mb-4">
-                ${searchQuery ? "Try a different search keyword or clear the search filter." : "Click '+ Add Custom Field' or switch to the AI Memory Assistant tab to add information."}
+              <h4 class="text-sm font-bold text-[#FFFFFF] mb-1">No matching memory attributes found</h4>
+              <p class="text-xs text-[#A1AAA1] max-w-sm mx-auto mb-4">
+                ${searchQuery ? "Try a different search keyword or clear the search filter." : "Click '+ Add Custom Field' or switch to the AI Copilot tab to add information."}
               </p>
             </div>
           `;
           return;
         }
 
-        // Render structured, readable rows (NOT messy cards!)
         container.innerHTML = filtered.map(item => `
-          <div class="p-4 rounded-2xl bg-dark/70 border border-white/10 hover:border-white/20 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md">
+          <div class="p-4 rounded-xl bg-[#191D1A] border border-[#2B312C] hover:border-[#3A423C] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
             <div class="min-w-0 flex-1 space-y-1">
               <div class="flex items-center gap-2 flex-wrap">
-                <span class="text-xs font-bold text-white">${item.label}</span>
-                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-white/5 text-primary border border-white/5">${item.key}</span>
+                <span class="text-xs font-bold text-[#FFFFFF]">${item.label}</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#141715] text-[#B7F34A] border border-[#2B312C]">${item.key}</span>
                 <span class="text-[10px] font-semibold px-2 py-0.5 rounded-md ${
-                  item.src.includes("Verified") ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-purple-500/10 text-purple-300 border border-purple-500/20"
+                  item.src.includes("Verified") ? "bg-[#B7F34A]/10 text-[#B7F34A] border border-[#B7F34A]/20" : "bg-[#141715] text-[#A1AAA1] border border-[#2B312C]"
                 }">${item.src}</span>
               </div>
-              <p class="text-xs text-text-light whitespace-pre-wrap leading-relaxed select-all">${item.val}</p>
+              <p class="text-xs text-[#A1AAA1] whitespace-pre-wrap leading-relaxed select-all">${item.val}</p>
             </div>
 
-            <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
+            <div class="flex items-center gap-1.5 shrink-0 self-end sm:self-center">
               <button
                 type="button"
-                class="btn-copy p-2 rounded-xl bg-white/5 hover:bg-white/10 text-text-light hover:text-white transition cursor-pointer"
+                class="btn-copy p-2 rounded-lg bg-[#141715] hover:bg-[#222723] text-[#A1AAA1] hover:text-[#FFFFFF] border border-[#2B312C] transition cursor-pointer"
                 data-val="${item.val.replace(/"/g, '&quot;')}"
                 title="Copy value"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
               </button>
 
               <button
                 type="button"
-                class="btn-edit px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-semibold text-white transition cursor-pointer flex items-center gap-1"
+                class="btn-edit px-2.5 py-1.5 rounded-lg bg-[#141715] hover:bg-[#222723] text-xs font-semibold text-[#FFFFFF] border border-[#2B312C] transition cursor-pointer flex items-center gap-1"
                 data-type="${item.type}"
                 data-id="${item.id}"
                 data-key="${item.key}"
@@ -666,12 +783,12 @@ import Base from "@/layouts/Base.astro";
               ${item.type === "custom_field" ? `
                 <button
                   type="button"
-                  class="btn-delete p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 hover:text-rose-300 transition cursor-pointer"
+                  class="btn-delete p-2 rounded-lg bg-rose-950/20 hover:bg-rose-950/40 text-rose-400 border border-rose-900/30 transition cursor-pointer"
                   data-id="${item.id}"
                   data-label="${item.label.replace(/"/g, '&quot;')}"
                   title="Delete attribute"
                 >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                 </button>
               ` : ''}
             </div>
@@ -727,7 +844,7 @@ import Base from "@/layouts/Base.astro";
         });
       }
 
-      // Tab Switching (including AI Memory Chat!)
+      // Tab Switching
       const tabItems = document.querySelectorAll(".tab-item");
       const memoryView = document.getElementById("memoryViewContainer");
       const chatView = document.getElementById("chatAssistantContainer");
@@ -736,11 +853,11 @@ import Base from "@/layouts/Base.astro";
       tabItems.forEach(btn => {
         btn.addEventListener("click", () => {
           tabItems.forEach(b => {
-            b.classList.remove("border-primary", "text-white", "bg-white/5");
-            b.classList.add("border-transparent", "text-text-light");
+            b.classList.remove("border-[#B7F34A]", "text-[#B7F34A]", "bg-[#141715]");
+            b.classList.add("border-transparent", "text-[#A1AAA1]");
           });
-          btn.classList.add("border-primary", "text-white", "bg-white/5");
-          btn.classList.remove("border-transparent", "text-text-light");
+          btn.classList.add("border-[#B7F34A]", "text-[#B7F34A]", "bg-[#141715]");
+          btn.classList.remove("border-transparent", "text-[#A1AAA1]");
 
           const tab = btn.getAttribute("data-tab");
           activeCategory = tab;
@@ -748,7 +865,7 @@ import Base from "@/layouts/Base.astro";
           if (tab === "chat") {
             memoryView.classList.add("hidden");
             chatView.classList.remove("hidden");
-            activeLabel.textContent = "AI Memory Assistant";
+            activeLabel.textContent = "AI Copilot Assistant";
           } else {
             chatView.classList.add("hidden");
             memoryView.classList.remove("hidden");
@@ -946,7 +1063,6 @@ import Base from "@/layouts/Base.astro";
                 editError.classList.remove("hidden");
               }
             } else {
-              // Universal fallback to /api/memory/update
               const res = await fetch("/api/memory/update", {
                 method: "PUT",
                 headers: {
@@ -1040,6 +1156,222 @@ import Base from "@/layouts/Base.astro";
         });
       }
 
+      // -----------------------------------------------------------------------
+      // Interactive AI Memory Copilot on /memory page
+      // -----------------------------------------------------------------------
+      let memCopilotChatHistory = [];
+      const memCopilotChatFeed = document.getElementById("memCopilotChatFeed");
+      const memCopilotChatForm = document.getElementById("memCopilotChatForm");
+      const memCopilotChatInput = document.getElementById("memCopilotChatInput");
+      const memCopilotSendBtn = document.getElementById("memCopilotSendBtn");
+      const memCopilotTypingStatus = document.getElementById("memCopilotTypingStatus");
+      const btnResetMemCopilotChat = document.getElementById("btnResetMemCopilotChat");
+
+      function renderMemCopilotWelcome() {
+        if (!memCopilotChatFeed) return;
+        memCopilotChatFeed.innerHTML = `
+          <div class="flex items-start gap-3 self-start max-w-[85%]">
+            <div class="size-8 rounded-lg bg-[#B7F34A] text-[#0B0D0C] flex items-center justify-center font-bold text-xs shrink-0 shadow-[0_0_10px_rgba(183,243,74,0.3)]">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a10 10 0 1 0 10 10H12V2z"></path>
+                <circle cx="12" cy="12" r="3" fill="currentColor"></circle>
+              </svg>
+            </div>
+            <div class="p-3.5 rounded-2xl rounded-tl-sm bg-[#191D1A] border border-[#2B312C] text-xs text-[#FFFFFF] shadow-sm leading-relaxed space-y-2">
+              <p>
+                Hello! I am your <strong>AI Memory Copilot</strong>. I have real-time read and write access to your personal memory vault.
+              </p>
+              <p class="text-[#A1AAA1]">
+                You can ask me questions about your stored records (e.g. <em>"What are my educational experiences?"</em> or <em>"What contact numbers do you have?"</em>), or command real-time updates directly (e.g. <em>"Update my name to Muazam Ali Sarwar"</em> or <em>"Add skill: React and Next.js"</em>).
+              </p>
+            </div>
+          </div>
+        `;
+      }
+
+      function appendMemUserMessage(text) {
+        if (!memCopilotChatFeed) return;
+        const bubble = document.createElement("div");
+        bubble.className = "flex items-start justify-end gap-3 self-end max-w-[85%] ml-auto";
+        bubble.innerHTML = `
+          <div class="p-3.5 rounded-2xl rounded-tr-sm bg-[#141715] border border-[#2B312C] text-xs text-[#FFFFFF] shadow-sm leading-relaxed">
+            ${escapeHtml(text)}
+          </div>
+        `;
+        memCopilotChatFeed.appendChild(bubble);
+        memCopilotChatFeed.scrollTop = memCopilotChatFeed.scrollHeight;
+      }
+
+      function appendMemAssistantMessage(replyText, updates = []) {
+        if (!memCopilotChatFeed) return;
+        const bubble = document.createElement("div");
+        bubble.className = "flex items-start gap-3 self-start max-w-[85%]";
+
+        let formattedText = escapeHtml(replyText)
+          .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>')
+          .replace(/\*(.*?)\*/g, '<em class="text-[#A1AAA1]">$1</em>')
+          .replace(/`([^`]+)`/g, '<code class="px-1 py-0.5 rounded bg-[#141715] text-[#B7F34A] font-mono text-[11px]">$1</code>')
+          .replace(/\n- /g, '<br>&bull; ')
+          .replace(/\n/g, '<br>');
+
+        let updateCardHtml = "";
+        if (updates && updates.length > 0) {
+          updateCardHtml = `
+            <div class="mt-3 p-3 bg-[#0B0D0C] border border-[#B7F34A]/40 rounded-xl space-y-2.5">
+              <div class="flex items-center justify-between text-[11px] pb-1.5 border-b border-[#2B312C]">
+                <span class="text-[#B7F34A] font-bold flex items-center gap-1.5">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  Memory Vault Updated
+                </span>
+                <span class="text-[10px] font-mono text-[#5E665E]">POSTGRESQL COMMITTED</span>
+              </div>
+              ${updates.map(u => `
+                <div class="space-y-1 text-xs">
+                  <div class="flex items-center gap-2">
+                    <span class="text-[#5E665E] font-medium text-[11px] w-20">Field:</span>
+                    <span class="font-bold text-white">${escapeHtml(u.label || u.key)}</span>
+                  </div>
+                  ${u.old_value ? `
+                  <div class="flex items-center gap-2">
+                    <span class="text-[#5E665E] font-medium text-[11px] w-20">Previous:</span>
+                    <del class="text-[#f43f5e] font-mono text-[11px]">${escapeHtml(u.old_value)}</del>
+                  </div>
+                  ` : ''}
+                  <div class="flex items-center gap-2">
+                    <span class="text-[#5E665E] font-medium text-[11px] w-20">New Value:</span>
+                    <span class="text-[#B7F34A] font-bold font-mono text-[11px]">${escapeHtml(u.new_value)}</span>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }
+
+        bubble.innerHTML = `
+          <div class="size-8 rounded-lg bg-[#B7F34A] text-[#0B0D0C] flex items-center justify-center font-bold text-xs shrink-0 shadow-[0_0_10px_rgba(183,243,74,0.3)]">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a10 10 0 1 0 10 10H12V2z"></path>
+              <circle cx="12" cy="12" r="3" fill="currentColor"></circle>
+            </svg>
+          </div>
+          <div class="p-3.5 rounded-2xl rounded-tl-sm bg-[#191D1A] border border-[#2B312C] text-xs text-[#FFFFFF] shadow-sm leading-relaxed space-y-2">
+            <div>${formattedText}</div>
+            ${updateCardHtml}
+          </div>
+        `;
+
+        memCopilotChatFeed.appendChild(bubble);
+        memCopilotChatFeed.scrollTop = memCopilotChatFeed.scrollHeight;
+      }
+
+      async function handleSendMemCopilotMessage(promptText = null) {
+        const message = (promptText || memCopilotChatInput?.value || "").trim();
+        if (!message) return;
+
+        if (memCopilotChatInput) memCopilotChatInput.value = "";
+        appendMemUserMessage(message);
+
+        if (memCopilotSendBtn) memCopilotSendBtn.disabled = true;
+        if (memCopilotTypingStatus) memCopilotTypingStatus.classList.remove("hidden");
+
+        const historyToSend = memCopilotChatHistory.slice(-8);
+        memCopilotChatHistory.push({ role: "user", content: message });
+
+        const activeTok = localStorage.getItem("magic_fill_token");
+        const reqHeaders = {
+          "Content-Type": "application/json",
+          ...(activeTok ? { "Authorization": `Bearer ${activeTok}` } : {})
+        };
+
+        try {
+          const res = await fetch("/api/memory/copilot-chat", {
+            method: "POST",
+            headers: reqHeaders,
+            body: JSON.stringify({
+              message: message,
+              history: historyToSend
+            })
+          });
+
+          const data = await res.json();
+          if (memCopilotTypingStatus) memCopilotTypingStatus.classList.add("hidden");
+          if (memCopilotSendBtn) memCopilotSendBtn.disabled = false;
+
+          if (res.ok && data.success && data.data) {
+            const reply = data.data.reply;
+            const updates = data.data.updates || [];
+            appendMemAssistantMessage(reply, updates);
+            memCopilotChatHistory.push({ role: "assistant", content: reply });
+
+            if (updates.length > 0) {
+              showToast(`Vault updated: ${updates.map(u => u.label || u.key).join(", ")}`);
+              const relevantUpdates = updates.map(u => ({
+                field: u.key,
+                label: u.label || u.key,
+                field_type: u.field_type || "personal_info",
+                ...(u.old_value !== undefined && u.old_value !== null ? { previous_value: u.old_value } : {}),
+                new_value: u.new_value,
+                action: u.action || "UPDATE"
+              }));
+              displayVaultUpdatedJson(relevantUpdates, "Memory Vault Updated", "AI_MEMORY_COPILOT");
+              loadVault();
+              const nameUpd = updates.find(u => u.key === "full_name");
+              if (nameUpd) {
+                const navName = document.getElementById("navUserName");
+                if (navName) navName.textContent = nameUpd.new_value.toUpperCase();
+              }
+            }
+          } else {
+            appendMemAssistantMessage(data.message || "I encountered an error querying your memory vault. Please try again.");
+          }
+        } catch (err) {
+          console.error("Memory Copilot chat error:", err);
+          if (memCopilotTypingStatus) memCopilotTypingStatus.classList.add("hidden");
+          if (memCopilotSendBtn) memCopilotSendBtn.disabled = false;
+          appendMemAssistantMessage("Network communication error with AI engine. Please ensure your backend is running.");
+        }
+      }
+
+      if (memCopilotSendBtn) {
+        memCopilotSendBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          handleSendMemCopilotMessage();
+        });
+      }
+
+      if (memCopilotChatForm) {
+        memCopilotChatForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          handleSendMemCopilotMessage();
+        });
+      }
+
+      if (memCopilotChatInput) {
+        memCopilotChatInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            handleSendMemCopilotMessage();
+          }
+        });
+      }
+
+      document.querySelectorAll(".mem-copilot-chip").forEach(chip => {
+        chip.addEventListener("click", () => {
+          const prompt = chip.getAttribute("data-prompt");
+          if (prompt) handleSendMemCopilotMessage(prompt);
+        });
+      });
+
+      if (btnResetMemCopilotChat) {
+        btnResetMemCopilotChat.addEventListener("click", () => {
+          memCopilotChatHistory = [];
+          renderMemCopilotWelcome();
+          showToast("Copilot conversation cleared.");
+        });
+      }
+
+      renderMemCopilotWelcome();
+
       // AI Memory Chat Ingestion Logic
       const chatInput = document.getElementById("aiMemoryChatInput");
       const extractChatBtn = document.getElementById("btnAiExtractChat");
@@ -1092,12 +1424,12 @@ import Base from "@/layouts/Base.astro";
               }
 
               if (rows.length === 0) {
-                previewItems.innerHTML = `<p class="text-xs text-text-light italic">No distinct personal records recognized. Try adding more specific details.</p>`;
+                previewItems.innerHTML = `<p class="text-xs text-[#A1AAA1] italic">No distinct personal records recognized. Try adding more specific details.</p>`;
               } else {
                 previewItems.innerHTML = rows.map(r => `
-                  <div class="flex items-center justify-between p-2.5 rounded-xl bg-dark/60 border border-white/5 text-xs">
-                    <span class="font-bold text-white">${r.k}</span>
-                    <span class="text-text-light font-medium">${r.v}</span>
+                  <div class="flex items-center justify-between p-2.5 rounded-lg bg-[#141715] border border-[#2B312C] text-xs">
+                    <span class="font-bold text-[#FFFFFF]">${r.k}</span>
+                    <span class="text-[#A1AAA1] font-medium">${r.v}</span>
                   </div>
                 `).join("");
               }
@@ -1160,12 +1492,28 @@ import Base from "@/layouts/Base.astro";
             showToast("Network error saving memory.", false);
           } finally {
             commitPreviewBtn.disabled = false;
-            commitPreviewBtn.textContent = "✓ Confirm & Save to Vault";
+            commitPreviewBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>Confirm &amp; Save to Vault</span>`;
           }
         });
       }
 
       // JSON Viewer Handlers
+      function sanitizeJsonData(obj) {
+        if (!obj || typeof obj !== 'object') return obj;
+        if (Array.isArray(obj)) return obj.map(sanitizeJsonData);
+        const clean = {};
+        for (const [k, v] of Object.entries(obj)) {
+          if ((k.includes('photo') || k.includes('image') || k.includes('avatar') || k.includes('file_data')) && typeof v === 'string' && (v.startsWith('data:image') || v.length > 500)) {
+            clean[k] = `[base64 / binary payload truncated (${Math.round(v.length / 1024)} KB)]`;
+          } else if (typeof v === 'object' && v !== null) {
+            clean[k] = sanitizeJsonData(v);
+          } else {
+            clean[k] = v;
+          }
+        }
+        return clean;
+      }
+
       function displayAiChatUpdatedJson(dataObj, badgeText = "Saved to Vault") {
         const box = document.getElementById("aiChatUpdatedJsonBox");
         const code = document.getElementById("aiChatUpdatedJsonCode");
@@ -1176,16 +1524,16 @@ import Base from "@/layouts/Base.astro";
           status: "success",
           source: "AI_MEMORY_ASSISTANT",
           timestamp: new Date().toISOString(),
-          updated_records: dataObj
+          updated_records: sanitizeJsonData(dataObj)
         };
 
         code.textContent = JSON.stringify(payload, null, 2);
-        if (badge) badge.textContent = `✓ ${badgeText}`;
+        if (badge) badge.innerHTML = `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>${escapeHtml(badgeText)}</span>`;
         box.classList.remove("hidden");
         box.scrollIntoView({ behavior: "smooth", block: "nearest" });
       }
 
-      function displayVaultUpdatedJson(dataObj, badgeText = "Updated Record") {
+      function displayVaultUpdatedJson(dataObj, badgeText = "Updated Record", source = "MEMORY_VAULT_DIRECT") {
         const box = document.getElementById("vaultUpdatedJsonBox");
         const code = document.getElementById("vaultUpdatedJsonCode");
         const badge = document.getElementById("vaultUpdatedBadge");
@@ -1193,13 +1541,13 @@ import Base from "@/layouts/Base.astro";
 
         const payload = {
           status: "success",
-          source: "MEMORY_VAULT_DIRECT",
+          source: source,
           timestamp: new Date().toISOString(),
-          updated_record: dataObj
+          updated_records: sanitizeJsonData(dataObj)
         };
 
         code.textContent = JSON.stringify(payload, null, 2);
-        if (badge) badge.textContent = `✓ ${badgeText}`;
+        if (badge) badge.innerHTML = `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>${escapeHtml(badgeText)}</span>`;
         box.classList.remove("hidden");
         box.scrollIntoView({ behavior: "smooth", block: "nearest" });
       }
@@ -1230,7 +1578,6 @@ import Base from "@/layouts/Base.astro";
         });
       }
 
-      // Initial Load
       loadVault();
     }
 

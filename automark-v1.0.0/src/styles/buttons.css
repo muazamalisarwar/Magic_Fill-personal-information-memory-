@@ -1,32 +1,100 @@
 .btn {
-  @apply inline-block rounded-full px-8 py-3 font-normal capitalize transition cursor-pointer select-none;
+  @apply inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold transition-all duration-150 cursor-pointer select-none gap-2 leading-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B7F34A]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B0D0C] disabled:opacity-40 disabled:pointer-events-none disabled:transform-none;
 }
 
 .btn-sm {
-  @apply rounded-sm px-4 py-1.5 text-sm cursor-pointer select-none;
+  @apply rounded-lg px-3.5 py-2 text-xs font-semibold gap-1.5;
+}
+
+.btn-lg {
+  @apply rounded-xl px-7 py-3.5 text-base font-semibold gap-2.5;
 }
 
 .btn-primary {
-  @apply text-white;
-  background: linear-gradient(
-    0deg,
-    var(--color-primary-light) 0%,
-    var(--color-primary) 100%
-  );
+  background-color: #B7F34A;
+  color: #0B0D0C !important;
+  border: 1px solid #B7F34A;
 
   &:hover {
-    @apply brightness-125;
-    transition: all 0.3s ease;
-    box-shadow: 0px 0px 20px var(--color-primary-light);
+    background-color: #C8FA6A;
+    border-color: #C8FA6A;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(183, 243, 74, 0.22);
+  }
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: none;
   }
 }
-.btn-outline-primary {
-  @apply border-[1.5px] border-primary text-primary;
+
+.btn-primary svg {
+  color: #0B0D0C !important;
+  stroke: #0B0D0C !important;
 }
 
 .btn-outline {
-  @apply border-[1.5px] border-text text-text-light hover:bg-primary hover:border-primary bg-transparent hover:text-white transition-all duration-300;
+  background-color: #141715;
+  border: 1px solid #2B312C;
+  color: #FFFFFF !important;
+
+  &:hover {
+    background-color: #191D1A;
+    border-color: #3A423C;
+    color: #FFFFFF !important;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
 }
-.btn-outline:hover {
-  box-shadow: 0px 0px 15px var(--color-primary);
+
+.btn-outline-primary {
+  background-color: transparent;
+  border: 1px solid #B7F34A;
+  color: #B7F34A !important;
+
+  &:hover {
+    background-color: rgba(183, 243, 74, 0.08);
+    border-color: #C8FA6A;
+    color: #C8FA6A !important;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: #A1AAA1;
+  border: 1px solid transparent;
+
+  &:hover {
+    background-color: #141715;
+    color: #FFFFFF;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.btn-danger {
+  background-color: #141715;
+  border: 1px solid rgba(244, 63, 94, 0.35);
+  color: #FB7185 !important;
+
+  &:hover {
+    background-color: rgba(244, 63, 94, 0.12);
+    border-color: rgba(244, 63, 94, 0.6);
+    color: #FDA4AF !important;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
 }

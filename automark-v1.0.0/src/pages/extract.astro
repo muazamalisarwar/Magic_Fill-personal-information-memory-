@@ -7,27 +7,27 @@ import Base from "@/layouts/Base.astro";
   meta_title="AI Document & Text Extraction — Magic Fill"
   description="Import your CV, resume, transcripts, or describe your background with AI. Review, edit, and confirm extracted data before saving."
 >
-  <div class="pt-28 md:pt-32 pb-14 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-8 min-h-[85vh]">
+  <div class="pt-24 md:pt-28 pb-16 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-8 min-h-[85vh]">
 
     <!-- 1. Header -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-white/10">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-[#2B312C]">
       <div>
         <div class="flex items-center gap-2 mb-1">
-          <a href="/dashboard" class="text-xs text-text-light hover:text-white transition flex items-center gap-1">
+          <a href="/dashboard" class="text-xs text-[#A1AAA1] hover:text-[#FFFFFF] transition-colors flex items-center gap-1">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
             <span>Dashboard</span>
           </a>
-          <span class="text-white/20">/</span>
-          <span class="text-xs text-primary-light font-semibold">AI Extraction</span>
+          <span class="text-[#2B312C]">/</span>
+          <span class="text-xs text-[#B7F34A] font-medium">AI Extraction</span>
         </div>
-        <h1 class="text-2xl sm:text-3xl font-bold text-white">AI Document &amp; Memory Extraction</h1>
-        <p class="text-xs sm:text-sm text-text-light mt-1">
+        <h1 class="text-2xl sm:text-3xl font-bold font-display text-[#FFFFFF] tracking-tight">AI Document &amp; Memory Extraction</h1>
+        <p class="text-xs sm:text-sm text-[#A1AAA1] mt-1">
           Extract verified personal records from CVs, PDFs, and conversational notes. Review and approve before saving.
         </p>
       </div>
 
-      <div class="flex items-center gap-3">
-        <a href="/memory" class="btn btn-outline text-xs py-2.5 px-4 font-semibold rounded-xl flex items-center gap-1.5 hover:bg-white/5 transition">
+      <div class="flex items-center gap-2.5">
+        <a href="/memory" class="btn btn-outline btn-sm rounded-lg bg-[#141715] border-[#2B312C]">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
           <span>View Current Memory</span>
         </a>
@@ -35,69 +35,72 @@ import Base from "@/layouts/Base.astro";
     </div>
 
     <!-- 2. Method Selector Tabs -->
-    <div class="flex gap-2 p-1.5 rounded-2xl bg-dark/80 border border-white/10 max-w-2xl">
+    <div class="flex gap-1.5 p-1 rounded-xl bg-[#141715] border border-[#2B312C] max-w-2xl">
       <button
         type="button"
         id="tabDocUploadBtn"
-        class="flex-1 py-2.5 px-3 sm:px-4 text-xs font-bold rounded-xl text-white bg-primary transition cursor-pointer"
+        class="flex-1 py-2 px-3 sm:px-4 text-xs font-semibold rounded-lg text-[#0B0D0C] bg-[#B7F34A] transition cursor-pointer flex items-center justify-center gap-2"
       >
-        📄 Resume / CV Deep AI Parser
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+        <span>Resume &amp; CV Parser</span>
       </button>
       <button
         type="button"
         id="tabMediaUploadBtn"
-        class="flex-1 py-2.5 px-3 sm:px-4 text-xs font-bold rounded-xl text-text-light hover:text-white transition cursor-pointer"
+        class="flex-1 py-2 px-3 sm:px-4 text-xs font-semibold rounded-lg text-[#A1AAA1] hover:text-[#FFFFFF] transition cursor-pointer flex items-center justify-center gap-2"
       >
-        🪪 ID Photos &amp; Documents
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="9" cy="10" r="2"></circle><line x1="15" y1="8" x2="17" y2="8"></line><line x1="15" y1="12" x2="17" y2="12"></line><line x1="7" y1="16" x2="17" y2="16"></line></svg>
+        <span>ID Photos &amp; Assets</span>
       </button>
       <button
         type="button"
         id="tabChatbotBtn"
-        class="flex-1 py-2.5 px-3 sm:px-4 text-xs font-bold rounded-xl text-text-light hover:text-white transition cursor-pointer"
+        class="flex-1 py-2 px-3 sm:px-4 text-xs font-semibold rounded-lg text-[#A1AAA1] hover:text-[#FFFFFF] transition cursor-pointer flex items-center justify-center gap-2"
       >
-        💬 AI Memory Chatbot
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        <span>AI Memory Copilot</span>
       </button>
     </div>
 
     <!-- 3A. View 1: Document Upload with Review-Before-Save Mode -->
     <div id="sectionDocUpload" class="space-y-6">
-      <div class="bg-dark/80 border border-white/10 rounded-3xl p-6 sm:p-8 backdrop-blur-xl">
-        <h3 class="text-base font-bold text-white mb-2">Upload Resume or Identity Document</h3>
-        <p class="text-xs text-text-light mb-6">
+      <div class="bg-[#191D1A] border border-[#2B312C] rounded-2xl p-6 sm:p-8 shadow-sm">
+        <h3 class="text-base font-bold font-display text-[#FFFFFF] mb-1">Upload Resume or Identity Document</h3>
+        <p class="text-xs text-[#A1AAA1] mb-5">
           Supported formats: PDF, DOCX, TXT. Our Groq AI parser will extract your contact info, education, skills, and work experience for review.
         </p>
 
         <!-- Drag & Drop Dropzone -->
         <div
           id="dropzoneContainer"
-          class="border-2 border-dashed border-white/15 hover:border-primary/50 rounded-2xl p-10 text-center transition cursor-pointer bg-white/5 hover:bg-primary/5 group"
+          class="border border-dashed border-[#2B312C] hover:border-[#B7F34A] rounded-xl p-8 sm:p-10 text-center transition cursor-pointer bg-[#141715] hover:bg-[#141715]/80 group"
         >
           <input type="file" id="resumeFileInput" accept=".pdf,.txt,.docx" class="hidden" />
-          <div class="size-16 rounded-2xl bg-primary/20 text-primary-light flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <div class="size-12 rounded-xl bg-[#191D1A] border border-[#2B312C] text-[#B7F34A] flex items-center justify-center mx-auto mb-3 group-hover:scale-105 transition">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
           </div>
-          <h4 class="text-sm font-bold text-white mb-1">Click to select or drag and drop your document</h4>
-          <p class="text-xs text-text-light max-w-sm mx-auto">
+          <h4 class="text-xs sm:text-sm font-bold text-[#FFFFFF] mb-1">Click to select or drag and drop your document</h4>
+          <p class="text-xs text-[#5E665E] max-w-sm mx-auto">
             Maximum file size: 10MB. Files are processed securely in your private vault.
           </p>
         </div>
 
         <!-- Extraction Progress Indicator -->
-        <div id="uploadProgress" class="hidden mt-6 p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3">
-          <div class="size-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-          <span id="uploadProgressText" class="text-xs text-white font-medium">Reading document &amp; extracting attributes with Groq AI...</span>
+        <div id="uploadProgress" class="hidden mt-4 p-3.5 rounded-xl bg-[#141715] border border-[#2B312C] flex items-center gap-3">
+          <div class="size-4 border-2 border-[#B7F34A] border-t-transparent rounded-full animate-spin"></div>
+          <span id="uploadProgressText" class="text-xs text-[#FFFFFF] font-medium">Reading document &amp; extracting attributes with Groq AI...</span>
         </div>
       </div>
 
       <!-- Review-Before-Save Approval Card (Shown after extraction completes) -->
-      <div id="reviewCard" class="hidden bg-dark/85 border border-primary/40 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl space-y-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
+      <div id="reviewCard" class="hidden bg-[#191D1A] border border-[#B7F34A]/40 rounded-2xl p-6 sm:p-8 shadow-xl space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#2B312C]">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.12em] text-amber-500 mb-1">
+            <span class="inline-block text-[10px] font-bold uppercase tracking-wider text-[#B7F34A] mb-1">
               Review Required Before Saving
-            </p>
-            <h3 class="text-lg font-bold text-white">Confirm Extracted Personal Memory</h3>
-            <p class="text-xs text-text-light">
+            </span>
+            <h3 class="text-base font-bold font-display text-[#FFFFFF]">Confirm Extracted Personal Memory</h3>
+            <p class="text-xs text-[#A1AAA1]">
               Review and edit any recognized values below. Uncheck any item you do not wish to save.
             </p>
           </div>
@@ -106,14 +109,14 @@ import Base from "@/layouts/Base.astro";
             <button
               type="button"
               id="btnDiscardExtracted"
-              class="btn-outline text-xs py-2 px-4 rounded-xl text-text-light hover:text-white"
+              class="btn btn-outline btn-sm rounded-lg"
             >
               Discard
             </button>
             <button
               type="button"
               id="btnConfirmSaveExtracted"
-              class="btn btn-primary text-xs py-2 px-5 font-bold rounded-xl shadow-lg shadow-primary/25 hover:scale-[1.02] transition"
+              class="btn btn-primary btn-sm rounded-lg"
             >
               Confirm &amp; Save to Vault
             </button>
@@ -121,91 +124,161 @@ import Base from "@/layouts/Base.astro";
         </div>
 
         <!-- Editable Attributes Review List -->
-        <div id="reviewAttributesList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div id="reviewAttributesList" class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
           <!-- Dynamically populated review cards -->
         </div>
       </div>
     </div>
 
-    <!-- 3B. View 2: Conversational Chatbot Memory Input -->
+    <!-- 3B. View 2: Interactive AI Memory Copilot Chat Workspace -->
     <div id="sectionChatbot" class="hidden space-y-6">
-      <div class="bg-dark/80 border border-white/10 rounded-3xl p-6 sm:p-8 backdrop-blur-xl">
-        <div class="max-w-xl mb-6">
-          <h3 class="text-base font-bold text-white mb-1.5">Conversational Memory Copilot</h3>
-          <p class="text-xs text-text-light leading-relaxed">
-            Tell Magic Fill anything about your career, education, or preferences in natural language.
-            Example: <em>"I worked at Stripe as a Staff Engineer from 2021 to 2024 specializing in TypeScript and AWS. I graduated from Stanford in 2020."</em>
-          </p>
-        </div>
-
-        <form id="chatInputForm" class="space-y-4" onsubmit="return false;">
-          <div>
-            <textarea
-              id="chatTextarea"
-              rows="5"
-              placeholder="Paste text or describe your background here..."
-              required
-              class="w-full bg-dark/60 border border-white/10 rounded-2xl p-4 text-xs text-white placeholder:text-text-dark focus:border-primary focus:outline-none leading-relaxed transition"
-            ></textarea>
+      <div class="bg-[#191D1A] border border-[#2B312C] rounded-2xl p-6 sm:p-8 shadow-sm space-y-5">
+        <!-- Copilot Top Header Strip -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#2B312C]">
+          <div class="flex items-center gap-3">
+            <div class="size-10 rounded-xl bg-[#B7F34A] text-[#0B0D0C] flex items-center justify-center font-bold shadow-[0_0_15px_rgba(183,243,74,0.3)] shrink-0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a10 10 0 1 0 10 10H12V2z"></path>
+                <circle cx="12" cy="12" r="3" fill="currentColor"></circle>
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-base font-bold font-display text-[#FFFFFF]">AI Memory Copilot</h3>
+                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#B7F34A]/10 border border-[#B7F34A]/30 text-[10px] font-semibold text-[#B7F34A]">
+                  <span class="size-1.5 rounded-full bg-[#B7F34A] animate-pulse"></span>
+                  Vault Connected
+                </span>
+              </div>
+              <p class="text-xs text-[#A1AAA1]">
+                Query stored education, career, and contact facts or instruct real-time memory updates.
+              </p>
+            </div>
           </div>
 
-          <div class="flex items-center justify-between">
-            <span class="text-[11px] text-text-dark">Groq AI parses skills, dates, companies, and roles automatically.</span>
+          <div class="flex items-center gap-2">
             <button
-              type="submit"
-              id="chatSubmitBtn"
-              class="btn btn-primary text-xs py-2.5 px-6 font-bold rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] transition"
+              type="button"
+              id="btnResetCopilotChat"
+              class="px-3 py-1.5 text-xs text-[#A1AAA1] hover:text-white bg-[#141715] hover:bg-[#2B312C] border border-[#2B312C] rounded-lg transition cursor-pointer flex items-center gap-1.5"
             >
-              Extract &amp; Review
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+                <path d="M21 3v5h-5"></path>
+                <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+                <path d="M3 21v-5h5"></path>
+              </svg>
+              <span>Clear Chat</span>
             </button>
           </div>
-        </form>
-
-        <div id="chatProgress" class="hidden mt-6 p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3">
-          <div class="size-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-          <span class="text-xs text-white font-medium">Extracting structured entities from conversation...</span>
         </div>
+
+        <!-- Quick Prompt Chips -->
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-[#5E665E] block mb-2 font-mono">Suggested Questions &amp; Commands</span>
+          <div class="flex flex-wrap gap-2" id="copilotChipContainer">
+            <button type="button" class="copilot-chip px-3 py-1.5 rounded-lg bg-[#141715] hover:bg-[#2B312C] border border-[#2B312C] hover:border-[#B7F34A]/50 text-xs text-[#A1AAA1] hover:text-white transition cursor-pointer flex items-center gap-1.5" data-prompt="What are my educational experiences?">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+              <span>What are my educational experiences?</span>
+            </button>
+            <button type="button" class="copilot-chip px-3 py-1.5 rounded-lg bg-[#141715] hover:bg-[#2B312C] border border-[#2B312C] hover:border-[#B7F34A]/50 text-xs text-[#A1AAA1] hover:text-white transition cursor-pointer flex items-center gap-1.5" data-prompt="What contact details are in my vault?">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              <span>What contact details are saved?</span>
+            </button>
+            <button type="button" class="copilot-chip px-3 py-1.5 rounded-lg bg-[#141715] hover:bg-[#2B312C] border border-[#2B312C] hover:border-[#B7F34A]/50 text-xs text-[#A1AAA1] hover:text-white transition cursor-pointer flex items-center gap-1.5" data-prompt="What technical skills do I have?">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              <span>What technical skills are stored?</span>
+            </button>
+            <button type="button" class="copilot-chip px-3 py-1.5 rounded-lg bg-[#141715] hover:bg-[#2B312C] border border-[#2B312C] hover:border-[#B7F34A]/50 text-xs text-[#A1AAA1] hover:text-white transition cursor-pointer flex items-center gap-1.5" data-prompt="Update my name to Muazam Ali Sarwar">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+              <span>Update my legal name</span>
+            </button>
+            <button type="button" class="copilot-chip px-3 py-1.5 rounded-lg bg-[#141715] hover:bg-[#2B312C] border border-[#2B312C] hover:border-[#B7F34A]/50 text-xs text-[#A1AAA1] hover:text-white transition cursor-pointer flex items-center gap-1.5" data-prompt="Change my phone number to 0326-8848703">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+              <span>Update my phone number</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Chat Messages Feed -->
+        <div
+          id="copilotChatFeed"
+          class="h-[380px] overflow-y-auto space-y-4 p-4 rounded-xl bg-[#141715] border border-[#2B312C] scroll-smooth"
+        >
+          <!-- Messages dynamically populated -->
+        </div>
+
+        <!-- Chat Input Form Composer -->
+        <form id="copilotChatForm" class="space-y-2.5">
+          <div class="relative flex items-center">
+            <input
+              type="text"
+              id="copilotChatInput"
+              placeholder="Ask about your memory or command an update (e.g. 'What are my educational experiences?' or 'Update my name to...')..."
+              autocomplete="off"
+              class="w-full bg-[#141715] border border-[#2B312C] rounded-xl pl-4 pr-12 py-3 text-xs text-[#FFFFFF] placeholder:text-[#5E665E] focus:border-[#B7F34A] focus:outline-none transition shadow-inner"
+            />
+            <button
+              type="button"
+              id="copilotSendBtn"
+              class="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-[#B7F34A] text-[#0B0D0C] hover:bg-[#c9f66d] transition cursor-pointer shadow-[0_0_10px_rgba(183,243,74,0.3)] disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </div>
+
+          <div class="flex items-center justify-between text-[11px] text-[#5E665E] px-1">
+            <span>Press <kbd class="px-1.5 py-0.5 rounded bg-[#191D1A] border border-[#2B312C] font-mono text-[10px] text-[#A1AAA1]">Enter</kbd> to send. Live grounded reasoning with multi-provider AI support.</span>
+            <div id="copilotTypingStatus" class="hidden items-center gap-1.5 text-[#B7F34A] font-medium">
+              <span class="size-1.5 rounded-full bg-[#B7F34A] animate-ping"></span>
+              <span>Thinking &amp; querying vault...</span>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
 
-    <!-- 3B. View 2: ID Photos & Document Vault with AI Semantic Description Field -->
+    <!-- 3C. View 3: ID Photos & Document Vault -->
     <div id="sectionMediaUpload" class="hidden space-y-6">
-      <div class="bg-dark/80 border border-white/10 rounded-3xl p-6 sm:p-8 backdrop-blur-xl">
-        <div class="mb-6">
-          <p class="text-xs font-semibold uppercase tracking-[0.12em] text-indigo-400 mb-2">
+      <div class="bg-[#191D1A] border border-[#2B312C] rounded-2xl p-6 sm:p-8 shadow-sm">
+        <div class="mb-5">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-[#B7F34A] block mb-1">
             AI Form Attachment Copilot
-          </p>
-          <h3 class="text-xl font-extrabold text-white">Upload Identity Assets, Photos &amp; Documents</h3>
-          <p class="text-xs text-text-light mt-1 max-w-2xl">
+          </span>
+          <h3 class="text-base font-bold font-display text-[#FFFFFF]">Upload Identity Assets, Photos &amp; Documents</h3>
+          <p class="text-xs text-[#A1AAA1] mt-1 max-w-2xl">
             Upload your CNIC front/back, professional profile photo, degree certificates, or CV. Describe the document in natural language and Magic Fill's AI will automatically categorize and attach it whenever web forms require file uploads!
           </p>
         </div>
 
-        <form id="mediaUploadForm" class="space-y-6" onsubmit="return false;">
+        <form id="mediaUploadForm" class="space-y-5" onsubmit="return false;">
           <!-- Dropzone -->
           <div
             id="mediaDropzone"
-            class="border-2 border-dashed border-white/15 hover:border-[#6C63FF]/60 rounded-2xl p-8 text-center transition cursor-pointer bg-white/5 hover:bg-[#6C63FF]/5 group relative"
+            class="border border-dashed border-[#2B312C] hover:border-[#B7F34A] rounded-xl p-8 text-center transition cursor-pointer bg-[#141715] hover:bg-[#141715]/80 group relative"
           >
             <input type="file" id="mediaFileInput" accept="image/png,image/jpeg,image/jpg,image/webp,application/pdf" class="hidden" />
             
             <div id="mediaDropzoneDefault">
-              <div class="size-16 rounded-2xl bg-[#6C63FF]/20 text-[#6C63FF] flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <div class="size-12 rounded-xl bg-[#191D1A] border border-[#2B312C] text-[#B7F34A] flex items-center justify-center mx-auto mb-3 group-hover:scale-105 transition">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
               </div>
-              <h4 class="text-sm font-bold text-white mb-1">Select picture or document (CNIC, Profile Photo, CV, Degree)</h4>
-              <p class="text-xs text-text-light max-w-sm mx-auto">
+              <h4 class="text-xs sm:text-sm font-bold text-[#FFFFFF] mb-1">Select picture or document (CNIC, Profile Photo, CV, Degree)</h4>
+              <p class="text-xs text-[#5E665E] max-w-sm mx-auto">
                 PNG, JPG, WEBP, or PDF up to 15MB. Stored securely in your private memory vault.
               </p>
             </div>
 
             <!-- Selected File Preview Container (hidden by default) -->
             <div id="mediaFilePreviewContainer" class="hidden flex flex-col sm:flex-row items-center justify-center gap-4 text-left">
-              <div id="mediaPreviewThumb" class="size-20 rounded-xl overflow-hidden bg-black/40 border border-white/15 flex items-center justify-center shrink-0"></div>
+              <div id="mediaPreviewThumb" class="size-16 rounded-xl overflow-hidden bg-[#0B0D0C] border border-[#2B312C] flex items-center justify-center shrink-0"></div>
               <div class="space-y-1 text-center sm:text-left">
-                <p id="mediaFileName" class="text-sm font-bold text-white truncate max-w-xs">image.png</p>
-                <p id="mediaFileSize" class="text-xs text-text-light">1.2 MB</p>
-                <button type="button" id="btnChangeMediaFile" class="text-xs text-[#6C63FF] hover:underline font-semibold cursor-pointer">Choose different file</button>
+                <p id="mediaFileName" class="text-xs font-bold text-[#FFFFFF] truncate max-w-xs">image.png</p>
+                <p id="mediaFileSize" class="text-[11px] text-[#A1AAA1]">1.2 MB</p>
+                <button type="button" id="btnChangeMediaFile" class="text-xs text-[#B7F34A] hover:underline font-semibold cursor-pointer">Choose different file</button>
               </div>
             </div>
           </div>
@@ -213,10 +286,10 @@ import Base from "@/layouts/Base.astro";
           <!-- AI Semantic Description Field -->
           <div class="space-y-2">
             <div class="flex items-center justify-between">
-              <label for="mediaDescriptionInput" class="block text-xs font-bold text-white">
-                Describe What This Document / Picture Is For <span class="text-[#6C63FF]">*</span>
+              <label for="mediaDescriptionInput" class="block text-xs font-semibold text-[#FFFFFF]">
+                Describe What This Document / Picture Is For <span class="text-[#B7F34A]">*</span>
               </label>
-              <span class="text-[11px] text-text-light font-medium">Magic Fill AI uses this to match form upload inputs</span>
+              <span class="text-[11px] text-[#5E665E]">Magic Fill AI uses this to match form upload inputs</span>
             </div>
 
             <textarea
@@ -227,30 +300,36 @@ import Base from "@/layouts/Base.astro";
               data-no-learn="true"
               autocomplete="off"
               placeholder="e.g. Front of national identity card, official profile photo, updated CV/resume, degree transcript"
-              class="w-full bg-slate-900/60 border border-white/15 rounded-xl px-4 py-3 text-white placeholder:text-slate-500 text-sm focus:border-[#6C63FF] focus:ring-2 focus:ring-[#6C63FF]/20 focus:outline-none transition resize-none"
+              class="w-full bg-[#141715] border border-[#2B312C] rounded-xl px-3.5 py-2.5 text-[#FFFFFF] placeholder:text-[#5E665E] text-xs focus:border-[#B7F34A] focus:outline-none transition resize-none"
               required
             ></textarea>
 
             <!-- Quick Semantic Suggestion Chips -->
-            <div class="flex items-center gap-2 flex-wrap pt-1">
-              <span class="text-[11px] text-text-light font-semibold">Quick Suggestions:</span>
-              <button type="button" class="media-chip text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#6C63FF]/20 hover:text-white text-text-light border border-white/10 transition cursor-pointer" data-val="This is my CNIC front picture">
-                🪪 CNIC Front
+            <div class="flex items-center gap-1.5 flex-wrap pt-1">
+              <span class="text-[11px] text-[#5E665E] font-medium">Quick Suggestions:</span>
+              <button type="button" class="media-chip text-[11px] font-medium px-2 py-0.5 rounded-lg bg-[#141715] hover:bg-[#191D1A] hover:text-[#B7F34A] text-[#A1AAA1] border border-[#2B312C] transition cursor-pointer inline-flex items-center gap-1.5" data-val="This is my CNIC front picture">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="7" y1="12" x2="17" y2="12"></line></svg>
+                <span>CNIC Front</span>
               </button>
-              <button type="button" class="media-chip text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#6C63FF]/20 hover:text-white text-text-light border border-white/10 transition cursor-pointer" data-val="This is my CNIC back picture">
-                🪪 CNIC Back
+              <button type="button" class="media-chip text-[11px] font-medium px-2 py-0.5 rounded-lg bg-[#141715] hover:bg-[#191D1A] hover:text-[#B7F34A] text-[#A1AAA1] border border-[#2B312C] transition cursor-pointer inline-flex items-center gap-1.5" data-val="This is my CNIC back picture">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="8" cy="10" r="1.5"></circle></svg>
+                <span>CNIC Back</span>
               </button>
-              <button type="button" class="media-chip text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#6C63FF]/20 hover:text-white text-text-light border border-white/10 transition cursor-pointer" data-val="This is my official profile photo">
-                👤 Profile Photo
+              <button type="button" class="media-chip text-[11px] font-medium px-2 py-0.5 rounded-lg bg-[#141715] hover:bg-[#191D1A] hover:text-[#B7F34A] text-[#A1AAA1] border border-[#2B312C] transition cursor-pointer inline-flex items-center gap-1.5" data-val="This is my official profile photo">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span>Profile Photo</span>
               </button>
-              <button type="button" class="media-chip text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#6C63FF]/20 hover:text-white text-text-light border border-white/10 transition cursor-pointer" data-val="This is my latest resume and CV">
-                📄 Resume / CV
+              <button type="button" class="media-chip text-[11px] font-medium px-2 py-0.5 rounded-lg bg-[#141715] hover:bg-[#191D1A] hover:text-[#B7F34A] text-[#A1AAA1] border border-[#2B312C] transition cursor-pointer inline-flex items-center gap-1.5" data-val="This is my latest resume and CV">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                <span>Resume / CV</span>
               </button>
-              <button type="button" class="media-chip text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#6C63FF]/20 hover:text-white text-text-light border border-white/10 transition cursor-pointer" data-val="This is my university degree certificate transcript">
-                🎓 Degree / Transcript
+              <button type="button" class="media-chip text-[11px] font-medium px-2 py-0.5 rounded-lg bg-[#141715] hover:bg-[#191D1A] hover:text-[#B7F34A] text-[#A1AAA1] border border-[#2B312C] transition cursor-pointer inline-flex items-center gap-1.5" data-val="This is my university degree certificate transcript">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path></svg>
+                <span>Degree Certificate</span>
               </button>
-              <button type="button" class="media-chip text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-white/5 hover:bg-[#6C63FF]/20 hover:text-white text-text-light border border-white/10 transition cursor-pointer" data-val="This is my international passport scan">
-                🛂 Passport
+              <button type="button" class="media-chip text-[11px] font-medium px-2 py-0.5 rounded-lg bg-[#141715] hover:bg-[#191D1A] hover:text-[#B7F34A] text-[#A1AAA1] border border-[#2B312C] transition cursor-pointer inline-flex items-center gap-1.5" data-val="This is my international passport scan">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <span>Passport</span>
               </button>
             </div>
           </div>
@@ -259,13 +338,13 @@ import Base from "@/layouts/Base.astro";
           <div id="mediaUploadAlert" class="hidden text-xs p-3.5 rounded-xl"></div>
 
           <!-- Submit Button -->
-          <div class="flex items-center justify-end gap-3 pt-2">
+          <div class="flex items-center justify-end gap-3 pt-1">
             <button
               type="submit"
               id="btnSubmitMediaUpload"
-              class="btn btn-primary text-xs py-3 px-6 font-bold rounded-xl flex items-center gap-2 shadow-lg shadow-[#6C63FF]/25 hover:scale-[1.02] transition cursor-pointer"
+              class="btn btn-primary btn-sm rounded-lg"
             >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
               <span>Upload &amp; Save to Memory Vault</span>
             </button>
           </div>
@@ -274,25 +353,25 @@ import Base from "@/layouts/Base.astro";
     </div>
 
     <!-- Updated Memory Attributes JSON Result Card -->
-    <div id="extractUpdatedJsonBox" class="hidden bg-dark/85 border border-emerald-500/40 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl space-y-4 transition-all">
-      <div class="flex items-center justify-between pb-3 border-b border-white/10">
-        <div class="flex items-center gap-2.5">
-          <span class="size-3 rounded-full bg-emerald-400 animate-pulse"></span>
+    <div id="extractUpdatedJsonBox" class="hidden bg-[#191D1A] border border-[#2B312C] rounded-2xl p-5 sm:p-7 shadow-lg space-y-3 transition-all">
+      <div class="flex items-center justify-between pb-3 border-b border-[#2B312C]">
+        <div class="flex items-center gap-2">
+          <span class="size-2 rounded-full bg-[#B7F34A] animate-pulse"></span>
           <div>
-            <h4 class="text-sm font-bold text-white">Updated Memory Attributes (JSON Output)</h4>
-            <p id="extractUpdatedJsonSub" class="text-[11px] text-text-light">
+            <h4 class="text-xs font-bold text-[#FFFFFF]">Updated Memory Attributes (JSON Output)</h4>
+            <p id="extractUpdatedJsonSub" class="text-[11px] text-[#A1AAA1]">
               Structured records committed to your PostgreSQL memory vault
             </p>
           </div>
         </div>
         <div class="flex items-center gap-2">
-          <span id="extractUpdatedBadge" class="text-[10px] font-semibold px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-            ✓ Updated Just Now
+          <span id="extractUpdatedBadge" class="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-[#B7F34A]/10 text-[#B7F34A] border border-[#B7F34A]/20">
+            <span class="inline-flex items-center gap-1"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>Updated Just Now</span></span>
           </span>
           <button
             type="button"
             id="btnCopyExtractJson"
-            class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-text-light hover:text-white text-xs font-mono transition flex items-center gap-1.5 border border-white/10 cursor-pointer"
+            class="px-2.5 py-1 rounded-lg bg-[#141715] hover:bg-[#1E231F] text-[#A1AAA1] hover:text-[#FFFFFF] text-xs font-mono transition flex items-center gap-1.5 border border-[#2B312C] cursor-pointer"
             title="Copy JSON payload"
           >
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
@@ -300,21 +379,21 @@ import Base from "@/layouts/Base.astro";
           </button>
         </div>
       </div>
-      <pre class="bg-black/60 p-4 rounded-2xl border border-white/5 overflow-x-auto text-[11px] font-mono text-emerald-300 leading-relaxed select-all max-h-80"><code id="extractUpdatedJsonCode">{}</code></pre>
+      <pre class="bg-[#0B0D0C] p-4 rounded-xl border border-[#2B312C] overflow-x-auto text-[11px] font-mono text-[#B7F34A] leading-relaxed select-all max-h-80"><code id="extractUpdatedJsonCode">{}</code></pre>
     </div>
 
     <!-- 4. Uploaded Documents & Media Vault -->
-    <div class="bg-dark/80 border border-white/10 rounded-3xl p-6 sm:p-8 backdrop-blur-xl">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+    <div class="bg-[#191D1A] border border-[#2B312C] rounded-2xl p-5 sm:p-7 shadow-sm">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 pb-3 border-b border-[#2B312C]">
         <div>
-          <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <h3 class="text-sm font-bold font-display text-[#FFFFFF] flex items-center gap-2">
             <span>Stored Photos, IDs &amp; Documents</span>
-            <span id="docCountBadge" class="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-primary/20 text-primary border border-primary/30">0</span>
+            <span id="docCountBadge" class="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-[#141715] text-[#B7F34A] border border-[#2B312C]">0</span>
           </h3>
-          <p class="text-xs text-text-light">Attached CVs, CNIC scans, profile photos, and credentials ready for instant form attachment</p>
+          <p class="text-xs text-[#A1AAA1]">Attached CVs, CNIC scans, profile photos, and credentials ready for instant form attachment</p>
         </div>
         <div class="flex items-center gap-2">
-          <button type="button" id="btnRefreshDocs" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-text-light hover:text-white text-xs font-semibold transition flex items-center gap-1.5 border border-white/10 cursor-pointer">
+          <button type="button" id="btnRefreshDocs" class="px-3 py-1.5 rounded-lg bg-[#141715] hover:bg-[#1E231F] text-[#A1AAA1] hover:text-[#FFFFFF] text-xs font-semibold transition flex items-center gap-1.5 border border-[#2B312C] cursor-pointer">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
             <span>Refresh</span>
           </button>
@@ -324,20 +403,20 @@ import Base from "@/layouts/Base.astro";
       <div class="overflow-x-auto">
         <table class="w-full text-left text-xs">
           <thead>
-            <tr class="border-b border-white/10 text-text-light uppercase tracking-wider text-[10px]">
-              <th class="pb-3 font-semibold w-16">Preview</th>
-              <th class="pb-3 font-semibold">File Name</th>
-              <th class="pb-3 font-semibold">Assigned Field Key</th>
-              <th class="pb-3 font-semibold">User Description</th>
-              <th class="pb-3 font-semibold">Size</th>
-              <th class="pb-3 font-semibold">Upload Date</th>
-              <th class="pb-3 font-semibold text-right">Actions</th>
+            <tr class="border-b border-[#2B312C] text-[#A1AAA1] uppercase tracking-wider text-[10px] font-semibold">
+              <th class="pb-3 w-14">Preview</th>
+              <th class="pb-3">File Name</th>
+              <th class="pb-3">Assigned Field Key</th>
+              <th class="pb-3">User Description</th>
+              <th class="pb-3">Size</th>
+              <th class="pb-3">Upload Date</th>
+              <th class="pb-3 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody id="documentsTableBody" class="divide-y divide-white/5">
+          <tbody id="documentsTableBody" class="divide-y divide-[#2B312C]/60 text-[#A1AAA1]">
             <tr>
-              <td colspan="7" class="py-6 text-center text-text-light">
-                <div class="inline-block size-5 border-2 border-primary border-t-transparent rounded-full animate-spin mb-2"></div>
+              <td colspan="7" class="py-6 text-center text-[#A1AAA1]">
+                <div class="inline-block size-4 border-2 border-[#B7F34A] border-t-transparent rounded-full animate-spin mb-2"></div>
                 <div>Loading stored documents...</div>
               </td>
             </tr>
@@ -347,37 +426,35 @@ import Base from "@/layouts/Base.astro";
     </div>
 
     <!-- Document Full Resolution Preview Modal -->
-    <div id="docPreviewModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md" role="dialog" aria-modal="true">
-      <div class="relative w-full max-w-2xl bg-dark border border-white/15 rounded-3xl p-6 sm:p-8 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
-        <div class="flex items-center justify-between pb-4 border-b border-white/10 shrink-0">
+    <div id="docPreviewModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-xs" role="dialog" aria-modal="true">
+      <div class="relative w-full max-w-2xl bg-[#191D1A] border border-[#2B312C] rounded-2xl p-6 shadow-2xl space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-[#2B312C]">
           <div>
-            <h3 id="modalDocTitle" class="text-base font-bold text-white">Document Preview</h3>
-            <p id="modalDocSubtitle" class="text-xs text-text-light font-mono">Loading...</p>
+            <h4 id="modalDocTitle" class="text-sm font-bold text-[#FFFFFF]">Document Preview</h4>
+            <p id="modalDocSubtitle" class="text-[11px] text-[#A1AAA1] font-mono"></p>
           </div>
-          <button type="button" id="btnCloseDocPreview" class="text-text-light hover:text-white text-2xl leading-none cursor-pointer">&times;</button>
+          <button type="button" id="btnCloseDocPreview" class="text-[#A1AAA1] hover:text-[#FFFFFF] text-xl leading-none cursor-pointer">&times;</button>
         </div>
 
-        <div id="modalDocContent" class="py-4 overflow-y-auto flex-1 flex items-center justify-center min-h-[250px] max-h-[500px]">
-          <!-- Dynamic Image or Document view inserted here -->
+        <div id="modalDocContent" class="flex items-center justify-center min-h-[220px] bg-[#141715] rounded-xl p-3 border border-[#2B312C]">
+          <!-- Loaded dynamically -->
         </div>
 
-        <div class="pt-4 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shrink-0">
-          <div class="text-xs text-text-light">
-            <span class="font-semibold text-white">AI Description:</span> <span id="modalDocDesc" class="italic text-slate-300">None</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <a id="modalDocDownloadBtn" href="#" download class="btn-outline text-xs py-1.5 px-3 rounded-xl flex items-center gap-1.5">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              <span>Download File</span>
-            </a>
-            <button type="button" id="btnCloseDocPreview2" class="btn btn-primary text-xs py-1.5 px-4 rounded-xl font-bold cursor-pointer">Close</button>
-          </div>
+        <p id="modalDocDesc" class="text-xs text-[#A1AAA1] italic"></p>
+
+        <div class="flex items-center justify-between pt-3 border-t border-[#2B312C]">
+          <a id="modalDocDownloadBtn" href="#" download class="btn btn-primary btn-sm rounded-lg" target="_blank">
+            Download Original File
+          </a>
+          <button type="button" id="btnCloseDocPreview2" class="btn btn-outline btn-sm rounded-lg">
+            Close
+          </button>
         </div>
       </div>
     </div>
 
     <!-- Global Toast -->
-    <div id="extractToast" class="fixed bottom-6 right-6 z-50 hidden max-w-sm px-4 py-3 rounded-2xl bg-dark/95 border text-xs shadow-2xl backdrop-blur-xl flex items-center gap-2"></div>
+    <div id="extractToast" class="fixed bottom-6 right-6 z-50 hidden max-w-sm px-4 py-3 rounded-xl bg-[#191D1A] border border-[#2B312C] text-xs text-[#FFFFFF] shadow-2xl flex items-center gap-2"></div>
   </div>
 
   <script is:inline>
@@ -388,13 +465,10 @@ import Base from "@/layouts/Base.astro";
         return;
       }
 
-      const headers = {
-        "Authorization": `Bearer ${token}`
-      };
+      const headers = { "Authorization": `Bearer ${token}` };
 
-      // Resilient API Fetch Helper with automatic backend fallback
+      // Resilient API Fetch Helper
       async function apiFetch(endpoint, options = {}) {
-        // 1. Attempt relative URL
         try {
           const res = await fetch(endpoint, options);
           if (res.status !== 502 && res.status !== 503 && res.status !== 504) {
@@ -404,7 +478,6 @@ import Base from "@/layouts/Base.astro";
           console.warn(`Relative fetch to ${endpoint} failed, falling back to port 8000:`, err);
         }
 
-        // 2. Direct backend fallback to http://127.0.0.1:8000
         const directUrl = endpoint.startsWith("http") ? endpoint : `http://127.0.0.1:8000${endpoint.startsWith("/") ? "" : "/"}${endpoint}`;
         return await fetch(directUrl, options);
       }
@@ -412,13 +485,13 @@ import Base from "@/layouts/Base.astro";
       function showToast(msg, type = "success") {
         const toast = document.getElementById("extractToast");
         if (!toast) return;
-        toast.className = `fixed bottom-6 right-6 z-50 max-w-sm px-4 py-3 rounded-2xl bg-dark/95 border ${type === "success" ? "border-emerald-500/40 text-emerald-300" : "border-rose-500/40 text-rose-300"} text-xs shadow-2xl backdrop-blur-xl flex items-center gap-2`;
+        toast.className = `fixed bottom-6 right-6 z-50 max-w-sm px-4 py-3 rounded-xl bg-[#191D1A] border ${type === "success" ? "border-[#B7F34A]/40 text-[#B7F34A]" : "border-rose-900/40 text-rose-300"} text-xs shadow-2xl flex items-center gap-2`;
         toast.textContent = msg;
         toast.classList.remove("hidden");
         setTimeout(() => toast.classList.add("hidden"), 3000);
       }
 
-      // Tab switcher (3 Tabs: Deep Parser, Media/Documents, Chatbot)
+      // Tab switcher
       const tabUpload = document.getElementById("tabDocUploadBtn");
       const tabMedia = document.getElementById("tabMediaUploadBtn");
       const tabChat = document.getElementById("tabChatbotBtn");
@@ -428,20 +501,20 @@ import Base from "@/layouts/Base.astro";
 
       function activateTab(tab) {
         [tabUpload, tabMedia, tabChat].forEach(t => {
-          if (t) t.className = "flex-1 py-2.5 px-3 sm:px-4 text-xs font-bold rounded-xl text-text-light hover:text-white transition cursor-pointer";
+          if (t) t.className = "flex-1 py-2 px-3 sm:px-4 text-xs font-semibold rounded-lg text-[#A1AAA1] hover:text-[#FFFFFF] transition cursor-pointer";
         });
         [secUpload, secMedia, secChat].forEach(s => {
           if (s) s.classList.add("hidden");
         });
 
         if (tab === "media") {
-          if (tabMedia) tabMedia.className = "flex-1 py-2.5 px-3 sm:px-4 text-xs font-bold rounded-xl text-white bg-primary transition cursor-pointer";
+          if (tabMedia) tabMedia.className = "flex-1 py-2 px-3 sm:px-4 text-xs font-semibold rounded-lg text-[#0B0D0C] bg-[#B7F34A] transition cursor-pointer";
           if (secMedia) secMedia.classList.remove("hidden");
         } else if (tab === "chat") {
-          if (tabChat) tabChat.className = "flex-1 py-2.5 px-3 sm:px-4 text-xs font-bold rounded-xl text-white bg-primary transition cursor-pointer";
+          if (tabChat) tabChat.className = "flex-1 py-2 px-3 sm:px-4 text-xs font-semibold rounded-lg text-[#0B0D0C] bg-[#B7F34A] transition cursor-pointer";
           if (secChat) secChat.classList.remove("hidden");
         } else {
-          if (tabUpload) tabUpload.className = "flex-1 py-2.5 px-3 sm:px-4 text-xs font-bold rounded-xl text-white bg-primary transition cursor-pointer";
+          if (tabUpload) tabUpload.className = "flex-1 py-2 px-3 sm:px-4 text-xs font-semibold rounded-lg text-[#0B0D0C] bg-[#B7F34A] transition cursor-pointer";
           if (secUpload) secUpload.classList.remove("hidden");
         }
       }
@@ -450,7 +523,6 @@ import Base from "@/layouts/Base.astro";
       if (tabMedia) tabMedia.addEventListener("click", () => activateTab("media"));
       if (tabChat) tabChat.addEventListener("click", () => activateTab("chat"));
 
-      // Check URL query param for default tab (e.g. /extract?tab=media)
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get("tab") === "media") {
         activateTab("media");
@@ -486,7 +558,7 @@ import Base from "@/layouts/Base.astro";
             img.className = "size-full object-cover";
             mediaPreviewThumb.appendChild(img);
           } else {
-            mediaPreviewThumb.innerHTML = `<span class="text-xs font-bold text-primary uppercase">${file.name.split('.').pop()}</span>`;
+            mediaPreviewThumb.innerHTML = `<span class="text-xs font-bold text-[#B7F34A] uppercase">${file.name.split('.').pop()}</span>`;
           }
         }
 
@@ -515,16 +587,16 @@ import Base from "@/layouts/Base.astro";
 
         mediaDropzone.addEventListener("dragover", (e) => {
           e.preventDefault();
-          mediaDropzone.classList.add("border-primary");
+          mediaDropzone.classList.add("border-[#B7F34A]");
         });
 
         mediaDropzone.addEventListener("dragleave", () => {
-          mediaDropzone.classList.remove("border-primary");
+          mediaDropzone.classList.remove("border-[#B7F34A]");
         });
 
         mediaDropzone.addEventListener("drop", (e) => {
           e.preventDefault();
-          mediaDropzone.classList.remove("border-primary");
+          mediaDropzone.classList.remove("border-[#B7F34A]");
           const file = e.dataTransfer.files?.[0];
           if (file) updateMediaFile(file);
         });
@@ -547,7 +619,7 @@ import Base from "@/layouts/Base.astro";
           e.preventDefault();
           if (!selectedMediaFile) {
             if (mediaAlert) {
-              mediaAlert.className = "text-xs p-3.5 rounded-xl bg-rose-500/10 text-rose-300 border border-rose-500/30 block";
+              mediaAlert.className = "text-xs p-3.5 rounded-xl bg-rose-950/40 text-rose-300 border border-rose-900/40 block";
               mediaAlert.textContent = "Please select an image or document to upload.";
             }
             return;
@@ -556,7 +628,7 @@ import Base from "@/layouts/Base.astro";
           const desc = (mediaDescInput?.value || "").trim();
           if (!desc) {
             if (mediaAlert) {
-              mediaAlert.className = "text-xs p-3.5 rounded-xl bg-rose-500/10 text-rose-300 border border-rose-500/30 block";
+              mediaAlert.className = "text-xs p-3.5 rounded-xl bg-rose-950/40 text-rose-300 border border-rose-900/40 block";
               mediaAlert.textContent = "Please describe what this document or photo is for.";
             }
             return;
@@ -585,46 +657,37 @@ import Base from "@/layouts/Base.astro";
             if (res.ok && data.success && data.data) {
               showToast(`Document '${data.data.title}' saved to personal memory vault!`);
               if (mediaAlert) {
-                mediaAlert.className = "text-xs p-3.5 rounded-xl bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 block";
-                mediaAlert.innerHTML = `<strong>✓ Saved Successfully:</strong> Stored as <code class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-200 font-mono text-[11px]">${data.data.doc_key}</code> (${data.data.title}) and synchronized to your personal autofill memory.`;
+                mediaAlert.className = "text-xs p-3.5 rounded-xl bg-[#141715] text-[#B7F34A] border border-[#B7F34A]/30 block";
+                mediaAlert.innerHTML = `<strong class="inline-flex items-center gap-1"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>Saved Successfully:</span></strong> Stored as <code class="px-1.5 py-0.5 rounded bg-[#191D1A] text-[#B7F34A] font-mono text-[11px]">${data.data.doc_key}</code> (${data.data.title}) and synchronized to your personal autofill memory.`;
               }
 
-              // Display updated JSON output
-              try {
-                if (typeof displayExtractUpdatedJson === "function") {
-                  displayExtractUpdatedJson({
-                    document_id: data.data.id,
-                    canonical_key: data.data.doc_key,
-                    title: data.data.title,
-                    category: data.data.category,
-                    description: data.data.description,
-                    file_name: data.data.file_name,
-                    file_size_kb: (data.data.file_size_bytes / 1024).toFixed(1)
-                  }, `Document Asset '${data.data.title}' Saved`);
-                }
-              } catch (jsonErr) {
-                console.warn("Could not render JSON box:", jsonErr);
-              }
+              displayExtractUpdatedJson({
+                document_id: data.data.id,
+                canonical_key: data.data.doc_key,
+                title: data.data.title,
+                category: data.data.category,
+                description: data.data.description,
+                file_name: data.data.file_name,
+                file_size_kb: (data.data.file_size_bytes / 1024).toFixed(1)
+              }, `Document Asset '${data.data.title}' Saved`);
 
-              // Reset form fields
               selectedMediaFile = null;
               if (mediaDescInput) mediaDescInput.value = "";
               if (mediaDefaultUI) mediaDefaultUI.classList.remove("hidden");
               if (mediaPreviewContainer) mediaPreviewContainer.classList.add("hidden");
               if (mediaFileInput) mediaFileInput.value = "";
 
-              // Refresh document table
               loadStoredDocuments();
             } else {
               if (mediaAlert) {
-                mediaAlert.className = "text-xs p-3.5 rounded-xl bg-rose-500/10 text-rose-300 border border-rose-500/30 block";
+                mediaAlert.className = "text-xs p-3.5 rounded-xl bg-rose-950/40 text-rose-300 border border-rose-900/40 block";
                 mediaAlert.textContent = data.message || "Failed to upload document.";
               }
             }
           } catch (err) {
             console.error("Document upload failed:", err);
             if (mediaAlert) {
-              mediaAlert.className = "text-xs p-3.5 rounded-xl bg-rose-500/10 text-rose-300 border border-rose-500/30 block";
+              mediaAlert.className = "text-xs p-3.5 rounded-xl bg-rose-950/40 text-rose-300 border border-rose-900/40 block";
               mediaAlert.textContent = `Upload issue: ${err.message || "Could not reach backend on port 8000."} Please ensure the backend is running.`;
             }
           } finally {
@@ -650,16 +713,16 @@ import Base from "@/layouts/Base.astro";
 
         dropzone.addEventListener("dragover", (e) => {
           e.preventDefault();
-          dropzone.classList.add("border-primary");
+          dropzone.classList.add("border-[#B7F34A]");
         });
 
         dropzone.addEventListener("dragleave", () => {
-          dropzone.classList.remove("border-primary");
+          dropzone.classList.remove("border-[#B7F34A]");
         });
 
         dropzone.addEventListener("drop", (e) => {
           e.preventDefault();
-          dropzone.classList.remove("border-primary");
+          dropzone.classList.remove("border-[#B7F34A]");
           if (e.dataTransfer.files?.length) {
             handleFileUpload(e.dataTransfer.files[0]);
           }
@@ -680,7 +743,7 @@ import Base from "@/layouts/Base.astro";
 
         const formData = new FormData();
         formData.append("file", file);
-        formData.append("auto_save", "false"); // Draft mode for review!
+        formData.append("auto_save", "false");
 
         try {
           const res = await fetch("/api/memory/upload-document", {
@@ -706,7 +769,6 @@ import Base from "@/layouts/Base.astro";
         }
       }
 
-      // Clean text helper to strip any rogue Markdown/regex backslash escapes
       function cleanText(str) {
         if (str == null) return "";
         return String(str).replace(/\\([ \.,@+()&/%:;!?'"|\-\[\]\\])/g, "$1").trim();
@@ -728,7 +790,6 @@ import Base from "@/layouts/Base.astro";
 
         const items = [];
 
-        // Personal Info fields
         const pi = extracted.personal_info || {};
         if (pi.full_name) items.push({ type: "pi", key: "full_name", label: "Full Legal Name", val: pi.full_name });
         if (pi.email) items.push({ type: "pi", key: "email", label: "Email Address", val: pi.email });
@@ -742,7 +803,6 @@ import Base from "@/layouts/Base.astro";
         if (pi.github_url) items.push({ type: "pi", key: "github_url", label: "GitHub Profile", val: pi.github_url });
         if (pi.bio) items.push({ type: "pi", key: "bio", label: "Professional Bio", val: pi.bio });
 
-        // Experiences
         (extracted.experiences || []).forEach((exp, idx) => {
           items.push({
             type: "exp",
@@ -756,7 +816,6 @@ import Base from "@/layouts/Base.astro";
           });
         });
 
-        // Custom fields
         (extracted.custom_fields || []).forEach((cf, idx) => {
           items.push({
             type: "cf",
@@ -770,34 +829,34 @@ import Base from "@/layouts/Base.astro";
 
         items.forEach((item, i) => {
           const div = document.createElement("div");
-          div.className = "bg-dark/60 border border-white/10 rounded-2xl p-4 flex items-start gap-3";
+          div.className = "bg-[#141715] border border-[#2B312C] rounded-xl p-3.5 flex items-start gap-3";
 
           if (item.type === "pi") {
             div.innerHTML = `
-              <input type="checkbox" checked class="mt-1 size-4 accent-primary review-item-check cursor-pointer" data-index="${i}" />
+              <input type="checkbox" checked class="mt-1 size-3.5 accent-[#B7F34A] review-item-check cursor-pointer" data-index="${i}" />
               <div class="flex-1">
-                <label class="block text-[11px] font-bold text-text-light mb-1 uppercase tracking-wider">${item.label}</label>
-                <input type="text" value="${escapeAttr(item.val)}" class="review-pi-val w-full bg-black/40 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white focus:border-primary focus:outline-none" data-key="${item.key}" />
+                <label class="block text-[10px] font-semibold text-[#A1AAA1] mb-1 uppercase tracking-wider">${item.label}</label>
+                <input type="text" value="${escapeAttr(item.val)}" class="review-pi-val w-full bg-[#191D1A] border border-[#2B312C] rounded-lg px-3 py-1.5 text-xs text-[#FFFFFF] focus:border-[#B7F34A] focus:outline-none" data-key="${item.key}" />
               </div>
             `;
           } else if (item.type === "exp") {
             div.innerHTML = `
-              <input type="checkbox" checked class="mt-1 size-4 accent-primary review-item-check cursor-pointer" data-index="${i}" />
-              <div class="flex-1 space-y-2">
-                <label class="block text-[11px] font-bold text-text-light uppercase tracking-wider">${item.label}</label>
+              <input type="checkbox" checked class="mt-1 size-3.5 accent-[#B7F34A] review-item-check cursor-pointer" data-index="${i}" />
+              <div class="flex-1 space-y-1.5">
+                <label class="block text-[10px] font-semibold text-[#A1AAA1] uppercase tracking-wider">${item.label}</label>
                 <div class="grid grid-cols-2 gap-2">
-                  <input type="text" value="${escapeAttr(item.company)}" placeholder="Company" class="review-exp-comp w-full bg-black/40 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white" />
-                  <input type="text" value="${escapeAttr(item.title)}" placeholder="Title" class="review-exp-title w-full bg-black/40 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white" />
+                  <input type="text" value="${escapeAttr(item.company)}" placeholder="Company" class="review-exp-comp w-full bg-[#191D1A] border border-[#2B312C] rounded-lg px-2.5 py-1.5 text-xs text-[#FFFFFF]" />
+                  <input type="text" value="${escapeAttr(item.title)}" placeholder="Title" class="review-exp-title w-full bg-[#191D1A] border border-[#2B312C] rounded-lg px-2.5 py-1.5 text-xs text-[#FFFFFF]" />
                 </div>
-                <input type="text" value="${escapeAttr(item.skills)}" placeholder="Skills" class="review-exp-skills w-full bg-black/40 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white" />
+                <input type="text" value="${escapeAttr(item.skills)}" placeholder="Skills" class="review-exp-skills w-full bg-[#191D1A] border border-[#2B312C] rounded-lg px-2.5 py-1.5 text-xs text-[#FFFFFF]" />
               </div>
             `;
           } else if (item.type === "cf") {
             div.innerHTML = `
-              <input type="checkbox" checked class="mt-1 size-4 accent-primary review-item-check cursor-pointer" data-index="${i}" />
+              <input type="checkbox" checked class="mt-1 size-3.5 accent-[#B7F34A] review-item-check cursor-pointer" data-index="${i}" />
               <div class="flex-1">
-                <label class="block text-[11px] font-bold text-text-light mb-1 uppercase tracking-wider">${item.label}</label>
-                <input type="text" value="${escapeAttr(item.val)}" class="review-cf-val w-full bg-black/40 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white" data-key="${item.key}" data-label="${escapeAttr(item.label)}" data-cat="${escapeAttr(item.category)}" />
+                <label class="block text-[10px] font-semibold text-[#A1AAA1] mb-1 uppercase tracking-wider">${item.label}</label>
+                <input type="text" value="${escapeAttr(item.val)}" class="review-cf-val w-full bg-[#191D1A] border border-[#2B312C] rounded-lg px-3 py-1.5 text-xs text-[#FFFFFF]" data-key="${item.key}" data-label="${escapeAttr(item.label)}" data-cat="${escapeAttr(item.category)}" />
               </div>
             `;
           }
@@ -826,7 +885,6 @@ import Base from "@/layouts/Base.astro";
           confirmSaveBtn.textContent = "Saving to Database...";
 
           try {
-            // Collect approved PI fields
             const piPayload = {};
             document.querySelectorAll(".review-pi-val").forEach(input => {
               const check = input.closest("div.flex")?.previousElementSibling;
@@ -843,7 +901,6 @@ import Base from "@/layouts/Base.astro";
               });
             }
 
-            // Collect approved Custom Fields
             const cfPromises = [];
             const cfSaved = [];
             document.querySelectorAll(".review-cf-val").forEach(input => {
@@ -867,11 +924,10 @@ import Base from "@/layouts/Base.astro";
             });
             await Promise.all(cfPromises);
 
-            // Collect approved Work Experiences
             const expPromises = [];
             const expSaved = [];
             document.querySelectorAll(".review-exp-comp").forEach(compInput => {
-              const row = compInput.closest("div.bg-dark\\/60, div");
+              const row = compInput.closest("div.bg-\\[\\#141715\\], div");
               const check = row?.querySelector(".review-item-check");
               if (!check || check.checked) {
                 const titleInput = row?.querySelector(".review-exp-title");
@@ -909,7 +965,7 @@ import Base from "@/layouts/Base.astro";
             };
             displayExtractUpdatedJson(updatedSummary, "Saved to Memory Vault");
 
-            showToast("✓ Successfully saved verified attributes to memory vault!");
+            showToast("Successfully saved verified attributes to memory vault!");
             reviewCard.classList.add("hidden");
             currentDraftData = null;
             loadStoredDocuments();
@@ -922,45 +978,254 @@ import Base from "@/layouts/Base.astro";
         });
       }
 
-      // Chatbot Submit
-      const chatForm = document.getElementById("chatInputForm");
-      const chatTextarea = document.getElementById("chatTextarea");
-      const chatProgress = document.getElementById("chatProgress");
+      // -----------------------------------------------------------------------
+      // Interactive AI Memory Copilot (Conversational Q&A + Live Memory Updates)
+      // -----------------------------------------------------------------------
+      function escapeHtml(str) {
+        if (str == null) return "";
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
 
-      if (chatForm && chatTextarea) {
-        chatForm.addEventListener("submit", async () => {
-          const rawText = chatTextarea.value.trim();
-          if (!rawText) return;
+      let copilotChatHistory = [];
+      const copilotChatFeed = document.getElementById("copilotChatFeed");
+      const copilotChatForm = document.getElementById("copilotChatForm");
+      const copilotChatInput = document.getElementById("copilotChatInput");
+      const copilotSendBtn = document.getElementById("copilotSendBtn");
+      const copilotTypingStatus = document.getElementById("copilotTypingStatus");
+      const btnResetCopilotChat = document.getElementById("btnResetCopilotChat");
 
-          if (chatProgress) chatProgress.classList.remove("hidden");
+      function renderCopilotWelcome() {
+        if (!copilotChatFeed) return;
+        copilotChatFeed.innerHTML = `
+          <div class="flex items-start gap-3 self-start max-w-[85%]">
+            <div class="size-8 rounded-lg bg-[#B7F34A] text-[#0B0D0C] flex items-center justify-center font-bold text-xs shrink-0 shadow-[0_0_10px_rgba(183,243,74,0.3)]">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a10 10 0 1 0 10 10H12V2z"></path>
+                <circle cx="12" cy="12" r="3" fill="currentColor"></circle>
+              </svg>
+            </div>
+            <div class="p-3.5 rounded-2xl rounded-tl-sm bg-[#191D1A] border border-[#2B312C] text-xs text-[#FFFFFF] shadow-sm leading-relaxed space-y-2">
+              <p>
+                Hello! I am your <strong>AI Memory Copilot</strong>. I have real-time read and write access to your personal memory vault.
+              </p>
+              <p class="text-[#A1AAA1]">
+                You can ask me questions about your stored records (e.g. <em>"What are my educational experiences?"</em> or <em>"What contact numbers do you have?"</em>), or command real-time updates directly (e.g. <em>"Update my name to Muazam Ali Sarwar"</em> or <em>"Add skill: React and Next.js"</em>).
+              </p>
+            </div>
+          </div>
+        `;
+      }
 
-          try {
-            const res = await fetch("/api/memory/extract-raw", {
-              method: "POST",
-              headers: { ...headers, "Content-Type": "application/json" },
-              body: JSON.stringify({ raw_text: rawText, auto_save: false })
-            });
+      function appendUserMessage(text) {
+        if (!copilotChatFeed) return;
+        const bubble = document.createElement("div");
+        bubble.className = "flex items-start justify-end gap-3 self-end max-w-[85%] ml-auto";
+        bubble.innerHTML = `
+          <div class="p-3.5 rounded-2xl rounded-tr-sm bg-[#141715] border border-[#2B312C] text-xs text-[#FFFFFF] shadow-sm leading-relaxed">
+            ${escapeHtml(text)}
+          </div>
+        `;
+        copilotChatFeed.appendChild(bubble);
+        copilotChatFeed.scrollTop = copilotChatFeed.scrollHeight;
+      }
 
-            const data = await res.json();
-            if (chatProgress) chatProgress.classList.add("hidden");
+      function appendAssistantMessage(replyText, updates = []) {
+        if (!copilotChatFeed) return;
+        const bubble = document.createElement("div");
+        bubble.className = "flex items-start gap-3 self-start max-w-[85%]";
 
-            if (res.ok && data.success && data.data?.extracted) {
-              currentDraftData = data.data.extracted;
-              renderReviewCard(currentDraftData);
-              displayExtractUpdatedJson(currentDraftData, "Chat Entities Extracted");
-              showToast("Information parsed! Review and confirm fields below.");
-            } else {
-              showToast(data.message || "Could not parse information.", "error");
+        let formattedText = escapeHtml(replyText)
+          .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>')
+          .replace(/\*(.*?)\*/g, '<em class="text-[#A1AAA1]">$1</em>')
+          .replace(/`([^`]+)`/g, '<code class="px-1 py-0.5 rounded bg-[#141715] text-[#B7F34A] font-mono text-[11px]">$1</code>')
+          .replace(/\n- /g, '<br>&bull; ')
+          .replace(/\n/g, '<br>');
+
+        let updateCardHtml = "";
+        if (updates && updates.length > 0) {
+          updateCardHtml = `
+            <div class="mt-3 p-3 bg-[#0B0D0C] border border-[#B7F34A]/40 rounded-xl space-y-2.5">
+              <div class="flex items-center justify-between text-[11px] pb-1.5 border-b border-[#2B312C]">
+                <span class="text-[#B7F34A] font-bold flex items-center gap-1.5">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  Memory Vault Updated
+                </span>
+                <span class="text-[10px] font-mono text-[#5E665E]">POSTGRESQL COMMITTED</span>
+              </div>
+              ${updates.map(u => `
+                <div class="space-y-1 text-xs">
+                  <div class="flex items-center gap-2">
+                    <span class="text-[#5E665E] font-medium text-[11px] w-20">Field:</span>
+                    <span class="font-bold text-white">${escapeHtml(u.label || u.key)}</span>
+                  </div>
+                  ${u.old_value ? `
+                  <div class="flex items-center gap-2">
+                    <span class="text-[#5E665E] font-medium text-[11px] w-20">Previous:</span>
+                    <del class="text-[#f43f5e] font-mono text-[11px]">${escapeHtml(u.old_value)}</del>
+                  </div>
+                  ` : ''}
+                  <div class="flex items-center gap-2">
+                    <span class="text-[#5E665E] font-medium text-[11px] w-20">New Value:</span>
+                    <span class="text-[#B7F34A] font-bold font-mono text-[11px]">${escapeHtml(u.new_value)}</span>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }
+
+        bubble.innerHTML = `
+          <div class="size-8 rounded-lg bg-[#B7F34A] text-[#0B0D0C] flex items-center justify-center font-bold text-xs shrink-0 shadow-[0_0_10px_rgba(183,243,74,0.3)]">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a10 10 0 1 0 10 10H12V2z"></path>
+              <circle cx="12" cy="12" r="3" fill="currentColor"></circle>
+            </svg>
+          </div>
+          <div class="p-3.5 rounded-2xl rounded-tl-sm bg-[#191D1A] border border-[#2B312C] text-xs text-[#FFFFFF] shadow-sm leading-relaxed space-y-2">
+            <div>${formattedText}</div>
+            ${updateCardHtml}
+          </div>
+        `;
+
+        copilotChatFeed.appendChild(bubble);
+        copilotChatFeed.scrollTop = copilotChatFeed.scrollHeight;
+      }
+
+      async function handleSendCopilotMessage(promptText = null) {
+        const message = (promptText || copilotChatInput?.value || "").trim();
+        if (!message) return;
+
+        if (copilotChatInput) copilotChatInput.value = "";
+        appendUserMessage(message);
+
+        if (copilotSendBtn) copilotSendBtn.disabled = true;
+        if (copilotTypingStatus) copilotTypingStatus.classList.remove("hidden");
+
+        const historyToSend = copilotChatHistory.slice(-8);
+        copilotChatHistory.push({ role: "user", content: message });
+
+        const activeTok = localStorage.getItem("magic_fill_token");
+        const reqHeaders = {
+          "Content-Type": "application/json",
+          ...(activeTok ? { "Authorization": `Bearer ${activeTok}` } : {})
+        };
+
+        try {
+          const res = await apiFetch("/api/memory/copilot-chat", {
+            method: "POST",
+            headers: reqHeaders,
+            body: JSON.stringify({
+              message: message,
+              history: historyToSend
+            })
+          });
+
+          const data = await res.json();
+          if (copilotTypingStatus) copilotTypingStatus.classList.add("hidden");
+          if (copilotSendBtn) copilotSendBtn.disabled = false;
+
+          if (res.ok && data.success && data.data) {
+            const reply = data.data.reply;
+            const updates = data.data.updates || [];
+            appendAssistantMessage(reply, updates);
+            copilotChatHistory.push({ role: "assistant", content: reply });
+
+            if (updates.length > 0) {
+              showToast(`Vault updated: ${updates.map(u => u.label || u.key).join(", ")}`);
+              
+              const relevantUpdates = updates.map(u => ({
+                field: u.key,
+                label: u.label || u.key,
+                field_type: u.field_type || "personal_info",
+                ...(u.old_value !== undefined && u.old_value !== null ? { previous_value: u.old_value } : {}),
+                new_value: u.new_value,
+                action: u.action || "UPDATE"
+              }));
+              displayExtractUpdatedJson(relevantUpdates, "Memory Vault Updated", "AI_MEMORY_COPILOT");
+              const nameUpd = updates.find(u => u.key === "full_name");
+              if (nameUpd) {
+                const navName = document.getElementById("navUserName");
+                if (navName) navName.textContent = nameUpd.new_value.toUpperCase();
+              }
             }
-          } catch (e) {
-            if (chatProgress) chatProgress.classList.add("hidden");
-            showToast("Network error communicating with AI.", "error");
+          } else {
+            appendAssistantMessage(data.message || "I encountered an error querying your memory vault. Please try again.");
+          }
+        } catch (err) {
+          console.error("Copilot chat error:", err);
+          if (copilotTypingStatus) copilotTypingStatus.classList.add("hidden");
+          if (copilotSendBtn) copilotSendBtn.disabled = false;
+          appendAssistantMessage("Network communication error with AI engine. Please ensure your backend is running.");
+        }
+      }
+
+      if (copilotSendBtn) {
+        copilotSendBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          handleSendCopilotMessage();
+        });
+      }
+
+      if (copilotChatForm) {
+        copilotChatForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          handleSendCopilotMessage();
+        });
+      }
+
+      // Enter key listener on input
+      if (copilotChatInput) {
+        copilotChatInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            handleSendCopilotMessage();
           }
         });
       }
 
+      // Quick Prompt Chips
+      document.querySelectorAll(".copilot-chip").forEach(chip => {
+        chip.addEventListener("click", () => {
+          const prompt = chip.getAttribute("data-prompt");
+          if (prompt) handleSendCopilotMessage(prompt);
+        });
+      });
+
+      // Clear Chat button
+      if (btnResetCopilotChat) {
+        btnResetCopilotChat.addEventListener("click", () => {
+          copilotChatHistory = [];
+          renderCopilotWelcome();
+          showToast("Conversation cleared.");
+        });
+      }
+
+      // Initialize welcome message
+      renderCopilotWelcome();
+
       // JSON Viewer Handlers
-      function displayExtractUpdatedJson(dataObj, badgeText = "Updated Records") {
+      function sanitizeJsonData(obj) {
+        if (!obj || typeof obj !== 'object') return obj;
+        if (Array.isArray(obj)) return obj.map(sanitizeJsonData);
+        const clean = {};
+        for (const [k, v] of Object.entries(obj)) {
+          if ((k.includes('photo') || k.includes('image') || k.includes('avatar') || k.includes('file_data')) && typeof v === 'string' && (v.startsWith('data:image') || v.length > 500)) {
+            clean[k] = `[base64 / binary payload truncated (${Math.round(v.length / 1024)} KB)]`;
+          } else if (typeof v === 'object' && v !== null) {
+            clean[k] = sanitizeJsonData(v);
+          } else {
+            clean[k] = v;
+          }
+        }
+        return clean;
+      }
+
+      function displayExtractUpdatedJson(dataObj, badgeText = "Updated Records", source = "AI_EXTRACTION_ENGINE") {
         const box = document.getElementById("extractUpdatedJsonBox");
         const code = document.getElementById("extractUpdatedJsonCode");
         const badge = document.getElementById("extractUpdatedBadge");
@@ -968,18 +1233,16 @@ import Base from "@/layouts/Base.astro";
 
         const payload = {
           status: "success",
-          source: "AI_EXTRACTION_ENGINE",
+          source: source,
           timestamp: new Date().toISOString(),
-          updated_records: dataObj
+          updated_records: sanitizeJsonData(dataObj)
         };
 
         code.textContent = JSON.stringify(payload, null, 2);
-        if (badge) badge.textContent = `✓ ${badgeText}`;
+        if (badge) badge.innerHTML = `<span class="inline-flex items-center gap-1"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>${escapeHtml(badgeText)}</span></span>`;
         box.classList.remove("hidden");
         box.scrollIntoView({ behavior: "smooth", block: "nearest" });
       }
-
-      const displayUpdatedJson = displayExtractUpdatedJson;
 
       const copyExtractJsonBtn = document.getElementById("btnCopyExtractJson");
       const copyExtractJsonText = document.getElementById("copyExtractJsonText");
@@ -1028,21 +1291,21 @@ import Base from "@/layouts/Base.astro";
             const img = document.createElement("img");
             img.src = doc.file_data;
             img.alt = doc.title || doc.file_name;
-            img.className = "max-h-[460px] max-w-full rounded-2xl object-contain shadow-2xl border border-white/10";
+            img.className = "max-h-[440px] max-w-full rounded-xl object-contain border border-[#2B312C]";
             modalDocContent.appendChild(img);
           } else if (isPdf) {
             const iframe = document.createElement("iframe");
             iframe.src = doc.file_data;
-            iframe.className = "w-full h-[460px] rounded-2xl border border-white/10";
+            iframe.className = "w-full h-[440px] rounded-xl border border-[#2B312C]";
             modalDocContent.appendChild(iframe);
           } else {
             modalDocContent.innerHTML = `
-              <div class="text-center p-8 space-y-3">
-                <div class="size-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto text-primary">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="text-center p-6 space-y-2">
+                <div class="size-12 rounded-xl bg-[#191D1A] border border-[#2B312C] flex items-center justify-center mx-auto text-[#B7F34A]">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                 </div>
-                <p class="text-sm font-bold text-white">${doc.file_name}</p>
-                <p class="text-xs text-text-light font-mono">${(doc.file_size_bytes / 1024).toFixed(1)} KB</p>
+                <p class="text-xs font-bold text-[#FFFFFF]">${doc.file_name}</p>
+                <p class="text-[11px] text-[#A1AAA1] font-mono">${(doc.file_size_bytes / 1024).toFixed(1)} KB</p>
               </div>
             `;
           }
@@ -1075,19 +1338,19 @@ import Base from "@/layouts/Base.astro";
       function getDocKeyBadge(key) {
         switch (key) {
           case "cnic_front":
-            return `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">🪪 CNIC Front</span>`;
+            return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-[#141715] text-[#B7F34A] border border-[#B7F34A]/30"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="7" y1="12" x2="17" y2="12"></line></svg><span>CNIC Front</span></span>`;
           case "cnic_back":
-            return `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">🪪 CNIC Back</span>`;
+            return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-[#141715] text-[#B7F34A] border border-[#B7F34A]/30"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="8" cy="10" r="1.5"></circle></svg><span>CNIC Back</span></span>`;
           case "profile_photo":
-            return `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-sky-500/15 text-sky-300 border border-sky-500/30">👤 Profile Photo</span>`;
+            return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-[#141715] text-[#FFFFFF] border border-[#2B312C]"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span>Profile Photo</span></span>`;
           case "resume":
-            return `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-purple-500/15 text-purple-300 border border-purple-500/30">📄 Resume / CV</span>`;
+            return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-[#141715] text-[#B7F34A] border border-[#B7F34A]/30"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg><span>Resume / CV</span></span>`;
           case "degree_transcript":
-            return `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30">🎓 Degree</span>`;
+            return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-[#141715] text-[#FFFFFF] border border-[#2B312C]"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path></svg><span>Degree</span></span>`;
           case "passport":
-            return `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">🛂 Passport</span>`;
+            return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-[#141715] text-[#B7F34A] border border-[#B7F34A]/30"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><span>Passport</span></span>`;
           default:
-            return `<span class="px-2.5 py-1 rounded-lg text-[10px] font-mono font-semibold bg-white/5 text-text-light border border-white/10">${key || "document"}</span>`;
+            return `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-[#141715] text-[#A1AAA1] border border-[#2B312C]">${key || "document"}</span>`;
         }
       }
 
@@ -1103,14 +1366,14 @@ import Base from "@/layouts/Base.astro";
           if (docCountBadge) docCountBadge.textContent = String(docData.length);
 
           if (docData.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-text-light">No documents uploaded yet. Upload a photo or ID document above to begin!</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-[#A1AAA1]">No documents uploaded yet. Upload a photo or ID document above to begin!</td></tr>`;
             return;
           }
 
           tbody.innerHTML = "";
           docData.forEach((doc, idx) => {
             const tr = document.createElement("tr");
-            tr.className = "hover:bg-white/5 transition";
+            tr.className = "hover:bg-[#141715] transition-colors";
             const dateStr = doc.created_at ? new Date(doc.created_at).toLocaleDateString() : "";
             const sizeKb = (doc.file_size_bytes / 1024).toFixed(1);
 
@@ -1119,11 +1382,11 @@ import Base from "@/layouts/Base.astro";
 
             let thumbHtml = "";
             if (isImg) {
-              thumbHtml = `<img src="${doc.file_data}" alt="${doc.title}" class="size-11 rounded-xl object-cover border border-white/15 hover:border-primary cursor-pointer hover:scale-110 transition shadow-md doc-thumb-click" data-idx="${idx}" title="Click to view full photo" />`;
+              thumbHtml = `<img src="${doc.file_data}" alt="${doc.title}" class="size-10 rounded-lg object-cover border border-[#2B312C] hover:border-[#B7F34A] cursor-pointer hover:scale-105 transition doc-thumb-click" data-idx="${idx}" title="Click to view full photo" />`;
             } else if (isPdf) {
-              thumbHtml = `<div class="size-11 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 flex items-center justify-center font-bold text-[10px] cursor-pointer hover:scale-105 transition doc-thumb-click shadow-md" data-idx="${idx}">PDF</div>`;
+              thumbHtml = `<div class="size-10 rounded-lg bg-[#141715] border border-[#2B312C] text-rose-400 flex items-center justify-center font-bold text-[10px] cursor-pointer hover:scale-105 transition doc-thumb-click" data-idx="${idx}">PDF</div>`;
             } else {
-              thumbHtml = `<div class="size-11 rounded-xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 flex items-center justify-center font-bold text-[10px] cursor-pointer hover:scale-105 transition doc-thumb-click shadow-md" data-idx="${idx}">DOC</div>`;
+              thumbHtml = `<div class="size-10 rounded-lg bg-[#141715] border border-[#2B312C] text-[#A1AAA1] flex items-center justify-center font-bold text-[10px] cursor-pointer hover:scale-105 transition doc-thumb-click" data-idx="${idx}">DOC</div>`;
             }
 
             tr.innerHTML = `
@@ -1131,23 +1394,23 @@ import Base from "@/layouts/Base.astro";
                 ${thumbHtml}
               </td>
               <td class="py-3">
-                <div class="font-bold text-white text-xs truncate max-w-[180px]">${doc.file_name}</div>
-                <div class="text-[10px] text-text-light font-mono">${doc.title || "Document"}</div>
+                <div class="font-bold text-[#FFFFFF] text-xs truncate max-w-[180px]">${doc.file_name}</div>
+                <div class="text-[10px] text-[#5E665E] font-mono">${doc.title || "Document"}</div>
               </td>
               <td class="py-3">
                 ${getDocKeyBadge(doc.doc_key)}
               </td>
-              <td class="py-3 text-text-light max-w-xs">
-                <p class="truncate text-xs text-slate-300">${doc.description || "—"}</p>
+              <td class="py-3 text-[#A1AAA1] max-w-xs">
+                <p class="truncate text-xs text-[#A1AAA1]">${doc.description || "—"}</p>
               </td>
-              <td class="py-3 text-text-light font-mono text-[11px]">${sizeKb} KB</td>
-              <td class="py-3 text-text-dark font-mono text-[11px]">${dateStr}</td>
+              <td class="py-3 text-[#A1AAA1] font-mono text-[11px]">${sizeKb} KB</td>
+              <td class="py-3 text-[#5E665E] font-mono text-[11px]">${dateStr}</td>
               <td class="py-3 text-right">
-                <div class="flex items-center justify-end gap-2">
-                  <button type="button" class="btn-preview-doc px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-white font-semibold text-xs border border-white/10 cursor-pointer transition hover:border-primary/50" data-idx="${idx}">
+                <div class="flex items-center justify-end gap-1.5">
+                  <button type="button" class="btn-preview-doc px-2.5 py-1 rounded-lg bg-[#141715] hover:bg-[#222723] text-[#FFFFFF] font-semibold text-xs border border-[#2B312C] cursor-pointer transition" data-idx="${idx}">
                     Preview
                   </button>
-                  <button type="button" class="btn-delete-doc px-2.5 py-1 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 font-semibold text-xs border border-rose-500/20 cursor-pointer transition" data-id="${doc.id}">
+                  <button type="button" class="btn-delete-doc px-2.5 py-1 rounded-lg bg-rose-950/20 hover:bg-rose-950/40 text-rose-400 font-semibold text-xs border border-rose-900/30 cursor-pointer transition" data-id="${doc.id}">
                     Delete
                   </button>
                 </div>
@@ -1156,7 +1419,6 @@ import Base from "@/layouts/Base.astro";
             tbody.appendChild(tr);
           });
 
-          // Bind preview triggers
           tbody.querySelectorAll(".doc-thumb-click, .btn-preview-doc").forEach(el => {
             el.addEventListener("click", () => {
               const idx = parseInt(el.getAttribute("data-idx"), 10);
@@ -1166,7 +1428,6 @@ import Base from "@/layouts/Base.astro";
             });
           });
 
-          // Bind delete triggers
           tbody.querySelectorAll(".btn-delete-doc").forEach(btn => {
             btn.addEventListener("click", async () => {
               const docId = btn.getAttribute("data-id");

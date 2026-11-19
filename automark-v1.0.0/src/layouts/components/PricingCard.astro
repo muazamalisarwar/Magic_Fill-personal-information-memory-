@@ -29,13 +29,13 @@ const {
 ---
 
 <div
-  class={`bg-white dark:bg-[#0f1422] border ${is_featured ? "border-indigo-600 shadow-md ring-1 ring-indigo-500/20" : "border-slate-200/80 dark:border-white/10 shadow-xs"} rounded-2xl p-8 sm:p-10 text-left relative flex flex-col justify-between transition-all`}
+  class={`bg-[#191D1A] border ${is_featured ? "border-[#B7F34A] shadow-[0_0_25px_rgba(183,243,74,0.12)] ring-1 ring-[#B7F34A]/30" : "border-[#2B312C]"} rounded-2xl p-8 sm:p-10 text-left relative flex flex-col justify-between transition-all`}
 >
   <div>
     {
       is_featured && (
         <div class="absolute top-8 right-8">
-          <span class="rounded-md px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800/40 font-display">
+          <span class="rounded-lg px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-[#B7F34A] bg-[#B7F34A]/10 border border-[#B7F34A]/30 font-mono">
             {offer_text ?? "Most Popular"}
           </span>
         </div>
@@ -44,25 +44,25 @@ const {
 
     <!-- Pricing Header -->
     <div class="mb-8 leading-none relative">
-      <span class="text-slate-900 dark:text-white text-4xl sm:text-5xl font-extrabold font-display opacity-0">I</span>
+      <span class="text-white text-4xl sm:text-5xl font-extrabold opacity-0">I</span>
       <span
-        class="text-slate-900 dark:text-white text-4xl sm:text-5xl font-extrabold font-display absolute left-0 top-0 flex items-baseline gap-1"
+        class="text-white text-4xl sm:text-5xl font-extrabold absolute left-0 top-0 flex items-baseline gap-1"
         data-price-tag-monthly
       >
         ${price}
-        <span class="text-xs font-medium text-slate-500 dark:text-slate-400 font-body">/ Month</span>
+        <span class="text-xs font-medium text-[#A1AAA1]">/ Month</span>
       </span>
       <span
-        class="text-slate-900 dark:text-white text-4xl sm:text-5xl font-extrabold font-display opacity-0 absolute left-0 top-0 flex items-baseline gap-1"
+        class="text-white text-4xl sm:text-5xl font-extrabold opacity-0 absolute left-0 top-0 flex items-baseline gap-1"
         data-price-tag-yearly
       >
         ${yearly_price}
-        <span class="text-xs font-medium text-slate-500 dark:text-slate-400 font-body">/ Month</span>
+        <span class="text-xs font-medium text-[#A1AAA1]">/ Month</span>
       </span>
     </div>
 
-    <h3 class="text-xl font-bold font-display text-slate-900 dark:text-white mb-3">{title}</h3>
-    <p class="font-body text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-8">{description}</p>
+    <h3 class="text-xl font-bold text-white mb-3">{title}</h3>
+    <p class="text-[#A1AAA1] text-sm leading-relaxed mb-8">{description}</p>
 
     <!-- Checkout Action Button -->
     <div class="mb-8">
@@ -80,25 +80,27 @@ const {
       }
     </div>
 
-    <div class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 font-display mb-5">
+    <div class="text-xs font-semibold uppercase tracking-wider text-[#5E665E] font-mono mb-5">
       Included Capabilities
     </div>
 
     <!-- Feature list -->
-    <ul class="space-y-3.5 font-body text-sm text-slate-600 dark:text-slate-300">
+    <ul class="space-y-3.5 text-sm text-[#A1AAA1]">
       {
         (features || []).map((f) => (
           <li class="flex items-start gap-3">
             {f.included ? (
-              <span class="w-5 h-5 rounded-md bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/40 flex items-center justify-center shrink-0 mt-0.5 text-emerald-600 dark:text-emerald-400 text-xs font-bold">
-                ✓
+              <span class="w-5 h-5 rounded-md bg-[#B7F34A]/10 border border-[#B7F34A]/30 flex items-center justify-center shrink-0 mt-0.5 text-[#B7F34A]">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
               </span>
             ) : (
-              <span class="w-5 h-5 rounded-md bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center shrink-0 mt-0.5 text-slate-400 text-xs">
-                ✕
+              <span class="w-5 h-5 rounded-md bg-[#141715] border border-[#2B312C] flex items-center justify-center shrink-0 mt-0.5 text-[#5E665E]">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
               </span>
             )}
-            <span class="leading-relaxed">{f.label}</span>
+            <span class={f.included ? "text-white" : "text-[#5E665E]"}>
+              {f.label}
+            </span>
           </li>
         ))
       }
