@@ -12,10 +12,10 @@ const { logo, title, content, is_starred } = Astro.props;
 <div
   data-card-spotlight
   data-tilt
-  class="reveal-on-scroll bg-[#191D1A] border border-[#2B312C] rounded-2xl p-8 shadow-sm hover:border-[#B7F34A]/50 hover:shadow-[0_12px_32px_-8px_rgba(183,243,74,0.15)] transition-all duration-300 group relative flex flex-col items-center text-center h-full cursor-pointer"
+  class="reveal-on-scroll bg-white dark:bg-[#191D1A] border border-slate-200 dark:border-[#2B312C] rounded-2xl p-8 shadow-sm hover:border-[#2F6307]/50 dark:hover:border-[#B7F34A]/50 hover:shadow-[0_12px_32px_-8px_rgba(47,99,7,0.08)] dark:hover:shadow-[0_12px_32px_-8px_rgba(183,243,74,0.15)] transition-all duration-300 group relative flex flex-col items-center text-center h-full cursor-pointer"
 >
   <!-- Clean Flat Icon Container -->
-  <div class="w-14 h-14 rounded-xl border border-[#2B312C] bg-[#141715] flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-300">
+  <div class="w-14 h-14 rounded-xl border border-slate-200 dark:border-[#2B312C] bg-slate-50 dark:bg-[#141715] flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-300">
     <ImageMod src={logo} alt={`${title} icon`} class="size-7 object-contain light-mode-icon" />
   </div>
 

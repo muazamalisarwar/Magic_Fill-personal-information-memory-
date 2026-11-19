@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Magic Fill — Personal Memory & Intelligent Autofill",
   "version": "1.2.0",
-  "description": "Intelligent form auto-completion powered by your personal memory, Groq, OpenAI, Gemini, OpenRouter, and local Ollama.",
+  "description": "Intelligent form auto-completion powered by your private personal memory vault. Autofill web forms in 1-click with zero manual retyping.",
   "permissions": [
     "activeTab",
     "storage",

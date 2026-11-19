@@ -6,10 +6,10 @@ interface Props {
 const { title, content } = Astro.props;
 ---
 
-<div class="accordion bg-[#191D1A] border border-[#2B312C] rounded-2xl mb-4 overflow-hidden shadow-sm hover:border-[#B7F34A]/40 transition-all">
+<div class="accordion bg-white dark:bg-[#191D1A] border border-slate-200 dark:border-[#2B312C] rounded-2xl mb-4 overflow-hidden shadow-sm hover:border-[#2F6307]/40 dark:hover:border-[#B7F34A]/40 transition-all">
   <button class="accordion-header w-full p-5 sm:p-6 text-left flex items-center justify-between font-bold text-base text-slate-900 dark:text-white hover:text-[#2F6307] dark:hover:text-[#B7F34A] transition-colors cursor-pointer select-none" data-accordion>
     <span>{title}</span>
-    <div class="w-8 h-8 rounded-lg border border-[#2B312C] bg-[#141715] flex items-center justify-center shrink-0 ml-4 text-slate-500 dark:text-[#A1AAA1]">
+    <div class="w-8 h-8 rounded-lg border border-slate-300 dark:border-[#2B312C] bg-slate-100 dark:bg-[#141715] flex items-center justify-center shrink-0 ml-4 text-slate-700 dark:text-[#A1AAA1]">
       <svg
         class="accordion-icon size-3.5 transition-transform duration-300"
         viewBox="0 0 11 11"

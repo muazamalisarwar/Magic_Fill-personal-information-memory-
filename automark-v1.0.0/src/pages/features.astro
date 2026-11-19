@@ -44,7 +44,7 @@ const featuresData: Features = features.data;
           </div>
         </div>
         <div class="col-12">
-          <div data-card-spotlight data-tilt class="reveal-on-scroll border border-[#2B312C] rounded-2xl p-2 sm:p-3 bg-[#191D1A] shadow-2xl transition-all duration-300 hover:border-[#B7F34A]/40">
+          <div data-card-spotlight data-tilt class="reveal-on-scroll border border-slate-200 dark:border-[#2B312C] rounded-2xl p-2 sm:p-3 bg-white dark:bg-[#191D1A] shadow-2xl transition-all duration-300 hover:border-[#2F6307]/40 dark:hover:border-[#B7F34A]/40">
             <ImageMod
               src={featuresData.banner.image}
               alt="Magic Fill Engine Overview"
@@ -105,36 +105,36 @@ const featuresData: Features = features.data;
           }
         >
           <div class="container">
-            <div class="rounded-3xl bg-light/6 overflow-hidden">
+            <div class="rounded-3xl bg-slate-100 dark:bg-light/6 border border-slate-200 dark:border-white/5 overflow-hidden">
               <div class="grid lg:grid-cols-2">
                 <div
                   class={`p-8 lg:p-12 xl:p-14 ${feature.reverse ? "" : "lg:order-1"}`}
                 >
                   <h2
-                    class="text-h3-sm lg:text-h2 font-bold hasHighlight mb-9 lg:mb-12"
+                    class="text-h3-sm lg:text-h2 font-bold hasHighlight mb-9 lg:mb-12 text-slate-900 dark:text-white"
                     set:html={markdownify(feature.title)}
                   />
 
                   <div class="grid sm:grid-cols-2 gap-8 lg:gap-10">
                     {feature.items.map((item: any) => (
                       <article>
-                        <div class="size-10 rounded-xl bg-white/6 border border-border grid place-items-center mb-4">
+                        <div class="size-10 rounded-xl bg-white dark:bg-white/6 border border-slate-300 dark:border-border grid place-items-center mb-4">
                           <DynamicIcon
                             icon={item.icon}
-                            className="text-text-light text-lg"
+                            className="text-slate-800 dark:text-white text-lg"
                           />
                         </div>
-                        <h3 class="text-h5-sm font-bold text-white mb-2">
+                        <h3 class="text-h5-sm font-bold text-slate-900 dark:text-white mb-2">
                           {item.title}
                         </h3>
-                        <p class="text-text">{item.content}</p>
+                        <p class="text-slate-600 dark:text-[#A1AAA1]">{item.content}</p>
                       </article>
                     ))}
                   </div>
                 </div>
 
                 <div
-                  class={`p-8 lg:p-12 xl:p-14 bg-white/2 h-max ${feature.reverse ? "" : "lg:order-0"}`}
+                  class={`p-8 lg:p-12 xl:p-14 bg-white/50 dark:bg-white/2 h-max ${feature.reverse ? "" : "lg:order-0"}`}
                 >
                   <ImageMod
                     src={feature.image}

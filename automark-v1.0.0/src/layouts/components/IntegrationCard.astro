@@ -12,10 +12,10 @@ const { logo, title, category = "Universal Portal" } = Astro.props;
 
 <div
   data-card-spotlight
-  class="reveal-on-scroll bg-[#191D1A] border border-[#2B312C] rounded-xl p-5 shadow-sm hover:border-[#B7F34A]/50 hover:shadow-[0_8px_24px_-4px_rgba(183,243,74,0.12)] transition-all duration-200 flex items-center justify-between group cursor-pointer"
+  class="reveal-on-scroll bg-white dark:bg-[#191D1A] border border-slate-200 dark:border-[#2B312C] rounded-xl p-5 shadow-sm hover:border-[#2F6307]/50 dark:hover:border-[#B7F34A]/50 hover:shadow-[0_8px_24px_-4px_rgba(47,99,7,0.08)] dark:hover:shadow-[0_8px_24px_-4px_rgba(183,243,74,0.12)] transition-all duration-200 flex items-center justify-between group cursor-pointer"
 >
   <div class="flex items-center gap-3.5 min-w-0">
-    <div class="w-10 h-10 rounded-lg border border-[#2B312C] bg-[#141715] flex items-center justify-center p-2 shrink-0">
+    <div class="w-10 h-10 rounded-lg border border-slate-200 dark:border-[#2B312C] bg-slate-50 dark:bg-[#141715] flex items-center justify-center p-2 shrink-0">
       {logo ? (
         <img
           src={logo}

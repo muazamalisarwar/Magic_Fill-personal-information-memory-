@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       defaultUrl: "",
       needsKey: false,
       needsUrl: false,
-      badgeText: "Default (Groq)",
+      badgeText: "Magic Fill Cloud",
       helpUrl: "https://console.groq.com/keys",
       placeholder: "llama-3.3-70b-versatile",
     },

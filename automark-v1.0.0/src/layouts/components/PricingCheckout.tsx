@@ -82,31 +82,31 @@ export default function PricingCheckout({
             setShowModal(true);
           }
         }}
-        className={`${isFeatured ? "bg-[#B7F34A] hover:bg-[#c9f66d] text-[#0B0D0C] font-bold shadow-[0_0_15px_rgba(183,243,74,0.15)]" : "bg-[#141715] text-white border border-[#2B312C] hover:bg-[#191D1A] hover:border-[#B7F34A]/40"} w-full py-3.5 my-8 block text-center cursor-pointer rounded-xl text-xs font-semibold uppercase tracking-wider transition-all`}
+        className={`${isFeatured ? "bg-[#B7F34A] hover:bg-[#c9f66d] text-[#0B0D0C] font-bold shadow-[0_0_15px_rgba(183,243,74,0.15)]" : "bg-slate-100 dark:bg-[#141715] text-slate-800 dark:text-white border border-slate-300 dark:border-[#2B312C] hover:bg-slate-200 dark:hover:bg-[#191D1A] hover:border-[#2F6307] dark:hover:border-[#B7F34A]/40"} w-full py-3.5 my-8 block text-center cursor-pointer rounded-xl text-xs font-semibold uppercase tracking-wider transition-all`}
       >
         {buttonLabel}
       </button>
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md px-4">
-          <div className="bg-[#191D1A] p-8 rounded-2xl w-full max-w-md border border-[#2B312C] shadow-2xl relative">
+          <div className="bg-white dark:bg-[#191D1A] p-8 rounded-2xl w-full max-w-md border border-slate-200 dark:border-[#2B312C] shadow-2xl relative">
             <button
               onClick={() => setShowModal(false)}
-              className="size-8 rounded-lg border border-[#2B312C] bg-[#141715] absolute top-6 right-6 flex items-center justify-center text-[#A1AAA1] hover:text-white transition-colors cursor-pointer"
+              className="size-8 rounded-lg border border-slate-300 dark:border-[#2B312C] bg-slate-100 dark:bg-[#141715] absolute top-6 right-6 flex items-center justify-center text-slate-600 dark:text-[#A1AAA1] hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
               aria-label="Close"
             >
               &times;
             </button>
-            <h3 className="text-xl font-bold mb-2 text-white">
+            <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white">
               Unlock {planTitle}
             </h3>
-            <p className="text-xs text-[#A1AAA1] mb-6">
+            <p className="text-xs text-slate-600 dark:text-[#A1AAA1] mb-6">
               Enter your details below to activate your account credentials before checkout.
             </p>
 
             <form onSubmit={handleCheckout} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-white mb-1.5">
+                <label className="block text-xs font-bold text-slate-800 dark:text-white mb-1.5">
                   Full Name
                 </label>
                 <input
@@ -114,13 +114,13 @@ export default function PricingCheckout({
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#2B312C] bg-[#141715] text-sm text-white placeholder-[#5E665E] focus:outline-none focus:border-[#B7F34A] transition-all"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-[#2B312C] bg-slate-50 dark:bg-[#141715] text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#5E665E] focus:outline-none focus:border-[#2F6307] dark:focus:border-[#B7F34A] transition-all"
                   placeholder="John Doe"
                   disabled={loading}
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-white mb-1.5">
+                <label className="block text-xs font-bold text-slate-800 dark:text-white mb-1.5">
                   Email Address
                 </label>
                 <input
@@ -128,7 +128,7 @@ export default function PricingCheckout({
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#2B312C] bg-[#141715] text-sm text-white placeholder-[#5E665E] focus:outline-none focus:border-[#B7F34A] transition-all"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-[#2B312C] bg-slate-50 dark:bg-[#141715] text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#5E665E] focus:outline-none focus:border-[#2F6307] dark:focus:border-[#B7F34A] transition-all"
                   placeholder="john@example.com"
                   disabled={loading}
                 />

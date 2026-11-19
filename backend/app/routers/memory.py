@@ -115,7 +115,7 @@ async def extract_raw_text_endpoint(
 
     return APIResponse(
         success=True,
-        message="Successfully processed and extracted personal memory with Groq AI" if payload.auto_save else "Extracted candidate memory preview",
+        message="Successfully processed and extracted personal memory" if payload.auto_save else "Extracted candidate memory preview",
         data=ExtractionResponse(
             extracted=extracted,
             profile=saved_profile,

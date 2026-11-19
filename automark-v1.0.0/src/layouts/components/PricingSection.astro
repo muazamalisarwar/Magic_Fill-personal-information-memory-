@@ -20,24 +20,24 @@ const sectionTitle = title ?? pricingData.page_header?.title ?? "";
 const sectionContent = content ?? pricingData.page_header?.content ?? "";
 ---
 
-<section class="section relative overflow-hidden py-24 bg-[#0B0D0C]" id="pricing">
+<section class="section relative overflow-hidden py-24 bg-transparent scroll-mt-20" id="pricing">
   <div class="container">
     <div class="section-container">
       {
         isHome && (
           <div class="section-intro centralize text-center mb-16">
-            <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[#B7F34A] mb-2 font-mono">
+            <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[#2F6307] dark:text-[#B7F34A] mb-2 font-mono">
               Transparent Pricing
             </p>
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white hasHighlight mb-4" set:html={sectionTitle} />
-            {sectionContent && <p class="text-[#A1AAA1] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">{sectionContent}</p>}
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white hasHighlight mb-4" set:html={sectionTitle} />
+            {sectionContent && <p class="text-slate-600 dark:text-[#A1AAA1] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">{sectionContent}</p>}
           </div>
         )
       }
       <div class="section-content text-center">
         <!-- Pricing Cycle Toggle -->
         <div class="inline-flex items-center justify-center mb-14">
-          <div class="bg-[#141715] border border-[#2B312C] p-1 rounded-xl inline-flex items-center gap-1">
+          <div class="bg-slate-100 dark:bg-[#141715] border border-slate-300 dark:border-[#2B312C] p-1 rounded-xl inline-flex items-center gap-1">
             <input
               type="checkbox"
               data-pricing-toggle
@@ -47,17 +47,17 @@ const sectionContent = content ?? pricingData.page_header?.content ?? "";
             <label
               for="pricing-toggle"
               id="lblToggleMonthly"
-              class="bg-[#191D1A] text-white border border-[#2B312C] shadow-sm px-5 py-2 text-xs font-bold rounded-lg cursor-pointer transition-all active"
+              class="bg-white dark:bg-[#191D1A] text-slate-900 dark:text-white border border-slate-300 dark:border-[#2B312C] shadow-sm px-5 py-2 text-xs font-bold rounded-lg cursor-pointer transition-all active"
             >
               {pricingData.toggler?.monthly_label ?? "Monthly"}
             </label>
             <label
               for="pricing-toggle"
               id="lblToggleYearly"
-              class="px-5 py-2 text-xs font-semibold text-[#A1AAA1] hover:text-white rounded-lg cursor-pointer transition-all"
+              class="px-5 py-2 text-xs font-semibold text-slate-600 dark:text-[#A1AAA1] hover:text-slate-900 dark:hover:text-white rounded-lg cursor-pointer transition-all"
             >
               {pricingData.toggler?.yearly_label ?? "Yearly"}
-              <span class="ml-1 text-[10px] text-[#B7F34A] font-mono font-bold">(Save 20%)</span>
+              <span class="ml-1 text-[10px] text-[#2F6307] dark:text-[#B7F34A] font-mono font-bold">(Save 20%)</span>
             </label>
           </div>
         </div>

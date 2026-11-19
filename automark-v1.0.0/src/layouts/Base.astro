@@ -166,23 +166,6 @@ const { title, meta_title, description, image, noindex, canonical } =
       aria-hidden="true"
     ></div>
 
-    {/* Global Dynamic Interactive Background Layer */}
-    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none" aria-hidden="true">
-      {/* 1. Interactive Ambient Particle Canvas */}
-      <canvas id="globalAmbientParticles" class="absolute inset-0 w-full h-full opacity-65 dark:opacity-80 transition-opacity duration-700"></canvas>
-
-      {/* 2. Spatial Perspective Mesh Grid */}
-      <div class="spatial-grid-bg absolute inset-0 opacity-40 dark:opacity-25 transition-opacity duration-500"></div>
-
-      {/* 3. Ambient Breathing Radiant Glow Orbs */}
-      <div class="ambient-orb orb-1"></div>
-      <div class="ambient-orb orb-2"></div>
-      <div class="ambient-orb orb-3"></div>
-
-      {/* 4. Vignette Depth Overlay */}
-      <div class="vignette-overlay absolute inset-0"></div>
-    </div>
-
     {/* google tag manager noscript */}
     {
       config.google_tag_manager.enable && (

@@ -61,11 +61,8 @@ html:not([data-theme="light"]):not(.light-theme) b {
   color: #FFFFFF !important;
 }
 
-html:not([data-theme="light"]):not(.light-theme) p,
-html:not([data-theme="light"]):not(.light-theme) span,
-html:not([data-theme="light"]):not(.light-theme) li,
-html:not([data-theme="light"]):not(.light-theme) td {
-  color: inherit;
+html:not([data-theme="light"]):not(.light-theme) p {
+  color: #A1AAA1;
 }
 
 html:not([data-theme="light"]):not(.light-theme) .text-muted {
@@ -309,15 +306,22 @@ html.light-theme .hasHighlight strong {
   -webkit-text-fill-color: #2F6307 !important;
 }
 
+/* Light mode base text styling */
 html[data-theme="light"] p,
-html[data-theme="light"] span,
-html[data-theme="light"] li,
-html[data-theme="light"] td,
-html.light-theme p,
-html.light-theme span,
-html.light-theme li,
-html.light-theme td {
-  color: inherit;
+html.light-theme p {
+  color: #334155;
+}
+
+html[data-theme="light"] .text-text-light,
+html.light-theme .text-text-light,
+html[data-theme="light"] [class*="text-text-light"],
+html.light-theme [class*="text-text-light"] {
+  color: #0F1713 !important;
+}
+
+html[data-theme="light"] .text-text,
+html.light-theme .text-text {
+  color: #475569 !important;
 }
 
 html[data-theme="light"] .text-muted,
@@ -375,28 +379,30 @@ html.light-theme #authNavMenu {
 /* Cards & Surface Containers in Light Mode */
 html[data-theme="light"] .card-surface,
 html[data-theme="light"] .bg-dark,
-html[data-theme="light"] .bg-dark\/80,
-html[data-theme="light"] .bg-dark\/85,
-html[data-theme="light"] .bg-dark\/90,
-html[data-theme="light"] .bg-dark\/95,
+html[data-theme="light"] [class*="bg-dark"],
 html[data-theme="light"] [class*="bg-[#191D1A]"],
 html.light-theme .card-surface,
 html.light-theme .bg-dark,
+html.light-theme [class*="bg-dark"],
 html.light-theme [class*="bg-[#191D1A]"] {
   background-color: #FFFFFF !important;
   border-color: #E2E8F0 !important;
+  color: #0F1713 !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 16px -2px rgba(0, 0, 0, 0.04) !important;
 }
 
 html[data-theme="light"] .panel-surface,
 html[data-theme="light"] .bg-light,
+html[data-theme="light"] [class*="bg-light"],
 html[data-theme="light"] .bg-white\/5,
 html[data-theme="light"] [class*="bg-[#141715]"],
 html.light-theme .panel-surface,
 html.light-theme .bg-light,
+html.light-theme [class*="bg-light"],
 html.light-theme [class*="bg-[#141715]"] {
   background-color: #F1F5F2 !important;
   border-color: #E2E8F0 !important;
+  color: #0F1713 !important;
 }
 
 html[data-theme="light"] [class*="border-[#2B312C]"],
@@ -495,12 +501,12 @@ html.light-theme [class*="text-[#5E665E]"] {
 /* Global scroll margin for smooth anchors under sticky header */
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5.5rem;
+  scroll-padding-top: 7rem;
 }
 
 section[id],
 div[id] {
-  scroll-margin-top: 5.5rem;
+  scroll-margin-top: 7rem;
 }
 
 /* Copilot Chips & Interactive Buttons in Light Mode */

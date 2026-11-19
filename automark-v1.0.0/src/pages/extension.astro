@@ -7,27 +7,27 @@ import Base from "@/layouts/Base.astro";
   meta_title="Connect Magic Fill Chrome Extension"
   description="Connect the Magic Fill intelligent autofill browser extension to your personal memory vault in seconds."
 >
-  <section class="pt-28 pb-20 relative overflow-hidden min-h-screen bg-[#0B0D0C]">
+  <section class="pt-28 pb-20 relative overflow-hidden min-h-screen bg-transparent">
     <div class="container mx-auto px-4 max-w-6xl relative z-10">
       
       <!-- Top Breadcrumb / Navigation -->
-      <div class="flex items-center justify-between mb-8 pb-4 border-b border-[#2B312C]">
+      <div class="flex items-center justify-between mb-8 pb-4 border-b border-slate-200 dark:border-[#2B312C]">
         <div class="flex items-center gap-2.5 text-xs font-semibold">
-          <a href="/dashboard" class="text-[#A1AAA1] hover:text-[#B7F34A] flex items-center gap-1.5 transition-colors">
+          <a href="/dashboard" class="text-slate-500 dark:text-[#A1AAA1] hover:text-[#2F6307] dark:hover:text-[#B7F34A] flex items-center gap-1.5 transition-colors">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             <span>Dashboard</span>
           </a>
-          <span class="text-[#5E665E]">/</span>
-          <span class="text-white font-medium">Extension Setup</span>
+          <span class="text-slate-400 dark:text-[#5E665E]">/</span>
+          <span class="text-slate-900 dark:text-white font-medium">Extension Setup</span>
         </div>
 
         <div class="flex items-center gap-2.5">
-          <a href="/playground" class="rounded-lg px-3 py-1.5 text-xs font-medium bg-[#141715] text-[#A1AAA1] border border-[#2B312C] hover:text-white hover:border-[#B7F34A]/40 transition-all">
+          <a href="/playground" class="rounded-lg px-3 py-1.5 text-xs font-medium bg-slate-100 dark:bg-[#141715] text-slate-700 dark:text-[#A1AAA1] border border-slate-300 dark:border-[#2B312C] hover:text-slate-900 dark:hover:text-white hover:border-[#2F6307] dark:hover:border-[#B7F34A]/40 transition-all">
             Open Form Simulator
           </a>
-          <a href="/memory" class="rounded-lg px-3 py-1.5 text-xs font-medium bg-[#141715] text-[#A1AAA1] border border-[#2B312C] hover:text-white hover:border-[#B7F34A]/40 transition-all">
+          <a href="/memory" class="rounded-lg px-3 py-1.5 text-xs font-medium bg-slate-100 dark:bg-[#141715] text-slate-700 dark:text-[#A1AAA1] border border-slate-300 dark:border-[#2B312C] hover:text-slate-900 dark:hover:text-white hover:border-[#2F6307] dark:hover:border-[#B7F34A]/40 transition-all">
             View Memory Vault
           </a>
         </div>
@@ -35,14 +35,14 @@ import Base from "@/layouts/Base.astro";
 
       <!-- Hero Header -->
       <div class="text-center max-w-3xl mx-auto mb-12">
-        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[#B7F34A] mb-2 font-mono">
+        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[#2F6307] dark:text-[#B7F34A] mb-2 font-mono">
           Browser Integration
         </p>
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-3">
-          Connect Your Browser Extension
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-3">
+          Get The Magic Fill Extension
         </h1>
-        <p class="text-base text-[#A1AAA1] leading-relaxed max-w-2xl mx-auto">
-          Link your browser in 30 seconds to enable intelligent, sovereign autofill across job boards, university applications, and forms.
+        <p class="text-base text-slate-600 dark:text-[#A1AAA1] leading-relaxed max-w-2xl mx-auto">
+          Autofill job applications, university portals, and multi-page forms in 1-click using your verified personal memory vault.
         </p>
       </div>
 
@@ -50,43 +50,43 @@ import Base from "@/layouts/Base.astro";
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         <!-- Left: Quick Pairing Card (Hero Action) -->
-        <div data-card-spotlight data-tilt class="reveal-on-scroll lg:col-span-5 bg-[#191D1A] border border-[#2B312C] rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden transition-all duration-300 hover:border-[#B7F34A]/40">
+        <div data-card-spotlight data-tilt class="reveal-on-scroll lg:col-span-5 bg-white dark:bg-[#191D1A] border border-slate-200 dark:border-[#2B312C] rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden transition-all duration-300 hover:border-[#2F6307]/40 dark:hover:border-[#B7F34A]/40">
           <div class="flex items-center gap-3 mb-5">
-            <div class="w-10 h-10 rounded-xl bg-[#B7F34A]/10 border border-[#B7F34A]/30 flex items-center justify-center text-[#B7F34A]">
+            <div class="w-10 h-10 rounded-xl bg-[#B7F34A]/10 border border-[#B7F34A]/30 flex items-center justify-center text-[#2F6307] dark:text-[#B7F34A]">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
               </svg>
             </div>
             <div>
-              <h2 class="text-base font-bold text-white">Instant Pairing Code</h2>
-              <p class="text-xs text-[#A1AAA1]">One-time single-use secure token</p>
+              <h2 class="text-base font-bold text-slate-900 dark:text-white">Instant Pairing Code</h2>
+              <p class="text-xs text-slate-500 dark:text-[#A1AAA1]">One-time single-use secure token</p>
             </div>
           </div>
 
-          <p class="text-xs text-[#A1AAA1] mb-6 leading-relaxed">
+          <p class="text-xs text-slate-600 dark:text-[#A1AAA1] mb-6 leading-relaxed">
             Generate a secure 6-character linking code valid for 5 minutes. Enter this code into your extension popup to link your personal memory vault.
           </p>
 
           <!-- Pairing Code Display Area -->
-          <div id="codeContainer" class="bg-[#141715] border border-[#2B312C] rounded-xl p-5 mb-5 text-center hidden">
-            <p class="text-[11px] uppercase tracking-wider text-[#5E665E] font-semibold mb-2 font-mono">Your 6-Character Code</p>
+          <div id="codeContainer" class="bg-slate-50 dark:bg-[#141715] border border-slate-300 dark:border-[#2B312C] rounded-xl p-5 mb-5 text-center hidden">
+            <p class="text-[11px] uppercase tracking-wider text-slate-500 dark:text-[#5E665E] font-semibold mb-2 font-mono">Your 6-Character Code</p>
             <div class="flex items-center justify-center gap-2 mb-3">
-              <span id="pairingCodeDisplay" class="font-mono text-3xl sm:text-4xl font-extrabold tracking-widest text-[#B7F34A] select-all">------</span>
-              <button id="copyCodeBtn" title="Copy code" class="p-2 rounded-lg bg-[#191D1A] border border-[#2B312C] hover:border-[#B7F34A]/40 text-[#A1AAA1] hover:text-[#B7F34A] transition-colors cursor-pointer">
+              <span id="pairingCodeDisplay" class="font-mono text-3xl sm:text-4xl font-extrabold tracking-widest text-[#2F6307] dark:text-[#B7F34A] select-all">------</span>
+              <button id="copyCodeBtn" title="Copy code" class="p-2 rounded-lg bg-white dark:bg-[#191D1A] border border-slate-300 dark:border-[#2B312C] hover:border-[#2F6307] dark:hover:border-[#B7F34A]/40 text-slate-600 dark:text-[#A1AAA1] hover:text-[#2F6307] dark:hover:text-[#B7F34A] transition-colors cursor-pointer">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                 </svg>
               </button>
             </div>
-            <div class="flex items-center justify-between text-[11px] text-[#A1AAA1]">
+            <div class="flex items-center justify-between text-[11px] text-slate-600 dark:text-[#A1AAA1]">
               <span id="countdownText" class="font-mono">Expires in 05:00</span>
-              <span class="text-[#B7F34A] font-semibold flex items-center gap-1.5">
-                <span class="w-1.5 h-1.5 rounded-full bg-[#B7F34A] shadow-[0_0_6px_rgba(183,243,74,0.6)]"></span>
+              <span class="text-[#2F6307] dark:text-[#B7F34A] font-semibold flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#2F6307] dark:bg-[#B7F34A] shadow-[0_0_6px_rgba(183,243,74,0.6)]"></span>
                 Ready to pair
               </span>
             </div>
-            <div class="w-full bg-[#2B312C] rounded-full h-1 mt-2 overflow-hidden">
-              <div id="countdownBar" class="bg-[#B7F34A] h-1 w-full transition-all duration-1000"></div>
+            <div class="w-full bg-slate-200 dark:bg-[#2B312C] rounded-full h-1 mt-2 overflow-hidden">
+              <div id="countdownBar" class="bg-[#2F6307] dark:bg-[#B7F34A] h-1 w-full transition-all duration-1000"></div>
             </div>
           </div>
 
@@ -102,90 +102,114 @@ import Base from "@/layouts/Base.astro";
           </button>
 
           <!-- Direct instructions -->
-          <div class="mt-6 pt-5 border-t border-[#2B312C] space-y-2.5">
-            <div class="flex items-start gap-2.5 text-xs text-[#A1AAA1]">
-              <span class="w-5 h-5 rounded-md bg-[#141715] text-[#B7F34A] border border-[#2B312C] font-mono font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">1</span>
-              <span>Click the <strong class="text-white">Magic Fill</strong> icon in your browser toolbar.</span>
+          <div class="mt-6 pt-5 border-t border-slate-200 dark:border-[#2B312C] space-y-2.5">
+            <div class="flex items-start gap-2.5 text-xs text-slate-600 dark:text-[#A1AAA1]">
+              <span class="w-5 h-5 rounded-md bg-slate-100 dark:bg-[#141715] text-[#2F6307] dark:text-[#B7F34A] border border-slate-300 dark:border-[#2B312C] font-mono font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">1</span>
+              <span>Click the <strong class="text-slate-900 dark:text-white">Magic Fill</strong> icon in your browser toolbar.</span>
             </div>
-            <div class="flex items-start gap-2.5 text-xs text-[#A1AAA1]">
-              <span class="w-5 h-5 rounded-md bg-[#141715] text-[#B7F34A] border border-[#2B312C] font-mono font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">2</span>
-              <span>Paste or type your 6-character code into the extension.</span>
+            <div class="flex items-start gap-2.5 text-xs text-slate-600 dark:text-[#A1AAA1]">
+              <span class="w-5 h-5 rounded-md bg-slate-100 dark:bg-[#141715] text-[#2F6307] dark:text-[#B7F34A] border border-slate-300 dark:border-[#2B312C] font-mono font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">2</span>
+              <span>Paste or type your 6-character code into the extension popup.</span>
             </div>
-            <div class="flex items-start gap-2.5 text-xs text-[#A1AAA1]">
-              <span class="w-5 h-5 rounded-md bg-[#141715] text-[#B7F34A] border border-[#2B312C] font-mono font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">3</span>
-              <span>Click <strong class="text-white">Link</strong> to sync your personal vault immediately.</span>
+            <div class="flex items-start gap-2.5 text-xs text-slate-600 dark:text-[#A1AAA1]">
+              <span class="w-5 h-5 rounded-md bg-slate-100 dark:bg-[#141715] text-[#2F6307] dark:text-[#B7F34A] border border-slate-300 dark:border-[#2B312C] font-mono font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">3</span>
+              <span>Click <strong class="text-slate-900 dark:text-white">Link</strong> to synchronize your personal vault instantly.</span>
             </div>
           </div>
         </div>
 
         <!-- Right: Step-by-Step Installation Guide -->
         <div class="lg:col-span-7 space-y-6">
+
+          <!-- Prominent Direct Download Banner -->
+          <div class="p-5 rounded-2xl bg-emerald-500/10 dark:bg-[#B7F34A]/10 border border-emerald-500/30 dark:border-[#B7F34A]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-3.5">
+              <div class="size-11 rounded-xl bg-[#B7F34A] text-[#0B0D0C] flex items-center justify-center shrink-0 shadow-sm">
+                <svg class="size-5.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="text-sm font-bold text-slate-900 dark:text-white">Download Extension (.zip)</h3>
+                  <span class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-600/20 text-emerald-800 dark:text-[#B7F34A]">v1.2.0 Live</span>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-[#A1AAA1] mt-0.5">Packed official build • Manifest V3 • Zero third-party telemetry</p>
+              </div>
+            </div>
+            <a
+              href="/downloads/magic-fill-extension.zip"
+              download="magic-fill-extension.zip"
+              class="px-5 py-2.5 rounded-xl text-xs font-bold bg-[#B7F34A] hover:bg-[#c9f66d] text-[#0B0D0C] transition-all flex items-center justify-center gap-2 shrink-0 shadow-sm hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Download .ZIP</span>
+            </a>
+          </div>
           
           <!-- Installation Steps Card -->
-          <div data-card-spotlight class="reveal-on-scroll bg-[#191D1A] border border-[#2B312C] rounded-2xl p-6 sm:p-8 shadow-xl transition-all duration-300 hover:border-[#B7F34A]/40">
-            <h2 class="text-lg font-bold text-white mb-1 flex items-center gap-2">
-              <svg class="w-5 h-5 text-[#B7F34A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div data-card-spotlight class="reveal-on-scroll bg-white dark:bg-[#191D1A] border border-slate-200 dark:border-[#2B312C] rounded-2xl p-6 sm:p-8 shadow-xl transition-all duration-300 hover:border-[#2F6307]/40 dark:hover:border-[#B7F34A]/40">
+            <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-2">
+              <svg class="w-5 h-5 text-[#2F6307] dark:text-[#B7F34A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
-              <span>Installation Guide (Chrome, Edge, Brave)</span>
+              <span>Quick 60-Second Setup (Chrome, Edge, Brave)</span>
             </h2>
-            <p class="text-xs text-[#A1AAA1] mb-6">
-              Magic Fill runs locally with zero third-party tracking. Install the developer build in seconds.
+            <p class="text-xs text-slate-500 dark:text-[#A1AAA1] mb-6">
+              Magic Fill runs locally with zero third-party tracking. Install and link in 4 simple steps.
             </p>
 
             <div class="space-y-3.5">
               <!-- Step A -->
-              <div class="flex gap-4 p-4 rounded-xl bg-[#141715] border border-[#2B312C]">
-                <div class="w-7 h-7 rounded-lg bg-[#B7F34A]/10 text-[#B7F34A] border border-[#B7F34A]/30 flex items-center justify-center font-bold text-xs shrink-0 font-mono">
+              <div class="flex gap-4 p-4 rounded-xl bg-slate-50 dark:bg-[#141715] border border-slate-200 dark:border-[#2B312C]">
+                <div class="w-7 h-7 rounded-lg bg-[#2F6307]/10 dark:bg-[#B7F34A]/10 text-[#2F6307] dark:text-[#B7F34A] border border-[#2F6307]/20 dark:border-[#B7F34A]/30 flex items-center justify-center font-bold text-xs shrink-0 font-mono">
                   1
                 </div>
                 <div>
-                  <h3 class="text-xs font-bold text-white mb-1">Open Extensions Manager</h3>
-                  <p class="text-xs text-[#A1AAA1] leading-relaxed">
-                    Navigate to <code class="px-1.5 py-0.5 rounded bg-[#0B0D0C] text-[#B7F34A] border border-[#2B312C] font-mono text-[11px]">chrome://extensions</code> in Chrome or Brave, or <code class="px-1.5 py-0.5 rounded bg-[#0B0D0C] text-[#B7F34A] border border-[#2B312C] font-mono text-[11px]">edge://extensions</code> in Microsoft Edge.
+                  <h3 class="text-xs font-bold text-slate-900 dark:text-white mb-1">Download &amp; Unzip Package</h3>
+                  <p class="text-xs text-slate-600 dark:text-[#A1AAA1] leading-relaxed">
+                    Click the <strong class="text-slate-900 dark:text-white">Download .ZIP</strong> button above and extract the <code class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-[#0B0D0C] text-[#2F6307] dark:text-[#B7F34A] border border-slate-300 dark:border-[#2B312C] font-mono text-[11px]">magic-fill-extension.zip</code> to your computer.
                   </p>
                 </div>
               </div>
 
               <!-- Step B -->
-              <div class="flex gap-4 p-4 rounded-xl bg-[#141715] border border-[#2B312C]">
-                <div class="w-7 h-7 rounded-lg bg-[#B7F34A]/10 text-[#B7F34A] border border-[#B7F34A]/30 flex items-center justify-center font-bold text-xs shrink-0 font-mono">
+              <div class="flex gap-4 p-4 rounded-xl bg-slate-50 dark:bg-[#141715] border border-slate-200 dark:border-[#2B312C]">
+                <div class="w-7 h-7 rounded-lg bg-[#2F6307]/10 dark:bg-[#B7F34A]/10 text-[#2F6307] dark:text-[#B7F34A] border border-[#2F6307]/20 dark:border-[#B7F34A]/30 flex items-center justify-center font-bold text-xs shrink-0 font-mono">
                   2
                 </div>
                 <div>
-                  <h3 class="text-xs font-bold text-white mb-1">Enable "Developer Mode"</h3>
-                  <p class="text-xs text-[#A1AAA1] leading-relaxed">
-                    Toggle the <strong class="text-white">Developer mode</strong> switch at the top right of the extensions dashboard.
+                  <h3 class="text-xs font-bold text-slate-900 dark:text-white mb-1">Open Extensions &amp; Enable Developer Mode</h3>
+                  <p class="text-xs text-slate-600 dark:text-[#A1AAA1] leading-relaxed">
+                    Navigate to <code class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-[#0B0D0C] text-[#2F6307] dark:text-[#B7F34A] border border-slate-300 dark:border-[#2B312C] font-mono text-[11px]">chrome://extensions</code> in Chrome/Brave or <code class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-[#0B0D0C] text-[#2F6307] dark:text-[#B7F34A] border border-slate-300 dark:border-[#2B312C] font-mono text-[11px]">edge://extensions</code>, then toggle <strong class="text-slate-900 dark:text-white">Developer mode</strong> at top-right.
                   </p>
                 </div>
               </div>
 
               <!-- Step C -->
-              <div class="flex gap-4 p-4 rounded-xl bg-[#141715] border border-[#2B312C]">
-                <div class="w-7 h-7 rounded-lg bg-[#B7F34A]/10 text-[#B7F34A] border border-[#B7F34A]/30 flex items-center justify-center font-bold text-xs shrink-0 font-mono">
+              <div class="flex gap-4 p-4 rounded-xl bg-slate-50 dark:bg-[#141715] border border-slate-200 dark:border-[#2B312C]">
+                <div class="w-7 h-7 rounded-lg bg-[#2F6307]/10 dark:bg-[#B7F34A]/10 text-[#2F6307] dark:text-[#B7F34A] border border-[#2F6307]/20 dark:border-[#B7F34A]/30 flex items-center justify-center font-bold text-xs shrink-0 font-mono">
                   3
                 </div>
                 <div>
-                  <h3 class="text-xs font-bold text-white mb-1">Click "Load Unpacked"</h3>
-                  <p class="text-xs text-[#A1AAA1] leading-relaxed mb-2">
-                    Click the <strong class="text-white">Load unpacked</strong> button at the top left, and select the <code class="px-1.5 py-0.5 rounded bg-[#0B0D0C] text-[#B7F34A] border border-[#2B312C] font-mono text-[11px]">extension</code> folder:
+                  <h3 class="text-xs font-bold text-slate-900 dark:text-white mb-1">Click "Load Unpacked"</h3>
+                  <p class="text-xs text-slate-600 dark:text-[#A1AAA1] leading-relaxed mb-2">
+                    Click the <strong class="text-slate-900 dark:text-white">Load unpacked</strong> button at the top left, and select the unzipped <code class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-[#0B0D0C] text-[#2F6307] dark:text-[#B7F34A] border border-slate-300 dark:border-[#2B312C] font-mono text-[11px]">extension</code> folder.
                   </p>
-                  <div class="p-2.5 rounded-lg bg-[#0B0D0C] border border-[#2B312C] font-mono text-xs text-white flex items-center justify-between select-all">
-                    <span>Magic_Fill/extension</span>
-                    <span class="text-[10px] text-[#5E665E] uppercase tracking-wider font-sans font-semibold">Folder Path</span>
-                  </div>
                 </div>
               </div>
 
               <!-- Step D -->
-              <div class="flex gap-4 p-4 rounded-xl bg-[#141715] border border-[#2B312C]">
-                <div class="w-7 h-7 rounded-lg bg-[#B7F34A]/10 text-[#B7F34A] border border-[#B7F34A]/30 flex items-center justify-center font-bold text-xs shrink-0 font-mono">
+              <div class="flex gap-4 p-4 rounded-xl bg-slate-50 dark:bg-[#141715] border border-slate-200 dark:border-[#2B312C]">
+                <div class="w-7 h-7 rounded-lg bg-[#2F6307]/10 dark:bg-[#B7F34A]/10 text-[#2F6307] dark:text-[#B7F34A] border border-[#2F6307]/20 dark:border-[#B7F34A]/30 flex items-center justify-center font-bold text-xs shrink-0 font-mono">
                   4
                 </div>
                 <div>
-                  <h3 class="text-xs font-bold text-white mb-1">Pin to Toolbar</h3>
-                  <p class="text-xs text-[#A1AAA1] leading-relaxed">
-                    Click the Extensions puzzle icon in your browser toolbar and pin <strong class="text-white">Magic Fill</strong> for instant access.
+                  <h3 class="text-xs font-bold text-slate-900 dark:text-white mb-1">Pin to Toolbar &amp; Pair</h3>
+                  <p class="text-xs text-slate-600 dark:text-[#A1AAA1] leading-relaxed">
+                    Click the Extensions puzzle icon in your browser toolbar, pin <strong class="text-slate-900 dark:text-white">Magic Fill</strong>, and paste your 6-character linking code!
                   </p>
                 </div>
               </div>
@@ -195,26 +219,26 @@ import Base from "@/layouts/Base.astro";
           <!-- Feature Highlights & Hotkeys -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             
-            <div class="p-5 rounded-2xl bg-[#191D1A] border border-[#2B312C]">
-              <div class="w-8 h-8 rounded-lg bg-[#B7F34A]/10 text-[#B7F34A] border border-[#B7F34A]/20 flex items-center justify-center mb-3">
+            <div class="p-5 rounded-2xl bg-white dark:bg-[#191D1A] border border-slate-200 dark:border-[#2B312C]">
+              <div class="w-8 h-8 rounded-lg bg-[#2F6307]/10 dark:bg-[#B7F34A]/10 text-[#2F6307] dark:text-[#B7F34A] border border-[#2F6307]/20 dark:border-[#B7F34A]/20 flex items-center justify-center mb-3">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
                 </svg>
               </div>
-              <h3 class="text-xs font-bold text-white mb-1">Visual Field Status</h3>
-              <p class="text-xs text-[#A1AAA1] leading-relaxed">
+              <h3 class="text-xs font-bold text-slate-900 dark:text-white mb-1">Visual Field Status</h3>
+              <p class="text-xs text-slate-600 dark:text-[#A1AAA1] leading-relaxed">
                 Inputs highlight green when Magic Fill has stored data, and remain neutral when optional or missing.
               </p>
             </div>
 
-            <div class="p-5 rounded-2xl bg-[#191D1A] border border-[#2B312C]">
-              <div class="w-8 h-8 rounded-lg bg-[#B7F34A]/10 text-[#B7F34A] border border-[#B7F34A]/20 flex items-center justify-center mb-3">
+            <div class="p-5 rounded-2xl bg-white dark:bg-[#191D1A] border border-slate-200 dark:border-[#2B312C]">
+              <div class="w-8 h-8 rounded-lg bg-[#2F6307]/10 dark:bg-[#B7F34A]/10 text-[#2F6307] dark:text-[#B7F34A] border border-[#2F6307]/20 dark:border-[#B7F34A]/20 flex items-center justify-center mb-3">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
               </div>
-              <h3 class="text-xs font-bold text-white mb-1">Consent-Based Learning</h3>
-              <p class="text-xs text-[#A1AAA1] leading-relaxed">
+              <h3 class="text-xs font-bold text-slate-900 dark:text-white mb-1">Consent-Based Learning</h3>
+              <p class="text-xs text-slate-600 dark:text-[#A1AAA1] leading-relaxed">
                 When you fill or edit a new field, Magic Fill prompts a quick confirmation before saving anything to your vault.
               </p>
             </div>

@@ -31,13 +31,13 @@ const {
 <div
   data-card-spotlight
   data-tilt
-  class={`reveal-on-scroll bg-[#191D1A] border ${is_featured ? "border-[#B7F34A] shadow-[0_0_30px_rgba(183,243,74,0.18)] ring-1 ring-[#B7F34A]/30" : "border-[#2B312C]"} rounded-2xl p-8 sm:p-10 text-left relative flex flex-col justify-between transition-all duration-300 hover:border-[#B7F34A]/50`}
+  class={`reveal-on-scroll bg-white dark:bg-[#191D1A] border ${is_featured ? "border-[#2F6307] dark:border-[#B7F34A] shadow-[0_0_30px_rgba(47,99,7,0.12)] dark:shadow-[0_0_30px_rgba(183,243,74,0.18)] ring-1 ring-[#2F6307]/30 dark:ring-[#B7F34A]/30" : "border-slate-200 dark:border-[#2B312C]"} rounded-2xl p-8 sm:p-10 text-left relative flex flex-col justify-between transition-all duration-300 hover:border-[#2F6307]/50 dark:hover:border-[#B7F34A]/50`}
 >
   <div>
     {
       is_featured && (
         <div class="absolute top-8 right-8">
-          <span class="rounded-lg px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-[#B7F34A] bg-[#B7F34A]/10 border border-[#B7F34A]/30 font-mono">
+          <span class="rounded-lg px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-[#2F6307] dark:text-[#B7F34A] bg-[#2F6307]/10 dark:bg-[#B7F34A]/10 border border-[#2F6307]/30 dark:border-[#B7F34A]/30 font-mono">
             {offer_text ?? "Most Popular"}
           </span>
         </div>
@@ -96,7 +96,7 @@ const {
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
               </span>
             ) : (
-              <span class="w-5 h-5 rounded-md bg-[#141715] border border-[#2B312C] flex items-center justify-center shrink-0 mt-0.5 text-slate-400 dark:text-[#5E665E]">
+              <span class="w-5 h-5 rounded-md bg-slate-100 dark:bg-[#141715] border border-slate-300 dark:border-[#2B312C] flex items-center justify-center shrink-0 mt-0.5 text-slate-400 dark:text-[#5E665E]">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
               </span>
             )}

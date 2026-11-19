@@ -8,11 +8,11 @@ draft: false
 
 #### Your Data Sovereignty & Isolation
 
-Magic Fill is engineered on the principle of strict personal data sovereignty. Your personal information, identity cards (CNIC/ID), resumes, and employment histories are stored in your private, isolated PostgreSQL database partition. Magic Fill never sells, rents, or shares your personal memory records with third-party advertisers or data brokers.
+Magic Fill is engineered on the principle of strict personal data sovereignty. Your personal information, identity cards (CNIC/ID), resumes, and employment histories are stored in your private, isolated encrypted database vault. Magic Fill never sells, rents, or shares your personal memory records with third-party advertisers or data brokers.
 
 #### Zero-Hallucination & AI Processing
 
-When you choose to extract memory records from resumes, transcripts, or free-form text, processing is carried out using private, secure API invocations with Groq LLM infrastructure. Prompts are sanitized, and your data is used exclusively to recognize and format your personal attributes into verified fields. No user data is ever used to train public foundational AI models.
+When you choose to extract memory records from resumes, transcripts, or free-form text, processing is carried out using private, enterprise-grade encrypted processing infrastructure. Prompts are sanitized, and your data is used exclusively to recognize and format your personal attributes into verified fields. No user data is ever used to train public foundational AI models.
 
 #### Form Autofill & Browser Extension Security
 

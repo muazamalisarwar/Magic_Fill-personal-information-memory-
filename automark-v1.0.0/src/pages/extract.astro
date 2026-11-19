@@ -67,7 +67,7 @@ import Base from "@/layouts/Base.astro";
       <div class="bg-[#191D1A] border border-[#2B312C] rounded-2xl p-6 sm:p-8 shadow-sm">
         <h3 class="text-base font-bold font-display text-[#FFFFFF] mb-1">Upload Resume or Identity Document</h3>
         <p class="text-xs text-[#A1AAA1] mb-5">
-          Supported formats: PDF, DOCX, TXT. Our Groq AI parser will extract your contact info, education, skills, and work experience for review.
+          Supported formats: PDF, DOCX, TXT. Our intelligent extraction engine will parse your contact info, education, skills, and work experience for review.
         </p>
 
         <!-- Drag & Drop Dropzone -->
@@ -88,7 +88,7 @@ import Base from "@/layouts/Base.astro";
         <!-- Extraction Progress Indicator -->
         <div id="uploadProgress" class="hidden mt-4 p-3.5 rounded-xl bg-[#141715] border border-[#2B312C] flex items-center gap-3">
           <div class="size-4 border-2 border-[#B7F34A] border-t-transparent rounded-full animate-spin"></div>
-          <span id="uploadProgressText" class="text-xs text-[#FFFFFF] font-medium">Reading document &amp; extracting attributes with Groq AI...</span>
+          <span id="uploadProgressText" class="text-xs text-[#FFFFFF] font-medium">Analyzing document &amp; extracting your attributes...</span>
         </div>
       </div>
 
@@ -360,7 +360,7 @@ import Base from "@/layouts/Base.astro";
           <div>
             <h4 class="text-xs font-bold text-[#FFFFFF]">Updated Memory Attributes (JSON Output)</h4>
             <p id="extractUpdatedJsonSub" class="text-[11px] text-[#A1AAA1]">
-              Structured records committed to your PostgreSQL memory vault
+              Structured records verified and saved to your personal memory vault
             </p>
           </div>
         </div>
@@ -868,7 +868,7 @@ import Base from "@/layouts/Base.astro";
         reviewCard.scrollIntoView({ behavior: "smooth" });
       }
 
-      // Confirm & Save Extracted Attributes to PostgreSQL
+      // Confirm & Save Extracted Attributes to Memory Vault
       const confirmSaveBtn = document.getElementById("btnConfirmSaveExtracted");
       const discardBtn = document.getElementById("btnDiscardExtracted");
 
@@ -882,7 +882,7 @@ import Base from "@/layouts/Base.astro";
       if (confirmSaveBtn) {
         confirmSaveBtn.addEventListener("click", async () => {
           confirmSaveBtn.disabled = true;
-          confirmSaveBtn.textContent = "Saving to Database...";
+          confirmSaveBtn.textContent = "Saving to Memory Vault...";
 
           try {
             const piPayload = {};
@@ -1055,7 +1055,7 @@ import Base from "@/layouts/Base.astro";
                   <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
                   Memory Vault Updated
                 </span>
-                <span class="text-[10px] font-mono text-[#5E665E]">POSTGRESQL COMMITTED</span>
+                <span class="text-[10px] font-mono text-[#2F6307] dark:text-[#B7F34A]">VERIFIED &amp; SAVED</span>
               </div>
               ${updates.map(u => `
                 <div class="space-y-1 text-xs">

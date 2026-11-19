@@ -49,19 +49,41 @@ const homepageData: Homepage = homepage.data;
           <div class="flex gap-3 justify-center items-center flex-wrap">
             <a
               class="group px-7 py-3.5 text-sm sm:text-[15px] font-bold rounded-xl bg-[#B7F34A] hover:bg-[#c9f66d] text-[#0B0D0C] shadow-[0_0_20px_rgba(183,243,74,0.15)] hover:shadow-[0_0_30px_rgba(183,243,74,0.25)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center gap-2.5 cursor-pointer"
-              rel="noopener noreferrer"
-              href={homepageData.banner.button_primary.link}
+              href="/extension"
             >
-              <span>{homepageData.banner.button_primary.label}</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="transition-transform duration-200 group-hover:translate-x-0.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <svg class="size-5 shrink-0" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" stroke="#0B0D0C" stroke-width="2" fill="none"/>
+                <circle cx="12" cy="12" r="4" fill="#0B0D0C"/>
+                <path d="M12 2a10 10 0 0 1 8.66 5l-4.33 7.5" stroke="#0B0D0C" stroke-width="2" stroke-linecap="round"/>
+                <path d="M20.66 7a10 10 0 0 1-5 13.66l-4.33-7.5" stroke="#0B0D0C" stroke-width="2" stroke-linecap="round"/>
+                <path d="M3.34 7a10 10 0 0 0 8.66 13.66l4.33-7.5" stroke="#0B0D0C" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <span>Add to Chrome — Free</span>
+              <span class="text-[11px] font-mono px-1.5 py-0.5 rounded bg-black/10 font-semibold">v1.2</span>
             </a>
             <a
-              class="px-7 py-3.5 text-sm sm:text-[15px] font-semibold rounded-xl bg-[#141715] hover:bg-[#191D1A] text-white border border-[#2B312C] hover:border-[#B7F34A]/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer"
-              rel="noopener noreferrer"
-              href={homepageData.banner.button_secondary.link}
+              class="px-7 py-3.5 text-sm sm:text-[15px] font-semibold rounded-xl bg-white dark:bg-[#141715] hover:bg-slate-100 dark:hover:bg-[#191D1A] text-slate-800 dark:text-white border border-slate-300 dark:border-[#2B312C] hover:border-[#2F6307] dark:hover:border-[#B7F34A]/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer flex items-center gap-2"
+              href="/playground"
             >
-              {homepageData.banner.button_secondary.label}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <span>Try Live Simulator</span>
             </a>
+          </div>
+
+          <!-- Trust Badges -->
+          <div class="mt-5 flex items-center justify-center gap-3 sm:gap-4 text-xs text-slate-500 dark:text-[#A1AAA1] flex-wrap">
+            <span class="flex items-center gap-1.5">
+              <svg class="size-3.5 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Manifest V3 Certified</span>
+            </span>
+            <span class="hidden sm:inline">&bull;</span>
+            <span class="flex items-center gap-1.5">
+              <span class="text-amber-400">★★★★★</span>
+              <span class="font-semibold text-slate-700 dark:text-white">4.9 / 5</span>
+              <span>(Chrome Extension)</span>
+            </span>
+            <span class="hidden sm:inline">&bull;</span>
+            <span>Works on Workday, Greenhouse &amp; all web forms</span>
           </div>
         </div>
 

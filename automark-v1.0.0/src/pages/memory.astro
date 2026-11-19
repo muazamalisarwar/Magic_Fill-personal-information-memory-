@@ -553,7 +553,7 @@ import Base from "@/layouts/Base.astro";
         setTimeout(() => t.classList.add("hidden"), 3500);
       }
 
-      // Load Vault Data from PostgreSQL
+      // Load Vault Data from Secure Vault
       async function loadVault() {
         const container = document.getElementById("memoryItemsList");
         try {
@@ -1223,7 +1223,7 @@ import Base from "@/layouts/Base.astro";
                   <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
                   Memory Vault Updated
                 </span>
-                <span class="text-[10px] font-mono text-[#5E665E]">POSTGRESQL COMMITTED</span>
+                <span class="text-[10px] font-mono text-[#2F6307] dark:text-[#B7F34A]">VERIFIED &amp; SAVED</span>
               </div>
               ${updates.map(u => `
                 <div class="space-y-1 text-xs">

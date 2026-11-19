@@ -68,7 +68,7 @@ our_features:
       is_starred: false
     - logo: "/images/features-menu-icon.svg"
       title: "Zero-Hallucination Semantic AI"
-      content: "Strict deterministic matching combined with Groq LLM ensures accurate, authentic data."
+      content: "Strict deterministic context matching ensures your information is mapped with exact, authentic precision."
       is_starred: false
     - logo: "/images/features-menu-icon.svg"
       title: "Privacy Quarantine Vault"

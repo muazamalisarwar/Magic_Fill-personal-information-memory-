@@ -265,8 +265,7 @@ import { sporeCanvas, initGlobalAmbientParticles } from "./particleCanvas.js";
 
     heroVideo();
     updateTrustedPartners();
-    initGlobalAmbientParticles();
-    sporesEffect();
+    // Ambient dots and AI-pattern canvases removed for clean production look
     pricingToggle();
     initScrollProgressAndBackToTop();
     initCardSpotlightAndTilt();

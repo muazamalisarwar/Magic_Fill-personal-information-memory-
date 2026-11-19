@@ -158,14 +158,21 @@ const { pathname } = Astro.url;
         </svg>
       </button>
 
-      <!-- Chrome Extension Quick Link -->
+      <!-- Chrome Extension Quick Link (Live Product Style) -->
       <a
         href="/extension"
-        class="hidden sm:inline-flex items-center gap-2 h-9 px-3.5 rounded-lg text-xs font-semibold text-[#FFFFFF] bg-[#141715] hover:bg-[#191D1A] border border-[#2B312C] hover:border-[#3A423C] transition-all duration-150"
-        title="Pair Chrome Extension"
+        class="hidden sm:inline-flex items-center gap-2 h-9 px-3.5 rounded-xl text-xs font-semibold text-slate-800 dark:text-white bg-slate-100 dark:bg-[#141715] hover:bg-slate-200 dark:hover:bg-[#191D1A] border border-slate-300 dark:border-[#2B312C] hover:border-[#2F6307] dark:hover:border-[#B7F34A]/40 transition-all duration-150 shadow-xs group"
+        title="Get the Magic Fill Chrome Extension"
       >
-        <span class="size-2 rounded-full bg-[#B7F34A]"></span>
+        <svg class="size-4 shrink-0" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="#3b82f6" stroke-width="1.8" fill="none"/>
+          <circle cx="12" cy="12" r="4" fill="#3b82f6"/>
+          <path d="M12 2a10 10 0 0 1 8.66 5l-4.33 7.5" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M20.66 7a10 10 0 0 1-5 13.66l-4.33-7.5" stroke="#eab308" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M3.34 7a10 10 0 0 0 8.66 13.66l4.33-7.5" stroke="#22c55e" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
         <span>Extension</span>
+        <span class="size-1.5 rounded-full bg-[#2F6307] dark:bg-[#B7F34A] animate-pulse"></span>
       </a>
 
       <!-- Logged Out Actions -->
