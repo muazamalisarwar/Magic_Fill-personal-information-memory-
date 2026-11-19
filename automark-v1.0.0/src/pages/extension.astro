@@ -50,7 +50,7 @@ import Base from "@/layouts/Base.astro";
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         <!-- Left: Quick Pairing Card (Hero Action) -->
-        <div class="lg:col-span-5 bg-[#191D1A] border border-[#2B312C] rounded-2xl p-6 sm:p-8 shadow-sm relative overflow-hidden">
+        <div data-card-spotlight data-tilt class="reveal-on-scroll lg:col-span-5 bg-[#191D1A] border border-[#2B312C] rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden transition-all duration-300 hover:border-[#B7F34A]/40">
           <div class="flex items-center gap-3 mb-5">
             <div class="w-10 h-10 rounded-xl bg-[#B7F34A]/10 border border-[#B7F34A]/30 flex items-center justify-center text-[#B7F34A]">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -122,7 +122,7 @@ import Base from "@/layouts/Base.astro";
         <div class="lg:col-span-7 space-y-6">
           
           <!-- Installation Steps Card -->
-          <div class="bg-[#191D1A] border border-[#2B312C] rounded-2xl p-6 sm:p-8 shadow-sm">
+          <div data-card-spotlight class="reveal-on-scroll bg-[#191D1A] border border-[#2B312C] rounded-2xl p-6 sm:p-8 shadow-xl transition-all duration-300 hover:border-[#B7F34A]/40">
             <h2 class="text-lg font-bold text-white mb-1 flex items-center gap-2">
               <svg class="w-5 h-5 text-[#B7F34A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />

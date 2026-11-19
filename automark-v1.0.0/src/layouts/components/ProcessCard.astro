@@ -8,7 +8,11 @@ interface Props {
 const { logo, step, title, content } = Astro.props;
 ---
 
-<div class="bg-[#191D1A] border border-[#2B312C] rounded-2xl p-8 xl:p-10 shadow-sm hover:border-[#B7F34A]/40 transition-all flex flex-col items-center text-center relative overflow-hidden group h-full">
+<div
+  data-card-spotlight
+  data-tilt
+  class="reveal-on-scroll bg-[#191D1A] border border-[#2B312C] rounded-2xl p-8 xl:p-10 shadow-sm hover:border-[#B7F34A]/50 hover:shadow-[0_12px_32px_-8px_rgba(183,243,74,0.15)] transition-all duration-300 flex flex-col items-center text-center relative overflow-hidden group h-full cursor-pointer"
+>
   <!-- Step number label -->
   {step && (
     <span class="text-xs font-semibold uppercase tracking-[0.12em] text-[#B7F34A] font-mono mb-4 block">

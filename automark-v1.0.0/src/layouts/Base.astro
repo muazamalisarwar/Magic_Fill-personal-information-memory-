@@ -54,20 +54,11 @@ const { title, meta_title, description, image, noindex, canonical } =
     <script is:inline>
       (function() {
         try {
-          const p = window.location.pathname.replace(/\/$/, "");
-          const appRoutes = ["/dashboard", "/memory", "/extract", "/playground"];
-          const isAppRoute = appRoutes.includes(p);
-          if (isAppRoute) {
-            const savedTheme = localStorage.getItem("magic_fill_theme") || "dark";
-            document.documentElement.setAttribute("data-theme", savedTheme);
-            if (savedTheme === "light") {
-              document.documentElement.classList.add("light-theme");
-            } else {
-              document.documentElement.classList.remove("light-theme");
-            }
+          const savedTheme = localStorage.getItem("magic_fill_theme") || "dark";
+          document.documentElement.setAttribute("data-theme", savedTheme);
+          if (savedTheme === "light") {
+            document.documentElement.classList.add("light-theme");
           } else {
-            // Public landing & marketing pages are strictly locked to dark brand theme
-            document.documentElement.setAttribute("data-theme", "dark");
             document.documentElement.classList.remove("light-theme");
           }
         } catch(e) {}
@@ -166,7 +157,32 @@ const { title, meta_title, description, image, noindex, canonical } =
     <!-- Google Identity Services (GIS) Client Library -->
     <script is:inline src="https://accounts.google.com/gsi/client" async defer></script>
   </head>
-  <body>
+  <body class="relative min-h-screen">
+    {/* Top Scroll Reading Progress Indicator */}
+    <div
+      id="scrollProgressBar"
+      class="fixed top-0 left-0 h-[2.5px] z-[120] pointer-events-none transition-[width] duration-75"
+      style="width: 0%;"
+      aria-hidden="true"
+    ></div>
+
+    {/* Global Dynamic Interactive Background Layer */}
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none" aria-hidden="true">
+      {/* 1. Interactive Ambient Particle Canvas */}
+      <canvas id="globalAmbientParticles" class="absolute inset-0 w-full h-full opacity-65 dark:opacity-80 transition-opacity duration-700"></canvas>
+
+      {/* 2. Spatial Perspective Mesh Grid */}
+      <div class="spatial-grid-bg absolute inset-0 opacity-40 dark:opacity-25 transition-opacity duration-500"></div>
+
+      {/* 3. Ambient Breathing Radiant Glow Orbs */}
+      <div class="ambient-orb orb-1"></div>
+      <div class="ambient-orb orb-2"></div>
+      <div class="ambient-orb orb-3"></div>
+
+      {/* 4. Vignette Depth Overlay */}
+      <div class="vignette-overlay absolute inset-0"></div>
+    </div>
+
     {/* google tag manager noscript */}
     {
       config.google_tag_manager.enable && (
@@ -180,5 +196,47 @@ const { title, meta_title, description, image, noindex, canonical } =
     </main>
     <Footer />
     <MagicFillInteractive />
+
+    {/* Floating Scroll To Top Pill with Circular Progress Ring */}
+    <button
+      type="button"
+      id="scrollToTopBtn"
+      class="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-40 size-11 rounded-full flex items-center justify-center bg-[#141715]/90 dark:bg-[#141715]/90 text-white border border-[#2B312C] shadow-xl backdrop-blur-md opacity-0 translate-y-4 pointer-events-none transition-all duration-300 hover:border-[#B7F34A]/50 hover:scale-105 active:scale-95 cursor-pointer group"
+      aria-label="Scroll back to top"
+      title="Scroll to top"
+    >
+      <svg class="absolute inset-0 size-full -rotate-90" viewBox="0 0 44 44">
+        <circle
+          cx="22"
+          cy="22"
+          r="18"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          class="text-white/10 dark:text-white/10"
+        />
+        <circle
+          id="scrollRingProgress"
+          cx="22"
+          cy="22"
+          r="18"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-dasharray="113.097"
+          stroke-dashoffset="113.097"
+          class="text-[#B7F34A] transition-all duration-75"
+        />
+      </svg>
+      <svg
+        class="size-4 text-white group-hover:-translate-y-0.5 transition-transform duration-200"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        stroke-width="2.5"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"></path>
+      </svg>
+    </button>
   </body>
 </html>

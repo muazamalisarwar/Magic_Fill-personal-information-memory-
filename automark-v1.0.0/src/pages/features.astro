@@ -44,11 +44,13 @@ const featuresData: Features = features.data;
           </div>
         </div>
         <div class="col-12">
-          <ImageMod
-            src={featuresData.banner.image}
-            alt="Automark Dashboard"
-            class="w-full"
-          />
+          <div data-card-spotlight data-tilt class="reveal-on-scroll border border-[#2B312C] rounded-2xl p-2 sm:p-3 bg-[#191D1A] shadow-2xl transition-all duration-300 hover:border-[#B7F34A]/40">
+            <ImageMod
+              src={featuresData.banner.image}
+              alt="Magic Fill Engine Overview"
+              class="w-full rounded-xl"
+            />
+          </div>
         </div>
       </div>
     </div>

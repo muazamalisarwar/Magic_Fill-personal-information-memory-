@@ -159,6 +159,105 @@ import { sporeCanvas, initGlobalAmbientParticles } from "./particleCanvas.js";
     });
   }
 
+  // 1. Reading Scroll Progress Bar & Floating Back-To-Top Pill
+  function initScrollProgressAndBackToTop() {
+    const progressBar = document.getElementById("scrollProgressBar");
+    const topBtn = document.getElementById("scrollToTopBtn");
+    const progressRing = document.getElementById("scrollRingProgress");
+    const circumference = 2 * Math.PI * 18; // approx 113.097
+
+    function updateProgress() {
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const currentScroll = window.scrollY;
+      const progress = scrollHeight > 0 ? Math.min(Math.max(currentScroll / scrollHeight, 0), 1) : 0;
+      const pct = (progress * 100).toFixed(1);
+
+      if (progressBar) {
+        progressBar.style.width = `${pct}%`;
+      }
+
+      if (progressRing) {
+        const offset = circumference - (progress * circumference);
+        progressRing.style.strokeDashoffset = `${offset}`;
+      }
+
+      if (topBtn) {
+        if (currentScroll > 280) {
+          topBtn.classList.remove("opacity-0", "translate-y-4", "pointer-events-none");
+          topBtn.classList.add("opacity-100", "translate-y-0");
+        } else {
+          topBtn.classList.add("opacity-0", "translate-y-4", "pointer-events-none");
+          topBtn.classList.remove("opacity-100", "translate-y-0");
+        }
+      }
+    }
+
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    updateProgress();
+
+    if (topBtn) {
+      topBtn.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
+  }
+
+  // 2. Interactive Card Spotlight Glow & Spatial 3D Tilt
+  function initCardSpotlightAndTilt() {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const cards = document.querySelectorAll("[data-card-spotlight], [data-tilt], .card-interactive, .spotlight-card");
+
+    cards.forEach((card) => {
+      card.addEventListener("mousemove", (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        card.style.setProperty("--mouse-x", `${x}px`);
+        card.style.setProperty("--mouse-y", `${y}px`);
+
+        if (!prefersReducedMotion && (card.hasAttribute("data-tilt") || card.classList.contains("tilt-card"))) {
+          const xPct = (x / rect.width) - 0.5;
+          const yPct = (y / rect.height) - 0.5;
+          card.style.transform = `perspective(1000px) rotateX(${-yPct * 6}deg) rotateY(${xPct * 6}deg) translateY(-3px)`;
+        }
+      });
+
+      card.addEventListener("mouseleave", () => {
+        if (!prefersReducedMotion && (card.hasAttribute("data-tilt") || card.classList.contains("tilt-card"))) {
+          card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)";
+        }
+      });
+    });
+  }
+
+  // 3. Staggered Entrance Reveal on Scroll
+  function initScrollReveal() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.querySelectorAll(".reveal-on-scroll, [data-reveal]").forEach((el) => {
+        el.classList.add("is-revealed");
+      });
+      return;
+    }
+
+    const revealElements = document.querySelectorAll(".reveal-on-scroll, [data-reveal]");
+    if (!revealElements.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-revealed");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -60px 0px", threshold: 0.1 }
+    );
+
+    revealElements.forEach((el) => observer.observe(el));
+  }
+
   function init() {
     gsap.registerPlugin(ScrollTrigger);
     // Init Lenis smooth scroll
@@ -169,6 +268,9 @@ import { sporeCanvas, initGlobalAmbientParticles } from "./particleCanvas.js";
     initGlobalAmbientParticles();
     sporesEffect();
     pricingToggle();
+    initScrollProgressAndBackToTop();
+    initCardSpotlightAndTilt();
+    initScrollReveal();
   }
 
   // Run immediately — module scripts are deferred, DOM is already ready
