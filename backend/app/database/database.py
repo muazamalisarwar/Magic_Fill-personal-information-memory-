@@ -14,6 +14,13 @@ class Settings(BaseSettings):
     HOST: str = "127.0.0.1"
     PORT: int = 8000
     DATABASE_URL: str = "postgresql+psycopg://magic_fill_user:575092@localhost:5432/magic_fill"
+    DATABASE_URL_UNPOOLED: Optional[str] = None
+    NEON_BRANCH: Optional[str] = None
+    NEON_BRANCH_ID: Optional[str] = None
+
+    # Neon AI Gateway Configuration
+    NEON_AI_GATEWAY_TOKEN: Optional[str] = None
+    NEON_AI_GATEWAY_BASE_URL: Optional[str] = None
 
     # JWT Security Configuration
     SECRET_KEY: str = "magic_fill_production_jwt_secret_key_secure_2026"
@@ -26,10 +33,14 @@ class Settings(BaseSettings):
     # Google OAuth 2.0 Web Client Configuration
     GOOGLE_CLIENT_ID: Optional[str] = "456121937465-pog6ha9pfgl8cjru833rer0o74j44tbe.apps.googleusercontent.com"
 
-    # Support locating .env in backend directory or current working directory
+    # Support locating .env and .env.local in backend directory or project root
     model_config = SettingsConfigDict(
         env_file=(
+            os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ".env.local"),
+            os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), ".env"),
+            os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), ".env.local"),
             os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), ".env"),
+            ".env.local",
             ".env"
         ),
         env_file_encoding="utf-8",

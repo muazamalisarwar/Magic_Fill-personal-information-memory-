@@ -1,0 +1,12 @@
+{
+  "name": "magic-fill-monorepo",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix automark-v1.0.0 run build",
+    "dev": "npm --prefix automark-v1.0.0 run dev"
+  },
+  "dependencies": {
+    "@neon/config": "^1.14.5",
+    "@neon/env": "^2.1.8"
+  }
+}
