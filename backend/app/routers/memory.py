@@ -483,6 +483,20 @@ def _copilot_local_grounded_fallback(
     exps = user_profile.get("experiences") or []
     cfs = user_profile.get("custom_fields") or []
 
+    # 0. STRICT DOMAIN RESTRICTION: Reject off-topic non-memory requests
+    off_topic_patterns = [
+        r"\b(?:write|compose|generate|draft)\s+(?:a\s+)?(?:poem|poetry|song|lyrics|story|novel|essay|speech|script|joke|haiku|riddle)\b",
+        r"\b(?:how\s+to\s+code|how\s+do\s+i\s+code|implement|algorithm|binary\s+search|leetcode|write\s+a\s+function|write\s+python|write\s+javascript|write\s+html)\b",
+        r"\b(?:what\s+is\s+the\s+capital|who\s+is\s+the\s+president|who\s+is\s+the\s+prime\s+minister|who\s+won|weather\s+in|recipe\s+for|translate\s+to|tell\s+me\s+a\s+joke)\b",
+        r"\b(?:solve|calculate|what\s+is\s+\d+\s*[\+\-\*\/])\b",
+    ]
+    if any(re.search(pat, msg_lower) for pat in off_topic_patterns):
+        return {
+            "intent": "QUERY",
+            "reply": "I am your dedicated Magic Fill AI Memory Copilot. I can only assist with showing, querying, or updating your personal memory vault (such as your contact info, education, career experience, or custom saved attributes). Let me know what detail you'd like to check or update!",
+            "updates": []
+        }
+
     # Typo normalization for robust natural language understanding
     msg_normalized = msg_lower
     typo_map = {
@@ -490,12 +504,16 @@ def _copilot_local_grounded_fallback(
         "favourite": "favorite",
         "favorit": "favorite",
         "sabed": "saved",
+        "seved": "saved",
         "chnage": "change",
         "chagne": "change",
+        "updat": "update",
         "adress": "address",
+        "adrees": "address",
         "addrss": "address",
         "emial": "email",
         "phne": "phone",
+        "fone": "phone",
         "universty": "university",
         "degre": "degree",
         "exprnc": "experience",
@@ -506,7 +524,7 @@ def _copilot_local_grounded_fallback(
 
     # 1. Update Detection Patterns (typo-tolerant: update, change, chnage, chagne, set, make, modify)
     # Name
-    name_m = re.search(r"(?:update|change|chnage|chagne|set|make|modify)\s+(?:my\s+)?(?:name|full\s*name|legal\s*name)\s+(?:to\s+|is\s+)?['\"]?([^'\"\.,\n]+)['\"]?", msg_normalized)
+    name_m = re.search(r"(?:update|change|chnage|chagne|set|make|modify)\s+(?:my\s+)?(?:current\s+)?(?:name|full\s*name|legal\s*name)\s+(?:to\s+|is\s+|as\s+|to\s+this\s+|:\s*)?['\"]?([^'\"\.,\n]+)['\"]?", msg_normalized)
     if name_m:
         raw_val = message[name_m.start(1):name_m.end(1)].strip(" :'\"")
         new_name = raw_val.title()
@@ -529,7 +547,7 @@ def _copilot_local_grounded_fallback(
         }
 
     # Address
-    addr_m = re.search(r"(?:update|change|chnage|chagne|set|modify)\s+(?:my\s+)?(?:address|location|residence)\s+(?:to\s+|is\s+)?['\"]?([^'\"\n]+)['\"]?", msg_normalized)
+    addr_m = re.search(r"(?:update|change|chnage|chagne|set|make|modify)\s+(?:my\s+)?(?:current\s+)?(?:residential\s+)?(?:address|location|residence|addr)\s+(?:to\s+|is\s+|as\s+|to\s+this\s+|:\s*)?['\"]?([^'\"\n]+)['\"]?", msg_normalized)
     if addr_m:
         new_addr = message[addr_m.start(1):addr_m.end(1)].strip(" :'\"")
         old_addr = p_data.get("address") or "Not set"
@@ -549,14 +567,15 @@ def _copilot_local_grounded_fallback(
             }]
         }
 
-    # Contextual Multi-Turn Updates (e.g. user asks "what is my address?" then says "update to Narang Mandi...", "change it to X", "make it X")
+    # Contextual Multi-Turn Updates (e.g. user asks "what is my address?" then says "update to Narang Mandi...", "update to this Narang Mandi...", "change it to X", "make it X")
     context_val = None
     context_patterns = [
         r"^(?:please\s+)?(?:update|change|chnage|chagne|set|make|modify)\s+(?:it\s+|this\s+)?to(?:\s+this)?\s*[:\-]?\s*['\"]?([^'\"\n]+)['\"]?",
-        r"^(?:please\s+)?(?:update|change|chnage|chagne|set|make|modify)\s+(?:it|this)\s+(?:as|with)\s+['\"]?([^'\"\n]+)['\"]?",
+        r"^(?:please\s+)?(?:update|change|chnage|chagne|set|make|modify)\s+(?:it|this)\s+(?:as|with|to)\s+['\"]?([^'\"\n]+)['\"]?",
         r"^(?:please\s+)?(?:replace|swap)\s+(?:it|this)\s+(?:with|by)\s+['\"]?([^'\"\n]+)['\"]?",
         r"^(?:no[,\s]+)?(?:actually\s+)?(?:change\s+to|update\s+to|make\s+it|set\s+to)\s+['\"]?([^'\"\n]+)['\"]?",
         r"^(?:it\s+is|its|it\'s)\s+['\"]?([^'\"\n]+)['\"]?\s+(?:now|instead)",
+        r"^(?:update|change|set)\s*[:\-]\s*['\"]?([^'\"\n]+)['\"]?",
     ]
     for cp in context_patterns:
         cm = re.search(cp, msg_normalized)
@@ -564,22 +583,31 @@ def _copilot_local_grounded_fallback(
             context_val = message[cm.start(1):cm.end(1)].strip(" :'\"")
             break
 
-    if context_val and history:
+    if context_val:
         prior_user_text = ""
+        prior_asst_text = ""
         prior_all_text = ""
-        for h in reversed(history):
-            role = getattr(h, "role", None) or (h.get("role") if isinstance(h, dict) else "")
-            content = (getattr(h, "content", None) or (h.get("content") if isinstance(h, dict) else "") or "").lower()
-            if content and content != msg_lower:
-                prior_all_text += " " + content
-                if role == "user" and not prior_user_text:
-                    prior_user_text = content
+        if history:
+            for h in reversed(history):
+                role = getattr(h, "role", None) or (h.get("role") if isinstance(h, dict) else "")
+                content = (getattr(h, "content", None) or (h.get("content") if isinstance(h, dict) else "") or "").lower()
+                if content and content != msg_lower:
+                    prior_all_text += " " + content
+                    if role == "user" and not prior_user_text:
+                        prior_user_text = content
+                    elif role == "assistant" and not prior_asst_text:
+                        prior_asst_text = content
 
         def _has_kw(target_words: List[str]) -> bool:
-            return any(w in prior_user_text for w in target_words) or any(w in prior_all_text for w in target_words)
+            return (
+                any(w in prior_user_text for w in target_words)
+                or any(w in prior_asst_text for w in target_words)
+                or any(w in prior_all_text for w in target_words)
+            )
 
         # Address Context
-        if _has_kw(["address", "street", "road", "residence", "where do i live", "live", "location"]):
+        is_addr_heuristic = any(loc_kw in context_val.lower() for loc_kw in ["street", "st.", "road", "rd.", "lahore", "karachi", "islamabad", "pakistan", "avenue", "lane", "house", "flat", "city", "block", "phase", "district", "village", "zafar"])
+        if _has_kw(["address", "street", "road", "residence", "where do i live", "live", "location"]) or is_addr_heuristic:
             old_addr = p_data.get("address") or "Not set"
             if p_info:
                 p_info.address = context_val
@@ -598,7 +626,7 @@ def _copilot_local_grounded_fallback(
             }
 
         # Phone Context
-        elif _has_kw(["phone", "mobile", "cell", "contact number", "call"]):
+        elif _has_kw(["phone", "mobile", "cell", "contact number", "call"]) or re.match(r"^[\d\+\-\s]{8,}$", context_val):
             old_phone = p_data.get("phone") or "Not set"
             if p_info:
                 p_info.phone = context_val
@@ -637,7 +665,7 @@ def _copilot_local_grounded_fallback(
             }
 
         # Email Context
-        elif _has_kw(["email", "mail"]):
+        elif _has_kw(["email", "mail"]) or ("@" in context_val and "." in context_val):
             old_email = p_data.get("email") or "Not set"
             if p_info:
                 p_info.email = context_val
@@ -1041,11 +1069,21 @@ def _copilot_local_grounded_fallback(
                 "updates": []
             }
 
-    # General profile summary
-    full_name = p_data.get("full_name") or user.full_name or "User"
+    # Greetings vs off-topic
+    greetings = ["hi", "hello", "hey", "salam", "assalam", "greetings", "good morning", "good afternoon", "good evening", "help", "who are you", "what can you do"]
+    is_greeting = any(g in msg_normalized.split() or msg_normalized.startswith(g) for g in greetings)
+    if is_greeting or len(msg_normalized.split()) <= 2:
+        full_name = p_data.get("full_name") or user.full_name or "there"
+        return {
+            "intent": "QUERY",
+            "reply": f"Hello {full_name}! I am your AI Memory Copilot. You can ask me to show any detail in your memory vault (e.g. *'What is currently saved my name?'*, *'What address you know about me?'*), or command me to update your memory (e.g. *'Update my phone to 0326-8848703'* or *'My favorite fruit is mango'*).",
+            "updates": []
+        }
+
+    # Off-topic or unrecognized request
     return {
         "intent": "QUERY",
-        "reply": f"Hello {full_name}! I am your AI Memory Copilot. You can ask me about your educational background, career experiences, contact info, or tell me to update any detail (e.g. *'Update my name to Muazam Ali Sarwar'* or *'My favorite fruit is mango'*).",
+        "reply": "I am your dedicated Magic Fill AI Memory Copilot. I can only assist with showing, querying, or updating your personal memory vault (such as your contact info, education, career experience, or custom saved attributes). Let me know what detail you'd like to check or update!",
         "updates": []
     }
 
@@ -1131,7 +1169,7 @@ async def copilot_chat_endpoint(
 
     llm_messages: List[Dict[str, str]] = [{"role": "system", "content": system_content}]
     if payload.history:
-        for hist_msg in payload.history[-8:]:
+        for hist_msg in payload.history[-16:]:
             if hist_msg.role in ("user", "assistant") and hist_msg.content:
                 # Deduplicate: if client already appended current message as last history entry, skip it
                 if hist_msg.role == "user" and hist_msg.content.strip().lower() == payload.message.strip().lower():
@@ -1147,7 +1185,7 @@ async def copilot_chat_endpoint(
             user_id=target_user_id,
             db=db,
             temperature=0.1,
-            timeout_seconds=8.0,
+            timeout_seconds=15.0,
             response_json=True
         )
     except Exception as exc:

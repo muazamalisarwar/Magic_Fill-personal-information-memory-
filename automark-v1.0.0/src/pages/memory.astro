@@ -1160,6 +1160,14 @@ import Base from "@/layouts/Base.astro";
       // Interactive AI Memory Copilot on /memory page
       // -----------------------------------------------------------------------
       let memCopilotChatHistory = [];
+      try {
+        const savedHist = sessionStorage.getItem("magic_fill_copilot_history");
+        if (savedHist) {
+          memCopilotChatHistory = JSON.parse(savedHist);
+        }
+      } catch (e) {
+        memCopilotChatHistory = [];
+      }
       const memCopilotChatFeed = document.getElementById("memCopilotChatFeed");
       const memCopilotChatForm = document.getElementById("memCopilotChatForm");
       const memCopilotChatInput = document.getElementById("memCopilotChatInput");
@@ -1187,6 +1195,21 @@ import Base from "@/layouts/Base.astro";
             </div>
           </div>
         `;
+      }
+
+      function restoreMemCopilotChat() {
+        if (!memCopilotChatFeed) return;
+        memCopilotChatFeed.innerHTML = "";
+        renderMemCopilotWelcome();
+        if (Array.isArray(memCopilotChatHistory) && memCopilotChatHistory.length > 0) {
+          for (const msg of memCopilotChatHistory) {
+            if (msg.role === "user") {
+              appendMemUserMessage(msg.content);
+            } else if (msg.role === "assistant") {
+              appendMemAssistantMessage(msg.content, msg.updates || []);
+            }
+          }
+        }
       }
 
       function appendMemUserMessage(text) {
@@ -1274,8 +1297,11 @@ import Base from "@/layouts/Base.astro";
         if (memCopilotSendBtn) memCopilotSendBtn.disabled = true;
         if (memCopilotTypingStatus) memCopilotTypingStatus.classList.remove("hidden");
 
-        const historyToSend = memCopilotChatHistory.slice(-8);
+        const historyToSend = memCopilotChatHistory.slice(-16).map(m => ({ role: m.role, content: m.content }));
         memCopilotChatHistory.push({ role: "user", content: message });
+        try {
+          sessionStorage.setItem("magic_fill_copilot_history", JSON.stringify(memCopilotChatHistory.slice(-20)));
+        } catch (e) {}
 
         const activeTok = localStorage.getItem("magic_fill_token");
         const reqHeaders = {
@@ -1301,7 +1327,10 @@ import Base from "@/layouts/Base.astro";
             const reply = data.data.reply;
             const updates = data.data.updates || [];
             appendMemAssistantMessage(reply, updates);
-            memCopilotChatHistory.push({ role: "assistant", content: reply });
+            memCopilotChatHistory.push({ role: "assistant", content: reply, updates });
+            try {
+              sessionStorage.setItem("magic_fill_copilot_history", JSON.stringify(memCopilotChatHistory.slice(-20)));
+            } catch (e) {}
 
             if (updates.length > 0) {
               showToast(`Vault updated: ${updates.map(u => u.label || u.key).join(", ")}`);
@@ -1365,12 +1394,15 @@ import Base from "@/layouts/Base.astro";
       if (btnResetMemCopilotChat) {
         btnResetMemCopilotChat.addEventListener("click", () => {
           memCopilotChatHistory = [];
+          try {
+            sessionStorage.removeItem("magic_fill_copilot_history");
+          } catch (e) {}
           renderMemCopilotWelcome();
           showToast("Copilot conversation cleared.");
         });
       }
 
-      renderMemCopilotWelcome();
+      restoreMemCopilotChat();
 
       // AI Memory Chat Ingestion Logic
       const chatInput = document.getElementById("aiMemoryChatInput");
