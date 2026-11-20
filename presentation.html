@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Magic Fill — Project Pitch Deck & Architectural Presentation</title>
+  <title>Magic Fill — Pitch Deck & Technology Showcase</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
@@ -63,7 +63,6 @@
       font-family: var(--font-mono);
     }
 
-    /* Presentation Slide Container */
     .deck-container {
       position: relative;
       width: 100vw;
@@ -73,7 +72,6 @@
       justify-content: space-between;
     }
 
-    /* Active Slide Transition Engine */
     .slide-viewport {
       position: relative;
       flex: 1;
@@ -85,13 +83,13 @@
     .slide {
       position: absolute;
       inset: 0;
-      padding: 2.5rem 4rem;
+      padding: 2.2rem 4rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
       opacity: 0;
       visibility: hidden;
-      transform: scale(0.97) translateY(12px);
+      transform: scale(0.98) translateY(10px);
       transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s;
       pointer-events: none;
       overflow-y: auto;
@@ -105,1153 +103,1301 @@
       z-index: 10;
     }
 
-    /* Glass Card Accent */
-    .pitch-card {
-      background-color: var(--card-dark);
+    .glass-card {
+      background: var(--card-inner);
       border: 1px solid var(--border-dark);
-      border-radius: 1.25rem;
-      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3);
-      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      border-radius: 1rem;
+      transition: all 0.2s ease;
     }
 
-    .pitch-card:hover {
-      border-color: rgba(183, 243, 74, 0.4);
-      box-shadow: 0 12px 36px -8px rgba(183, 243, 74, 0.12);
+    [data-theme="light"] .glass-card {
+      box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.05);
     }
 
-    [data-theme="light"] .pitch-card:hover {
-      border-color: rgba(47, 99, 7, 0.4);
-      box-shadow: 0 12px 36px -8px rgba(47, 99, 7, 0.08);
+    .lime-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: rgba(183, 243, 74, 0.12);
+      color: #B7F34A;
+      border: 1px solid rgba(183, 243, 74, 0.28);
     }
 
-    /* Subtle custom scrollbar inside slide */
-    .slide::-webkit-scrollbar {
-      width: 6px;
-    }
-    .slide::-webkit-scrollbar-thumb {
-      background: var(--border-dark);
-      border-radius: 4px;
+    [data-theme="light"] .lime-badge {
+      background: rgba(47, 99, 7, 0.08);
+      color: #2F6307;
+      border: 1px solid rgba(47, 99, 7, 0.22);
     }
 
-    /* Fullscreen print media format */
+    .glow-lime {
+      text-shadow: 0 0 35px rgba(183, 243, 74, 0.35);
+    }
+
+    [data-theme="light"] .glow-lime {
+      text-shadow: none;
+    }
+
+    /* Speaker Notes Drawer */
+    #notesDrawer {
+      position: fixed;
+      bottom: 72px;
+      right: 24px;
+      width: 440px;
+      max-height: 480px;
+      background: #141715;
+      border: 1px solid #2B312C;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      transform: translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+    }
+
+    [data-theme="light"] #notesDrawer {
+      background: #FFFFFF;
+      border-color: #E2E8F0;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    #notesDrawer.open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Slide Sorter Grid Overlay */
+    #overviewGrid {
+      position: fixed;
+      inset: 0;
+      background: rgba(11, 13, 12, 0.94);
+      backdrop-filter: blur(12px);
+      z-index: 150;
+      padding: 3rem;
+      display: none;
+      overflow-y: auto;
+    }
+
+    [data-theme="light"] #overviewGrid {
+      background: rgba(248, 250, 249, 0.96);
+    }
+
+    #overviewGrid.open {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+      align-content: start;
+    }
+
+    .grid-thumb {
+      background: var(--card-dark);
+      border: 1px solid var(--border-dark);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 160px;
+    }
+
+    .grid-thumb:hover {
+      border-color: #B7F34A;
+      transform: translateY(-3px);
+    }
+
+    .grid-thumb.active {
+      border-color: #B7F34A;
+      background: rgba(183, 243, 74, 0.08);
+    }
+
+    /* Print / PDF Mode */
     @media print {
       body {
-        overflow: visible;
-        height: auto;
+        overflow: visible !important;
+        height: auto !important;
+        background: #FFFFFF !important;
+        color: #000000 !important;
+      }
+      .no-print, header, footer, #notesDrawer, #overviewGrid {
+        display: none !important;
       }
       .slide-viewport {
-        overflow: visible;
-        height: auto;
+        height: auto !important;
+        overflow: visible !important;
       }
       .slide {
-        position: relative;
+        position: relative !important;
         opacity: 1 !important;
         visibility: visible !important;
         transform: none !important;
         page-break-after: always;
-        height: 100vh;
-        padding: 3rem;
+        height: 100vh !important;
+        padding: 3rem !important;
+        box-sizing: border-box;
       }
-      header, footer, #notesPanel, #overviewModal {
-        display: none !important;
+      .glass-card {
+        border: 1px solid #CCCCCC !important;
+        background: #F9F9F9 !important;
+        color: #000000 !important;
       }
     }
   </style>
 </head>
-<body class="antialiased selection:bg-[#B7F34A]/25 selection:text-[#B7F34A]">
-
+<body>
   <div class="deck-container">
-    
-    <!-- Top Global Header / Presentation Status Bar -->
-    <header class="h-16 border-b border-[var(--border-dark)] px-6 sm:px-10 flex items-center justify-between shrink-0 bg-[var(--bg-dark)]/90 backdrop-blur-md z-30">
-      <div class="flex items-center gap-3.5">
-        <div class="size-8 rounded-lg bg-[var(--card-dark)] border border-[var(--border-dark)] flex items-center justify-center text-[var(--lime)] font-mono font-extrabold text-sm shadow-sm">
-          MF
-        </div>
-        <div>
-          <span class="font-extrabold font-display tracking-tight text-sm text-[var(--lime)]">Magic Fill</span>
-          <span class="hidden sm:inline text-xs text-[var(--text-dim)] font-mono ml-2 border-l border-[var(--border-dark)] pl-2">Personal Memory Vault &amp; Form Copilot</span>
+    <!-- Top Header & Presentation Bar -->
+    <header class="no-print h-14 border-b border-[#2B312C] dark:border-[#2B312C] flex items-center justify-between px-6 bg-[#141715]/80 backdrop-blur-md z-40">
+      <div class="flex items-center gap-3">
+        <a href="/" class="flex items-center gap-2 group">
+          <div class="w-7 h-7 rounded-lg bg-[#B7F34A] flex items-center justify-center font-bold text-black text-sm group-hover:rotate-6 transition-transform">
+            ⚡
+          </div>
+          <span class="font-display font-extrabold text-base tracking-tight text-white dark:text-white">
+            Magic<span class="text-[#B7F34A]">Fill</span>
+          </span>
+        </a>
+        <span class="text-xs px-2.5 py-0.5 rounded-full font-mono bg-[#191D1A] border border-[#2B312C] text-[#A1AAA1]">
+          Startup Pitch Deck
+        </span>
+      </div>
+
+      <!-- Live Top Progress Indicator -->
+      <div class="flex-1 max-w-md mx-8 hidden sm:block">
+        <div class="w-full bg-[#191D1A] h-1.5 rounded-full overflow-hidden border border-[#2B312C]">
+          <div id="deckProgressBar" class="h-full bg-[#B7F34A] transition-all duration-300" style="width: 10%;"></div>
         </div>
       </div>
 
-      <!-- Slide Counter & Top Actions -->
+      <!-- Controls & Widgets -->
       <div class="flex items-center gap-3">
-        <!-- Live Presentation Stopwatch -->
-        <div class="hidden md:flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[var(--card-dark)] border border-[var(--border-dark)] text-xs font-mono text-[var(--text-muted)]">
-          <svg class="size-3.5 text-[var(--lime)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          <span id="timerText">00:00</span>
+        <!-- Presentation Timer -->
+        <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#191D1A] border border-[#2B312C] font-mono text-xs text-[#A1AAA1]" title="Presentation Stopwatch">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span id="deckTimer">00:00</span>
         </div>
 
-        <!-- Slide Index Pill -->
-        <div class="px-3 py-1 rounded-lg bg-[var(--card-dark)] border border-[var(--border-dark)] font-mono text-xs font-bold text-[var(--lime)]">
-          <span id="currentSlideIndex">01</span> / <span id="totalSlides">12</span>
-        </div>
+        <!-- Download PPTX Link -->
+        <a href="/presentation.pptx" download="Magic_Fill_Presentation.pptx" class="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#191D1A] hover:bg-[#2B312C] text-xs font-mono text-[#A1AAA1] hover:text-[#B7F34A] border border-[#2B312C] transition-colors" title="Download PowerPoint (.pptx)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>.PPTX</span>
+        </a>
 
-        <!-- Theme Toggle -->
-        <button id="themeToggleBtn" title="Toggle Light / Dark Mode (T)" class="size-8 rounded-lg bg-[var(--card-dark)] border border-[var(--border-dark)] text-[var(--text-muted)] hover:text-[var(--lime)] flex items-center justify-center transition cursor-pointer">
-          <svg id="themeIconDark" class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-          <svg id="themeIconLight" class="size-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        <!-- Slide Sorter Button -->
+        <button id="overviewBtn" class="p-2 rounded-lg bg-[#191D1A] hover:bg-[#2B312C] text-[#A1AAA1] hover:text-white transition-colors" title="Slide Overview Grid (O)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        </button>
+
+        <!-- Speaker Notes Button -->
+        <button id="notesBtn" class="p-2 rounded-lg bg-[#191D1A] hover:bg-[#2B312C] text-[#A1AAA1] hover:text-[#B7F34A] transition-colors" title="Toggle Speaker Pitch Notes (N)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </button>
+
+        <!-- Theme Switcher -->
+        <button id="themeToggleBtn" class="p-2 rounded-lg bg-[#191D1A] hover:bg-[#2B312C] text-[#A1AAA1] hover:text-white transition-colors" title="Switch Theme (T)">
+          <svg id="themeIconSun" class="hidden" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg id="themeIconMoon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
 
         <!-- Fullscreen Button -->
-        <button id="fullscreenBtn" title="Toggle Fullscreen (F)" class="hidden sm:flex size-8 rounded-lg bg-[var(--card-dark)] border border-[var(--border-dark)] text-[var(--text-muted)] hover:text-[var(--lime)] items-center justify-center transition cursor-pointer">
-          <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+        <button id="fullscreenBtn" class="p-2 rounded-lg bg-[#191D1A] hover:bg-[#2B312C] text-[#A1AAA1] hover:text-white transition-colors" title="Toggle Fullscreen (F)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
         </button>
       </div>
     </header>
 
-    <!-- Top Progress Bar -->
-    <div class="w-full bg-[var(--border-dark)] h-1 shrink-0 overflow-hidden relative">
-      <div id="deckProgressBar" class="h-full bg-[var(--lime)] transition-all duration-300 w-[8.33%]"></div>
-    </div>
-
-    <!-- ===================================================================== -->
-    <!-- SLIDE VIEWPORT (12 Complete Slides)                                   -->
-    <!-- ===================================================================== -->
+    <!-- Slide Viewport -->
     <main class="slide-viewport">
-
-      <!-- SLIDE 1: Title & Vision -->
-      <section class="slide active" data-slide="1" data-notes="Welcome everyone. Today we are presenting Magic Fill, an intelligent personal memory vault and autonomous form autofill engine. The internet has automated almost everything, yet millions of applicants still spend hours manually re-typing their identity, education, and career history across fractured ATS portals. Magic Fill eliminates this repetitive tax forever.">
-        <div class="max-w-5xl mx-auto w-full flex flex-col justify-center my-auto">
-          
-          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--lime)]/10 border border-[var(--lime)]/30 text-[var(--lime)] text-xs font-mono font-semibold w-max mb-6">
-            <span class="size-2 rounded-full bg-[var(--lime)] animate-ping"></span>
-            <span>Project Pitch Deck &bull; Production v1.2</span>
+      
+      <!-- ==========================================
+           SLIDE 1: THE HOOK (START WITH NUMBERS)
+           ========================================== -->
+      <section class="slide active" data-slide="1" data-notes="START STRONG. Do NOT introduce your name or give university greetings yet. Read the 71% number boldly and clearly. Let the massive statistic land. Pause. Then reveal that 60% of tech applicants are furious about repeating CV text. End with the rhetorical hook: 'Why are people still wasting so much time filling out information they have already provided?'">
+        <div class="max-w-6xl mx-auto w-full flex flex-col justify-between h-full py-4">
+          <!-- Top Tag -->
+          <div>
+            <span class="lime-badge">01 / The Real-World Reality</span>
           </div>
 
-          <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] mb-6 font-display">
-            The Intelligent <span class="text-[var(--lime)]">Memory Vault</span> &amp; Autonomous Form Copilot
+          <!-- Main Stat Hero -->
+          <div class="grid lg:grid-cols-12 gap-10 items-center my-auto">
+            <div class="lg:col-span-7">
+              <div class="inline-block text-[7.5rem] sm:text-[9.5rem] font-display font-black leading-none text-[#B7F34A] tracking-tighter glow-lime">
+                71%
+              </div>
+              <h1 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-white leading-tight tracking-tight mt-2">
+                OF CANDIDATES HAVE ABANDONED A JOB APPLICATION BECAUSE IT WAS TOO LONG OR COMPLICATED.
+              </h1>
+            </div>
+
+            <!-- Supporting Data Cards -->
+            <div class="lg:col-span-5 space-y-4">
+              <div class="glass-card p-6 border-l-4 border-l-[#B7F34A]">
+                <div class="text-4xl font-display font-black text-white mb-1">60%</div>
+                <p class="text-sm text-[#A1AAA1] leading-relaxed">
+                  of IT and technology candidates actively complain about repeating information already available on their CV.
+                </p>
+              </div>
+
+              <div class="glass-card p-6 border-l-4 border-l-[#A1AAA1]">
+                <div class="text-4xl font-display font-black text-white mb-1">45%</div>
+                <p class="text-sm text-[#A1AAA1] leading-relaxed">
+                  of all applicants report chronic frustration with re-typing work history and education across multiple job boards.
+                </p>
+              </div>
+
+              <!-- Subtle Online Form Snippet Visual -->
+              <div class="glass-card p-4 bg-[#0E110F] text-xs font-mono text-[#5E665E] border-dashed border-[#2B312C]">
+                <div class="flex items-center justify-between text-[11px] text-[#A1AAA1] mb-2 font-body">
+                  <span>Traditional Application Portal</span>
+                  <span class="text-rose-400 font-mono">Abandoned at Step 4 of 6</span>
+                </div>
+                <div class="space-y-2 opacity-50">
+                  <div class="h-3 bg-[#1F2420] rounded w-3/4"></div>
+                  <div class="h-7 bg-[#141715] border border-[#2B312C] rounded"></div>
+                  <div class="h-7 bg-[#141715] border border-[#2B312C] rounded"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Source Citation Footer -->
+          <div class="pt-4 border-t border-[#2B312C] flex items-center justify-between text-xs text-[#5E665E]">
+            <div>Source: <span class="text-[#A1AAA1]">CV-Library Candidate Behaviour Barometer 2026</span> (The Recruitment Trust Gap)</div>
+            <div class="font-mono text-[11px]">The Recruitment Friction Crisis</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SLIDE 2: THE PROBLEM (REPETITIVE EXPERIENCE)
+           ========================================== -->
+      <section class="slide" data-slide="2" data-notes="Walk the audience through the painful journey: You craft a perfect CV once, but applying to 10 jobs forces you to type your school, dates, degrees, phone numbers, and past duties over and over. Show the journey diagram: CV -> Job 1 -> Job 2 -> Job 3. Explain the toll: burnout, typing errors, inconsistent data, and missed opportunities.">
+        <div class="max-w-6xl mx-auto w-full flex flex-col justify-between h-full py-2">
+          <div>
+            <span class="lime-badge">02 / The Core Problem</span>
+            <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-white mt-2 tracking-tight">
+              WHY ARE WE STILL FILLING OUT THE SAME INFORMATION AGAIN AND AGAIN?
+            </h2>
+          </div>
+
+          <!-- Visual Journey Diagram -->
+          <div class="glass-card p-5 my-4 bg-[#0E110F]">
+            <div class="text-xs font-mono text-[#A1AAA1] uppercase tracking-wider mb-3">The Endless Repetition Cycle</div>
+            <div class="grid grid-cols-5 gap-3 items-center text-center">
+              <div class="p-3 rounded-lg bg-[#191D1A] border border-[#B7F34A]/40">
+                <div class="text-2xl mb-1">📄</div>
+                <div class="font-bold text-xs text-white">Your CV / Resume</div>
+                <div class="text-[10px] text-[#A1AAA1]">Already contains everything</div>
+              </div>
+              <div class="text-[#B7F34A] font-mono font-bold text-lg">➔</div>
+              <div class="p-3 rounded-lg bg-[#191D1A] border border-[#2B312C]">
+                <div class="text-2xl mb-1">🏢</div>
+                <div class="font-bold text-xs text-white">Job Portal 1</div>
+                <div class="text-[10px] text-rose-400">Re-enter 35 fields</div>
+              </div>
+              <div class="text-rose-400 font-mono font-bold text-lg">➔</div>
+              <div class="p-3 rounded-lg bg-[#191D1A] border border-[#2B312C]">
+                <div class="text-2xl mb-1">🌐</div>
+                <div class="font-bold text-xs text-white">Job Portal 2, 3, 4...</div>
+                <div class="text-[10px] text-rose-400">Copy &amp; paste loop</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- What Users Repeatedly Type vs The Toll -->
+          <div class="grid md:grid-cols-2 gap-6 my-auto">
+            <div class="glass-card p-6">
+              <h3 class="text-base font-bold text-white mb-3 flex items-center gap-2">
+                <span class="text-rose-400">●</span> Information Repeated on Every Application
+              </h3>
+              <ul class="space-y-2 text-sm text-[#A1AAA1]">
+                <li class="flex items-center gap-2"><span>•</span> Full Name, Email, Phone, Address &amp; Demographics</li>
+                <li class="flex items-center gap-2"><span>•</span> Education, Degrees, GPA, Institutions &amp; Graduation Dates</li>
+                <li class="flex items-center gap-2"><span>•</span> Work Experience, Past Job Titles, Companies &amp; Responsibilities</li>
+                <li class="flex items-center gap-2"><span>•</span> Technical Skills, Tools, Frameworks &amp; Languages</li>
+                <li class="flex items-center gap-2"><span>•</span> Portfolio Links, GitHub, LinkedIn &amp; Certifications</li>
+              </ul>
+            </div>
+
+            <div class="glass-card p-6">
+              <h3 class="text-base font-bold text-white mb-3 flex items-center gap-2">
+                <span class="text-amber-400">⚠️</span> The Human &amp; Career Consequences
+              </h3>
+              <div class="grid grid-cols-2 gap-3 text-xs">
+                <div class="p-3 rounded-lg bg-[#141715] border border-[#2B312C]">
+                  <div class="font-bold text-white mb-1">⏳ Wasted Time</div>
+                  <div class="text-[#A1AAA1]">Hours burned copying text between windows.</div>
+                </div>
+                <div class="p-3 rounded-lg bg-[#141715] border border-[#2B312C]">
+                  <div class="font-bold text-white mb-1">❌ Typing Mistakes</div>
+                  <div class="text-[#A1AAA1]">Fatigue leads to wrong dates &amp; typos.</div>
+                </div>
+                <div class="p-3 rounded-lg bg-[#141715] border border-[#2B312C]">
+                  <div class="font-bold text-white mb-1">📉 Reduced Motivation</div>
+                  <div class="text-[#A1AAA1]">Candidates skip great roles due to long forms.</div>
+                </div>
+                <div class="p-3 rounded-lg bg-[#141715] border border-[#2B312C]">
+                  <div class="font-bold text-white mb-1">🔄 Inconsistent Data</div>
+                  <div class="text-[#A1AAA1]">Varying descriptions across different portals.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-xs text-center text-[#5E665E] font-mono pt-2">
+            The friction does not exist because candidates lack qualifications — it exists because tools lack memory.
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SLIDE 3: WHY EXISTING SOLUTIONS ARE NOT ENOUGH
+           ========================================== -->
+      <section class="slide" data-slide="3" data-notes="Be fair to browser autofill. Chrome and Edge autofill are great for single fields like credit cards or home addresses. But they are completely blind to candidate career narratives, multi-role work histories, and custom ATS questions like 'Describe your experience with Python'. Explain why traditional autofill breaks on actual job portals.">
+        <div class="max-w-6xl mx-auto w-full flex flex-col justify-between h-full py-2">
+          <div>
+            <span class="lime-badge">03 / The Market Gap</span>
+            <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-white mt-2 tracking-tight">
+              AUTOFILL EXISTS. BUT DOES IT REALLY UNDERSTAND YOU?
+            </h2>
+            <p class="text-sm text-[#A1AAA1] mt-1">
+              Traditional browser autofill is built for ecommerce checkout, not professional career profiles.
+            </p>
+          </div>
+
+          <!-- Comparison Grid -->
+          <div class="grid md:grid-cols-2 gap-6 my-auto">
+            <!-- Traditional Autofill -->
+            <div class="glass-card p-6 border-t-4 border-t-rose-400">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-white">Traditional Browser Autofill</h3>
+                <span class="text-xs px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 font-mono border border-rose-500/20">Brittle &amp; Shallow</span>
+              </div>
+              <ul class="space-y-3 text-sm text-[#A1AAA1]">
+                <li class="flex items-start gap-2.5">
+                  <span class="text-rose-400 font-bold shrink-0">✕</span>
+                  <span><strong>Saved Browser Form Strings:</strong> Stores raw field strings based on exact HTML tag attributes.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-rose-400 font-bold shrink-0">✕</span>
+                  <span><strong>Fixed Input Patterns:</strong> Only recognizes standard single-line fields like "First Name" and "Postal Code".</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-rose-400 font-bold shrink-0">✕</span>
+                  <span><strong>Struggles on Custom Fields:</strong> Completely fails on ATS questions, multi-part questions, and custom prompts.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-rose-400 font-bold shrink-0">✕</span>
+                  <span><strong>No Contextual Profile:</strong> Does not understand the user's complete professional narrative, projects, or degrees.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-rose-400 font-bold shrink-0">✕</span>
+                  <span><strong>Zero Semantic Matching:</strong> Cannot infer that "Primary Contact Number" is the same as "Mobile Phone".</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Magic Fill Solution -->
+            <div class="glass-card p-6 border-t-4 border-t-[#B7F34A] bg-[#141715]">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-[#B7F34A]">Magic Fill Context-Aware Memory</h3>
+                <span class="text-xs px-2 py-0.5 rounded bg-[#B7F34A]/10 text-[#B7F34A] font-mono border border-[#B7F34A]/30">Intelligent &amp; Reusable</span>
+              </div>
+              <ul class="space-y-3 text-sm text-[#FFFFFF]">
+                <li class="flex items-start gap-2.5">
+                  <span class="text-[#B7F34A] font-bold shrink-0">✓</span>
+                  <span><strong>Unified Personal Memory Vault:</strong> Centrally stores verified academic, career, and contact records.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-[#B7F34A] font-bold shrink-0">✓</span>
+                  <span><strong>Semantic Context Matching:</strong> Evaluates labels, placeholders, surrounding DOM context, and intent.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-[#B7F34A] font-bold shrink-0">✓</span>
+                  <span><strong>Custom &amp; Multi-Page Portals:</strong> Natively matches complex forms on Workday, Greenhouse, Taleo, and custom sites.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-[#B7F34A] font-bold shrink-0">✓</span>
+                  <span><strong>Multi-Role Career Engine:</strong> Distinguishes full-time roles, internships, degrees, and technical skills.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-[#B7F34A] font-bold shrink-0">✓</span>
+                  <span><strong>Deterministic Safety:</strong> Strict zero-hallucination mapping directly from the user's verified database.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="text-center text-xs text-[#A1AAA1] font-mono pt-2">
+            The difference is simple: Browser autofill remembers keystrokes. Magic Fill understands who you are.
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SLIDE 4: INTRODUCING OUR SOLUTION
+           ========================================== -->
+      <section class="slide" data-slide="4" data-notes="THIS IS THE BIG REVEAL. Speak with excitement and clarity. Introduce Magic Fill as the personal AI-powered application assistant. Highlight the central mantra: 'Enter your information once. Reuse it intelligently whenever you need it.' Show the browser mockup where Magic Fill detects and fills form fields with verified accuracy.">
+        <div class="max-w-6xl mx-auto w-full flex flex-col justify-between h-full py-2">
+          <div>
+            <span class="lime-badge">04 / The Innovation</span>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-white mt-2 tracking-tight">
+              MEET MAGIC FILL — YOUR PERSONAL AI-POWERED APPLICATION ASSISTANT.
+            </h2>
+            <p class="text-base sm:text-lg text-[#B7F34A] font-medium mt-2">
+              "An AI-powered browser extension that intelligently stores, understands, retrieves, and automatically fills users' personal and professional information into online forms."
+            </p>
+          </div>
+
+          <!-- Product Showcase Card -->
+          <div class="grid lg:grid-cols-12 gap-8 items-center my-auto">
+            <!-- Left: Core Message -->
+            <div class="lg:col-span-5 space-y-4">
+              <div class="glass-card p-6 border-l-4 border-l-[#B7F34A]">
+                <div class="text-xs font-mono text-[#A1AAA1] uppercase tracking-wider mb-1">The Central Idea</div>
+                <h3 class="text-xl font-bold text-white mb-2">A Reusable Personal Memory</h3>
+                <p class="text-sm text-[#A1AAA1] leading-relaxed">
+                  Instead of repeatedly typing into every new job portal, you build a single verified personal memory vault. Magic Fill reads the portal, understands the intent, and retrieves the exact answer.
+                </p>
+              </div>
+
+              <div class="p-5 rounded-xl bg-gradient-to-r from-[#B7F34A]/10 to-transparent border border-[#B7F34A]/30">
+                <div class="text-xs font-mono text-[#B7F34A] font-bold mb-1">CORE MANTRA</div>
+                <div class="text-lg font-bold text-white">
+                  Enter your information once.<br />Reuse it intelligently whenever you need it.
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Browser Extension Form Mockup -->
+            <div class="lg:col-span-7">
+              <div class="glass-card p-4 bg-[#0E110F] shadow-2xl relative overflow-hidden">
+                <!-- Browser Bar -->
+                <div class="flex items-center gap-2 pb-3 mb-3 border-b border-[#2B312C] text-xs font-mono text-[#A1AAA1]">
+                  <div class="flex gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-rose-500/80"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500/80"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></span>
+                  </div>
+                  <div class="flex-1 bg-[#141715] px-3 py-1 rounded text-[11px] truncate border border-[#2B312C]">
+                    https://careers.techcorp.com/apply/senior-engineer
+                  </div>
+                  <span class="text-[#B7F34A] flex items-center gap-1 font-bold">⚡ Magic Fill</span>
+                </div>
+
+                <!-- Form Fields with Magic Fill Injected Values -->
+                <div class="space-y-3 font-sans text-xs">
+                  <div>
+                    <label class="text-[#A1AAA1] flex items-center justify-between mb-1">
+                      <span>Full Legal Name</span>
+                      <span class="text-[#B7F34A] font-mono text-[10px]">✓ Matched (personal_info.full_name)</span>
+                    </label>
+                    <div class="bg-[#191D1A] border border-[#B7F34A]/50 px-3 py-2 rounded text-white font-medium flex items-center justify-between">
+                      <span>Ch Muazam Ali</span>
+                      <span class="text-[10px] font-mono bg-[#B7F34A]/15 text-[#B7F34A] px-1.5 py-0.5 rounded">100% Match</span>
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-2 gap-3">
+                    <div>
+                      <label class="text-[#A1AAA1] flex items-center justify-between mb-1">
+                        <span>Highest Degree</span>
+                        <span class="text-[#B7F34A] font-mono text-[10px]">✓ Matched</span>
+                      </label>
+                      <div class="bg-[#191D1A] border border-[#B7F34A]/50 px-3 py-2 rounded text-white font-medium">
+                        BS Software Engineering
+                      </div>
+                    </div>
+                    <div>
+                      <label class="text-[#A1AAA1] flex items-center justify-between mb-1">
+                        <span>Current Role</span>
+                        <span class="text-[#B7F34A] font-mono text-[10px]">✓ Matched</span>
+                      </label>
+                      <div class="bg-[#191D1A] border border-[#B7F34A]/50 px-3 py-2 rounded text-white font-medium">
+                        Lead AI Engineer
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label class="text-[#A1AAA1] flex items-center justify-between mb-1">
+                      <span>Key Technical Skills</span>
+                      <span class="text-[#B7F34A] font-mono text-[10px]">✓ Semantic Context</span>
+                    </label>
+                    <div class="bg-[#191D1A] border border-[#B7F34A]/50 px-3 py-2 rounded text-white font-medium truncate">
+                      Python, FastAPI, TypeScript, React, PostgreSQL, AI Systems
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Floating Extension Toast Badge -->
+                <div class="absolute bottom-3 right-3 bg-[#141715] border border-[#B7F34A] px-3 py-1.5 rounded-lg shadow-xl flex items-center gap-2 text-xs">
+                  <span class="w-2 h-2 rounded-full bg-[#B7F34A] animate-pulse"></span>
+                  <span class="text-white font-medium">7 Fields Autofilled</span>
+                  <span class="text-[#B7F34A] font-mono font-bold">0.12s</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-xs text-center text-[#5E665E] font-mono pt-2">
+            Chrome Manifest V3 Architecture • Zero-Retention Data Isolation • Real-time DOM Engine
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SLIDE 5: HOW MAGIC FILL WORKS
+           ========================================== -->
+      <section class="slide" data-slide="5" data-notes="Explain the end-to-end architecture clearly without getting lost in jargon. Step 1: Users create memory via dashboard, chat, or PDF CV extraction. Step 2: Backend organizes and stores into personal memory. Step 3: When a form is opened, the extension inspects DOM inputs. Step 4: Semantic matching finds the best attribute. Step 5: The extension autofills in 0.12s.">
+        <div class="max-w-6xl mx-auto w-full flex flex-col justify-between h-full py-2">
+          <div>
+            <span class="lime-badge">05 / System Architecture</span>
+            <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-white mt-2 tracking-tight">
+              FROM PERSONAL INFORMATION TO INTELLIGENT FORM COMPLETION.
+            </h2>
+            <p class="text-sm text-[#A1AAA1] mt-1">
+              A 5-step deterministic pipeline bridging personal records to live browser forms.
+            </p>
+          </div>
+
+          <!-- Connected Architecture Flow Diagram -->
+          <div class="glass-card p-4 my-2 bg-[#0E110F]">
+            <div class="flex items-center justify-between text-xs font-mono font-bold text-center">
+              <span class="text-[#B7F34A]">USER INFO</span>
+              <span class="text-[#5E665E]">➔</span>
+              <span class="text-[#B7F34A]">PERSONAL MEMORY</span>
+              <span class="text-[#5E665E]">➔</span>
+              <span class="text-[#B7F34A]">FIELD UNDERSTANDING</span>
+              <span class="text-[#5E665E]">➔</span>
+              <span class="text-[#B7F34A]">SEMANTIC MATCHING</span>
+              <span class="text-[#5E665E]">➔</span>
+              <span class="text-[#B7F34A]">AUTOMATIC FILLING</span>
+            </div>
+          </div>
+
+          <!-- 5 Step Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-5 gap-3 my-auto">
+            <div class="glass-card p-4 flex flex-col justify-between">
+              <div>
+                <div class="text-xs font-mono text-[#B7F34A] font-bold mb-1">STEP 01</div>
+                <h4 class="text-sm font-bold text-white mb-2">Create Memory</h4>
+                <p class="text-xs text-[#A1AAA1] leading-relaxed">
+                  Provide personal &amp; career info via dashboard, AI chatbot copilot, or CV document upload.
+                </p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-[#2B312C] text-[10px] font-mono text-[#5E665E]">
+                CVs • PDFs • Chatbot
+              </div>
+            </div>
+
+            <div class="glass-card p-4 flex flex-col justify-between">
+              <div>
+                <div class="text-xs font-mono text-[#B7F34A] font-bold mb-1">STEP 02</div>
+                <h4 class="text-sm font-bold text-white mb-2">Organize &amp; Store</h4>
+                <p class="text-xs text-[#A1AAA1] leading-relaxed">
+                  Backend parses and structures records into verified personal memory tables ready for retrieval.
+                </p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-[#2B312C] text-[10px] font-mono text-[#5E665E]">
+                PostgreSQL • Encrypted
+              </div>
+            </div>
+
+            <div class="glass-card p-4 flex flex-col justify-between">
+              <div>
+                <div class="text-xs font-mono text-[#B7F34A] font-bold mb-1">STEP 03</div>
+                <h4 class="text-sm font-bold text-white mb-2">Understand Form</h4>
+                <p class="text-xs text-[#A1AAA1] leading-relaxed">
+                  Browser extension inspects live webpage inputs, labels, placeholders, and form structure.
+                </p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-[#2B312C] text-[10px] font-mono text-[#5E665E]">
+                DOM Inspector • MV3
+              </div>
+            </div>
+
+            <div class="glass-card p-4 flex flex-col justify-between">
+              <div>
+                <div class="text-xs font-mono text-[#B7F34A] font-bold mb-1">STEP 04</div>
+                <h4 class="text-sm font-bold text-white mb-2">Semantic Match</h4>
+                <p class="text-xs text-[#A1AAA1] leading-relaxed">
+                  Matches field semantics to the most relevant saved attribute with zero hallucination.
+                </p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-[#2B312C] text-[10px] font-mono text-[#5E665E]">
+                Context Engine • AI
+              </div>
+            </div>
+
+            <div class="glass-card p-4 flex flex-col justify-between border-b-2 border-b-[#B7F34A]">
+              <div>
+                <div class="text-xs font-mono text-[#B7F34A] font-bold mb-1">STEP 05</div>
+                <h4 class="text-sm font-bold text-white mb-2">Fill The Form</h4>
+                <p class="text-xs text-[#A1AAA1] leading-relaxed">
+                  Injects values into fields, simulates natural change events, and highlights completed fields.
+                </p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-[#2B312C] text-[10px] font-mono text-[#B7F34A] font-bold">
+                0.12s Execution
+              </div>
+            </div>
+          </div>
+
+          <div class="text-xs text-center text-[#5E665E] font-mono pt-2">
+            Deterministic Local Matching + Secure Cloud Vault = Maximum Speed with Zero Privacy Compromise
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SLIDE 6: WHAT MAKES MAGIC FILL DIFFERENT?
+           ========================================== -->
+      <section class="slide" data-slide="6" data-notes="Walk through the 6 distinct superpowers implemented in our codebase. Emphasize that this is not a mock — every one of these features is implemented in the repository: 1. Intelligent Memory Vault, 2. AI Semantic Matching, 3. Multiple ingestion channels (Chatbot & CV extraction), 4. Chrome Extension integration, 5. Full user control & manual editability, 6. Extensible LLM architecture where users can configure their own AI key.">
+        <div class="max-w-6xl mx-auto w-full flex flex-col justify-between h-full py-2">
+          <div>
+            <span class="lime-badge">06 / Competitive Advantage</span>
+            <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-white mt-2 tracking-tight">
+              NOT JUST AUTOFILL. IT'S YOUR PERSONAL INFORMATION MEMORY.
+            </h2>
+            <p class="text-sm text-[#A1AAA1] mt-1">
+              Six core pillars that elevate Magic Fill beyond conventional form autofill tools.
+            </p>
+          </div>
+
+          <!-- 6-Feature Visual Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-auto">
+            <div class="glass-card p-5">
+              <div class="text-2xl mb-2">🧠</div>
+              <h3 class="text-base font-bold text-white mb-1.5">1. Intelligent Information Memory</h3>
+              <p class="text-xs text-[#A1AAA1] leading-relaxed">
+                Maintains a structured, persistent record of personal, academic, and multi-role career history ready for repeated use.
+              </p>
+            </div>
+
+            <div class="glass-card p-5">
+              <div class="text-2xl mb-2">🔍</div>
+              <h3 class="text-base font-bold text-white mb-1.5">2. AI-Powered Understanding</h3>
+              <p class="text-xs text-[#A1AAA1] leading-relaxed">
+                Uses contextual and semantic matching to interpret field intent, bypassing rigid or mismatched HTML attribute names.
+              </p>
+            </div>
+
+            <div class="glass-card p-5">
+              <div class="text-2xl mb-2">📥</div>
+              <h3 class="text-base font-bold text-white mb-1.5">3. Multiple Information Sources</h3>
+              <p class="text-xs text-[#A1AAA1] leading-relaxed">
+                Build your vault through PDF CV extraction, natural language AI chatbot interactions, or structured manual forms.
+              </p>
+            </div>
+
+            <div class="glass-card p-5">
+              <div class="text-2xl mb-2">🧩</div>
+              <h3 class="text-base font-bold text-white mb-1.5">4. Deep Browser Integration</h3>
+              <p class="text-xs text-[#A1AAA1] leading-relaxed">
+                Manifest V3 extension brings intelligent autofill directly into the candidate's existing web browser workflow.
+              </p>
+            </div>
+
+            <div class="glass-card p-5">
+              <div class="text-2xl mb-2">🛡️</div>
+              <h3 class="text-base font-bold text-white mb-1.5">5. User-Controlled Information</h3>
+              <p class="text-xs text-[#A1AAA1] leading-relaxed">
+                Complete data transparency. Edit, audit, delete, or export your full personal memory vault anytime via the dashboard.
+              </p>
+            </div>
+
+            <div class="glass-card p-5">
+              <div class="text-2xl mb-2">⚙️</div>
+              <h3 class="text-base font-bold text-white mb-1.5">6. Extensible AI Architecture</h3>
+              <p class="text-xs text-[#A1AAA1] leading-relaxed">
+                Supports customizable AI provider configurations, allowing users to bring their own LLM API keys for maximum autonomy.
+              </p>
+            </div>
+          </div>
+
+          <div class="text-xs text-center text-[#5E665E] font-mono pt-2">
+            Implemented &amp; Verified in Current Project Repository • Zero Placeholders
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SLIDE 7: A REAL-WORLD EXAMPLE
+           ========================================== -->
+      <section class="slide" data-slide="7" data-notes="This slide makes it visceral. Put the audience in the candidate's shoes. Left side: Applying to 10 jobs without Magic Fill is torture. 10 tabs, 10 CV re-reads, hundreds of copy-pastes, 3 hours gone. Right side: With Magic Fill, open the application, click autofill, review the verified green checkmarks, and submit. You can apply to 10 jobs in 15 minutes.">
+        <div class="max-w-6xl mx-auto w-full flex flex-col justify-between h-full py-2">
+          <div>
+            <span class="lime-badge">07 / Scenario Contrast</span>
+            <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-white mt-2 tracking-tight">
+              IMAGINE APPLYING TO 10 DIFFERENT JOBS.
+            </h2>
+            <p class="text-sm text-[#A1AAA1] mt-1">
+              The stark difference between manual repetition and intelligent personal memory.
+            </p>
+          </div>
+
+          <!-- Split Screen Comparison -->
+          <div class="grid md:grid-cols-2 gap-6 my-auto">
+            <!-- Left: Without Magic Fill -->
+            <div class="glass-card p-6 border-l-4 border-l-rose-500 bg-[#120B0B]">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-rose-400">WITHOUT MAGIC FILL</h3>
+                <span class="text-xs px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 font-mono">Manual Repetition</span>
+              </div>
+              <div class="space-y-3 text-xs sm:text-sm text-[#A1AAA1]">
+                <div class="flex items-center gap-3 p-2.5 rounded bg-black/30 border border-rose-500/10">
+                  <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center font-mono font-bold shrink-0">1</span>
+                  <span>Open job application portal in a new tab.</span>
+                </div>
+                <div class="flex items-center gap-3 p-2.5 rounded bg-black/30 border border-rose-500/10">
+                  <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center font-mono font-bold shrink-0">2</span>
+                  <span>Read every single mandatory field label.</span>
+                </div>
+                <div class="flex items-center gap-3 p-2.5 rounded bg-black/30 border border-rose-500/10">
+                  <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center font-mono font-bold shrink-0">3</span>
+                  <span>Open CV PDF and manually search for the exact details.</span>
+                </div>
+                <div class="flex items-center gap-3 p-2.5 rounded bg-black/30 border border-rose-500/10">
+                  <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center font-mono font-bold shrink-0">4</span>
+                  <span>Copy, alt-tab, and paste into 20–40 individual fields.</span>
+                </div>
+                <div class="flex items-center gap-3 p-2.5 rounded bg-black/30 border border-rose-500/10">
+                  <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center font-mono font-bold shrink-0">5</span>
+                  <span>Repeat the entire painful process for all 10 companies.</span>
+                </div>
+              </div>
+              <div class="mt-4 pt-3 border-t border-rose-500/20 text-xs text-rose-300 font-mono">
+                Result: Severe application fatigue, typos, &amp; abandoned forms.
+              </div>
+            </div>
+
+            <!-- Right: With Magic Fill -->
+            <div class="glass-card p-6 border-l-4 border-l-[#B7F34A] bg-[#0E150F]">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-[#B7F34A]">WITH MAGIC FILL</h3>
+                <span class="text-xs px-2 py-0.5 rounded bg-[#B7F34A]/20 text-[#B7F34A] font-mono">Intelligent Memory</span>
+              </div>
+              <div class="space-y-3 text-xs sm:text-sm text-white">
+                <div class="flex items-center gap-3 p-2.5 rounded bg-black/30 border border-[#B7F34A]/20">
+                  <span class="w-6 h-6 rounded-full bg-[#B7F34A]/20 text-[#B7F34A] flex items-center justify-center font-mono font-bold shrink-0">1</span>
+                  <span>Open any job application in Chrome.</span>
+                </div>
+                <div class="flex items-center gap-3 p-2.5 rounded bg-black/30 border border-[#B7F34A]/20">
+                  <span class="w-6 h-6 rounded-full bg-[#B7F34A]/20 text-[#B7F34A] flex items-center justify-center font-mono font-bold shrink-0">2</span>
+                  <span>Magic Fill automatically identifies the relevant input fields.</span>
+                </div>
+                <div class="flex items-center gap-3 p-2.5 rounded bg-black/30 border border-[#B7F34A]/20">
+                  <span class="w-6 h-6 rounded-full bg-[#B7F34A]/20 text-[#B7F34A] flex items-center justify-center font-mono font-bold shrink-0">3</span>
+                  <span>Retrieves verified answers from your personal memory vault.</span>
+                </div>
+                <div class="flex items-center gap-3 p-2.5 rounded bg-black/30 border border-[#B7F34A]/20">
+                  <span class="w-6 h-6 rounded-full bg-[#B7F34A]/20 text-[#B7F34A] flex items-center justify-center font-mono font-bold shrink-0">4</span>
+                  <span>Fills supported fields intelligently in one click.</span>
+                </div>
+                <div class="flex items-center gap-3 p-2.5 rounded bg-black/30 border border-[#B7F34A]/20">
+                  <span class="w-6 h-6 rounded-full bg-[#B7F34A]/20 text-[#B7F34A] flex items-center justify-center font-mono font-bold shrink-0">5</span>
+                  <span>Quickly review the completed form and click Submit.</span>
+                </div>
+              </div>
+              <div class="mt-4 pt-3 border-t border-[#B7F34A]/20 text-xs text-[#B7F34A] font-mono">
+                Result: Zero copy-pasting, consistent accuracy, &amp; 100% completion rate.
+              </div>
+            </div>
+          </div>
+
+          <div class="text-xs text-center text-[#5E665E] font-mono pt-2">
+            Candidates spend less than 30 seconds per application instead of 25+ minutes of manual typing.
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SLIDE 8: BENEFITS AND REAL-WORLD IMPACT
+           ========================================== -->
+      <section class="slide" data-slide="8" data-notes="Deliver the punchline with conviction: 'Your time should be spent finding opportunities, not repeatedly typing your own information.' Summarize the major candidate benefits: eliminating manual repetition, reducing errors, making high-volume applications effortless, and creating one centralized memory vault that serves your entire career.">
+        <div class="max-w-6xl mx-auto w-full flex flex-col justify-between h-full py-2">
+          <div>
+            <span class="lime-badge">08 / Impact &amp; Value</span>
+            <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-white mt-2 tracking-tight">
+              LESS REPETITION. MORE OPPORTUNITIES.
+            </h2>
+            <p class="text-sm text-[#A1AAA1] mt-1">
+              Empowering job seekers, students, and professionals to focus on what actually matters.
+            </p>
+          </div>
+
+          <!-- Benefits Matrix -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 my-auto">
+            <div class="glass-card p-5">
+              <div class="w-10 h-10 rounded-lg bg-[#B7F34A]/10 border border-[#B7F34A]/30 flex items-center justify-center text-lg mb-3">
+                ⚡
+              </div>
+              <h3 class="text-sm font-bold text-white mb-1.5">Saves Manual Effort</h3>
+              <p class="text-xs text-[#A1AAA1] leading-relaxed">
+                Eliminates the tedious copy-paste loop across dozens of different company career pages.
+              </p>
+            </div>
+
+            <div class="glass-card p-5">
+              <div class="w-10 h-10 rounded-lg bg-[#B7F34A]/10 border border-[#B7F34A]/30 flex items-center justify-center text-lg mb-3">
+                🎯
+              </div>
+              <h3 class="text-sm font-bold text-white mb-1.5">Prevents Typing Errors</h3>
+              <p class="text-xs text-[#A1AAA1] leading-relaxed">
+                Ensures dates, phone numbers, GPA, and job titles remain 100% accurate and consistent.
+              </p>
+            </div>
+
+            <div class="glass-card p-5">
+              <div class="w-10 h-10 rounded-lg bg-[#B7F34A]/10 border border-[#B7F34A]/30 flex items-center justify-center text-lg mb-3">
+                🗄️
+              </div>
+              <h3 class="text-sm font-bold text-white mb-1.5">Centralized Memory</h3>
+              <p class="text-xs text-[#A1AAA1] leading-relaxed">
+                A single reusable personal information vault that grows with every new career milestone.
+              </p>
+            </div>
+
+            <div class="glass-card p-5">
+              <div class="w-10 h-10 rounded-lg bg-[#B7F34A]/10 border border-[#B7F34A]/30 flex items-center justify-center text-lg mb-3">
+                🚀
+              </div>
+              <h3 class="text-sm font-bold text-white mb-1.5">Higher Application Volume</h3>
+              <p class="text-xs text-[#A1AAA1] leading-relaxed">
+                Removes the friction barrier, enabling candidates to apply to significantly more opportunities.
+              </p>
+            </div>
+          </div>
+
+          <!-- Big Concluding Statement Banner -->
+          <div class="p-6 rounded-2xl bg-gradient-to-r from-[#141715] via-[#191D1A] to-[#141715] border border-[#B7F34A]/40 text-center shadow-lg">
+            <p class="text-lg sm:text-xl font-display font-extrabold text-white">
+              "Your time should be spent finding opportunities, not repeatedly typing your own information."
+            </p>
+          </div>
+
+          <div class="text-xs text-center text-[#5E665E] font-mono pt-2">
+            Turning the recruitment trust gap into candidate empowerment.
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SLIDE 9: THE BIGGER VISION
+           ========================================== -->
+      <section class="slide" data-slide="9" data-notes="Show the audience that Magic Fill is bigger than just job boards. The fundamental innovation is reusable personal memory. While job portals are implemented today, the exact same memory engine can power internships, scholarships, university admissions, and government forms. Conclude with our vision mantra: 'ONE PERSONAL MEMORY. MULTIPLE APPLICATIONS. LESS REPETITIVE WORK.'">
+        <div class="max-w-6xl mx-auto w-full flex flex-col justify-between h-full py-2">
+          <div>
+            <span class="lime-badge">09 / The Future Vision</span>
+            <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-white mt-2 tracking-tight">
+              WE ARE NOT JUST AUTOMATING FORMS. WE ARE REIMAGINING HOW PEOPLE INTERACT WITH INFORMATION.
+            </h2>
+            <p class="text-sm text-[#A1AAA1] mt-1">
+              From job applications to universal digital identity automation.
+            </p>
+          </div>
+
+          <!-- Present vs Horizon Scope -->
+          <div class="grid md:grid-cols-2 gap-6 my-auto">
+            <!-- Today's Implemented Foundation -->
+            <div class="glass-card p-6 border-l-4 border-l-[#B7F34A]">
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="text-base font-bold text-white">Implemented &amp; Active Today</h3>
+                <span class="text-xs px-2 py-0.5 rounded bg-[#B7F34A]/20 text-[#B7F34A] font-mono">Current Scope</span>
+              </div>
+              <ul class="space-y-3 text-xs sm:text-sm text-[#A1AAA1]">
+                <li class="flex items-start gap-2.5">
+                  <span class="text-[#B7F34A]">✓</span>
+                  <span><strong>Online Job Portals:</strong> Full support for ATS workflows, candidate portals, and career sites.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-[#B7F34A]">✓</span>
+                  <span><strong>Internship &amp; Co-op Forms:</strong> Effortlessly populates student academic records, projects, and terms.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-[#B7F34A]">✓</span>
+                  <span><strong>AI Document Extraction:</strong> Automatically digests uploaded PDF resumes into verified records.</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Future Potential Expansion -->
+            <div class="glass-card p-6 border-l-4 border-l-sky-400">
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="text-base font-bold text-white">The Expanded Roadmap</h3>
+                <span class="text-xs px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 font-mono">Future Possibilities</span>
+              </div>
+              <ul class="space-y-3 text-xs sm:text-sm text-[#A1AAA1]">
+                <li class="flex items-start gap-2.5">
+                  <span class="text-sky-400">➔</span>
+                  <span><strong>University Admissions:</strong> Multi-page academic registry forms, transcripts, and statement fields.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-sky-400">➔</span>
+                  <span><strong>Scholarship &amp; Grant Portals:</strong> Standardized biographical and merit-based application entries.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="text-sky-400">➔</span>
+                  <span><strong>Complex Government Forms:</strong> Verified license, identity registration, and civil documentation forms.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Big Anchor Mantra -->
+          <div class="p-5 rounded-xl bg-[#141715] border border-[#2B312C] text-center">
+            <div class="text-xs font-mono text-[#B7F34A] uppercase tracking-widest mb-1">Our Guiding Principle</div>
+            <div class="text-xl sm:text-2xl font-display font-black text-white tracking-wide">
+              ONE PERSONAL MEMORY. MULTIPLE APPLICATIONS. LESS REPETITIVE WORK.
+            </div>
+          </div>
+
+          <div class="text-xs text-center text-[#5E665E] font-mono pt-2">
+            Clearly distinguishing implemented software from future horizontal expansion.
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SLIDE 10: TRANSITION TO LIVE DEMONSTRATION
+           ========================================== -->
+      <section class="slide" data-slide="10" data-notes="THIS IS THE FINAL SLIDE. Do not add any conclusions, thank you slides, or Q&A slides after this. Transition directly into the live demo! Say: 'Now that you understand the problem, the market gap, and our architectural solution, let's see Magic Fill in action with a live demonstration.' Switch to the browser simulator or live extension.">
+        <div class="max-w-4xl mx-auto w-full flex flex-col justify-center items-center h-full text-center py-6">
+          
+          <!-- Large Magic Fill Glowing Logo -->
+          <div class="w-20 h-20 rounded-2xl bg-[#B7F34A] flex items-center justify-center font-bold text-black text-4xl shadow-[0_0_50px_rgba(183,243,74,0.4)] mb-8 transform hover:scale-105 transition-transform">
+            ⚡
+          </div>
+
+          <!-- EXACT MANDATED TITLE -->
+          <h1 class="text-4xl sm:text-6xl lg:text-7xl font-display font-black text-white tracking-tight leading-tight mb-6">
+            NOW WE ARE GOING TO START THE DEMO
           </h1>
 
-          <p class="text-lg sm:text-xl text-[var(--text-muted)] max-w-3xl leading-relaxed mb-10">
-            End repetitive job application and portal retyping forever. Store your verified career, academic, and personal credentials once — autofill anywhere seamlessly in 1 click.
+          <!-- Supporting Line -->
+          <p class="text-lg sm:text-2xl text-[#A1AAA1] max-w-2xl mx-auto leading-relaxed mb-10">
+            Let's see how Magic Fill turns repetitive form filling into an intelligent, effortless experience.
           </p>
 
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl pt-4 border-t border-[var(--border-dark)]">
-            <div class="p-4 rounded-xl bg-[var(--card-dark)] border border-[var(--border-dark)]">
-              <div class="text-2xl font-extrabold font-mono text-[var(--lime)] mb-1">0.12s</div>
-              <div class="text-xs text-[var(--text-muted)] font-medium">Average Form Fill Speed</div>
-            </div>
-            <div class="p-4 rounded-xl bg-[var(--card-dark)] border border-[var(--border-dark)]">
-              <div class="text-2xl font-extrabold font-mono text-[var(--lime)] mb-1">1-Click</div>
-              <div class="text-xs text-[var(--text-muted)] font-medium">Multi-Page ATS Completion</div>
-            </div>
-            <div class="p-4 rounded-xl bg-[var(--card-dark)] border border-[var(--border-dark)]">
-              <div class="text-2xl font-extrabold font-mono text-[var(--lime)] mb-1">100%</div>
-              <div class="text-xs text-[var(--text-muted)] font-medium">Deterministic Context Match</div>
-            </div>
-            <div class="p-4 rounded-xl bg-[var(--card-dark)] border border-[var(--border-dark)]">
-              <div class="text-2xl font-extrabold font-mono text-[var(--lime)] mb-1">Zero</div>
-              <div class="text-xs text-[var(--text-muted)] font-medium">Data Selling or Training Leaks</div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- SLIDE 2: The Problem: Form Fatigue -->
-      <section class="slide" data-slide="2" data-notes="Here is the core problem: modern recruitment and portal workflows are broken. Over 250 million applications are filed every month. Applicants face cumbersome 5-step ATS wizards (Workday, Greenhouse, Taleo) that take 45 minutes each. Browser autofill breaks, resumes are scattered, and repetitive copy-pasting causes massive burnout and error rates.">
-        <div class="max-w-5xl mx-auto w-full my-auto">
-          
-          <div class="text-xs uppercase font-mono font-bold tracking-widest text-[var(--lime)] mb-2">The Problem Statement</div>
-          <h2 class="text-3xl sm:text-5xl font-extrabold mb-4 font-display">
-            The Modern "Form Fatigue" Crisis
-          </h2>
-          <p class="text-base sm:text-lg text-[var(--text-muted)] max-w-3xl mb-8 leading-relaxed">
-            Every job seeker, applicant, student, and enterprise contractor spends dozens of hours every month repetitively filling out online portals that ask for the exact same information in slightly different formats.
-          </p>
-
-          <div class="grid sm:grid-cols-3 gap-6">
-            <div class="pitch-card p-6 flex flex-col justify-between">
-              <div>
-                <div class="size-10 rounded-xl bg-rose-500/10 text-rose-500 border border-rose-500/20 flex items-center justify-center font-bold text-lg mb-4">
-                  45m
-                </div>
-                <h3 class="text-base font-bold mb-2">Tedious ATS Wizards</h3>
-                <p class="text-xs text-[var(--text-muted)] leading-relaxed">
-                  Systems like Workday, Taleo, and Greenhouse force users through 5 to 7 manual screens re-typing jobs, addresses, and school histories from scratch.
-                </p>
-              </div>
-              <div class="mt-4 pt-3 border-t border-[var(--border-dark)] text-[11px] font-mono text-rose-400">
-                74% applicant drop-off rate
-              </div>
-            </div>
-
-            <div class="pitch-card p-6 flex flex-col justify-between">
-              <div>
-                <div class="size-10 rounded-xl bg-amber-500/10 text-amber-500 border border-amber-500/20 flex items-center justify-center font-bold text-lg mb-4">
-                  10+
-                </div>
-                <h3 class="text-base font-bold mb-2">Fragmented Artifacts</h3>
-                <p class="text-xs text-[var(--text-muted)] leading-relaxed">
-                  Resumes, university transcripts, government identity numbers, cover letters, and reference contacts are scattered across messy local folders and drives.
-                </p>
-              </div>
-              <div class="mt-4 pt-3 border-t border-[var(--border-dark)] text-[11px] font-mono text-amber-400">
-                High typo &amp; formatting error rate
-              </div>
-            </div>
-
-            <div class="pitch-card p-6 flex flex-col justify-between">
-              <div>
-                <div class="size-10 rounded-xl bg-sky-500/10 text-sky-500 border border-sky-500/20 flex items-center justify-center font-bold text-lg mb-4">
-                  0-Mem
-                </div>
-                <h3 class="text-base font-bold mb-2">Stale Memory Silos</h3>
-                <p class="text-xs text-[var(--text-muted)] leading-relaxed">
-                  Traditional browser autofill has zero memory of complex career achievements, multi-role promotions, project descriptions, or custom essays.
-                </p>
-              </div>
-              <div class="mt-4 pt-3 border-t border-[var(--border-dark)] text-[11px] font-mono text-sky-400">
-                Requires perpetual manual copy-pasting
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- SLIDE 3: The Market Gap -->
-      <section class="slide" data-slide="3" data-notes="Why haven't existing solutions solved this? Browser autofill only handles single-line inputs like names and cards—it has no semantic awareness of career roles or dropdowns. Generic AI tools like ChatGPT require switching tabs, copy-pasting prompts, and constantly hallucinate dates or leak sensitive personal data. Magic Fill bridges this entire gap.">
-        <div class="max-w-5xl mx-auto w-full my-auto">
-          
-          <div class="text-xs uppercase font-mono font-bold tracking-widest text-[var(--lime)] mb-2">Market Gap &amp; Comparison</div>
-          <h2 class="text-3xl sm:text-5xl font-extrabold mb-4 font-display">
-            Why Traditional Tools Fail
-          </h2>
-          <p class="text-base sm:text-lg text-[var(--text-muted)] max-w-3xl mb-8 leading-relaxed">
-            Existing tools force users to choose between primitive 1-line form autofill or risky, hallucination-prone generic AI chatbots.
-          </p>
-
-          <!-- 3-Way Architectural Comparison Table -->
-          <div class="pitch-card overflow-hidden">
-            <div class="grid grid-cols-4 p-4 text-xs font-bold border-b border-[var(--border-dark)] bg-[var(--card-inner)] font-mono text-[var(--text-muted)]">
-              <div>Capability</div>
-              <div>Browser Autofill</div>
-              <div>Generic AI (ChatGPT)</div>
-              <div class="text-[var(--lime)]">Magic Fill Engine</div>
-            </div>
-
-            <div class="grid grid-cols-4 p-4 text-xs border-b border-[var(--border-dark)] items-center">
-              <div class="font-semibold">Career &amp; Education Memory</div>
-              <div class="text-rose-400">None (1-line only)</div>
-              <div class="text-amber-400">Unstructured &amp; Temporary</div>
-              <div class="text-[var(--lime)] font-bold">Structured Vault &amp; Multi-Role</div>
-            </div>
-
-            <div class="grid grid-cols-4 p-4 text-xs border-b border-[var(--border-dark)] items-center bg-[var(--card-inner)]/50">
-              <div class="font-semibold">Workflow Friction</div>
-              <div class="text-amber-400">Breaks on Dropdowns/Radios</div>
-              <div class="text-rose-400">High: Manual Copy-Paste Loop</div>
-              <div class="text-[var(--lime)] font-bold">Zero: 1-Click In-Page Execution</div>
-            </div>
-
-            <div class="grid grid-cols-4 p-4 text-xs border-b border-[var(--border-dark)] items-center">
-              <div class="font-semibold">Hallucination Risk</div>
-              <div class="text-[var(--text-muted)]">N/A</div>
-              <div class="text-rose-400">High: Fabricates facts &amp; dates</div>
-              <div class="text-[var(--lime)] font-bold">Zero: Deterministic Verification</div>
-            </div>
-
-            <div class="grid grid-cols-4 p-4 text-xs items-center bg-[var(--card-inner)]/50">
-              <div class="font-semibold">Privacy &amp; Data Ownership</div>
-              <div class="text-[var(--text-muted)]">Local Browser Data</div>
-              <div class="text-rose-400">Trained on external models</div>
-              <div class="text-[var(--lime)] font-bold">Private Encrypted Quarantine Vault</div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- SLIDE 4: The Solution & Vision -->
-      <section class="slide" data-slide="4" data-notes="Here is Magic Fill: an intelligent personal memory vault paired with an autonomous browser copilot. You store your verified identity, education, career history, documents, and custom question answers once. Magic Fill understands the semantic context of any web form and automatically populates it in milliseconds with 100% precision.">
-        <div class="max-w-5xl mx-auto w-full my-auto">
-          
-          <div class="text-xs uppercase font-mono font-bold tracking-widest text-[var(--lime)] mb-2">The Solution</div>
-          <h2 class="text-3xl sm:text-5xl font-extrabold mb-4 font-display">
-            Enter Magic Fill: Your Private Memory Vault
-          </h2>
-          <p class="text-base sm:text-lg text-[var(--text-muted)] max-w-3xl mb-8 leading-relaxed">
-            A unified, privacy-first personal intelligence layer that bridges your verified lifetime credentials directly into any online portal without manual re-typing.
-          </p>
-
-          <div class="grid sm:grid-cols-3 gap-6">
-            <div class="pitch-card p-6">
-              <div class="size-11 rounded-xl bg-[var(--lime)]/10 text-[var(--lime)] border border-[var(--lime)]/30 flex items-center justify-center font-bold mb-4 font-mono">
-                01
-              </div>
-              <h3 class="text-base font-bold mb-2">Store Once</h3>
-              <p class="text-xs text-[var(--text-muted)] leading-relaxed">
-                Ingest your resume, certificates, and ID documents in seconds. Magic Fill structures your personal history into an encrypted, multi-dimensional personal database vault.
-              </p>
-            </div>
-
-            <div class="pitch-card p-6">
-              <div class="size-11 rounded-xl bg-[var(--lime)]/10 text-[var(--lime)] border border-[var(--lime)]/30 flex items-center justify-center font-bold mb-4 font-mono">
-                02
-              </div>
-              <h3 class="text-base font-bold mb-2">Autofill Anywhere</h3>
-              <p class="text-xs text-[var(--text-muted)] leading-relaxed">
-                Navigate to any job portal, college admission, or government form. The Chromium extension detects every input, select, radio, and multi-line essay in real-time.
-              </p>
-            </div>
-
-            <div class="pitch-card p-6">
-              <div class="size-11 rounded-xl bg-[var(--lime)]/10 text-[var(--lime)] border border-[var(--lime)]/30 flex items-center justify-center font-bold mb-4 font-mono">
-                03
-              </div>
-              <h3 class="text-base font-bold mb-2">Autonomous Learning</h3>
-              <p class="text-xs text-[var(--text-muted)] leading-relaxed">
-                Encounter a brand-new custom prompt? Fill it once; on submission, Magic Fill prompts you to save it. Your vault becomes smarter with every form you complete.
-              </p>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- SLIDE 5: Architecture & How It Works -->
-      <section class="slide" data-slide="5" data-notes="Let's look under the hood at the 3-tier architecture. Tier 1 is our Document Ingestion and Extraction Engine which parses unstructured resumes without retaining raw files. Tier 2 is the Encrypted Memory Vault storing structured relational records. Tier 3 is the Chromium Manifest V3 Extension featuring our DOM field inspector and fuzzy context matching engine.">
-        <div class="max-w-5xl mx-auto w-full my-auto">
-          
-          <div class="text-xs uppercase font-mono font-bold tracking-widest text-[var(--lime)] mb-2">System Architecture</div>
-          <h2 class="text-3xl sm:text-5xl font-extrabold mb-4 font-display">
-            How Magic Fill Works: 3-Tier Pipeline
-          </h2>
-          <p class="text-base sm:text-lg text-[var(--text-muted)] max-w-3xl mb-8 leading-relaxed">
-            Engineered with privacy isolation, sub-second latency, and zero dependency on external tracking services.
-          </p>
-
-          <div class="grid sm:grid-cols-3 gap-5 relative">
-            
-            <!-- Tier 1 -->
-            <div class="pitch-card p-6 border-l-4 border-l-[var(--lime)]">
-              <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--lime)] block mb-1">Tier 1 &bull; Ingestion</span>
-              <h3 class="text-sm font-bold mb-2">Intelligent Attribute Extraction</h3>
-              <p class="text-xs text-[var(--text-muted)] leading-relaxed mb-4">
-                Users upload PDFs, Word resumes, or ID scans. The zero-retention extraction engine extracts names, dates, degrees, roles, and skills into clean JSON schemas.
-              </p>
-              <div class="p-2.5 rounded-lg bg-[var(--card-inner)] font-mono text-[10px] text-[var(--text-muted)]">
-                POST /api/extract &bull; 0.4s
-              </div>
-            </div>
-
-            <!-- Tier 2 -->
-            <div class="pitch-card p-6 border-l-4 border-l-[var(--lime)]">
-              <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--lime)] block mb-1">Tier 2 &bull; Storage</span>
-              <h3 class="text-sm font-bold mb-2">Encrypted Memory Vault</h3>
-              <p class="text-xs text-[var(--text-muted)] leading-relaxed mb-4">
-                Structured into categorized partitions: Personal Info, Education, Multi-Role Experiences, Custom Q&amp;As, and Documents. Fully portable with instant JSON vault backup.
-              </p>
-              <div class="p-2.5 rounded-lg bg-[var(--card-inner)] font-mono text-[10px] text-[var(--text-muted)]">
-                AES-256 Partitioned Vault
-              </div>
-            </div>
-
-            <!-- Tier 3 -->
-            <div class="pitch-card p-6 border-l-4 border-l-[var(--lime)]">
-              <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--lime)] block mb-1">Tier 3 &bull; Execution</span>
-              <h3 class="text-sm font-bold mb-2">Manifest V3 Extension Engine</h3>
-              <p class="text-xs text-[var(--text-muted)] leading-relaxed mb-4">
-                Lightweight DOM content script maps inputs by label, placeholder, aria-tag, and surrounding DOM hierarchy. Executes 1-click synthetic input events in 0.12s.
-              </p>
-              <div class="p-2.5 rounded-lg bg-[var(--card-inner)] font-mono text-[10px] text-[var(--text-muted)]">
-                Chrome &bull; Edge &bull; Brave V3
-              </div>
-            </div>
-
-          </div>
-
-          <!-- Flow Summary Pill -->
-          <div class="mt-6 p-4 rounded-xl bg-[var(--card-dark)] border border-[var(--border-dark)] flex items-center justify-between text-xs text-[var(--text-muted)] font-mono flex-wrap gap-3">
-            <span class="flex items-center gap-2">
-              <span class="size-2 rounded-full bg-[var(--lime)]"></span>
-              <span>Document $\rightarrow$ Memory Vault $\rightarrow$ Semantic Match $\rightarrow$ 1-Click Form Execution</span>
-            </span>
-            <span class="text-[var(--lime)] font-bold">100% Client Consent Boundary</span>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- SLIDE 6: Core Features & Capabilities -->
-      <section class="slide" data-slide="6" data-notes="Here are the headline capabilities that set Magic Fill apart. It doesn't just fill basic inputs. It navigates complex multi-page wizards, handles multiple simultaneous roles and past employment entries, attaches identity documents, and semantically answers custom questions like 'Why do you want to join our engineering team?'.">
-        <div class="max-w-5xl mx-auto w-full my-auto">
-          
-          <div class="text-xs uppercase font-mono font-bold tracking-widest text-[var(--lime)] mb-2">Product Capabilities</div>
-          <h2 class="text-3xl sm:text-5xl font-extrabold mb-4 font-display">
-            Comprehensive Feature Matrix
-          </h2>
-          <p class="text-base sm:text-lg text-[var(--text-muted)] max-w-3xl mb-8 leading-relaxed">
-            Engineered specifically to conquer the real-world idiosyncrasies of modern enterprise applicant portals.
-          </p>
-
-          <div class="grid sm:grid-cols-2 gap-5">
-            <div class="pitch-card p-5 flex items-start gap-4">
-              <div class="size-10 rounded-xl bg-[var(--lime)]/10 text-[var(--lime)] border border-[var(--lime)]/30 flex items-center justify-center shrink-0 font-mono font-bold text-sm">
-                01
-              </div>
-              <div>
-                <h3 class="text-sm font-bold mb-1">1-Click Multi-Page Form Automation</h3>
-                <p class="text-xs text-[var(--text-muted)] leading-relaxed">
-                  Automatically detects inputs across multi-step wizard tabs, dropdown selects, radios, and hidden ATS shadow DOM elements.
-                </p>
-              </div>
-            </div>
-
-            <div class="pitch-card p-5 flex items-start gap-4">
-              <div class="size-10 rounded-xl bg-[var(--lime)]/10 text-[var(--lime)] border border-[var(--lime)]/30 flex items-center justify-center shrink-0 font-mono font-bold text-sm">
-                02
-              </div>
-              <div>
-                <h3 class="text-sm font-bold mb-1">Multi-Role Experience Engine</h3>
-                <p class="text-xs text-[var(--text-muted)] leading-relaxed">
-                  Maintains separate roles, concurrent internships, dates, accomplishments, and skills with deterministic chronological ordering.
-                </p>
-              </div>
-            </div>
-
-            <div class="pitch-card p-5 flex items-start gap-4">
-              <div class="size-10 rounded-xl bg-[var(--lime)]/10 text-[var(--lime)] border border-[var(--lime)]/30 flex items-center justify-center shrink-0 font-mono font-bold text-sm">
-                03
-              </div>
-              <div>
-                <h3 class="text-sm font-bold mb-1">Resume &amp; Document Auto-Attach</h3>
-                <p class="text-xs text-[var(--text-muted)] leading-relaxed">
-                  Instantly populates file upload zones with verified resumes, cover letters, transcripts, and national ID cards with one confirmation click.
-                </p>
-              </div>
-            </div>
-
-            <div class="pitch-card p-5 flex items-start gap-4">
-              <div class="size-10 rounded-xl bg-[var(--lime)]/10 text-[var(--lime)] border border-[var(--lime)]/30 flex items-center justify-center shrink-0 font-mono font-bold text-sm">
-                04
-              </div>
-              <div>
-                <h3 class="text-sm font-bold mb-1">Custom Q&amp;A Semantic Matching</h3>
-                <p class="text-xs text-[var(--text-muted)] leading-relaxed">
-                  Maps complex prompts ("Describe your leadership style", "US Work Authorization status") to stored, pre-approved responses.
-                </p>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- SLIDE 7: The Autonomous Learning Loop -->
-      <section class="slide" data-slide="7" data-notes="One of the biggest breakthroughs in Magic Fill is the Autonomous Learning Loop. Static autofill tools grow obsolete as users change jobs or encounter novel questions. Magic Fill watches form submission events; when a new answer is submitted, it surfaces a discrete permission toast asking: 'Save this to your Memory Vault?'. With 1 click, the vault updates itself seamlessly.">
-        <div class="max-w-5xl mx-auto w-full my-auto">
-          
-          <div class="text-xs uppercase font-mono font-bold tracking-widest text-[var(--lime)] mb-2">The Innovation Engine</div>
-          <h2 class="text-3xl sm:text-5xl font-extrabold mb-4 font-display">
-            Self-Updating Autonomous Learning Loop
-          </h2>
-          <p class="text-base sm:text-lg text-[var(--text-muted)] max-w-3xl mb-8 leading-relaxed">
-            Never manually update database forms again. Magic Fill learns new answers directly at the point of submission through an explicit human-in-the-loop consent model.
-          </p>
-
-          <div class="pitch-card p-8">
-            <div class="grid sm:grid-cols-4 gap-6 items-center text-center">
-              
-              <div class="flex flex-col items-center">
-                <div class="size-12 rounded-xl bg-[var(--card-inner)] border border-[var(--border-dark)] flex items-center justify-center mb-3 text-[var(--lime)] font-mono font-bold">
-                  1
-                </div>
-                <h4 class="text-xs font-bold mb-1">User Submits Form</h4>
-                <p class="text-[11px] text-[var(--text-muted)] leading-relaxed">
-                  Applicant answers a new question on a job portal (e.g. "Notice Period").
-                </p>
-              </div>
-
-              <div class="flex flex-col items-center">
-                <div class="size-12 rounded-xl bg-[var(--card-inner)] border border-[var(--border-dark)] flex items-center justify-center mb-3 text-[var(--lime)] font-mono font-bold">
-                  2
-                </div>
-                <h4 class="text-xs font-bold mb-1">DOM Interception</h4>
-                <p class="text-[11px] text-[var(--text-muted)] leading-relaxed">
-                  Extension inspects form submission and identifies unmapped field values.
-                </p>
-              </div>
-
-              <div class="flex flex-col items-center">
-                <div class="size-12 rounded-xl bg-[var(--card-inner)] border border-[var(--border-dark)] flex items-center justify-center mb-3 text-[var(--lime)] font-mono font-bold">
-                  3
-                </div>
-                <h4 class="text-xs font-bold mb-1">Consent Toast</h4>
-                <p class="text-[11px] text-[var(--text-muted)] leading-relaxed">
-                  Discrete UI prompts: <em>"Save '2 Weeks' to your Memory Vault?"</em>
-                </p>
-              </div>
-
-              <div class="flex flex-col items-center">
-                <div class="size-12 rounded-xl bg-[var(--lime)] text-[#0B0D0C] flex items-center justify-center mb-3 font-mono font-bold shadow-md">
-                  4
-                </div>
-                <h4 class="text-xs font-bold mb-1 text-[var(--lime)]">Vault Evolved</h4>
-                <p class="text-[11px] text-[var(--text-muted)] leading-relaxed">
-                  Committed to personal memory. Future forms autofill automatically!
-                </p>
-              </div>
-
-            </div>
-          </div>
-
-          <div class="mt-6 p-4 rounded-xl bg-[var(--card-dark)] border border-[var(--border-dark)] flex items-center justify-between text-xs text-[var(--text-muted)]">
-            <span class="flex items-center gap-2">
-              <svg class="size-4 text-[var(--lime)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-              <span>No silent saving &bull; Zero background scraping without user approval</span>
-            </span>
-            <span class="font-mono text-[var(--lime)] font-bold">Human-in-the-Loop Safe</span>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- SLIDE 8: AI Memory Copilot -->
-      <section class="slide" data-slide="8" data-notes="Slide 8 covers our built-in AI Memory Copilot. Users don't need to dig through nested database tables to edit or review their information. They can literally chat with their copilot: 'What address do you know about me?' or 'Change my phone number to 0326-8848703'. The copilot executes the database update and displays a clean, concise diff of exactly what was modified.">
-        <div class="max-w-5xl mx-auto w-full my-auto">
-          
-          <div class="text-xs uppercase font-mono font-bold tracking-widest text-[var(--lime)] mb-2">Conversational Management</div>
-          <h2 class="text-3xl sm:text-5xl font-extrabold mb-4 font-display">
-            AI Memory Copilot: Chat With Your Vault
-          </h2>
-          <p class="text-base sm:text-lg text-[var(--text-muted)] max-w-3xl mb-8 leading-relaxed">
-            Manage your entire identity vault in plain English. Query your background or update any credential with instant, verified database updates.
-          </p>
-
-          <div class="grid sm:grid-cols-2 gap-6">
-            
-            <!-- Simulated Chat Box -->
-            <div class="pitch-card p-5 font-mono text-xs space-y-3">
-              <div class="flex items-center justify-between pb-3 border-b border-[var(--border-dark)] text-[var(--text-muted)]">
-                <span>AI Memory Copilot</span>
-                <span class="text-[var(--lime)] font-bold text-[10px]">Active &bull; Read/Write</span>
-              </div>
-
-              <!-- User Bubble -->
-              <div class="p-3 rounded-lg bg-[var(--card-inner)] border border-[var(--border-dark)] text-right">
-                <p class="text-[var(--lime)] font-semibold">User: "Update my phone number to 0326-8848703"</p>
-              </div>
-
-              <!-- Copilot Bubble -->
-              <div class="p-3 rounded-lg bg-[var(--card-dark)] border border-[var(--border-dark)] space-y-2">
-                <p class="text-[var(--text-muted)]">I have updated your primary phone number in your memory vault.</p>
-                <div class="p-2 rounded bg-[var(--card-inner)] border border-[var(--border-dark)] text-[11px] space-y-1">
-                  <div class="text-[10px] text-[var(--lime)] uppercase font-bold">Field: Primary Phone</div>
-                  <div class="line-through text-rose-400">032688487033333333</div>
-                  <div class="text-emerald-400 font-bold">&rarr; 0326-8848703 (Verified)</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Copilot Value Highlights -->
-            <div class="space-y-4 flex flex-col justify-center">
-              <div class="p-4 rounded-xl bg-[var(--card-dark)] border border-[var(--border-dark)]">
-                <h4 class="text-xs font-bold text-[var(--lime)] mb-1">Instant Natural Language Retrieval</h4>
-                <p class="text-xs text-[var(--text-muted)] leading-relaxed">
-                  Ask "What are my educational experiences?" or "Show my saved GitHub links" and get exact, immediate records.
-                </p>
-              </div>
-
-              <div class="p-4 rounded-xl bg-[var(--card-dark)] border border-[var(--border-dark)]">
-                <h4 class="text-xs font-bold text-[var(--lime)] mb-1">Atomic Database Transactions</h4>
-                <p class="text-xs text-[var(--text-muted)] leading-relaxed">
-                  Modifications are strictly committed to the PostgreSQL memory schema with audit timestamps and rollback support.
-                </p>
-              </div>
-
-              <div class="p-4 rounded-xl bg-[var(--card-dark)] border border-[var(--border-dark)]">
-                <h4 class="text-xs font-bold text-[var(--lime)] mb-1">Clean Focused Responses</h4>
-                <p class="text-xs text-[var(--text-muted)] leading-relaxed">
-                  Zero raw JSON dumps. Only concise, relevant confirmations and field diffs are presented to the user.
-                </p>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      <!-- SLIDE 9: Privacy & Quarantine Vault -->
-      <section class="slide" data-slide="9" data-notes="Privacy is our foundational principle. In an era where AI companies harvest resume data to train models, Magic Fill operates under strict quarantine. Your personal data is never sold, never rented, and never used to train public LLMs. We also offer local Ollama model integration for users who require 100% air-gapped offline privacy.">
-        <div class="max-w-5xl mx-auto w-full my-auto">
-          
-          <div class="text-xs uppercase font-mono font-bold tracking-widest text-[var(--lime)] mb-2">Privacy &amp; Security</div>
-          <h2 class="text-3xl sm:text-5xl font-extrabold mb-4 font-display">
-            The Privacy Quarantine Model
-          </h2>
-          <p class="text-base sm:text-lg text-[var(--text-muted)] max-w-3xl mb-8 leading-relaxed">
-            Your career and identity data belongs to you alone. We treat your personal credentials with banking-grade isolation.
-          </p>
-
-          <div class="grid sm:grid-cols-4 gap-5">
-            
-            <div class="pitch-card p-5 text-center">
-              <div class="size-11 mx-auto rounded-xl bg-[var(--lime)]/10 text-[var(--lime)] border border-[var(--lime)]/30 flex items-center justify-center mb-3">
-                <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-              </div>
-              <h3 class="text-xs font-bold mb-1">Encrypted Partitions</h3>
-              <p class="text-[11px] text-[var(--text-muted)] leading-relaxed">
-                Database records are isolated by tenant ID and encrypted at rest and in transit.
-              </p>
-            </div>
-
-            <div class="pitch-card p-5 text-center">
-              <div class="size-11 mx-auto rounded-xl bg-[var(--lime)]/10 text-[var(--lime)] border border-[var(--lime)]/30 flex items-center justify-center mb-3">
-                <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
-              </div>
-              <h3 class="text-xs font-bold mb-1">Zero Model Training</h3>
-              <p class="text-[11px] text-[var(--text-muted)] leading-relaxed">
-                Personal credentials are never fed into public LLMs or third-party training pipelines.
-              </p>
-            </div>
-
-            <div class="pitch-card p-5 text-center">
-              <div class="size-11 mx-auto rounded-xl bg-[var(--lime)]/10 text-[var(--lime)] border border-[var(--lime)]/30 flex items-center justify-center mb-3">
-                <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-              </div>
-              <h3 class="text-xs font-bold mb-1">Local Ollama Option</h3>
-              <p class="text-[11px] text-[var(--text-muted)] leading-relaxed">
-                Extension can connect to local localhost LLMs for 100% offline, air-gapped form matching.
-              </p>
-            </div>
-
-            <div class="pitch-card p-5 text-center">
-              <div class="size-11 mx-auto rounded-xl bg-[var(--lime)]/10 text-[var(--lime)] border border-[var(--lime)]/30 flex items-center justify-center mb-3">
-                <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-              </div>
-              <h3 class="text-xs font-bold mb-1">100% Data Portability</h3>
-              <p class="text-[11px] text-[var(--text-muted)] leading-relaxed">
-                Export your entire memory vault to structured JSON or delete your records permanently anytime.
-              </p>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      <!-- SLIDE 10: Live Product Ecosystem -->
-      <section class="slide" data-slide="10" data-notes="Magic Fill is not an idea or mock-up. It is a live, working production ecosystem. We have built: 1) The full web application with Astro 5 and Tailwind, 2) The authenticated Memory Studio and Document Ingestion engine, 3) The interactive 10-field Simulator Lab for live testing, and 4) The production Chrome Extension Manifest V3 packaged and downloadable right now.">
-        <div class="max-w-5xl mx-auto w-full my-auto">
-          
-          <div class="text-xs uppercase font-mono font-bold tracking-widest text-[var(--lime)] mb-2">Live Ecosystem</div>
-          <h2 class="text-3xl sm:text-5xl font-extrabold mb-4 font-display">
-            A Complete Live Product Suite
-          </h2>
-          <p class="text-base sm:text-lg text-[var(--text-muted)] max-w-3xl mb-8 leading-relaxed">
-            Every component of Magic Fill is live, tested, and ready for deployment.
-          </p>
-
-          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            
-            <div class="pitch-card p-5">
-              <div class="text-xs font-mono font-bold text-[var(--lime)] mb-2">01 &bull; Web Platform</div>
-              <h3 class="text-sm font-bold mb-1">Astro 5 Production Web App</h3>
-              <p class="text-xs text-[var(--text-muted)] leading-relaxed mb-4">
-                Sub-second page speeds, zero AI-slop design, full Dark &amp; Light theme toggle, and responsive layouts.
-              </p>
-              <div class="text-[10px] font-mono text-[var(--lime)]">Route: /</div>
-            </div>
-
-            <div class="pitch-card p-5">
-              <div class="text-xs font-mono font-bold text-[var(--lime)] mb-2">02 &bull; Memory Studio</div>
-              <h3 class="text-sm font-bold mb-1">Secure Personal Dashboard</h3>
-              <p class="text-xs text-[var(--text-muted)] leading-relaxed mb-4">
-                JWT authenticated hub for inspecting credentials, multi-role histories, custom Q&amp;A, and document attachments.
-              </p>
-              <div class="text-[10px] font-mono text-[var(--lime)]">Route: /dashboard &bull; /memory</div>
-            </div>
-
-            <div class="pitch-card p-5">
-              <div class="text-xs font-mono font-bold text-[var(--lime)] mb-2">03 &bull; Browser Extension</div>
-              <h3 class="text-sm font-bold mb-1">Manifest V3 Extension (v1.2)</h3>
-              <p class="text-xs text-[var(--text-muted)] leading-relaxed mb-4">
-                Available as 1-click download .zip, single-use 6-character linking code pairing, and multi-provider AI support.
-              </p>
-              <div class="text-[10px] font-mono text-[var(--lime)]">Route: /extension</div>
-            </div>
-
-            <div class="pitch-card p-5">
-              <div class="text-xs font-mono font-bold text-[var(--lime)] mb-2">04 &bull; Testing Lab</div>
-              <h3 class="text-sm font-bold mb-1">Interactive Simulator</h3>
-              <p class="text-xs text-[var(--text-muted)] leading-relaxed mb-4">
-                Full 10-field job portal testing environment to benchmark autofill speed, accuracy, and field detection.
-              </p>
-              <div class="text-[10px] font-mono text-[var(--lime)]">Route: /playground</div>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      <!-- SLIDE 11: Market Opportunity & Business Model -->
-      <section class="slide" data-slide="11" data-notes="What is the commercial potential? The global recruitment and form automation market exceeds $38 billion. Our primary audience includes over 50 million active job seekers, students applying to universities, and contractors completing compliance portals. Our freemium-to-pro pricing model drives high viral growth, with enterprise tiers for multi-user talent teams.">
-        <div class="max-w-5xl mx-auto w-full my-auto">
-          
-          <div class="text-xs uppercase font-mono font-bold tracking-widest text-[var(--lime)] mb-2">Market &amp; Monetization</div>
-          <h2 class="text-3xl sm:text-5xl font-extrabold mb-4 font-display">
-            Market Opportunity &amp; Business Model
-          </h2>
-          <p class="text-base sm:text-lg text-[var(--text-muted)] max-w-3xl mb-8 leading-relaxed">
-            High-margin SaaS with strong product-led viral loops driven by active applicants and talent communities.
-          </p>
-
-          <div class="grid sm:grid-cols-3 gap-6">
-            
-            <div class="pitch-card p-6">
-              <div class="text-xs font-mono font-bold text-[var(--text-muted)] uppercase mb-1">Starter Tier</div>
-              <div class="text-3xl font-extrabold mb-2 font-display">Free</div>
-              <p class="text-xs text-[var(--text-muted)] leading-relaxed mb-4">
-                Core personal memory vault, 50 monthly autofills, single-document resume parser, and browser extension access.
-              </p>
-              <div class="pt-3 border-t border-[var(--border-dark)] text-[11px] font-mono text-[var(--lime)]">
-                Acquisition &amp; Viral Engine
-              </div>
-            </div>
-
-            <div class="pitch-card p-6 border-2 border-[var(--lime)] shadow-[0_0_25px_rgba(183,243,74,0.12)]">
-              <div class="flex items-center justify-between mb-1">
-                <div class="text-xs font-mono font-bold text-[var(--lime)] uppercase">Pro Career Tier</div>
-                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[var(--lime)]/10 text-[var(--lime)]">POPULAR</span>
-              </div>
-              <div class="text-3xl font-extrabold mb-2 font-display">$15 <span class="text-xs font-normal text-[var(--text-muted)]">/ mo</span></div>
-              <p class="text-xs text-[var(--text-muted)] leading-relaxed mb-4">
-                Unlimited monthly autofills, multi-resume targeting, AI Memory Copilot chat, and automatic document auto-attachment.
-              </p>
-              <div class="pt-3 border-t border-[var(--border-dark)] text-[11px] font-mono text-[var(--lime)]">
-                Primary Direct Monetization
-              </div>
-            </div>
-
-            <div class="pitch-card p-6">
-              <div class="text-xs font-mono font-bold text-[var(--text-muted)] uppercase mb-1">Enterprise / Teams</div>
-              <div class="text-3xl font-extrabold mb-2 font-display">Custom</div>
-              <p class="text-xs text-[var(--text-muted)] leading-relaxed mb-4">
-                Air-gapped on-premise vault deployment, local Ollama LLM compliance, procurement form automation, and SAML SSO.
-              </p>
-              <div class="pt-3 border-t border-[var(--border-dark)] text-[11px] font-mono text-[var(--lime)]">
-                Enterprise B2B Expansion
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      <!-- SLIDE 12: Summary & Call to Action -->
-      <section class="slide" data-slide="12" data-notes="To wrap up: Magic Fill transforms one of the most frustrating, time-wasting digital chores into a delightful 1-click superpower. We have a robust live product, verified zero-retention privacy, and a clear path to market leadership. We invite you to test the live simulator and install the extension today. Thank you!">
-        <div class="max-w-5xl mx-auto w-full my-auto text-center">
-          
-          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--lime)]/10 border border-[var(--lime)]/30 text-[var(--lime)] text-xs font-mono font-semibold mb-6">
-            <span>The Future of Personal Form Automation</span>
-          </div>
-
-          <h2 class="text-4xl sm:text-6xl font-extrabold mb-6 font-display max-w-3xl mx-auto leading-tight">
-            Stop Retyping. Start <span class="text-[var(--lime)]">Auto-Filling</span> With Confidence.
-          </h2>
-
-          <p class="text-base sm:text-xl text-[var(--text-muted)] max-w-2xl mx-auto mb-10 leading-relaxed">
-            Experience the instant precision of your verified memory vault across every online form in the world.
-          </p>
-
-          <div class="flex flex-wrap items-center justify-center gap-4 mb-12">
-            <a
-              href="/extension"
-              class="px-6 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider bg-[var(--lime)] text-[#0B0D0C] shadow-lg hover:scale-105 transition-all flex items-center gap-2 cursor-pointer"
-            >
-              <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              <span>Download Chrome Extension (v1.2)</span>
+          <!-- Interactive Action Pill & Tech Badges -->
+          <div class="flex flex-wrap items-center justify-center gap-4">
+            <a href="/playground" target="_blank" class="px-8 py-3.5 rounded-xl bg-[#B7F34A] hover:bg-[#C8FA6A] text-black font-display font-bold text-base flex items-center gap-2.5 shadow-[0_0_30px_rgba(183,243,74,0.3)] transition-all transform hover:-translate-y-0.5">
+              <span>Launch Live Form Simulator</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             </a>
-
-            <a
-              href="/playground"
-              class="px-6 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider bg-[var(--card-dark)] text-white border border-[var(--border-dark)] hover:border-[var(--lime)] transition-all flex items-center gap-2 cursor-pointer"
-            >
-              <span>Try Live Simulator Lab</span>
-              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            
+            <a href="/extension" target="_blank" class="px-6 py-3.5 rounded-xl bg-[#141715] hover:bg-[#191D1A] text-white font-medium text-sm border border-[#2B312C] flex items-center gap-2 transition-colors">
+              <span>View Extension (v1.2 MV3)</span>
             </a>
           </div>
 
-          <div class="pt-8 border-t border-[var(--border-dark)] flex flex-wrap items-center justify-between text-xs text-[var(--text-muted)] font-mono max-w-3xl mx-auto">
-            <span>Magic Fill &bull; Personal Memory Vault</span>
-            <span>github.com/muazamalisarwar/Magic_Fill-personal-information-memory-</span>
+          <div class="mt-12 text-xs font-mono text-[#5E665E]">
+            Magic Fill • Personal Information Memory • Live Interactive Demonstration
           </div>
-
         </div>
       </section>
 
     </main>
 
-    <!-- ===================================================================== -->
-    <!-- BOTTOM PRESENTATION CONTROLLER & NAVIGATION                           -->
-    <!-- ===================================================================== -->
-    <footer class="h-16 border-t border-[var(--border-dark)] px-6 sm:px-10 flex items-center justify-between shrink-0 bg-[var(--bg-dark)]/90 backdrop-blur-md z-30">
-      
-      <!-- Left: Navigation Arrows -->
+    <!-- Bottom Navigation Bar & Presentation Controls -->
+    <footer class="no-print h-14 border-t border-[#2B312C] flex items-center justify-between px-6 bg-[#141715]/80 backdrop-blur-md z-40">
+      <div class="flex items-center gap-4">
+        <!-- Slide Counter -->
+        <div class="font-mono text-xs text-[#A1AAA1]">
+          Slide <span id="currentSlideNum" class="text-[#B7F34A] font-bold">1</span> of <span id="totalSlideNum">10</span>
+        </div>
+
+        <span class="text-[#2B312C]">|</span>
+
+        <!-- Keyboard Guide Shortcut Hints -->
+        <div class="hidden lg:flex items-center gap-3 text-[11px] text-[#5E665E] font-mono">
+          <span><kbd class="px-1 py-0.5 rounded bg-[#191D1A] border border-[#2B312C] text-[#A1AAA1]">Space</kbd> / <kbd class="px-1 py-0.5 rounded bg-[#191D1A] border border-[#2B312C] text-[#A1AAA1]">➔</kbd> Next</span>
+          <span><kbd class="px-1 py-0.5 rounded bg-[#191D1A] border border-[#2B312C] text-[#A1AAA1]">O</kbd> Overview</span>
+          <span><kbd class="px-1 py-0.5 rounded bg-[#191D1A] border border-[#2B312C] text-[#A1AAA1]">N</kbd> Notes</span>
+          <span><kbd class="px-1 py-0.5 rounded bg-[#191D1A] border border-[#2B312C] text-[#A1AAA1]">P</kbd> Print / PDF</span>
+        </div>
+      </div>
+
+      <!-- Arrow Controls -->
       <div class="flex items-center gap-2">
-        <button
-          id="prevSlideBtn"
-          title="Previous Slide (← / Left Arrow)"
-          class="px-3.5 py-1.5 rounded-lg bg-[var(--card-dark)] border border-[var(--border-dark)] text-xs font-semibold hover:border-[var(--lime)] hover:text-[var(--lime)] transition flex items-center gap-1.5 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-        >
-          <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
-          <span class="hidden sm:inline">Prev</span>
+        <button id="prevBtn" class="px-3.5 py-1.5 rounded-lg bg-[#191D1A] hover:bg-[#2B312C] text-xs font-medium text-[#A1AAA1] hover:text-white transition-colors flex items-center gap-1.5 disabled:opacity-30 disabled:pointer-events-none">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          <span>Prev</span>
         </button>
 
-        <button
-          id="nextSlideBtn"
-          title="Next Slide (→ / Right Arrow / Space)"
-          class="px-3.5 py-1.5 rounded-lg bg-[var(--lime)] text-[#0B0D0C] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer hover:bg-[var(--lime-light)] disabled:opacity-40 disabled:cursor-not-allowed shadow-sm"
-        >
-          <span class="hidden sm:inline">Next</span>
-          <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
+        <button id="nextBtn" class="px-4 py-1.5 rounded-lg bg-[#B7F34A] hover:bg-[#C8FA6A] text-xs font-bold text-black transition-colors flex items-center gap-1.5 disabled:opacity-30 disabled:pointer-events-none">
+          <span>Next</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+
+        <button id="printBtn" class="ml-2 px-3 py-1.5 rounded-lg bg-[#191D1A] hover:bg-[#2B312C] text-xs text-[#A1AAA1] hover:text-white transition-colors flex items-center gap-1.5" title="Export / Print Slides to PDF (P)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          <span class="hidden sm:inline">Export PDF</span>
         </button>
       </div>
-
-      <!-- Center: Slide Quick Navigation Dots -->
-      <div id="slideDotsContainer" class="hidden md:flex items-center gap-1.5">
-        <!-- Injected via JavaScript -->
-      </div>
-
-      <!-- Right: Utility Controls (Overview, Speaker Notes, Shortcuts) -->
-      <div class="flex items-center gap-2">
-        <button
-          id="btnToggleOverview"
-          title="Slide Overview / Grid (O)"
-          class="p-2 rounded-lg bg-[var(--card-dark)] border border-[var(--border-dark)] text-xs text-[var(--text-muted)] hover:text-[var(--lime)] transition cursor-pointer flex items-center gap-1"
-        >
-          <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-          <span class="hidden lg:inline">Grid</span>
-        </button>
-
-        <button
-          id="btnToggleNotes"
-          title="Presenter Notes (N)"
-          class="p-2 rounded-lg bg-[var(--card-dark)] border border-[var(--border-dark)] text-xs text-[var(--text-muted)] hover:text-[var(--lime)] transition cursor-pointer flex items-center gap-1"
-        >
-          <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-          <span class="hidden lg:inline">Notes</span>
-        </button>
-
-        <button
-          id="btnPrintSlides"
-          title="Print / Export to PDF (P)"
-          class="hidden sm:flex p-2 rounded-lg bg-[var(--card-dark)] border border-[var(--border-dark)] text-xs text-[var(--text-muted)] hover:text-[var(--lime)] transition cursor-pointer items-center gap-1"
-          onclick="window.print()"
-        >
-          <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-        </button>
-      </div>
-
     </footer>
-
   </div>
 
-  <!-- ===================================================================== -->
-  <!-- SPEAKER NOTES DRAWER                                                  -->
-  <!-- ===================================================================== -->
-  <aside id="notesPanel" class="fixed bottom-16 inset-x-0 bg-[var(--card-dark)] border-t border-[var(--border-dark)] p-5 z-40 transform translate-y-full transition-transform duration-300 shadow-2xl max-h-56 overflow-y-auto hidden">
-    <div class="max-w-4xl mx-auto flex items-start justify-between gap-4">
-      <div class="space-y-1">
-        <div class="flex items-center gap-2">
-          <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--lime)] bg-[var(--lime)]/10 px-2 py-0.5 rounded">Presenter Talking Points</span>
-          <span id="notesSlideNumber" class="text-xs font-mono text-[var(--text-dim)]">Slide 01</span>
-        </div>
-        <p id="speakerNotesContent" class="text-xs text-[var(--text-muted)] leading-relaxed font-sans pt-1">
-          Talking points will appear here...
-        </p>
+  <!-- Speaker Notes Floating Drawer -->
+  <aside id="notesDrawer">
+    <div class="flex items-center justify-between pb-3 mb-3 border-b border-[#2B312C]">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-[#B7F34A]"></span>
+        <span class="font-display font-bold text-sm text-white">Speaker Pitch Notes</span>
       </div>
-      <button id="closeNotesBtn" class="size-6 rounded-md bg-[var(--card-inner)] text-[var(--text-muted)] hover:text-white flex items-center justify-center shrink-0 cursor-pointer">
-        &times;
-      </button>
+      <button id="closeNotesBtn" class="text-xs text-[#A1AAA1] hover:text-white">✕</button>
+    </div>
+    <div id="notesContent" class="text-xs sm:text-sm text-[#A1AAA1] leading-relaxed space-y-2">
+      <!-- Dynamically populated from data-notes -->
     </div>
   </aside>
 
-  <!-- ===================================================================== -->
-  <!-- SLIDE SORTER / THUMBNAIL OVERVIEW MODAL                                -->
-  <!-- ===================================================================== -->
-  <div id="overviewModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md p-6 sm:p-12 overflow-y-auto hidden flex-col">
-    <div class="max-w-6xl mx-auto w-full">
-      <div class="flex items-center justify-between pb-6 mb-6 border-b border-[var(--border-dark)]">
-        <div>
-          <h2 class="text-xl font-bold text-white font-display">Slide Overview &amp; Sorter</h2>
-          <p class="text-xs text-[var(--text-muted)]">Click any slide to jump directly</p>
-        </div>
-        <button id="closeOverviewBtn" class="px-4 py-2 rounded-lg bg-[var(--card-dark)] border border-[var(--border-dark)] text-xs text-white hover:border-[var(--lime)] cursor-pointer">
-          Close (Esc)
-        </button>
-      </div>
-
-      <div id="overviewGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        <!-- Injected via JS -->
-      </div>
-    </div>
+  <!-- Slide Overview Sorter Modal Grid -->
+  <div id="overviewGrid">
+    <!-- Dynamically populated -->
   </div>
 
-  <!-- Interactive Slide Controller Script -->
-  <script>
+  <!-- Presentation Deck Controller Script -->
+  <script is:inline>
     (function () {
-      const slides = Array.from(document.querySelectorAll('.slide'));
-      const totalSlidesCount = slides.length;
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const totalSlides = slides.length;
       let currentIndex = 0;
 
-      // DOM Elements
-      const currentSlideIndexEl = document.getElementById('currentSlideIndex');
-      const totalSlidesEl = document.getElementById('totalSlides');
-      const deckProgressBar = document.getElementById('deckProgressBar');
-      const prevBtn = document.getElementById('prevSlideBtn');
-      const nextBtn = document.getElementById('nextSlideBtn');
-      const slideDotsContainer = document.getElementById('slideDotsContainer');
-      const notesPanel = document.getElementById('notesPanel');
-      const speakerNotesContent = document.getElementById('speakerNotesContent');
-      const notesSlideNumber = document.getElementById('notesSlideNumber');
-      const overviewModal = document.getElementById('overviewModal');
-      const overviewGrid = document.getElementById('overviewGrid');
-      const timerText = document.getElementById('timerText');
-      const themeToggleBtn = document.getElementById('themeToggleBtn');
-      const themeIconDark = document.getElementById('themeIconDark');
-      const themeIconLight = document.getElementById('themeIconLight');
-      const fullscreenBtn = document.getElementById('fullscreenBtn');
+      const currentSlideNum = document.getElementById("currentSlideNum");
+      const totalSlideNum = document.getElementById("totalSlideNum");
+      const deckProgressBar = document.getElementById("deckProgressBar");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const notesDrawer = document.getElementById("notesDrawer");
+      const notesContent = document.getElementById("notesContent");
+      const notesBtn = document.getElementById("notesBtn");
+      const closeNotesBtn = document.getElementById("closeNotesBtn");
+      const overviewGrid = document.getElementById("overviewGrid");
+      const overviewBtn = document.getElementById("overviewBtn");
+      const themeToggleBtn = document.getElementById("themeToggleBtn");
+      const themeIconSun = document.getElementById("themeIconSun");
+      const themeIconMoon = document.getElementById("themeIconMoon");
+      const fullscreenBtn = document.getElementById("fullscreenBtn");
+      const printBtn = document.getElementById("printBtn");
+      const deckTimer = document.getElementById("deckTimer");
 
-      if (totalSlidesEl) totalSlidesEl.textContent = String(totalSlidesCount).padStart(2, '0');
+      if (totalSlideNum) totalSlideNum.textContent = totalSlides;
 
-      // Initialize Slide Navigation Dots
-      if (slideDotsContainer) {
-        slideDotsContainer.innerHTML = '';
-        slides.forEach((_, idx) => {
-          const dot = document.createElement('button');
-          dot.className = `size-2 rounded-full transition-all cursor-pointer ${idx === 0 ? 'bg-[var(--lime)] w-5' : 'bg-[var(--border-dark)] hover:bg-[var(--text-muted)]'}`;
-          dot.title = `Jump to Slide ${idx + 1}`;
-          dot.addEventListener('click', () => goToSlide(idx));
-          slideDotsContainer.appendChild(dot);
-        });
-      }
+      // Update Slide State
+      function showSlide(index) {
+        if (index < 0) index = 0;
+        if (index >= totalSlides) index = totalSlides - 1;
+        currentIndex = index;
 
-      // Initialize Overview Grid Cards
-      if (overviewGrid) {
-        overviewGrid.innerHTML = '';
-        slides.forEach((slide, idx) => {
-          const heading = slide.querySelector('h1, h2')?.textContent || `Slide ${idx + 1}`;
-          const card = document.createElement('div');
-          card.className = `p-4 rounded-xl bg-[var(--card-dark)] border border-[var(--border-dark)] hover:border-[var(--lime)] transition-all cursor-pointer flex flex-col justify-between h-32 group`;
-          card.innerHTML = `
-            <div class="flex items-center justify-between text-[10px] font-mono font-bold text-[var(--lime)]">
-              <span>#${String(idx + 1).padStart(2, '0')}</span>
-            </div>
-            <p class="text-xs font-semibold text-white group-hover:text-[var(--lime)] line-clamp-2 transition-colors">${heading}</p>
-            <span class="text-[10px] text-[var(--text-dim)] font-mono">Click to view</span>
-          `;
-          card.addEventListener('click', () => {
-            goToSlide(idx);
-            toggleOverview(false);
-          });
-          overviewGrid.appendChild(card);
-        });
-      }
-
-      function updateSlideUI() {
         slides.forEach((slide, idx) => {
           if (idx === currentIndex) {
-            slide.classList.add('active');
+            slide.classList.add("active");
           } else {
-            slide.classList.remove('active');
+            slide.classList.remove("active");
           }
         });
 
-        // Update Counter
-        if (currentSlideIndexEl) {
-          currentSlideIndexEl.textContent = String(currentIndex + 1).padStart(2, '0');
-        }
-
-        // Update Progress Bar
+        if (currentSlideNum) currentSlideNum.textContent = currentIndex + 1;
         if (deckProgressBar) {
-          const progressPercent = ((currentIndex + 1) / totalSlidesCount) * 100;
-          deckProgressBar.style.width = `${progressPercent}%`;
+          const pct = ((currentIndex + 1) / totalSlides) * 100;
+          deckProgressBar.style.width = pct + "%";
         }
 
-        // Update Dots
-        if (slideDotsContainer) {
-          const dots = slideDotsContainer.querySelectorAll('button');
-          dots.forEach((dot, idx) => {
-            if (idx === currentIndex) {
-              dot.className = 'size-2 rounded-full transition-all cursor-pointer bg-[var(--lime)] w-5';
-            } else {
-              dot.className = 'size-2 rounded-full transition-all cursor-pointer bg-[var(--border-dark)] hover:bg-[var(--text-muted)]';
-            }
-          });
-        }
-
-        // Update Buttons
         if (prevBtn) prevBtn.disabled = currentIndex === 0;
-        if (nextBtn) nextBtn.disabled = currentIndex === totalSlidesCount - 1;
+        if (nextBtn) nextBtn.disabled = currentIndex === totalSlides - 1;
 
-        // Update Speaker Notes
-        const activeSlide = slides[currentIndex];
-        const notes = activeSlide?.getAttribute('data-notes') || 'No speaker notes for this slide.';
-        if (speakerNotesContent) speakerNotesContent.textContent = notes;
-        if (notesSlideNumber) notesSlideNumber.textContent = `Slide ${String(currentIndex + 1).padStart(2, '0')} of ${totalSlidesCount}`;
-      }
-
-      function goToSlide(index) {
-        if (index >= 0 && index < totalSlidesCount) {
-          currentIndex = index;
-          updateSlideUI();
+        // Update speaker notes
+        const currentSlide = slides[currentIndex];
+        const notes = currentSlide ? currentSlide.getAttribute("data-notes") : "";
+        if (notesContent) {
+          notesContent.innerHTML = notes 
+            ? `<p class="text-white font-semibold mb-1">Slide ${currentIndex + 1} Talking Points:</p><p>${notes}</p>`
+            : '<p class="text-[#5E665E]">No specific speaker notes for this slide.</p>';
         }
+
+        // Sync overview active border
+        const thumbs = overviewGrid.querySelectorAll(".grid-thumb");
+        thumbs.forEach((t, i) => {
+          if (i === currentIndex) t.classList.add("active");
+          else t.classList.remove("active");
+        });
       }
 
+      // Populate Overview Sorter
+      function buildOverviewGrid() {
+        overviewGrid.innerHTML = "";
+        slides.forEach((slide, idx) => {
+          const h = slide.querySelector("h1, h2")?.textContent?.trim() || `Slide ${idx + 1}`;
+          const badge = slide.querySelector(".lime-badge")?.textContent?.trim() || `0${idx + 1}`;
+          const thumb = document.createElement("div");
+          thumb.className = `grid-thumb ${idx === currentIndex ? 'active' : ''}`;
+          thumb.innerHTML = `
+            <div>
+              <span class="text-[10px] font-mono text-[#B7F34A] block mb-1">${badge}</span>
+              <div class="text-xs font-bold text-white line-clamp-3">${h}</div>
+            </div>
+            <div class="text-[11px] font-mono text-[#A1AAA1] mt-2">Slide ${idx + 1}</div>
+          `;
+          thumb.addEventListener("click", () => {
+            showSlide(idx);
+            overviewGrid.classList.remove("open");
+          });
+          overviewGrid.appendChild(thumb);
+        });
+      }
+
+      buildOverviewGrid();
+
+      // Navigation Actions
       function nextSlide() {
-        if (currentIndex < totalSlidesCount - 1) {
-          currentIndex++;
-          updateSlideUI();
-        }
+        if (currentIndex < totalSlides - 1) showSlide(currentIndex + 1);
       }
 
       function prevSlide() {
-        if (currentIndex > 0) {
-          currentIndex--;
-          updateSlideUI();
-        }
+        if (currentIndex > 0) showSlide(currentIndex - 1);
       }
 
-      // Event Listeners for Nav Buttons
-      if (prevBtn) prevBtn.addEventListener('click', prevSlide);
-      if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+      if (nextBtn) nextBtn.addEventListener("click", nextSlide);
+      if (prevBtn) prevBtn.addEventListener("click", prevSlide);
 
-      // Keyboard Shortcuts Engine
-      window.addEventListener('keydown', (e) => {
-        // Ignore if focus is in an input or textarea
-        if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
-
+      // Keyboard Controls
+      window.addEventListener("keydown", (e) => {
+        if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+        
         switch (e.key) {
-          case 'ArrowRight':
-          case ' ':
-          case 'PageDown':
+          case "ArrowRight":
+          case " ":
+          case "PageDown":
             e.preventDefault();
             nextSlide();
             break;
-          case 'ArrowLeft':
-          case 'PageUp':
+          case "ArrowLeft":
+          case "PageUp":
             e.preventDefault();
             prevSlide();
             break;
-          case 'Home':
+          case "Home":
             e.preventDefault();
-            goToSlide(0);
+            showSlide(0);
             break;
-          case 'End':
+          case "End":
             e.preventDefault();
-            goToSlide(totalSlidesCount - 1);
+            showSlide(totalSlides - 1);
             break;
-          case 'f':
-          case 'F':
-            toggleFullscreen();
+          case "n":
+          case "N":
+            e.preventDefault();
+            notesDrawer.classList.toggle("open");
             break;
-          case 'n':
-          case 'N':
-            toggleNotes();
+          case "o":
+          case "O":
+            e.preventDefault();
+            overviewGrid.classList.toggle("open");
             break;
-          case 'o':
-          case 'O':
-            toggleOverview();
-            break;
-          case 't':
-          case 'T':
+          case "t":
+          case "T":
+            e.preventDefault();
             toggleTheme();
             break;
-          case 'Escape':
-            toggleOverview(false);
-            toggleNotes(false);
+          case "f":
+          case "F":
+            e.preventDefault();
+            toggleFullscreen();
+            break;
+          case "p":
+          case "P":
+            e.preventDefault();
+            window.print();
+            break;
+          case "Escape":
+            if (overviewGrid.classList.contains("open")) overviewGrid.classList.remove("open");
+            if (notesDrawer.classList.contains("open")) notesDrawer.classList.remove("open");
             break;
         }
       });
 
+      // Overview Grid Toggle
+      if (overviewBtn) {
+        overviewBtn.addEventListener("click", () => {
+          overviewGrid.classList.toggle("open");
+        });
+      }
+
       // Speaker Notes Toggle
-      function toggleNotes(force) {
-        if (!notesPanel) return;
-        const isHidden = notesPanel.classList.contains('hidden');
-        const shouldShow = force !== undefined ? force : isHidden;
-        if (shouldShow) {
-          notesPanel.classList.remove('hidden');
-          notesPanel.classList.remove('translate-y-full');
-        } else {
-          notesPanel.classList.add('translate-y-full');
-          setTimeout(() => notesPanel.classList.add('hidden'), 250);
-        }
+      if (notesBtn) {
+        notesBtn.addEventListener("click", () => {
+          notesDrawer.classList.toggle("open");
+        });
+      }
+      if (closeNotesBtn) {
+        closeNotesBtn.addEventListener("click", () => {
+          notesDrawer.classList.remove("open");
+        });
       }
 
-      const btnToggleNotes = document.getElementById('btnToggleNotes');
-      const closeNotesBtn = document.getElementById('closeNotesBtn');
-      if (btnToggleNotes) btnToggleNotes.addEventListener('click', () => toggleNotes());
-      if (closeNotesBtn) closeNotesBtn.addEventListener('click', () => toggleNotes(false));
-
-      // Slide Sorter / Overview Toggle
-      function toggleOverview(force) {
-        if (!overviewModal) return;
-        const isHidden = overviewModal.classList.contains('hidden');
-        const shouldShow = force !== undefined ? force : isHidden;
-        if (shouldShow) {
-          overviewModal.classList.remove('hidden');
-          overviewModal.classList.add('flex');
-        } else {
-          overviewModal.classList.add('hidden');
-          overviewModal.classList.remove('flex');
-        }
+      // Print / PDF Button
+      if (printBtn) {
+        printBtn.addEventListener("click", () => window.print());
       }
 
-      const btnToggleOverview = document.getElementById('btnToggleOverview');
-      const closeOverviewBtn = document.getElementById('closeOverviewBtn');
-      if (btnToggleOverview) btnToggleOverview.addEventListener('click', () => toggleOverview());
-      if (closeOverviewBtn) closeOverviewBtn.addEventListener('click', () => toggleOverview(false));
-
-      // Fullscreen Controller
+      // Fullscreen Toggle
       function toggleFullscreen() {
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen().catch(() => {});
         } else {
-          if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+          document.exitFullscreen().catch(() => {});
         }
       }
-      if (fullscreenBtn) fullscreenBtn.addEventListener('click', toggleFullscreen);
+      if (fullscreenBtn) fullscreenBtn.addEventListener("click", toggleFullscreen);
 
-      // Light / Dark Theme Switcher
-      function toggleTheme() {
-        const root = document.documentElement;
-        const currentTheme = root.getAttribute('data-theme') || 'dark';
-        const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        root.setAttribute('data-theme', nextTheme);
-        if (themeIconDark && themeIconLight) {
-          if (nextTheme === 'light') {
-            themeIconDark.classList.add('hidden');
-            themeIconLight.classList.remove('hidden');
-          } else {
-            themeIconDark.classList.remove('hidden');
-            themeIconLight.classList.add('hidden');
-          }
+      // Theme Toggle Logic
+      function syncThemeIcons(theme) {
+        if (theme === "light") {
+          themeIconSun.classList.add("hidden");
+          themeIconMoon.classList.remove("hidden");
+        } else {
+          themeIconSun.classList.remove("hidden");
+          themeIconMoon.classList.add("hidden");
         }
       }
-      if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleTheme);
+
+      function toggleTheme() {
+        const cur = document.documentElement.getAttribute("data-theme") || "dark";
+        const next = cur === "light" ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", next);
+        localStorage.setItem("magic_fill_theme", next);
+        syncThemeIcons(next);
+      }
+
+      if (themeToggleBtn) themeToggleBtn.addEventListener("click", toggleTheme);
+      syncThemeIcons(document.documentElement.getAttribute("data-theme") || "dark");
 
       // Presentation Stopwatch
       let seconds = 0;
       setInterval(() => {
         seconds++;
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        if (timerText) {
-          timerText.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-        }
+        const mins = String(Math.floor(seconds / 60)).padStart(2, "0");
+        const secs = String(seconds % 60).padStart(2, "0");
+        if (deckTimer) deckTimer.textContent = `${mins}:${secs}`;
       }, 1000);
 
-      // Initial Render
-      updateSlideUI();
+      // Initial Slide
+      showSlide(0);
     })();
   </script>
-
 </body>
 </html>
