@@ -60,6 +60,10 @@
       "url": "/extension"
     },
     {
+      "name": "Pitch Deck Slides",
+      "url": "/presentation.html"
+    },
+    {
       "name": "Blog",
       "url": "/blog"
     },

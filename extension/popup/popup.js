@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       applyTheme(nextTheme);
       try {
         localStorage.setItem("magic_fill_theme", nextTheme);
-      } catch (e) {}
+      } catch (e) { }
       if (chrome.storage && chrome.storage.local) {
         chrome.storage.local.set({ magic_fill_theme: nextTheme });
       }
@@ -194,7 +194,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     tab.id,
                     { action: "TOGGLE_NEW_DATA_DETECTION", enabled: isEnabled },
                     () => {
-                      if (chrome.runtime.lastError) {}
+                      if (chrome.runtime.lastError) { }
                     }
                   );
                 }
