@@ -39,9 +39,16 @@ class Settings(BaseSettings):
 
 settings = Settings()
 
+# Normalize connection string for SQLAlchemy compatibility across Neon, Supabase, Render
+db_connection_url = settings.DATABASE_URL
+if db_connection_url.startswith("postgres://"):
+    db_connection_url = db_connection_url.replace("postgres://", "postgresql+psycopg://", 1)
+elif db_connection_url.startswith("postgresql://") and not db_connection_url.startswith("postgresql+"):
+    db_connection_url = db_connection_url.replace("postgresql://", "postgresql+psycopg://", 1)
+
 # PostgreSQL production connection pool configuration
 engine = create_engine(
-    settings.DATABASE_URL,
+    db_connection_url,
     pool_size=10,
     max_overflow=20,
     pool_pre_ping=True,
