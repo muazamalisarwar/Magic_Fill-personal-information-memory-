@@ -471,9 +471,15 @@ import Base from "@/layouts/Base.astro";
 
         <div id="editModalError" class="hidden text-xs text-rose-300 bg-rose-950/40 p-2.5 rounded-xl border border-rose-900/40"></div>
 
-        <div class="flex justify-end gap-2 pt-3 border-t border-[#2B312C]">
-          <button type="button" id="cancelEditBtn" class="btn btn-outline btn-sm rounded-lg">Cancel</button>
-          <button type="submit" id="submitEditBtn" class="btn btn-primary btn-sm rounded-lg">Update Record</button>
+        <div class="flex items-center justify-between gap-2 pt-3 border-t border-[#2B312C]">
+          <button type="button" id="deleteFromEditModalBtn" class="px-3 py-1.5 rounded-lg bg-rose-950/20 hover:bg-rose-950/40 text-rose-400 border border-rose-900/30 text-xs font-semibold transition cursor-pointer flex items-center gap-1.5" title="Delete this field from vault">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            <span>Delete Field</span>
+          </button>
+          <div class="flex items-center gap-2">
+            <button type="button" id="cancelEditBtn" class="btn btn-outline btn-sm rounded-lg">Cancel</button>
+            <button type="submit" id="submitEditBtn" class="btn btn-primary btn-sm rounded-lg">Update Record</button>
+          </div>
         </div>
       </form>
     </div>
@@ -780,17 +786,18 @@ import Base from "@/layouts/Base.astro";
                 <span>Edit</span>
               </button>
 
-              ${item.type === "custom_field" ? `
-                <button
-                  type="button"
-                  class="btn-delete p-2 rounded-lg bg-rose-950/20 hover:bg-rose-950/40 text-rose-400 border border-rose-900/30 transition cursor-pointer"
-                  data-id="${item.id}"
-                  data-label="${item.label.replace(/"/g, '&quot;')}"
-                  title="Delete attribute"
-                >
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                </button>
-              ` : ''}
+              <button
+                type="button"
+                class="btn-delete p-2 rounded-lg bg-rose-950/20 hover:bg-rose-950/40 text-rose-400 border border-rose-900/30 transition cursor-pointer"
+                data-type="${item.type}"
+                data-id="${item.id}"
+                data-key="${item.key}"
+                data-label="${item.label.replace(/"/g, '&quot;')}"
+                title="Delete this field from memory"
+                aria-label="Delete ${item.label.replace(/"/g, '&quot;')}"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+              </button>
             </div>
           </div>
         `).join("");
@@ -822,26 +829,59 @@ import Base from "@/layouts/Base.astro";
         // Bind Delete Buttons
         container.querySelectorAll(".btn-delete").forEach(btn => {
           btn.addEventListener("click", async () => {
+            const type = btn.getAttribute("data-type");
             const id = btn.getAttribute("data-id");
+            const key = btn.getAttribute("data-key");
             const label = btn.getAttribute("data-label");
-            if (confirm(`Are you sure you want to delete "${label}" from your personal memory vault?`)) {
-              try {
-                const res = await fetch(`/api/custom-fields/${id}`, {
-                  method: "DELETE",
-                  headers: { "Authorization": `Bearer ${token}` }
-                });
-                if (res.ok) {
-                  showToast(`Deleted "${label}" successfully!`);
-                  loadVault();
-                } else {
-                  showToast("Failed to delete attribute.", false);
-                }
-              } catch (e) {
-                showToast("Network error deleting attribute.", false);
-              }
-            }
+            await deleteMemoryAttribute(type, id, key, label);
           });
         });
+      }
+
+      async function deleteMemoryAttribute(type, id, key, label) {
+        if (!confirm(`Are you sure you want to delete "${label}" from your personal memory vault?`)) {
+          return false;
+        }
+        try {
+          let res;
+          const headers = { 
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+          };
+
+          if (type === "custom_field") {
+            res = await fetch(`/api/custom-fields/${id}`, { method: "DELETE", headers });
+          } else if (type === "experience") {
+            res = await fetch(`/api/experiences/${id}`, { method: "DELETE", headers });
+          } else if (type === "document") {
+            res = await fetch(`/api/documents/${id}`, { method: "DELETE", headers });
+          } else if (type === "personal_info") {
+            res = await fetch(`/api/personal-info/me/fields/${key}`, { method: "DELETE", headers });
+            if (!res || !res.ok) {
+              res = await fetch(`/api/users/1/personal-info/fields/${key}`, { method: "DELETE", headers });
+            }
+            if (!res || !res.ok) {
+              res = await fetch(`/api/personal-info/me`, {
+                method: "PUT",
+                headers,
+                body: JSON.stringify({ [key]: null })
+              });
+            }
+          }
+
+          if (res && res.ok) {
+            showToast(`Deleted "${label}" successfully!`);
+            closeEditModal();
+            loadVault();
+            return true;
+          } else {
+            showToast(`Failed to delete "${label}".`, false);
+            return false;
+          }
+        } catch (e) {
+          showToast("Network error deleting attribute.", false);
+          return false;
+        }
       }
 
       // Tab Switching
@@ -991,6 +1031,17 @@ import Base from "@/layouts/Base.astro";
 
       if (closeEditBtn) closeEditBtn.addEventListener("click", closeEditModal);
       if (cancelEditBtn) cancelEditBtn.addEventListener("click", closeEditModal);
+
+      const deleteFromEditModalBtn = document.getElementById("deleteFromEditModalBtn");
+      if (deleteFromEditModalBtn) {
+        deleteFromEditModalBtn.addEventListener("click", async () => {
+          const type = document.getElementById("editItemType").value;
+          const id = document.getElementById("editItemId").value;
+          const key = document.getElementById("editItemKey").value;
+          const label = document.getElementById("editItemLabel").value;
+          await deleteMemoryAttribute(type, id, key, label);
+        });
+      }
 
       if (editForm) {
         editForm.addEventListener("submit", async () => {

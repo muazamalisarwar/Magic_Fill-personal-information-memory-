@@ -92,6 +92,77 @@ def update_my_personal_info_endpoint(
     )
 
 
+@router.delete(
+    "/personal-info/me/fields/{field_name}",
+    response_model=APIResponse[None],
+    status_code=status.HTTP_200_OK,
+    summary="Clear an individual personal info field",
+    description="Clears or deletes a single specific field from the authenticated user's personal information profile."
+)
+def clear_my_personal_info_field_endpoint(
+    field_name: str = Path(..., description="Name of the field to clear (e.g. phone, address, university)"),
+    current_user: User = Depends(auth_service.get_current_user),
+    db: Session = Depends(get_db)
+) -> APIResponse[None]:
+    """Clears a specific field on the authenticated user's personal info record."""
+    info = personal_info_service.get_personal_info_by_user_id(db=db, user_id=current_user.id)
+    if not info:
+        raise AppException(message="Personal info record not found", error_code="NOT_FOUND", status_code=404)
+
+    if hasattr(info, field_name):
+        setattr(info, field_name, None)
+        if field_name == "full_name":
+            user = db.query(User).filter(User.id == current_user.id).first()
+            if user:
+                user.full_name = ""
+        db.commit()
+        db.refresh(info)
+    else:
+        raise AppException(message=f"Field '{field_name}' not found on personal info", error_code="INVALID_FIELD", status_code=400)
+
+    return APIResponse(
+        success=True,
+        message=f"Field '{field_name}' cleared successfully",
+        data=None
+    )
+
+
+@router.delete(
+    "/users/{user_id}/personal-info/fields/{field_name}",
+    response_model=APIResponse[None],
+    status_code=status.HTTP_200_OK,
+    summary="Clear an individual personal info field by user ID",
+    description="Clears or deletes a single specific field from the specified user's personal information profile."
+)
+def clear_user_personal_info_field_endpoint(
+    user_id: int = Path(..., gt=0, description="ID of the user"),
+    field_name: str = Path(..., description="Name of the field to clear"),
+    current_user: Optional[User] = Depends(auth_service.get_optional_current_user),
+    db: Session = Depends(get_db)
+) -> APIResponse[None]:
+    """Clears a specific field on the user's personal info record."""
+    _check_user_access(current_user, user_id)
+    info = personal_info_service.get_personal_info_by_user_id(db=db, user_id=user_id)
+    if not info:
+        raise AppException(message="Personal info record not found", error_code="NOT_FOUND", status_code=404)
+
+    if hasattr(info, field_name):
+        setattr(info, field_name, None)
+        if field_name == "full_name":
+            user = db.query(User).filter(User.id == user_id).first()
+            if user:
+                user.full_name = ""
+        db.commit()
+    else:
+        raise AppException(message=f"Field '{field_name}' not found on personal info", error_code="INVALID_FIELD", status_code=400)
+
+    return APIResponse(
+        success=True,
+        message=f"Field '{field_name}' cleared successfully",
+        data=None
+    )
+
+
 @router.post(
     "/users/{user_id}/personal-info",
     response_model=APIResponse[PersonalInfoResponse],

@@ -389,3 +389,59 @@ def test_copilot_multi_turn_custom_field_update_local(client: TestClient, db_ses
         assert cf.field_value == "peach"
 
 
+def test_copilot_multi_turn_name_update_with_conversational_prefix_and_typo_local(client: TestClient, db_session: Session, seed_user_data):
+    """
+    Verify exact user scenario:
+    Turn 1: 'WHAT IS MY CURRENTLY SAVED NAME IS' -> returns legal name
+    Turn 2: 'OK CHNAGE IT TO TAHA ALI' -> resolves 'IT' to full_name, updates DB, confirms update.
+    """
+    with patch("app.ai.provider_manager.AIProviderManager.query_llm", new=AsyncMock(return_value=None)):
+        # Turn 1
+        r1 = client.post(
+            "/api/memory/copilot-chat",
+            json={"message": "WHAT IS MY CURRENTLY SAVED NAME IS"}
+        )
+        assert r1.status_code == 200
+        reply1 = r1.json()["data"]["reply"]
+        assert "Muazam Ali" in reply1
+
+        # Turn 2: 'OK CHNAGE IT TO TAHA ALI' with history
+        r2 = client.post(
+            "/api/memory/copilot-chat",
+            json={
+                "message": "OK CHNAGE IT TO TAHA ALI",
+                "history": [
+                    {"role": "user", "content": "WHAT IS MY CURRENTLY SAVED NAME IS"},
+                    {"role": "assistant", "content": reply1}
+                ]
+            }
+        )
+        assert r2.status_code == 200
+        data2 = r2.json()
+        assert data2["success"] is True
+        assert data2["data"]["intent"] == "UPDATE"
+        assert len(data2["data"]["updates"]) > 0
+        upd = data2["data"]["updates"][0]
+        assert upd["key"] == "full_name"
+        assert "Taha Ali" in upd["new_value"]
+
+        # Verify DB persistence
+        db_session.expire_all()
+        user = db_session.query(User).filter(User.id == 1).first()
+        p_info = db_session.query(PersonalInfo).filter(PersonalInfo.user_id == 1).first()
+        assert user.full_name == "Taha Ali"
+        assert p_info.full_name == "Taha Ali"
+
+
+def test_delete_personal_info_field_endpoint(client: TestClient, db_session: Session, seed_user_data):
+    """Verify deleting/clearing an individual personal_info field via DELETE endpoint."""
+    r = client.delete("/api/users/1/personal-info/fields/phone")
+    assert r.status_code == 200
+    assert r.json()["success"] is True
+
+    db_session.expire_all()
+    p_info = db_session.query(PersonalInfo).filter(PersonalInfo.user_id == 1).first()
+    assert p_info.phone is None
+
+
+

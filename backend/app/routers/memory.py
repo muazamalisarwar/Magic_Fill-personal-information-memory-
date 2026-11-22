@@ -567,15 +567,18 @@ def _copilot_local_grounded_fallback(
             }]
         }
 
-    # Contextual Multi-Turn Updates (e.g. user asks "what is my address?" then says "update to Narang Mandi...", "update to this Narang Mandi...", "change it to X", "make it X")
+    # Contextual Multi-Turn Updates (e.g. user asks "what is my address?" then says "update to Narang Mandi...", "update to this Narang Mandi...", "change it to X", "make it X", "OK CHNAGE IT TO TAHA ALI")
     context_val = None
+    CONV_PREFIX = r"(?:(?:ok|okay|alright|sure|yes|yeah|so|now|then|well|please|can\s+you|could\s+you)\s*[,:\-]?\s*)*"
     context_patterns = [
-        r"^(?:please\s+)?(?:update|change|chnage|chagne|set|make|modify)\s+(?:it\s+|this\s+)?to(?:\s+this)?\s*[:\-]?\s*['\"]?([^'\"\n]+)['\"]?",
-        r"^(?:please\s+)?(?:update|change|chnage|chagne|set|make|modify)\s+(?:it|this)\s+(?:as|with|to)\s+['\"]?([^'\"\n]+)['\"]?",
-        r"^(?:please\s+)?(?:replace|swap)\s+(?:it|this)\s+(?:with|by)\s+['\"]?([^'\"\n]+)['\"]?",
-        r"^(?:no[,\s]+)?(?:actually\s+)?(?:change\s+to|update\s+to|make\s+it|set\s+to)\s+['\"]?([^'\"\n]+)['\"]?",
-        r"^(?:it\s+is|its|it\'s)\s+['\"]?([^'\"\n]+)['\"]?\s+(?:now|instead)",
-        r"^(?:update|change|set)\s*[:\-]\s*['\"]?([^'\"\n]+)['\"]?",
+        rf"^{CONV_PREFIX}(?:update|change|set|make|modify)\s+(?:it\s+|this\s+|that\s+)?to(?:\s+this)?\s*[:\-]?\s*['\"]?([^'\"\n]+)['\"]?",
+        rf"^{CONV_PREFIX}(?:update|change|set|make|modify)\s+(?:it|this|that)\s+(?:as|with|to)\s+['\"]?([^'\"\n]+)['\"]?",
+        rf"^{CONV_PREFIX}(?:replace|swap)\s+(?:it|this|that)\s+(?:with|by)\s+['\"]?([^'\"\n]+)['\"]?",
+        rf"^{CONV_PREFIX}(?:no[,\s]+)?(?:actually\s+)?(?:change\s+to|update\s+to|make\s+it|set\s+to)\s+['\"]?([^'\"\n]+)['\"]?",
+        rf"^{CONV_PREFIX}(?:it\s+is|its|it\'s)\s+['\"]?([^'\"\n]+)['\"]?\s+(?:now|instead)",
+        rf"^{CONV_PREFIX}(?:update|change|set)\s*[:\-]\s*['\"]?([^'\"\n]+)['\"]?",
+        r"\b(?:update|change|set|make|modify)\s+(?:it|this|that)\s+(?:to|as|with)\s+['\"]?([^'\"\n]+)['\"]?",
+        r"\b(?:update|change|set)\s+(?:it\s+|this\s+|that\s+)?to\s+['\"]?([^'\"\n]+)['\"]?",
     ]
     for cp in context_patterns:
         cm = re.search(cp, msg_normalized)
@@ -605,9 +608,36 @@ def _copilot_local_grounded_fallback(
                 or any(w in prior_all_text for w in target_words)
             )
 
-        # Address Context
+        def _in_recent(target_words: List[str]) -> bool:
+            return any(w in prior_user_text for w in target_words) or any(w in prior_asst_text for w in target_words)
+
         is_addr_heuristic = any(loc_kw in context_val.lower() for loc_kw in ["street", "st.", "road", "rd.", "lahore", "karachi", "islamabad", "pakistan", "avenue", "lane", "house", "flat", "city", "block", "phase", "district", "village", "zafar"])
-        if _has_kw(["address", "street", "road", "residence", "where do i live", "live", "location"]) or is_addr_heuristic:
+        is_phone_heuristic = bool(re.match(r"^[\d\+\-\s]{8,}$", context_val))
+        is_email_heuristic = "@" in context_val and "." in context_val
+
+        # 1. Name Context (prioritize when most recent turn asked about or displayed legal name, full name, or user asked who am i)
+        is_name_recent = _in_recent(["name", "who am i", "call me", "named", "legal name", "saved name", "full name"])
+        if is_name_recent and not is_addr_heuristic and not is_phone_heuristic and not is_email_heuristic:
+            old_name = p_data.get("full_name") or user.full_name or "Muazam Ali"
+            user.full_name = context_val.title()
+            if p_info:
+                p_info.full_name = context_val.title()
+            db.commit()
+            return {
+                "intent": "UPDATE",
+                "reply": f"I have updated your legal full name in your memory vault to **{context_val.title()}**.",
+                "updates": [{
+                    "field_type": "personal_info",
+                    "key": "full_name",
+                    "label": "Legal Full Name",
+                    "old_value": old_name,
+                    "new_value": context_val.title(),
+                    "action": "UPDATE"
+                }]
+            }
+
+        # 2. Address Context
+        if _in_recent(["address", "street", "road", "residence", "where do i live", "live", "location"]) or is_addr_heuristic:
             old_addr = p_data.get("address") or "Not set"
             if p_info:
                 p_info.address = context_val
@@ -625,8 +655,8 @@ def _copilot_local_grounded_fallback(
                 }]
             }
 
-        # Phone Context
-        elif _has_kw(["phone", "mobile", "cell", "contact number", "call"]) or re.match(r"^[\d\+\-\s]{8,}$", context_val):
+        # 3. Phone Context
+        if _in_recent(["phone", "mobile", "cell", "contact number", "call"]) or is_phone_heuristic:
             old_phone = p_data.get("phone") or "Not set"
             if p_info:
                 p_info.phone = context_val
@@ -644,8 +674,8 @@ def _copilot_local_grounded_fallback(
                 }]
             }
 
-        # Name Context
-        elif _has_kw(["name", "who am i", "call me"]):
+        # 4. Name Context via broader history
+        if _has_kw(["name", "who am i", "call me"]) and not is_addr_heuristic and not is_phone_heuristic and not is_email_heuristic:
             old_name = p_data.get("full_name") or user.full_name or "Muazam Ali"
             user.full_name = context_val.title()
             if p_info:
