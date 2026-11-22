@@ -4,9 +4,8 @@ import { sporeCanvas, initGlobalAmbientParticles } from "./particleCanvas.js";
 (function () {
   "use strict";
 
-  // Hero Video Showcase: GSAP 3D scroll tilt
-  // On XL: starts scaled 0.8, rotationX 10, top -250 → scrolls to normal
-  // On < XL: starts scaled 0.8, rotationX 15 → scrolls to normal
+  // Hero Video Showcase: GSAP 3D scroll growth & tilt
+  // Starts small on top, smoothly expands and grows larger as user scrolls
   function heroVideo() {
     const mm = gsap.matchMedia();
     const gsapVideoShowcase = document.querySelectorAll(
@@ -15,31 +14,40 @@ import { sporeCanvas, initGlobalAmbientParticles } from "./particleCanvas.js";
     if (!gsapVideoShowcase.length) return;
 
     gsapVideoShowcase.forEach((el) => {
-      mm.add("(min-width: 1280px)", () => {
-        gsap.set(el, { scale: 0.8, rotationX: 10, top: -250 });
+      mm.add("(min-width: 1024px)", () => {
+        gsap.set(el, {
+          scale: 0.8,
+          rotationX: 12,
+          transformPerspective: 1200,
+          transformOrigin: "center top",
+        });
         gsap.to(el, {
           scrollTrigger: {
             trigger: el,
-            start: "20% 95%",
-            end: "0% 30%",
-            scrub: true,
+            start: "top 95%",
+            end: "center 50%",
+            scrub: 1,
             markers: false,
           },
           scale: 1,
           rotationX: 0,
-          top: 0,
           ease: "none",
         });
       });
 
-      mm.add("(max-width: 1279px)", () => {
-        gsap.set(el, { scale: 0.8, rotationX: 15 });
+      mm.add("(max-width: 1023px)", () => {
+        gsap.set(el, {
+          scale: 0.85,
+          rotationX: 8,
+          transformPerspective: 1000,
+          transformOrigin: "center top",
+        });
         gsap.to(el, {
           scrollTrigger: {
             trigger: el,
-            start: "20% 95%",
-            end: "0% 40%",
-            scrub: true,
+            start: "top 95%",
+            end: "center 50%",
+            scrub: 1,
           },
           scale: 1,
           rotationX: 0,
