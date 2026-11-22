@@ -444,4 +444,138 @@ def test_delete_personal_info_field_endpoint(client: TestClient, db_session: Ses
     assert p_info.phone is None
 
 
+def test_copilot_conversational_thanks_acknowledgment_with_laptop_custom_field(client: TestClient, db_session: Session, seed_user_data):
+    """
+    Verify exact user bug:
+    When user has custom field 'Do You Have Your Own Laptop And Stable Internet Connect?' = 'No',
+    saying 'OK THANK YOU' or 'thank you' must return a polite acknowledgment and MUST NOT
+    hallucinate or dump the laptop/internet field!
+    """
+    cf = CustomField(
+        user_id=1,
+        field_key="do_you_have_laptop_internet",
+        field_label="Do You Have Your Own Laptop And Stable Internet Connect?",
+        field_value="No",
+        category="personal"
+    )
+    db_session.add(cf)
+    db_session.commit()
+
+    with patch("app.ai.provider_manager.AIProviderManager.query_llm", new=AsyncMock(return_value=None)):
+        # User says 'OK THANK YOU'
+        r = client.post(
+            "/api/memory/copilot-chat",
+            json={"message": "OK THANK YOU"}
+        )
+        assert r.status_code == 200
+        data = r.json()
+        assert data["success"] is True
+        reply = data["data"]["reply"]
+
+        # MUST NOT dump the laptop question
+        assert "Laptop" not in reply
+        assert "Internet" not in reply
+        assert "No" not in reply.split()
+
+        # MUST be a warm courtesy acknowledgment
+        assert "welcome" in reply.lower()
+        assert len(data["data"]["updates"]) == 0
+
+
+def test_copilot_query_laptop_custom_field_substantive(client: TestClient, db_session: Session, seed_user_data):
+    """
+    Verify that when user substantively asks about their laptop/internet,
+    the custom field is correctly retrieved.
+    """
+    cf = CustomField(
+        user_id=1,
+        field_key="do_you_have_laptop_internet",
+        field_label="Do You Have Your Own Laptop And Stable Internet Connect?",
+        field_value="No",
+        category="personal"
+    )
+    db_session.add(cf)
+    db_session.commit()
+
+    with patch("app.ai.provider_manager.AIProviderManager.query_llm", new=AsyncMock(return_value=None)):
+        r = client.post(
+            "/api/memory/copilot-chat",
+            json={"message": "do I have a laptop or stable internet saved?"}
+        )
+        assert r.status_code == 200
+        data = r.json()
+        assert data["success"] is True
+        reply = data["data"]["reply"]
+        assert "Do You Have Your Own Laptop And Stable Internet Connect?" in reply
+        assert "No" in reply
+
+
+def test_copilot_user_reported_full_session_flow(client: TestClient, db_session: Session, seed_user_data):
+    """
+    Verify complete flow from user prompt:
+    1. 'WHAT IS MY CURRENT NAMED IS SAVED' -> reports saved name 'Muazam Ali'
+    2. 'CHNAGE IT TO TAHA ALI' -> updates legal name to 'Taha Ali'
+    3. 'OK THANK YOU' -> says 'You're very welcome!', does NOT hallucinate laptop!
+    """
+    cf = CustomField(
+        user_id=1,
+        field_key="do_you_have_laptop_internet",
+        field_label="Do You Have Your Own Laptop And Stable Internet Connect?",
+        field_value="No",
+        category="personal"
+    )
+    db_session.add(cf)
+    db_session.commit()
+
+    with patch("app.ai.provider_manager.AIProviderManager.query_llm", new=AsyncMock(return_value=None)):
+        # Turn 1
+        r1 = client.post(
+            "/api/memory/copilot-chat",
+            json={"message": "WHAT IS MY CURRENT NAMED IS SAVED"}
+        )
+        assert r1.status_code == 200
+        reply1 = r1.json()["data"]["reply"]
+        assert "Muazam Ali" in reply1
+
+        # Turn 2
+        r2 = client.post(
+            "/api/memory/copilot-chat",
+            json={
+                "message": "CHNAGE IT TO TAHA ALI",
+                "history": [
+                    {"role": "user", "content": "WHAT IS MY CURRENT NAMED IS SAVED"},
+                    {"role": "assistant", "content": reply1}
+                ]
+            }
+        )
+        assert r2.status_code == 200
+        data2 = r2.json()["data"]
+        assert data2["intent"] == "UPDATE"
+        assert any(u["new_value"] == "Taha Ali" for u in data2["updates"])
+        reply2 = data2["reply"]
+
+        # Turn 3
+        r3 = client.post(
+            "/api/memory/copilot-chat",
+            json={
+                "message": "OK THANK YOU",
+                "history": [
+                    {"role": "user", "content": "WHAT IS MY CURRENT NAMED IS SAVED"},
+                    {"role": "assistant", "content": reply1},
+                    {"role": "user", "content": "CHNAGE IT TO TAHA ALI"},
+                    {"role": "assistant", "content": reply2}
+                ]
+            }
+        )
+        assert r3.status_code == 200
+        data3 = r3.json()["data"]
+        assert data3["intent"] == "QUERY"
+        assert len(data3["updates"]) == 0
+        reply3 = data3["reply"]
+        assert "welcome" in reply3.lower()
+        assert "laptop" not in reply3.lower()
+        assert "internet" not in reply3.lower()
+
+
+
 

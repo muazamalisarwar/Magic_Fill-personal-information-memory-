@@ -468,6 +468,25 @@ class CopilotChatResult(BaseModel):
     updated_profile: Optional[UserProfileResponse] = None
 
 
+COPILOT_STOP_WORDS = {
+    "a", "an", "the", "and", "or", "but", "if", "for", "with", "at", "by", "from",
+    "to", "in", "on", "into", "onto", "over", "under", "above", "below", "of", "off",
+    "what", "whats", "which", "who", "whom", "whose", "why", "when", "where", "how",
+    "you", "your", "yours", "yourself", "me", "my", "mine", "myself", "i", "we", "us",
+    "our", "ours", "he", "him", "his", "she", "her", "hers", "it", "its", "they", "them",
+    "their", "theirs", "this", "that", "these", "those",
+    "is", "are", "was", "were", "be", "been", "being", "am",
+    "do", "does", "did", "done", "doing",
+    "have", "has", "had", "having",
+    "can", "could", "will", "would", "shall", "should", "may", "might", "must",
+    "own", "any", "all", "some", "such", "no", "not", "only", "same", "so", "than",
+    "too", "very", "just", "now", "then", "there", "here",
+    "get", "got", "give", "given", "make", "made", "know", "known", "tell", "show",
+    "saved", "save", "saving", "stored", "store", "memory", "vault", "record",
+    "please", "thanks", "thank", "okay", "ok", "yes", "yeah", "sure", "well", "hello", "hi"
+}
+
+
 def _copilot_local_grounded_fallback(
     message: str,
     user_profile: Dict[str, Any],
@@ -521,6 +540,35 @@ def _copilot_local_grounded_fallback(
     }
     for typo, clean in typo_map.items():
         msg_normalized = re.sub(rf"\b{typo}\b", clean, msg_normalized)
+
+    # 0.1 Conversational Courtesies & Acknowledgments (e.g. 'ok thank you', 'thanks', 'thank you so much', 'awesome', 'great', 'got it')
+    thanks_pattern = r"^(?:(?:ok|okay|alright|sure|yes|yeah|so|well)\s*[,:\-]?\s*)?(?:thank\s+you|thanks|thx|thank\s*u|thankyou|much\s+appreciated|appreciate\s+it)(?:\s+(?:so\s+much|a\s+lot|very\s+much|copilot|buddy|mate))?[\.!\s]*$"
+    acknowledgment_pattern = r"^(?:(?:ok|okay|alright|sure|yes|yeah)\s*[,:\-]?\s*)?(?:great|awesome|perfect|excellent|wonderful|sounds\s+good|got\s+it|understood|cool|done|no\s+problem)[\.!\s]*$"
+    farewell_pattern = r"^(?:bye|goodbye|see\s+you|see\s+ya|have\s+a\s+good\s+(?:day|night))[\.!\s]*$"
+
+    if re.search(thanks_pattern, msg_normalized) or re.search(acknowledgment_pattern, msg_normalized):
+        return {
+            "intent": "QUERY",
+            "reply": "You're very welcome! Let me know whenever you'd like to check or update anything in your memory vault.",
+            "updates": []
+        }
+
+    if re.search(farewell_pattern, msg_normalized):
+        return {
+            "intent": "QUERY",
+            "reply": "Goodbye! Your personal memory vault is safely stored and ready whenever you need it.",
+            "updates": []
+        }
+
+    # 0.2 Friendly Greetings
+    greeting_pattern = r"^(?:hi|hello|hey|salam|assalam(?:\s+o\s+alaikum)?|greetings|good\s+(?:morning|afternoon|evening|day))(?:\s+(?:there|copilot|magic\s+fill))?[\.!\s]*$"
+    if re.search(greeting_pattern, msg_normalized):
+        full_name = p_data.get("full_name") or user.full_name or "there"
+        return {
+            "intent": "QUERY",
+            "reply": f"Hello {full_name}! I am your AI Memory Copilot. You can ask me to show any detail in your memory vault (e.g. *'What is currently saved my name?'*, *'What address you know about me?'*), or command me to update your memory (e.g. *'Update my phone to 0326-8848703'* or *'My favorite fruit is mango'*).",
+            "updates": []
+        }
 
     # 1. Update Detection Patterns (typo-tolerant: update, change, chnage, chagne, set, make, modify)
     # Name
@@ -770,8 +818,9 @@ def _copilot_local_grounded_fallback(
         for cf in cfs:
             k = (cf.get("field_key") or "").lower()
             lbl = (cf.get("field_label") or "").lower()
-            k_words = [w for w in k.split("_") if len(w) >= 3]
-            if _has_kw([k, lbl]) or (k_words and _has_kw(k_words)):
+            combined_text = re.sub(r"[^a-z0-9\s]+", " ", f"{k.replace('_', ' ')} {lbl}")
+            substantive_kws = [w for w in combined_text.split() if len(w) >= 3 and w not in COPILOT_STOP_WORDS]
+            if substantive_kws and any(re.search(rf"\b{re.escape(w)}\b", prior_all_text) for w in substantive_kws):
                 upsert_custom_field_by_key(
                     db=db,
                     user_id=target_user_id,
@@ -1091,8 +1140,11 @@ def _copilot_local_grounded_fallback(
     for cf in cfs:
         k_norm = (cf.get("field_key") or "").lower().replace("_", " ")
         lbl_norm = (cf.get("field_label") or "").lower()
-        key_words = [w for w in (k_norm + " " + lbl_norm).split() if len(w) >= 3 and w not in ("the", "and", "for", "with", "what", "your")]
-        if any(w in msg_normalized for w in key_words):
+        combined_text = re.sub(r"[^a-z0-9\s]+", " ", f"{k_norm} {lbl_norm}")
+        key_words = [w for w in combined_text.split() if len(w) >= 3 and w not in COPILOT_STOP_WORDS]
+        if not key_words:
+            continue
+        if any(re.search(rf"\b{re.escape(w)}\b", msg_normalized) for w in key_words):
             return {
                 "intent": "QUERY",
                 "reply": f"In your memory vault, your **{cf.get('field_label') or cf.get('field_key')}** is saved as **{cf.get('field_value')}**.",
