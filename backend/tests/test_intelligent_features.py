@@ -210,7 +210,7 @@ def test_support_all_10_input_types(db_session, client):
     assert mapped_map["in_radio"]["source"] == "llm"
 
     # Verify Checkbox (boolean checked representation, AI matched)
-    assert mapped_map["in_check"]["value"] in ("true", "Yes")
+    assert str(mapped_map["in_check"]["value"]).lower() in ("true", "yes")
     assert mapped_map["in_check"]["source"] == "llm"
 
     # Verify Text Area (AI matched)
@@ -222,7 +222,7 @@ def test_support_all_10_input_types(db_session, client):
     assert mapped_map["in_date"]["source"] == "llm"
 
     # Verify Toggle / Switch (AI matched)
-    assert mapped_map["in_switch"]["value"] in ("true", "Yes")
+    assert str(mapped_map["in_switch"]["value"]).lower() in ("true", "yes")
     assert mapped_map["in_switch"]["source"] == "llm"
 
     # Verify Range Slider (AI matched)

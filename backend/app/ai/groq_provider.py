@@ -47,9 +47,9 @@ class GroqProvider(BaseAIProvider):
         # Priority candidate models: requested model first, then configured, then fallbacks
         candidate_models: List[str] = []
         target_model = model or self.model_name
-        if target_model and target_model not in ("llama-3.3-70b-versatile", "openai/gpt-oss-120b"):
+        if target_model and target_model in ("openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.8-27b", "allam-2-7b"):
             candidate_models.append(target_model)
-        for m in ["openai/gpt-oss-20b", "openai/gpt-oss-120b", "qwen/qwen3.8-27b", "allam-2-7b"]:
+        for m in ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.8-27b", "allam-2-7b"]:
             if m not in candidate_models:
                 candidate_models.append(m)
 
@@ -73,7 +73,7 @@ class GroqProvider(BaseAIProvider):
                 "model": current_model,
                 "messages": prepared_messages,
                 "temperature": temperature,
-                "max_tokens": 3072,
+                "max_tokens": 4096,
             }
             if response_json:
                 payload["response_format"] = {"type": "json_object"}

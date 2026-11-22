@@ -58,12 +58,12 @@ MATCHING_SYSTEM_PROMPT = (
 EXTRACTION_SYSTEM_PROMPT = (
     "You are an expert personal profile and memory extraction assistant.\n"
     "Your objective is to read raw text, biographies, notes, or resume content and "
-    "convert it into a clean, structured JSON object for personal memory storage.\n\n"
+    "convert it into a clean, comprehensive, structured JSON object for personal memory storage.\n\n"
     "JSON SCHEMA REQUIREMENTS:\n"
     "Return a JSON object strictly conforming to this structure:\n"
     "{\n"
     '  "personal_info": {\n'
-    '    "full_name": "USER\'S OWN full legal name (string or null). STRICT RULE: This must be the user themselves (e.g. \'My name is...\', \'I am...\'). NEVER put names of friends, references, parents, or contacts here! If no name for the user themselves is given, set null.",\n'
+    '    "full_name": "USER\'S OWN full legal name (string or null). STRICT RULE: This must be the user themselves (e.g. \'My name is...\', top of CV). NEVER put names of friends, references, parents, or contacts here! If no name for the user themselves is given, set null.",\n'
     '    "father_name": "Father\'s name or null",\n'
     '    "gender": "Gender (\'Male\', \'Female\', \'Other\', or null)",\n'
     '    "date_of_birth": "YYYY-MM-DD or null",\n'
@@ -75,41 +75,50 @@ EXTRACTION_SYSTEM_PROMPT = (
     '    "postal_code": "Postal code or null",\n'
     '    "country": "Country or null",\n'
     '    "university": "University or institution name or null",\n'
-    '    "degree": "Degree program or null",\n'
+    '    "degree": "Degree program or null (e.g. BS Computer Science)",\n'
+    '    "major": "Major or field of study or null",\n'
     '    "department": "Academic department or null",\n'
+    '    "graduation_year": "Graduation year or expected year or null",\n'
     '    "semester": "Semester standing or null",\n'
-    '    "registration_number": "Student registration/roll number or null"\n'
+    '    "registration_number": "Student registration/roll number or null",\n'
+    '    "linkedin_url": "LinkedIn profile URL or null",\n'
+    '    "github_url": "GitHub profile URL or null",\n'
+    '    "bio": "Professional summary or objective or bio (1-3 sentences) or null"\n'
     "  },\n"
     '  "experiences": [\n'
     "    {\n"
     '      "company": "Company / Organization name (string, required)",\n'
-    '      "job_title": "Position / Role (string, required)",\n'
-    '      "start_date": "YYYY-MM-DD (required, if only year known use YYYY-01-01)",\n'
-    '      "end_date": "YYYY-MM-DD or null if currently active/ongoing",\n'
+    '      "job_title": "Position / Role title (string, required)",\n'
+    '      "start_date": "YYYY-MM-DD (required. If only year known, use YYYY-01-01. If month/year known, use YYYY-MM-01)",\n'
+    '      "end_date": "YYYY-MM-DD or null if currently active/ongoing/present",\n'
     '      "description": "Responsibilities and accomplishments or null",\n'
-    '      "skills": "Comma-separated skills used in this role or null"\n'
+    '      "skills": "Comma-separated skills and technologies used in this role or null"\n'
     "    }\n"
     "  ],\n"
     '  "custom_fields": [\n'
     "    {\n"
-    '      "field_key": "Normalized snake_case identifier (e.g. friends_name, personal_mail, emergency_contact, work_email, passport_number)",\n'
-    '      "field_label": "Human-readable label (e.g. Friend\'s Name, Personal Mail, Emergency Contact, Work Email)",\n'
+    '      "field_key": "Normalized snake_case identifier (e.g. technical_skills, certifications, projects, languages, portfolio_url, friends_name)",\n'
+    '      "field_label": "Human-readable label (e.g. Technical Skills, Certifications, Key Projects, Languages, Portfolio)",\n'
     '      "field_value": "Extracted string value",\n'
-    '      "category": "Classification category (e.g. contact, email, identity, general)"\n'
+    '      "category": "Classification category (\'professional\', \'contact\', \'personal\', or \'identity\')"\n'
     "    }\n"
     "  ]\n"
     "}\n\n"
     "CRITICAL RULES:\n"
-    "1. STRICT IDENTITY PROTECTION:\n"
+    "1. EXHAUSTIVE EXTRACTION:\n"
+    "   - Extract EVERY work experience, internship, or role listed in the input text into 'experiences'. Do NOT skip any positions!\n"
+    "   - Extract ALL technical skills, tools, programming languages, and frameworks into custom_fields with field_key='technical_skills'.\n"
+    "   - Extract any certifications, courses, or licenses into custom_fields with field_key='certifications'.\n"
+    "   - Extract any key personal/academic projects into custom_fields with field_key='projects'.\n"
+    "   - Extract spoken languages into custom_fields with field_key='languages'.\n"
+    "2. STRICT IDENTITY PROTECTION:\n"
     "   - personal_info is SOLELY for the primary user's personal identity.\n"
-    "   - If the user provides a friend's name ('Friends Name is Taha', 'My friend is Ali'), colleague, emergency contact, or reference, NEVER assign this to personal_info.full_name!\n"
-    "   - Instead, place it into custom_fields with field_key='friends_name', field_label=\"Friend's Name\", field_value='Taha', category='contact'.\n"
-    "2. CUSTOM AND EXTENSIBLE FIELDS:\n"
-    "   - Any attribute that does not have a dedicated slot in personal_info (such as Friend's Name, Personal Mail, Work Email, Emergency Contact, Passport Number, Github Profile, Favorite Stack, etc.) MUST be extracted into custom_fields.\n"
-    "3. UPDATES AND STANDARDIZATION:\n"
-    "   - Normalize field_key to snake_case (e.g. 'friends_name', 'personal_mail') so future updates to the same field can be matched and updated seamlessly.\n"
-    "4. Extract ONLY facts mentioned or directly implied in the input text. Never invent details.\n"
-    "5. Return raw JSON only, conforming strictly to the schema."
+    "   - If the user provides a friend's name, colleague, or reference, place it into custom_fields with field_key='friends_name'.\n"
+    "3. DATE NORMALIZATION:\n"
+    "   - For all dates, always format as 'YYYY-MM-DD'. If only a year is available (e.g. '2023'), use '2023-01-01'. If ongoing/present, use null for end_date.\n"
+    "4. ACCURACY & DETERMINISM:\n"
+    "   - Extract ONLY facts directly mentioned in the input text. Never invent details.\n"
+    "5. Return raw JSON only, with no markdown code blocks and no surrounding text."
 )
 
 CLASSIFICATION_SYSTEM_PROMPT = (

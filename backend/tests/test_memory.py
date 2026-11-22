@@ -105,3 +105,87 @@ def test_serve_dashboard_html(client):
     assert res.status_code == 200
     assert "Magic Fill" in res.text
     assert "text/html" in res.headers.get("content-type", "")
+
+
+def test_date_normalization():
+    """Verify that dates in non-ISO formats (Year-only, Month Name Year, Present) normalize reliably."""
+    from app.services.extraction_service import normalize_date_for_storage
+    import datetime
+
+    # Year only
+    assert normalize_date_for_storage("2022", is_end_date=False) == datetime.date(2022, 1, 1)
+    assert normalize_date_for_storage("2022", is_end_date=True) == datetime.date(2022, 12, 31)
+
+    # Month Name Year
+    assert normalize_date_for_storage("May 2023", is_end_date=False) == datetime.date(2023, 5, 1)
+    assert normalize_date_for_storage("May 2023", is_end_date=True) == datetime.date(2023, 5, 31)
+    assert normalize_date_for_storage("Sep 2021", is_end_date=False) == datetime.date(2021, 9, 1)
+
+    # YYYY-MM
+    assert normalize_date_for_storage("2024-03", is_end_date=False) == datetime.date(2024, 3, 1)
+    assert normalize_date_for_storage("2024-03", is_end_date=True) == datetime.date(2024, 3, 31)
+
+    # Standard ISO
+    assert normalize_date_for_storage("2023-10-15", is_end_date=False) == datetime.date(2023, 10, 15)
+
+    # Ongoing / Present
+    assert normalize_date_for_storage("Present", is_end_date=True) is None
+    assert normalize_date_for_storage("Current", is_end_date=True) is None
+    assert normalize_date_for_storage(None, is_end_date=True) is None
+
+
+@pytest.mark.anyio
+async def test_repeated_upload_experience_upsert(client):
+    """Verify that re-uploading the same experience updates it in place rather than duplicating."""
+    mock_upload_1 = {
+        "personal_info": {"full_name": "Test Candidate"},
+        "experiences": [
+            {
+                "company": "Acme Corp",
+                "job_title": "Software Engineer",
+                "start_date": "2022",
+                "end_date": "Present",
+                "skills": "Python"
+            }
+        ],
+        "custom_fields": []
+    }
+
+    mock_upload_2 = {
+        "personal_info": {"full_name": "Test Candidate"},
+        "experiences": [
+            {
+                "company": "Acme Corp",
+                "job_title": "Software Engineer",
+                "start_date": "2022-01-01",
+                "end_date": "2024-05-01",
+                "skills": "Python, TypeScript, FastAPI",
+                "description": "Promoted and led cloud migration project"
+            }
+        ],
+        "custom_fields": []
+    }
+
+    with patch("app.services.extraction_service.query_groq_llm", new=AsyncMock(return_value=mock_upload_1)):
+        r1 = client.post(
+            "/api/memory/extract-raw",
+            json={"raw_text": "Experience at Acme Corp as Software Engineer...", "user_id": 99, "auto_save": True}
+        )
+        assert r1.status_code == 200
+        exps1 = r1.json()["data"]["profile"]["experiences"]
+        assert len(exps1) == 1
+        assert exps1[0]["skills"] == "Python"
+
+    # Second upload with updated details for same company & role
+    with patch("app.services.extraction_service.query_groq_llm", new=AsyncMock(return_value=mock_upload_2)):
+        r2 = client.post(
+            "/api/memory/extract-raw",
+            json={"raw_text": "Updated CV with Acme Corp lead role...", "user_id": 99, "auto_save": True}
+        )
+        assert r2.status_code == 200
+        exps2 = r2.json()["data"]["profile"]["experiences"]
+        # Must still be exactly 1 experience (updated in-place, NOT duplicated)
+        assert len(exps2) == 1
+        assert exps2[0]["skills"] == "Python, TypeScript, FastAPI"
+        assert "cloud migration" in exps2[0]["description"]
+
