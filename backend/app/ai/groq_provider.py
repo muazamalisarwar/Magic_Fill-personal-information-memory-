@@ -47,9 +47,10 @@ class GroqProvider(BaseAIProvider):
         # Priority candidate models: requested model first, then configured, then fallbacks
         candidate_models: List[str] = []
         target_model = model or self.model_name
-        if target_model and target_model in ("openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.8-27b", "allam-2-7b"):
+        supported_candidates = ["qwen/qwen3.8-27b", "allam-2-7b", "openai/gpt-oss-120b", "openai/gpt-oss-20b"]
+        if target_model and target_model in supported_candidates:
             candidate_models.append(target_model)
-        for m in ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.8-27b", "allam-2-7b"]:
+        for m in supported_candidates:
             if m not in candidate_models:
                 candidate_models.append(m)
 
@@ -67,7 +68,7 @@ class GroqProvider(BaseAIProvider):
                 last_msg["content"] = (last_msg.get("content") or "") + "\n\nRespond strictly in valid JSON format."
                 prepared_messages[-1] = last_msg
 
-        per_model_timeout = httpx.Timeout(timeout=min(timeout_seconds, 8.0), connect=4.0)
+        per_model_timeout = httpx.Timeout(timeout=min(timeout_seconds, 6.0), connect=3.0)
         for current_model in candidate_models:
             payload: Dict[str, Any] = {
                 "model": current_model,

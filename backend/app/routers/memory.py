@@ -570,10 +570,10 @@ def _copilot_local_grounded_fallback(
             "updates": []
         }
 
-    # 1. Update Detection Patterns (typo-tolerant: update, change, chnage, chagne, set, make, modify)
+    # 1. Update Detection Patterns (typo-tolerant: update, change, chnage, chagne, set, make, modify, save, store, record)
     # Name
-    name_m = re.search(r"(?:update|change|chnage|chagne|set|make|modify)\s+(?:my\s+)?(?:current\s+)?(?:name|full\s*name|legal\s*name)\s+(?:to\s+|is\s+|as\s+|to\s+this\s+|:\s*)?['\"]?([^'\"\.,\n]+)['\"]?", msg_normalized)
-    if name_m:
+    name_m = re.search(r"(?:update|change|chnage|chagne|set|make|modify|save|store|record)\s+(?:my\s+)?(?:current\s+)?(?:name|full\s*name|legal\s*name)\s+(?:to\s+|is\s+|as\s+|to\s+this\s+|:\s*)?['\"]?([^'\"\.,\n]+)['\"]?", msg_normalized)
+    if name_m and not any(w in msg_normalized for w in ["father", "mother", "guardian", "friend", "grandfather", "company", "boss"]):
         raw_val = message[name_m.start(1):name_m.end(1)].strip(" :'\"")
         new_name = raw_val.title()
         old_name = p_data.get("full_name") or user.full_name or "Muazam Ali"
@@ -595,7 +595,7 @@ def _copilot_local_grounded_fallback(
         }
 
     # Address
-    addr_m = re.search(r"(?:update|change|chnage|chagne|set|make|modify)\s+(?:my\s+)?(?:current\s+)?(?:residential\s+)?(?:address|location|residence|addr)\s+(?:to\s+|is\s+|as\s+|to\s+this\s+|:\s*)?['\"]?([^'\"\n]+)['\"]?", msg_normalized)
+    addr_m = re.search(r"(?:update|change|chnage|chagne|set|make|modify|save|store|record)\s+(?:my\s+)?(?:current\s+)?(?:residential\s+)?(?:address|location|residence|addr)\s+(?:to\s+|is\s+|as\s+|to\s+this\s+|:\s*)?['\"]?([^'\"\n]+)['\"]?", msg_normalized)
     if addr_m:
         new_addr = message[addr_m.start(1):addr_m.end(1)].strip(" :'\"")
         old_addr = p_data.get("address") or "Not set"
@@ -663,8 +663,28 @@ def _copilot_local_grounded_fallback(
         is_phone_heuristic = bool(re.match(r"^[\d\+\-\s]{8,}$", context_val))
         is_email_heuristic = "@" in context_val and "." in context_val
 
+        # 0. Father / Guardian Context
+        is_father_recent = _in_recent(["father", "guardian", "father's name", "father name", "guardian name"])
+        if is_father_recent and not is_addr_heuristic and not is_phone_heuristic and not is_email_heuristic:
+            old_father = p_data.get("father_name") or "Not set"
+            if p_info:
+                p_info.father_name = context_val.title()
+            db.commit()
+            return {
+                "intent": "UPDATE",
+                "reply": f"I have updated your Father / Guardian name in your memory vault to **{context_val.title()}**.",
+                "updates": [{
+                    "field_type": "personal_info",
+                    "key": "father_name",
+                    "label": "Father's Name",
+                    "old_value": old_father,
+                    "new_value": context_val.title(),
+                    "action": "UPDATE"
+                }]
+            }
+
         # 1. Name Context (prioritize when most recent turn asked about or displayed legal name, full name, or user asked who am i)
-        is_name_recent = _in_recent(["name", "who am i", "call me", "named", "legal name", "saved name", "full name"])
+        is_name_recent = _in_recent(["name", "who am i", "call me", "named", "legal name", "saved name", "full name"]) and not is_father_recent and not _in_recent(["mother", "friend", "grandfather", "company", "boss"])
         if is_name_recent and not is_addr_heuristic and not is_phone_heuristic and not is_email_heuristic:
             old_name = p_data.get("full_name") or user.full_name or "Muazam Ali"
             user.full_name = context_val.title()
@@ -880,7 +900,7 @@ def _copilot_local_grounded_fallback(
             }
 
     # Phone
-    phone_m = re.search(r"(?:update|change|chnage|chagne|set|modify)\s+(?:my\s+)?(?:phone(?:\s*number)?|mobile(?:\s*number)?|cell(?:\s*number)?|contact\s*number)\s+(?:to\s+|is\s+)?['\"]?([0-9\+\-\s]+)['\"]?", msg_lower)
+    phone_m = re.search(r"(?:update|change|chnage|chagne|set|make|modify|save|store|record)\s+(?:my\s+)?(?:phone(?:\s*number)?|mobile(?:\s*number)?|cell(?:\s*number)?|contact\s*number)\s+(?:to\s+|is\s+|as\s+|to\s+this\s+|:\s*)?['\"]?([0-9\+\-\s]+)['\"]?", msg_normalized)
     if phone_m:
         new_phone = message[phone_m.start(1):phone_m.end(1)].strip(" :'\"")
         old_phone = p_data.get("phone") or "Not set"
@@ -901,7 +921,7 @@ def _copilot_local_grounded_fallback(
         }
 
     # Email
-    email_m = re.search(r"(?:update|change|chnage|chagne|set|modify)\s+(?:my\s+)?(?:email(?:\s*address)?|mail)\s+(?:to\s+|is\s+)?['\"]?([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)['\"]?", msg_lower)
+    email_m = re.search(r"(?:update|change|chnage|chagne|set|make|modify|save|store|record)\s+(?:my\s+)?(?:email(?:\s*address)?|mail)\s+(?:to\s+|is\s+|as\s+|to\s+this\s+|:\s*)?['\"]?([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)['\"]?", msg_normalized)
     if email_m:
         new_email = message[email_m.start(1):email_m.end(1)].strip(" :'\"")
         old_email = p_data.get("email") or "Not set"
@@ -922,7 +942,15 @@ def _copilot_local_grounded_fallback(
         }
 
     # Father / Guardian Name
-    father_m = re.search(r"(?:update|change|chnage|chagne|set|modify)\s+(?:my\s+)?(?:father(?:'s)?(?:\s*name)?|guardian(?:\s*name)?)\s+(?:to\s+|is\s+)?['\"]?([^'\"\.,\n]+)['\"]?", msg_lower)
+    father_m = re.search(
+        r"(?:update|change|chnage|chagne|set|make|modify|save|store|record|add)\s+(?:my\s+)?(?:father(?:'s)?(?:\s*name)?|guardian(?:\s*name)?)\s+(?:to\s+|is\s+|as\s+|to\s+this\s+|:\s*)?['\"]?([^'\"\.,\n]+)['\"]?",
+        msg_normalized
+    )
+    if not father_m:
+        father_m = re.search(
+            r"^(?:(?:remember\s+(?:that\s+)?)|save\s+)?(?:my\s+)?(?:father(?:'s)?(?:\s*name)?|guardian(?:\s*name)?)\s+(?:is|=|to|as)\s+['\"]?([^'\"\.,\n]+)['\"]?",
+            msg_normalized
+        )
     if father_m:
         new_father = message[father_m.start(1):father_m.end(1)].strip(" :'\"").title()
         old_father = p_data.get("father_name") or "Not set"
@@ -1018,8 +1046,44 @@ def _copilot_local_grounded_fallback(
                 }
 
     # 2. Query Handling
-    # Name query
-    if ("name" in msg_normalized and any(w in msg_normalized for w in ["what", "who", "tell", "show", "know", "saved", "current", "my"])) or any(k in msg_normalized for k in ["who am i", "call me"]):
+    # Father / Guardian query (Evaluated FIRST before generic name query)
+    if any(k in msg_normalized for k in ["father", "guardian"]):
+        father = p_data.get("father_name")
+        if not father and p_info and p_info.father_name:
+            father = p_info.father_name
+        if father and str(father).strip().lower() not in ("null", "none", "not set", ""):
+            return {
+                "intent": "QUERY",
+                "reply": f"Your saved Father / Guardian name in your memory vault is **{father}**.",
+                "updates": []
+            }
+        else:
+            return {
+                "intent": "QUERY",
+                "reply": "Your Father / Guardian name is not currently saved in your memory vault. You can tell me by saying: *Save my father name as Muhammad Sarwar* to save it.",
+                "updates": []
+            }
+
+    # Mother query
+    if "mother" in msg_normalized:
+        return {
+            "intent": "QUERY",
+            "reply": "Your Mother's name is not currently saved in your memory vault. You can tell me by saying: *My mother's name is ...* to save it.",
+            "updates": []
+        }
+
+    # User's own Legal Name query (Strictly guarded against other entities)
+    is_asking_user_name = (
+        any(k in msg_normalized for k in [
+            "who am i", "call me", "my name", "what is my name", "whats my name",
+            "what is currently saved my name", "what is my current name", "what is my saved name",
+            "my legal name", "my full name", "saved name"
+        ])
+        or ("name" in msg_normalized and any(w in msg_normalized for w in ["what", "who", "tell", "show", "know", "saved", "current", "my"]))
+    )
+    is_other_entity_name = any(w in msg_normalized for w in ["father", "mother", "guardian", "friend", "grandfather", "grandmother", "company", "boss", "mentor", "school", "college", "university", "dept", "department"])
+
+    if is_asking_user_name and not is_other_entity_name:
         full_name = p_data.get("full_name") or user.full_name or "Muazam Ali"
         return {
             "intent": "QUERY",
@@ -1057,15 +1121,6 @@ def _copilot_local_grounded_fallback(
         return {
             "intent": "QUERY",
             "reply": f"Your saved contact email address is **{email}**.",
-            "updates": []
-        }
-
-    # Father / Guardian query
-    if any(k in msg_normalized for k in ["father", "guardian"]) and any(w in msg_normalized for w in ["what", "tell", "show", "know", "saved", "current", "who"]):
-        father = p_data.get("father_name") or "Not set"
-        return {
-            "intent": "QUERY",
-            "reply": f"Your saved Father / Guardian name is **{father}**.",
             "updates": []
         }
 
@@ -1230,6 +1285,17 @@ async def copilot_chat_endpoint(
         for d in (profile_data.get("documents") or [])
     ]
 
+    # Strip base64 blobs to keep prompt ultra-lean, fast, and prevent TPM rate-limit issues
+    for k in list(p_info_dict.keys()):
+        v = p_info_dict[k]
+        if isinstance(v, str) and (v.startswith("data:image") or len(v) > 500):
+            p_info_dict[k] = "[attached_photo]"
+
+    for cf in cfs_list:
+        v = cf.get("field_value")
+        if isinstance(v, str) and (v.startswith("data:image") or len(v) > 500):
+            cf["field_value"] = "[attached_document]"
+
     clean_profile = {
         "user": {
             "id": user.id,
@@ -1267,7 +1333,7 @@ async def copilot_chat_endpoint(
             user_id=target_user_id,
             db=db,
             temperature=0.1,
-            timeout_seconds=15.0,
+            timeout_seconds=6.0,
             response_json=True
         )
     except Exception as exc:
@@ -1276,7 +1342,7 @@ async def copilot_chat_endpoint(
 
     p_info = db.query(PersonalInfo).filter(PersonalInfo.user_id == target_user_id).first()
     if not p_info:
-        p_info = PersonalInfo(user_id=target_user_id)
+        p_info = PersonalInfo(user_id=target_user_id, full_name=user.full_name or "Applicant")
         db.add(p_info)
         db.flush()
 
@@ -1317,8 +1383,12 @@ async def copilot_chat_endpoint(
                     "applicant_name": "full_name",
                     "legal_name": "full_name",
                     "father": "father_name",
+                    "father_name": "father_name",
                     "fathers_name": "father_name",
+                    "guardian": "father_name",
                     "guardian_name": "father_name",
+                    "mother": "mother_name",
+                    "mother_name": "mother_name",
                     "phone_number": "phone",
                     "mobile": "phone",
                     "cell": "phone",

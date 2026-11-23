@@ -20,7 +20,7 @@ class AIProviderType(str, Enum):
 
 # Sensible default models per provider
 DEFAULT_MODELS: Dict[str, str] = {
-    AIProviderType.GROQ.value: "openai/gpt-oss-20b",
+    AIProviderType.GROQ.value: "qwen/qwen3.8-27b",
     AIProviderType.OPENAI.value: "gpt-4o-mini",
     AIProviderType.GEMINI.value: "gemini-1.5-flash",
     AIProviderType.OPENROUTER.value: "meta-llama/llama-3.3-70b-instruct",

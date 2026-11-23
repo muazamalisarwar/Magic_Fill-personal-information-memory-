@@ -577,5 +577,96 @@ def test_copilot_user_reported_full_session_flow(client: TestClient, db_session:
         assert "internet" not in reply3.lower()
 
 
+def test_copilot_father_name_query_not_intercepted_by_legal_name(client: TestClient, seed_user_data):
+    """Verify that asking about father's name is NOT intercepted by legal full name."""
+    with patch("app.ai.provider_manager.AIProviderManager.query_llm", new=AsyncMock(return_value=None)):
+        # 1. Complex query
+        r1 = client.post(
+            "/api/memory/copilot-chat",
+            json={"message": "whAT IS MY father name currentlyis saved"}
+        )
+        assert r1.status_code == 200
+        data1 = r1.json()["data"]
+        assert data1["intent"] == "QUERY"
+        reply1 = data1["reply"]
+        assert "Muazam Ali" not in reply1
+        assert "father" in reply1.lower() or "not currently saved" in reply1.lower()
+
+        # 2. Short conversational query
+        r2 = client.post(
+            "/api/memory/copilot-chat",
+            json={"message": "my father name?"}
+        )
+        assert r2.status_code == 200
+        data2 = r2.json()["data"]
+        assert data2["intent"] == "QUERY"
+        reply2 = data2["reply"]
+        assert "Muazam Ali" not in reply2
+        assert "father" in reply2.lower() or "not currently saved" in reply2.lower()
+
+
+def test_copilot_save_father_name_updates_db(client: TestClient, db_session: Session, seed_user_data):
+    """Verify 'save my father name is Muhammad Sarwar' updates father_name in DB and returns update card."""
+    with patch("app.ai.provider_manager.AIProviderManager.query_llm", new=AsyncMock(return_value=None)):
+        res = client.post(
+            "/api/memory/copilot-chat",
+            json={"message": "save my father name is Muhammad Sarwar"}
+        )
+        assert res.status_code == 200
+        data = res.json()["data"]
+        assert data["intent"] == "UPDATE"
+        assert len(data["updates"]) > 0
+        upd = data["updates"][0]
+        assert upd["key"] == "father_name"
+        assert "Muhammad Sarwar" in upd["new_value"]
+
+        db_session.expire_all()
+        p_info = db_session.query(PersonalInfo).filter(PersonalInfo.user_id == 1).first()
+        assert p_info.father_name == "Muhammad Sarwar"
+
+        # Subsequent query now returns the saved father name
+        res_q = client.post(
+            "/api/memory/copilot-chat",
+            json={"message": "whAT IS MY father name currentlyis saved"}
+        )
+        assert res_q.status_code == 200
+        assert "Muhammad Sarwar" in res_q.json()["data"]["reply"]
+
+
+def test_copilot_multi_turn_father_name_update(client: TestClient, db_session: Session, seed_user_data):
+    """Verify multi-turn 'what is my father name' -> 'change it to Muhammad Sarwar' updates father_name not user full_name."""
+    with patch("app.ai.provider_manager.AIProviderManager.query_llm", new=AsyncMock(return_value=None)):
+        r1 = client.post(
+            "/api/memory/copilot-chat",
+            json={"message": "what is my father name?"}
+        )
+        assert r1.status_code == 200
+        reply1 = r1.json()["data"]["reply"]
+
+        r2 = client.post(
+            "/api/memory/copilot-chat",
+            json={
+                "message": "change it to Muhammad Sarwar",
+                "history": [
+                    {"role": "user", "content": "what is my father name?"},
+                    {"role": "assistant", "content": reply1}
+                ]
+            }
+        )
+        assert r2.status_code == 200
+        data2 = r2.json()["data"]
+        assert data2["intent"] == "UPDATE"
+        assert any(u["key"] == "father_name" for u in data2["updates"])
+
+        db_session.expire_all()
+        user = db_session.query(User).filter(User.id == 1).first()
+        p_info = db_session.query(PersonalInfo).filter(PersonalInfo.user_id == 1).first()
+        # Ensure user's own legal name was NOT changed to father's name!
+        assert user.full_name == "Muazam Ali"
+        assert p_info.full_name == "Muazam Ali"
+        assert p_info.father_name == "Muhammad Sarwar"
+
+
+
 
 
