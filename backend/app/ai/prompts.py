@@ -220,6 +220,12 @@ COPILOT_CHAT_SYSTEM_PROMPT = (
     "       [Assistant]: 'Your Father / Guardian name is not currently saved in your memory vault. You can tell me by saying: *Save my father name as Muhammad Sarwar* to save it.'\n"
     "       [User]: 'save my father name is Muhammad Sarwar'\n"
     "       -> Output: intent='UPDATE', updates=[{'field_type': 'personal_info', 'key': 'father_name', 'label': \"Father's Name\", 'old_value': null, 'new_value': 'Muhammad Sarwar', 'action': 'UPDATE'}], reply='I have updated your Father / Guardian name in your memory vault to **Muhammad Sarwar**.'\n\n"
+    "   - Example 7 (Bulk Text / Multi-Attribute Ingestion with Preview):\n"
+    "       [User]: 'my favourite fruit is mango favourite food is biryani favourite drink is Kashmiri Tea favourite teacher is Rohaan manzoor'\n"
+    "       -> Output: intent='PREVIEW', updates=[], pending_updates=[{'field_type': 'custom_field', 'key': 'favorite_fruit', 'label': 'Favorite Fruit', 'old_value': 'Watermelon', 'new_value': 'Mango', 'action': 'UPDATE'}, {'field_type': 'custom_field', 'key': 'favorite_food', 'label': 'Favorite Food', 'old_value': null, 'new_value': 'Biryani', 'action': 'ADD'}, {'field_type': 'custom_field', 'key': 'favorite_drink', 'label': 'Favorite Drink', 'old_value': null, 'new_value': 'Kashmiri Tea', 'action': 'ADD'}, {'field_type': 'custom_field', 'key': 'favorite_teacher', 'label': 'Favorite Teacher', 'old_value': null, 'new_value': 'Rohaan Manzoor', 'action': 'ADD'}], reply='I have detected 4 personal memory attributes from your text. Please review the preview below and click **Proceed & Save to Vault** to confirm.'\n\n"
+    "   - Example 8 (Confirming Bulk Preview):\n"
+    "       [User]: 'proceed'\n"
+    "       -> Output: intent='UPDATE', updates=[{'field_type': 'custom_field', 'key': 'favorite_fruit', 'label': 'Favorite Fruit', 'old_value': 'Watermelon', 'new_value': 'Mango', 'action': 'UPDATE'}, {'field_type': 'custom_field', 'key': 'favorite_food', 'label': 'Favorite Food', 'old_value': null, 'new_value': 'Biryani', 'action': 'ADD'}, {'field_type': 'custom_field', 'key': 'favorite_drink', 'label': 'Favorite Drink', 'old_value': null, 'new_value': 'Kashmiri Tea', 'action': 'ADD'}, {'field_type': 'custom_field', 'key': 'favorite_teacher', 'label': 'Favorite Teacher', 'old_value': null, 'new_value': 'Rohaan Manzoor', 'action': 'ADD'}], pending_updates=[], reply='I have successfully saved all 4 attributes to your memory vault.'\n\n"
     "4. CONVERSATIONAL PREFIXES & AFFIRMATIONS:\n"
     "   - Users frequently start commands with conversational words like 'OK', 'Okay', 'Alright', 'Sure', 'Yes', 'Now', 'Then', 'Please', 'Can you'.\n"
     "   - Examples: 'OK CHNAGE IT TO TAHA ALI', 'Alright set it to 0300-1234567', 'Sure, update to Stanford University'.\n"
@@ -244,9 +250,19 @@ COPILOT_CHAT_SYSTEM_PROMPT = (
     "================================================================================\n"
     "You must return ONLY a valid raw JSON object conforming strictly to this schema, with NO markdown code fences (no ```json) and NO conversational text before or after the JSON:\n"
     "{\n"
-    '  "intent": "QUERY" | "UPDATE",\n'
+    '  "intent": "QUERY" | "UPDATE" | "PREVIEW",\n'
     '  "reply": "Your markdown-formatted message to the user.",\n'
     '  "updates": [\n'
+    '    {\n'
+    '      "field_type": "personal_info" | "custom_field" | "experience",\n'
+    '      "key": "attribute_key",\n'
+    '      "label": "Human Readable Label",\n'
+    '      "old_value": "previous value from memory or null",\n'
+    '      "new_value": "new value",\n'
+    '      "action": "UPDATE" | "ADD"\n'
+    '    }\n'
+    '  ],\n'
+    '  "pending_updates": [\n'
     '    {\n'
     '      "field_type": "personal_info" | "custom_field" | "experience",\n'
     '      "key": "attribute_key",\n'

@@ -667,6 +667,92 @@ def test_copilot_multi_turn_father_name_update(client: TestClient, db_session: S
         assert p_info.father_name == "Muhammad Sarwar"
 
 
+def test_copilot_bulk_attributes_returns_preview_without_db_change(client: TestClient, db_session: Session, seed_user_data):
+    """
+    Verify user's exact reported bug:
+    'my favourite fruit is mango favourite food is biryani favourite drink is Kashmiri Tea favourite teacher is Rohaan manzoor'
+    Returns PREVIEW with pending_updates, and does NOT commit to DB directly.
+    """
+    with patch("app.ai.provider_manager.AIProviderManager.query_llm", new=AsyncMock(return_value=None)):
+        raw_msg = "my favourite fruit is mango favourite food is biryani favourite drink is Kashmiri Tea favourite teacher is Rohaan manzoor"
+        res = client.post(
+            "/api/memory/copilot-chat",
+            json={"message": raw_msg}
+        )
+        assert res.status_code == 200
+        data = res.json()["data"]
+        assert data["intent"] == "PREVIEW"
+        assert len(data["updates"]) == 0
+        assert len(data["pending_updates"]) == 4
+
+        keys = [p["key"] for p in data["pending_updates"]]
+        assert "favorite_fruit" in keys
+        assert "favorite_food" in keys
+        assert "favorite_drink" in keys
+        assert "favorite_teacher" in keys
+
+        vals = {p["key"]: p["new_value"] for p in data["pending_updates"]}
+        assert vals["favorite_fruit"] == "mango"
+        assert vals["favorite_food"] == "biryani"
+        assert vals["favorite_drink"] == "Kashmiri Tea"
+        assert vals["favorite_teacher"] == "Rohaan manzoor"
+
+        # Verify DB has NOT changed yet
+        db_session.expire_all()
+        cf = db_session.query(CustomField).filter(CustomField.user_id == 1, CustomField.field_key == "favorite_fruit").first()
+        assert cf is None
+
+
+def test_copilot_bulk_attributes_proceed_commits_to_db(client: TestClient, db_session: Session, seed_user_data):
+    """
+    Verify clicking proceed or sending 'proceed' commits pending attributes to DB.
+    """
+    pending = [
+        {"field_type": "custom_field", "key": "favorite_fruit", "label": "Favorite Fruit", "new_value": "mango", "action": "ADD"},
+        {"field_type": "custom_field", "key": "favorite_food", "label": "Favorite Food", "new_value": "biryani", "action": "ADD"},
+        {"field_type": "custom_field", "key": "favorite_drink", "label": "Favorite Drink", "new_value": "Kashmiri Tea", "action": "ADD"},
+        {"field_type": "custom_field", "key": "favorite_teacher", "label": "Favorite Teacher", "new_value": "Rohaan manzoor", "action": "ADD"}
+    ]
+    with patch("app.ai.provider_manager.AIProviderManager.query_llm", new=AsyncMock(return_value=None)):
+        res = client.post(
+            "/api/memory/copilot-chat",
+            json={
+                "message": "proceed",
+                "pending_updates": pending
+            }
+        )
+        assert res.status_code == 200
+        data = res.json()["data"]
+        assert data["intent"] == "UPDATE"
+        assert len(data["updates"]) == 4
+        assert len(data["pending_updates"]) == 0
+
+        # Verify DB is committed
+        db_session.expire_all()
+        fruit_cf = db_session.query(CustomField).filter(CustomField.user_id == 1, CustomField.field_key == "favorite_fruit").first()
+        assert fruit_cf is not None
+        assert fruit_cf.field_value == "mango"
+
+        food_cf = db_session.query(CustomField).filter(CustomField.user_id == 1, CustomField.field_key == "favorite_food").first()
+        assert food_cf is not None
+        assert food_cf.field_value == "biryani"
+
+
+def test_copilot_bulk_attributes_cancel_discards(client: TestClient, db_session: Session, seed_user_data):
+    """Verify sending 'cancel' cancels preview without any DB changes."""
+    with patch("app.ai.provider_manager.AIProviderManager.query_llm", new=AsyncMock(return_value=None)):
+        res = client.post(
+            "/api/memory/copilot-chat",
+            json={"message": "cancel"}
+        )
+        assert res.status_code == 200
+        data = res.json()["data"]
+        assert data["intent"] == "QUERY"
+        assert len(data["updates"]) == 0
+        assert "cancelled" in data["reply"].lower()
+
+
+
 
 
 

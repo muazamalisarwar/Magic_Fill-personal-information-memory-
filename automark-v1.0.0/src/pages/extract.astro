@@ -998,6 +998,7 @@ import Base from "@/layouts/Base.astro";
       const copilotSendBtn = document.getElementById("copilotSendBtn");
       const copilotTypingStatus = document.getElementById("copilotTypingStatus");
       const btnResetCopilotChat = document.getElementById("btnResetCopilotChat");
+      let activeCopilotPendingUpdates = null;
 
       function renderCopilotWelcome() {
         if (!copilotChatFeed) return;
@@ -1034,7 +1035,7 @@ import Base from "@/layouts/Base.astro";
         copilotChatFeed.scrollTop = copilotChatFeed.scrollHeight;
       }
 
-      function appendAssistantMessage(replyText, updates = []) {
+      function appendAssistantMessage(replyText, updates = [], pendingUpdates = []) {
         if (!copilotChatFeed) return;
         const bubble = document.createElement("div");
         bubble.className = "flex items-start gap-3 self-start max-w-[85%]";
@@ -1046,8 +1047,60 @@ import Base from "@/layouts/Base.astro";
           .replace(/\n- /g, '<br>&bull; ')
           .replace(/\n/g, '<br>');
 
+        let previewCardHtml = "";
+        if (pendingUpdates && pendingUpdates.length > 0) {
+          activeCopilotPendingUpdates = pendingUpdates;
+          previewCardHtml = `
+            <div class="mt-3 p-3.5 bg-[#0B0D0C] border border-[#B7F34A]/50 rounded-xl space-y-3 shadow-lg">
+              <div class="flex items-center justify-between text-[11px] pb-2 border-b border-[#2B312C]">
+                <span class="text-[#B7F34A] font-bold flex items-center gap-1.5">
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                  Review Detected Information (${pendingUpdates.length} fields)
+                </span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#B7F34A]/10 text-[#B7F34A] border border-[#B7F34A]/30">PREVIEW</span>
+              </div>
+              <div class="space-y-2 text-xs divide-y divide-[#2B312C]/40">
+                ${pendingUpdates.map(p => `
+                  <div class="pt-2 first:pt-0 space-y-1">
+                    <div class="flex items-center justify-between">
+                      <span class="text-[#A1AAA1] font-medium text-[11px]">${escapeHtml(p.label || p.key)}</span>
+                      <span class="text-[9px] font-mono px-1.5 py-0.5 rounded ${p.action === 'UPDATE' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'}">${escapeHtml(p.action || 'ADD')}</span>
+                    </div>
+                    ${p.old_value ? `
+                    <div class="flex items-center gap-2">
+                      <span class="text-[#5E665E] text-[10px] w-16">Previous:</span>
+                      <del class="text-[#f43f5e] font-mono text-[11px]">${escapeHtml(p.old_value)}</del>
+                    </div>
+                    ` : ''}
+                    <div class="flex items-center gap-2">
+                      <span class="text-[#5E665E] text-[10px] w-16">New Value:</span>
+                      <span class="text-[#B7F34A] font-bold font-mono text-[11px]">${escapeHtml(p.new_value)}</span>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+              <div class="pt-2 border-t border-[#2B312C] flex items-center gap-2">
+                <button
+                  type="button"
+                  class="btn-proceed-extract-preview flex-1 py-1.5 px-3 rounded-lg bg-[#B7F34A] hover:bg-[#a6e03e] text-[#0B0D0C] font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-[0_0_12px_rgba(183,243,74,0.25)]"
+                >
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  Proceed &amp; Save to Vault
+                </button>
+                <button
+                  type="button"
+                  class="btn-cancel-extract-preview px-3 py-1.5 rounded-lg bg-[#191D1A] hover:bg-[#232824] border border-[#2B312C] text-[#889088] hover:text-white text-xs font-medium transition-all"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          `;
+        }
+
         let updateCardHtml = "";
         if (updates && updates.length > 0) {
+          activeCopilotPendingUpdates = null;
           updateCardHtml = `
             <div class="mt-3 p-3 bg-[#0B0D0C] border border-[#B7F34A]/40 rounded-xl space-y-2.5">
               <div class="flex items-center justify-between text-[11px] pb-1.5 border-b border-[#2B312C]">
@@ -1088,15 +1141,36 @@ import Base from "@/layouts/Base.astro";
           </div>
           <div class="p-3.5 rounded-2xl rounded-tl-sm bg-[#191D1A] border border-[#2B312C] text-xs text-[#FFFFFF] shadow-sm leading-relaxed space-y-2">
             <div>${formattedText}</div>
+            ${previewCardHtml}
             ${updateCardHtml}
           </div>
         `;
+
+        const btnProceed = bubble.querySelector(".btn-proceed-extract-preview");
+        if (btnProceed) {
+          btnProceed.addEventListener("click", () => {
+            btnProceed.disabled = true;
+            btnProceed.innerHTML = `<span>Saving to vault...</span>`;
+            const btnCancel = bubble.querySelector(".btn-cancel-extract-preview");
+            if (btnCancel) btnCancel.disabled = true;
+            handleSendCopilotMessage("proceed", pendingUpdates);
+          });
+        }
+        const btnCancel = bubble.querySelector(".btn-cancel-extract-preview");
+        if (btnCancel) {
+          btnCancel.addEventListener("click", () => {
+            btnCancel.disabled = true;
+            const btnProc = bubble.querySelector(".btn-proceed-extract-preview");
+            if (btnProc) btnProc.disabled = true;
+            handleSendCopilotMessage("cancel");
+          });
+        }
 
         copilotChatFeed.appendChild(bubble);
         copilotChatFeed.scrollTop = copilotChatFeed.scrollHeight;
       }
 
-      async function handleSendCopilotMessage(promptText = null) {
+      async function handleSendCopilotMessage(promptText = null, explicitPendingUpdates = null) {
         const message = (promptText || copilotChatInput?.value || "").trim();
         if (!message) return;
 
@@ -1105,6 +1179,15 @@ import Base from "@/layouts/Base.astro";
 
         if (copilotSendBtn) copilotSendBtn.disabled = true;
         if (copilotTypingStatus) copilotTypingStatus.classList.remove("hidden");
+
+        const msgLower = message.toLowerCase();
+        const isProceed = msgLower.startsWith("proceed") || msgLower.startsWith("confirm") || msgLower === "save" || msgLower === "yes" || msgLower === "save to vault";
+        const isCancel = msgLower.startsWith("cancel") || msgLower === "discard" || msgLower === "abort" || msgLower === "no";
+
+        const pendingToSend = explicitPendingUpdates || (isProceed ? activeCopilotPendingUpdates : null);
+        if (isCancel || isProceed) {
+          activeCopilotPendingUpdates = null;
+        }
 
         const historyToSend = copilotChatHistory.slice(-8);
         copilotChatHistory.push({ role: "user", content: message });
@@ -1121,7 +1204,8 @@ import Base from "@/layouts/Base.astro";
             headers: reqHeaders,
             body: JSON.stringify({
               message: message,
-              history: historyToSend
+              history: historyToSend,
+              ...(pendingToSend ? { pending_updates: pendingToSend } : {})
             })
           });
 
@@ -1132,10 +1216,12 @@ import Base from "@/layouts/Base.astro";
           if (res.ok && data.success && data.data) {
             const reply = data.data.reply;
             const updates = data.data.updates || [];
-            appendAssistantMessage(reply, updates);
-            copilotChatHistory.push({ role: "assistant", content: reply });
+            const pendingUpdates = data.data.pending_updates || [];
+            appendAssistantMessage(reply, updates, pendingUpdates);
+            copilotChatHistory.push({ role: "assistant", content: reply, updates, pending_updates: pendingUpdates });
 
             if (updates.length > 0) {
+              activeCopilotPendingUpdates = null;
               showToast(`Vault updated: ${updates.map(u => u.label || u.key).join(", ")}`);
               
               const relevantUpdates = updates.map(u => ({

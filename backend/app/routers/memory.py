@@ -450,6 +450,7 @@ class CopilotChatRequest(BaseModel):
     message: str = Field(..., min_length=1, description="User prompt or update instruction")
     history: Optional[List[CopilotChatMessage]] = Field(default_factory=list)
     user_id: Optional[int] = Field(default=1)
+    pending_updates: Optional[List[CopilotFieldUpdate]] = Field(default_factory=list)
 
 
 class CopilotFieldUpdate(BaseModel):
@@ -463,8 +464,9 @@ class CopilotFieldUpdate(BaseModel):
 
 class CopilotChatResult(BaseModel):
     reply: str
-    intent: str = Field(default="QUERY", description="QUERY | UPDATE")
+    intent: str = Field(default="QUERY", description="QUERY | UPDATE | PREVIEW")
     updates: List[CopilotFieldUpdate] = Field(default_factory=list)
+    pending_updates: List[CopilotFieldUpdate] = Field(default_factory=list)
     updated_profile: Optional[UserProfileResponse] = None
 
 
@@ -485,6 +487,274 @@ COPILOT_STOP_WORDS = {
     "saved", "save", "saving", "stored", "store", "memory", "vault", "record",
     "please", "thanks", "thank", "okay", "ok", "yes", "yeah", "sure", "well", "hello", "hi"
 }
+
+
+def _apply_copilot_updates(
+    updates: List[Any],
+    db: Session,
+    user: User,
+    p_info: Optional[PersonalInfo],
+    target_user_id: int
+) -> List[CopilotFieldUpdate]:
+    """Applies verified memory updates to personal_info or custom_fields."""
+    applied: List[CopilotFieldUpdate] = []
+    alias_map = {
+        "name": "full_name",
+        "applicant_name": "full_name",
+        "legal_name": "full_name",
+        "full_name": "full_name",
+        "father": "father_name",
+        "father_name": "father_name",
+        "fathers_name": "father_name",
+        "guardian": "father_name",
+        "guardian_name": "father_name",
+        "mother": "mother_name",
+        "mother_name": "mother_name",
+        "phone_number": "phone",
+        "phone": "phone",
+        "mobile": "phone",
+        "cell": "phone",
+        "telephone": "phone",
+        "contact": "phone",
+        "email_address": "email",
+        "email": "email",
+        "mail": "email",
+        "residence": "address",
+        "location": "address",
+        "address": "address",
+        "home_address": "address",
+        "current_address": "address",
+        "permanent_address": "address",
+        "city": "city",
+        "country": "country",
+        "postal_code": "postal_code",
+        "zip": "postal_code",
+        "zip_code": "postal_code",
+        "dob": "date_of_birth",
+        "date_of_birth": "date_of_birth",
+        "birth_date": "date_of_birth",
+        "cnic": "cnic",
+        "national_id": "cnic",
+        "gender": "gender",
+        "college": "university",
+        "institution": "university",
+        "institute": "university",
+        "school": "university",
+        "university": "university",
+        "qualification": "degree",
+        "degree": "degree",
+        "department": "department",
+        "major": "department",
+        "graduation_year": "graduation_year"
+    }
+
+    for item in updates:
+        upd = item if isinstance(item, dict) else item.model_dump()
+        ftype = str(upd.get("field_type") or "personal_info").lower()
+        raw_key = str(upd.get("key") or "").strip().lower()
+        new_val = str(upd.get("new_value") or "").strip()
+        label = str(upd.get("label") or raw_key.replace("_", " ").title())
+        old_val = upd.get("old_value")
+
+        if not raw_key or not new_val:
+            continue
+
+        canon_key = alias_map.get(raw_key, raw_key)
+        if ftype == "personal_info" or canon_key in alias_map.values():
+            if canon_key == "full_name":
+                user.full_name = new_val
+                if p_info:
+                    setattr(p_info, "full_name", new_val)
+            elif p_info and hasattr(p_info, canon_key):
+                setattr(p_info, canon_key, new_val)
+            else:
+                upsert_custom_field_by_key(
+                    db=db,
+                    user_id=target_user_id,
+                    field_key=canon_key,
+                    field_label=label,
+                    field_value=new_val,
+                    category="personal"
+                )
+        elif ftype == "custom_field":
+            upsert_custom_field_by_key(
+                db=db,
+                user_id=target_user_id,
+                field_key=canon_key,
+                field_label=label,
+                field_value=new_val,
+                category=upd.get("category") or "personal"
+            )
+        elif ftype == "experience":
+            if "skill" in raw_key:
+                upsert_custom_field_by_key(
+                    db=db,
+                    user_id=target_user_id,
+                    field_key="technical_skills",
+                    field_label="Technical Skills",
+                    field_value=new_val,
+                    category="professional"
+                )
+
+        applied.append(CopilotFieldUpdate(
+            field_type=ftype,
+            key=canon_key,
+            label=label,
+            old_value=str(old_val) if old_val is not None else None,
+            new_value=new_val,
+            action=str(upd.get("action") or "UPDATE")
+        ))
+    db.commit()
+    return applied
+
+
+def _extract_bulk_attributes(
+    text: str,
+    user_profile: Dict[str, Any],
+    p_info: Optional[PersonalInfo] = None
+) -> List[Dict[str, Any]]:
+    """Extracts multiple distinct key-value attributes from bulk text for preview."""
+    # Never treat interrogative queries as bulk statements
+    if re.search(r'^(?:what|who|where|when|why|how|which|tell\s+me|show\s+me|do\s+you|can\s+you|could\s+you|is\s+there)\b', text.strip(), re.IGNORECASE) or '?' in text:
+        return []
+
+    p_data = user_profile.get("personal_info") or {}
+    cfs = user_profile.get("custom_fields") or []
+
+    # Find operators: 'is', 'are', ':', '='
+    op_iter = list(re.finditer(r'\b(?:is|are)\b|[:=]', text, re.IGNORECASE))
+    if not op_iter or len(op_iter) < 2:
+        return []
+
+    alias_map = {
+        "name": "full_name",
+        "legal_name": "full_name",
+        "full_name": "full_name",
+        "applicant_name": "full_name",
+        "father": "father_name",
+        "father_name": "father_name",
+        "fathers_name": "father_name",
+        "guardian": "father_name",
+        "guardian_name": "father_name",
+        "mother": "mother_name",
+        "mother_name": "mother_name",
+        "phone_number": "phone",
+        "phone": "phone",
+        "mobile": "phone",
+        "cell": "phone",
+        "telephone": "phone",
+        "contact": "phone",
+        "email_address": "email",
+        "email": "email",
+        "mail": "email",
+        "residence": "address",
+        "location": "address",
+        "address": "address",
+        "home_address": "address",
+        "current_address": "address",
+        "permanent_address": "address",
+        "city": "city",
+        "country": "country",
+        "postal_code": "postal_code",
+        "zip": "postal_code",
+        "zip_code": "postal_code",
+        "dob": "date_of_birth",
+        "date_of_birth": "date_of_birth",
+        "birth_date": "date_of_birth",
+        "cnic": "cnic",
+        "national_id": "cnic",
+        "gender": "gender",
+        "college": "university",
+        "institution": "university",
+        "institute": "university",
+        "school": "university",
+        "university": "university",
+        "qualification": "degree",
+        "degree": "degree",
+        "department": "department",
+        "major": "department",
+        "graduation_year": "graduation_year"
+    }
+
+    first_key = text[:op_iter[0].start()].strip()
+    first_key = re.sub(r'^(?:(?:and\s+)?(?:my\s+)?|remember\s+(?:that\s+)?(?:my\s+)?)', '', first_key, flags=re.IGNORECASE).strip()
+
+    keys = [first_key]
+    values = []
+
+    for i in range(len(op_iter) - 1):
+        chunk = text[op_iter[i].end() : op_iter[i+1].start()].strip()
+        delims = list(re.finditer(r'[,;]|\s+and\s+', chunk, re.IGNORECASE))
+        if delims:
+            val = chunk[:delims[-1].start()].strip()
+            next_k = chunk[delims[-1].end():].strip()
+        else:
+            kw_match = re.search(r'\b(my|favou?rite)\b', chunk, re.IGNORECASE)
+            if kw_match and kw_match.start() > 0:
+                val = chunk[:kw_match.start()].strip()
+                next_k = chunk[kw_match.start():].strip()
+            else:
+                words = chunk.split()
+                if len(words) >= 3 and words[-2].lower() in ('full', 'father', 'mother', 'blood', 'favorite', 'favourite', 'phone', 'contact', 'home'):
+                    val = ' '.join(words[:-2])
+                    next_k = ' '.join(words[-2:])
+                elif len(words) >= 2:
+                    val = ' '.join(words[:-1])
+                    next_k = words[-1]
+                else:
+                    val = chunk
+                    next_k = 'Attribute'
+        next_k = re.sub(r'^(?:(?:and\s+)?(?:my\s+)?|remember\s+(?:that\s+)?(?:my\s+)?)', '', next_k, flags=re.IGNORECASE).strip()
+        values.append(val)
+        keys.append(next_k)
+
+    last_val = text[op_iter[-1].end():].strip()
+    values.append(last_val)
+
+    items: List[Dict[str, Any]] = []
+    seen_keys = set()
+    invalid_keys = {
+        'what', 'who', 'where', 'when', 'why', 'how', 'which',
+        'it', 'this', 'that', 'there', 'you', 'i', 'me', 'my', 'is', 'are', 'was', 'were'
+    }
+    for k, v in zip(keys, values):
+        k_clean = k.strip(' .,;:\'\"')
+        v_clean = v.strip(' .,;:\'\"')
+        if not k_clean or not v_clean:
+            continue
+        k_clean = re.sub(r'\bfavou?rite\b', 'favorite', k_clean, flags=re.IGNORECASE)
+        norm_key = re.sub(r'[^a-z0-9_]+', '_', k_clean.lower()).strip('_')
+        lbl = k_clean.title()
+
+        if norm_key in seen_keys or norm_key in invalid_keys or len(k_clean.split()) > 5:
+            continue
+        if v_clean.lower() in ('saved', 'stored', 'known', 'there', 'set', 'null', 'none'):
+            continue
+        seen_keys.add(norm_key)
+
+        canon_key = alias_map.get(norm_key, norm_key)
+        if canon_key in alias_map.values():
+            old_val = p_data.get(canon_key)
+            items.append({
+                "field_type": "personal_info",
+                "key": canon_key,
+                "label": lbl,
+                "old_value": str(old_val) if old_val else None,
+                "new_value": v_clean.title() if canon_key in ("full_name", "father_name", "mother_name", "city", "country", "university", "degree") else v_clean,
+                "action": "UPDATE" if old_val else "ADD"
+            })
+        else:
+            matching_cf = next((cf for cf in cfs if cf.get("field_key") == norm_key or (cf.get("field_label") or "").lower() == lbl.lower()), None)
+            old_val = matching_cf.get("field_value") if matching_cf else None
+            items.append({
+                "field_type": "custom_field",
+                "key": norm_key,
+                "label": lbl,
+                "old_value": str(old_val) if old_val else None,
+                "new_value": v_clean,
+                "action": "UPDATE" if matching_cf else "ADD"
+            })
+    return items
 
 
 def _copilot_local_grounded_fallback(
@@ -567,7 +837,27 @@ def _copilot_local_grounded_fallback(
         return {
             "intent": "QUERY",
             "reply": f"Hello {full_name}! I am your AI Memory Copilot. You can ask me to show any detail in your memory vault (e.g. *'What is currently saved my name?'*, *'What address you know about me?'*), or command me to update your memory (e.g. *'Update my phone to 0326-8848703'* or *'My favorite fruit is mango'*).",
-            "updates": []
+            "updates": [],
+            "pending_updates": []
+        }
+
+    # 0.3 Cancel preview
+    if msg_normalized in ("cancel", "no", "discard", "abort", "don't save", "stop"):
+        return {
+            "intent": "QUERY",
+            "reply": "Preview cancelled. No changes were made to your memory vault.",
+            "updates": [],
+            "pending_updates": []
+        }
+
+    # 0.4 Bulk Data / Multi-Attribute Ingestion with Preview
+    bulk_candidates = _extract_bulk_attributes(message, user_profile, p_info)
+    if len(bulk_candidates) >= 2:
+        return {
+            "intent": "PREVIEW",
+            "reply": f"I have analyzed your text and detected **{len(bulk_candidates)} personal memory attributes**. Please review the preview below and click **Proceed & Save to Vault** to confirm:",
+            "updates": [],
+            "pending_updates": bulk_candidates
         }
 
     # 1. Update Detection Patterns (typo-tolerant: update, change, chnage, chagne, set, make, modify, save, store, record)
@@ -1192,19 +1482,23 @@ def _copilot_local_grounded_fallback(
             }
 
     # Check for matching custom fields (e.g. favorite fruit, hobby, etc.)
-    for cf in cfs:
-        k_norm = (cf.get("field_key") or "").lower().replace("_", " ")
-        lbl_norm = (cf.get("field_label") or "").lower()
-        combined_text = re.sub(r"[^a-z0-9\s]+", " ", f"{k_norm} {lbl_norm}")
-        key_words = [w for w in combined_text.split() if len(w) >= 3 and w not in COPILOT_STOP_WORDS]
-        if not key_words:
-            continue
-        if any(re.search(rf"\b{re.escape(w)}\b", msg_normalized) for w in key_words):
-            return {
-                "intent": "QUERY",
-                "reply": f"In your memory vault, your **{cf.get('field_label') or cf.get('field_key')}** is saved as **{cf.get('field_value')}**.",
-                "updates": []
-            }
+    is_asking_question = any(w in msg_normalized for w in ["what", "which", "tell", "show", "know", "saved", "current", "who", "?"])
+    is_statement = any(op in msg_normalized for op in [" is ", " are ", "=", ":"]) and not msg_normalized.endswith("?")
+    if is_asking_question or not is_statement:
+        for cf in cfs:
+            k_norm = (cf.get("field_key") or "").lower().replace("_", " ")
+            lbl_norm = (cf.get("field_label") or "").lower()
+            combined_text = re.sub(r"[^a-z0-9\s]+", " ", f"{k_norm} {lbl_norm}")
+            key_words = [w for w in combined_text.split() if len(w) >= 3 and w not in COPILOT_STOP_WORDS]
+            if not key_words:
+                continue
+            if any(re.search(rf"\b{re.escape(w)}\b", msg_normalized) for w in key_words):
+                return {
+                    "intent": "QUERY",
+                    "reply": f"In your memory vault, your **{cf.get('field_label') or cf.get('field_key')}** is saved as **{cf.get('field_value')}**.",
+                    "updates": [],
+                    "pending_updates": []
+                }
 
     # Greetings vs off-topic
     greetings = ["hi", "hello", "hey", "salam", "assalam", "greetings", "good morning", "good afternoon", "good evening", "help", "who are you", "what can you do"]
@@ -1251,6 +1545,12 @@ async def copilot_chat_endpoint(
         db.add(user)
         db.commit()
         db.refresh(user)
+
+    p_info = db.query(PersonalInfo).filter(PersonalInfo.user_id == target_user_id).first()
+    if not p_info:
+        p_info = PersonalInfo(user_id=target_user_id, full_name=user.full_name or "Applicant")
+        db.add(p_info)
+        db.flush()
 
     # 2. Retrieve user memory vault
     profile_data = get_user_profile(db=db, user_id=target_user_id)
@@ -1308,6 +1608,74 @@ async def copilot_chat_endpoint(
         "documents": docs_list
     }
 
+    msg_clean = payload.message.strip().lower()
+
+    # 3.1 Fast-path Cancellation
+    if msg_clean in ("cancel", "no", "discard", "abort", "don't save", "stop") or msg_clean.startswith("cancel"):
+        fresh_profile_data = get_user_profile(db=db, user_id=target_user_id)
+        profile_dto = _build_profile_response(fresh_profile_data)
+        return APIResponse(
+            success=True,
+            message="Preview cancelled",
+            data=CopilotChatResult(
+                reply="Preview cancelled. No changes were made to your memory vault.",
+                intent="QUERY",
+                updates=[],
+                pending_updates=[],
+                updated_profile=profile_dto
+            )
+        )
+
+    # 3.2 Fast-path Proceed / Save Confirmation
+    proceed_triggers = {
+        "proceed", "confirm", "yes", "save", "save it", "yes save it",
+        "proceed with save", "proceed to save", "ok proceed", "save to vault",
+        "apply", "ok save", "save all"
+    }
+    is_proceed_cmd = (msg_clean in proceed_triggers) or msg_clean.startswith("proceed") or msg_clean.startswith("confirm")
+
+    if is_proceed_cmd:
+        to_apply = payload.pending_updates or []
+        if not to_apply and payload.history:
+            for h in reversed(payload.history):
+                role = getattr(h, "role", None) or (h.get("role") if isinstance(h, dict) else "")
+                content = (getattr(h, "content", None) or (h.get("content") if isinstance(h, dict) else "") or "").strip()
+                if role == "user" and content and content.lower() not in proceed_triggers:
+                    bulk_cand = _extract_bulk_attributes(content, clean_profile, p_info)
+                    if len(bulk_cand) >= 1:
+                        to_apply = bulk_cand
+                        break
+
+        if to_apply:
+            applied = _apply_copilot_updates(to_apply, db, user, p_info, target_user_id)
+            fresh_profile_data = get_user_profile(db=db, user_id=target_user_id)
+            profile_dto = _build_profile_response(fresh_profile_data)
+            return APIResponse(
+                success=True,
+                message="Memory vault updated successfully",
+                data=CopilotChatResult(
+                    reply=f"Successfully verified and saved **{len(applied)} attribute{'s' if len(applied) != 1 else ''}** to your memory vault.",
+                    intent="UPDATE",
+                    updates=applied,
+                    pending_updates=[],
+                    updated_profile=profile_dto
+                )
+            )
+        else:
+            fresh_profile_data = get_user_profile(db=db, user_id=target_user_id)
+            profile_dto = _build_profile_response(fresh_profile_data)
+            return APIResponse(
+                success=True,
+                message="No pending updates found",
+                data=CopilotChatResult(
+                    reply="There were no pending changes found to commit. You can provide new information anytime!",
+                    intent="QUERY",
+                    updates=[],
+                    pending_updates=[],
+                    updated_profile=profile_dto
+                )
+            )
+
     # 4. Construct messages for AI Provider Manager
     system_content = (
         f"{COPILOT_CHAT_SYSTEM_PROMPT}\n\n"
@@ -1340,12 +1708,6 @@ async def copilot_chat_endpoint(
         logger.warning("Copilot LLM query failed: %s; using local grounded fallback", exc)
         parsed_res = None
 
-    p_info = db.query(PersonalInfo).filter(PersonalInfo.user_id == target_user_id).first()
-    if not p_info:
-        p_info = PersonalInfo(user_id=target_user_id, full_name=user.full_name or "Applicant")
-        db.add(p_info)
-        db.flush()
-
     if not parsed_res or not isinstance(parsed_res, dict) or "reply" not in parsed_res:
         parsed_res = _copilot_local_grounded_fallback(
             message=payload.message,
@@ -1360,121 +1722,25 @@ async def copilot_chat_endpoint(
     intent = str(parsed_res.get("intent") or "QUERY").upper()
     reply = str(parsed_res.get("reply") or "").strip()
     raw_updates = parsed_res.get("updates") or []
+    raw_pending = parsed_res.get("pending_updates") or []
 
-    applied_updates: List[CopilotFieldUpdate] = []
-
-    # 6. Apply any updates requested by user to database
-    if intent == "UPDATE" or (isinstance(raw_updates, list) and len(raw_updates) > 0):
-        for upd in raw_updates:
-            if not isinstance(upd, dict):
-                continue
-            ftype = str(upd.get("field_type") or "personal_info").lower()
-            raw_key = str(upd.get("key") or "").strip().lower()
-            new_val = str(upd.get("new_value") or "").strip()
-            label = str(upd.get("label") or raw_key.replace("_", " ").title())
-            old_val = upd.get("old_value")
-
-            if not raw_key or not new_val:
-                continue
-
-            if ftype == "personal_info":
-                alias_map = {
-                    "name": "full_name",
-                    "applicant_name": "full_name",
-                    "legal_name": "full_name",
-                    "father": "father_name",
-                    "father_name": "father_name",
-                    "fathers_name": "father_name",
-                    "guardian": "father_name",
-                    "guardian_name": "father_name",
-                    "mother": "mother_name",
-                    "mother_name": "mother_name",
-                    "phone_number": "phone",
-                    "mobile": "phone",
-                    "cell": "phone",
-                    "telephone": "phone",
-                    "contact": "phone",
-                    "email_address": "email",
-                    "mail": "email",
-                    "residence": "address",
-                    "location": "address",
-                    "home_address": "address",
-                    "current_address": "address",
-                    "permanent_address": "address",
-                    "dob": "date_of_birth",
-                    "birth_date": "date_of_birth",
-                    "national_id": "cnic",
-                    "id_number": "cnic",
-                    "college": "university",
-                    "institution": "university",
-                    "institute": "university",
-                    "school": "university",
-                    "qualification": "degree"
-                }
-                canon_key = alias_map.get(raw_key, raw_key)
-                if canon_key == "full_name":
-                    user.full_name = new_val
-                    setattr(p_info, "full_name", new_val)
-                elif hasattr(p_info, canon_key):
-                    setattr(p_info, canon_key, new_val)
-                else:
-                    upsert_custom_field_by_key(
-                        db=db,
-                        user_id=target_user_id,
-                        field_key=canon_key,
-                        field_label=label,
-                        field_value=new_val,
-                        category="personal"
-                    )
-
-                applied_updates.append(CopilotFieldUpdate(
-                    field_type="personal_info",
-                    key=canon_key,
-                    label=label,
-                    old_value=str(old_val) if old_val is not None else None,
-                    new_value=new_val,
-                    action=str(upd.get("action") or "UPDATE")
-                ))
-
-            elif ftype == "custom_field":
-                upsert_custom_field_by_key(
-                    db=db,
-                    user_id=target_user_id,
-                    field_key=raw_key,
-                    field_label=label,
-                    field_value=new_val,
-                    category="general"
-                )
-                applied_updates.append(CopilotFieldUpdate(
-                    field_type="custom_field",
-                    key=raw_key,
-                    label=label,
-                    old_value=str(old_val) if old_val is not None else None,
-                    new_value=new_val,
-                    action=str(upd.get("action") or "UPDATE")
-                ))
-
-            elif ftype == "experience":
-                if "skill" in raw_key:
-                    upsert_custom_field_by_key(
-                        db=db,
-                        user_id=target_user_id,
-                        field_key="technical_skills",
-                        field_label="Technical Skills",
-                        field_value=new_val,
-                        category="professional"
-                    )
-                applied_updates.append(CopilotFieldUpdate(
-                    field_type="experience",
-                    key=raw_key,
-                    label=label,
-                    old_value=str(old_val) if old_val is not None else None,
-                    new_value=new_val,
-                    action=str(upd.get("action") or "UPDATE")
-                ))
-
-        db.commit()
-        db.refresh(user)
+    # Enforce PREVIEW constraint: if 2 or more updates are detected, NEVER auto-commit immediately!
+    if (intent == "PREVIEW") or (len(raw_pending) >= 2) or (len(raw_updates) >= 2):
+        intent = "PREVIEW"
+        combined_pending = raw_pending if raw_pending else raw_updates
+        final_pending = [
+            CopilotFieldUpdate(**p) if isinstance(p, dict) else p
+            for p in combined_pending
+        ]
+        applied_updates: List[CopilotFieldUpdate] = []
+        if not reply or "saved" in reply.lower() or "updated" in reply.lower():
+            reply = f"I have detected **{len(final_pending)} personal memory attributes**. Please review the preview below and click **Proceed & Save to Vault** to commit them."
+    elif intent == "UPDATE" and len(raw_updates) == 1:
+        applied_updates = _apply_copilot_updates(raw_updates, db, user, p_info, target_user_id)
+        final_pending = []
+    else:
+        applied_updates = []
+        final_pending = []
 
     # 7. Fetch updated profile representation
     fresh_profile_data = get_user_profile(db=db, user_id=target_user_id)
@@ -1487,6 +1753,7 @@ async def copilot_chat_endpoint(
             reply=reply,
             intent=intent,
             updates=applied_updates,
+            pending_updates=final_pending,
             updated_profile=profile_dto
         )
     )
