@@ -3,6 +3,8 @@ import json
 import logging
 import re
 import datetime
+import zipfile
+import xml.etree.ElementTree as ET
 from typing import Any, Dict, List, Optional
 from sqlalchemy.orm import Session
 from app.database.models import User, PersonalInfo, Experience, CustomField
@@ -18,15 +20,100 @@ from app.ai.prompts import EXTRACTION_SYSTEM_PROMPT
 logger = logging.getLogger("app.services.extraction_service")
 
 
+HEADER_SECTION_PATTERN = re.compile(
+    r'^(?:[#*_\-\s]*)(PROFESSIONAL\s+SUMMARY|SUMMARY|OBJECTIVE|PROFILE|EXECUTIVE\s+SUMMARY|'
+    r'KEY\s+SKILLS|TECHNICAL\s+SKILLS|CORE\s+SKILLS|CORE\s+COMPETENCIES|SKILLS|TECHNOLOGIES|PROGRAMMING\s+SKILLS|'
+    r'LEARNING\s*&?\s*DEVELOPMENT|COURSES|TRAINING|PROFESSIONAL\s+DEVELOPMENT|'
+    r'WORK\s+EXPERIENCE|PROFESSIONAL\s+EXPERIENCE|EMPLOYMENT\s+HISTORY|EXPERIENCE|CAREER\s+HISTORY|WORK\s+HISTORY|'
+    r'RELEVANT\s+PROJECTS(?:\s*\(.*?\))?|KEY\s+PROJECTS|PROJECTS|ACADEMIC\s+PROJECTS|PERSONAL\s+PROJECTS|'
+    r'ACADEMIC\s+BACKGROUND|EDUCATION|ACADEMIC\s+QUALIFICATIONS|QUALIFICATIONS|'
+    r'CERTIFICATIONS|CERTIFICATES|LICENSES|LICENSES\s*&?\s*CERTIFICATIONS|'
+    r'HONORS|AWARDS|LANGUAGES|PUBLICATIONS|VOLUNTEERING|VOLUNTEER\s+EXPERIENCE)(?:[\s:*_\-]*)$',
+    re.IGNORECASE | re.MULTILINE
+)
+
+
+def split_into_semantic_chunks(text: str) -> List[Dict[str, Any]]:
+    """
+    Splits resume or document text into meaningful, labeled semantic chunks
+    based on standard document section boundaries or logical paragraph clusters.
+    """
+    clean = text.strip()
+    if not clean:
+        return []
+
+    matches = list(HEADER_SECTION_PATTERN.finditer(clean))
+    chunks: List[Dict[str, Any]] = []
+
+    if matches:
+        last_pos = 0
+        last_header = "HEADER & CONTACT"
+        for m in matches:
+            start, end = m.span()
+            content = clean[last_pos:start].strip()
+            if content:
+                chunks.append({
+                    "chunk_id": len(chunks) + 1,
+                    "title": last_header,
+                    "content": content,
+                    "char_count": len(content)
+                })
+            last_header = m.group(1).strip().upper()
+            last_pos = end
+
+        final_content = clean[last_pos:].strip()
+        if final_content:
+            chunks.append({
+                "chunk_id": len(chunks) + 1,
+                "title": last_header,
+                "content": final_content,
+                "char_count": len(final_content)
+            })
+    else:
+        # Fallback to paragraph-based chunking with boundary awareness
+        paragraphs = [p.strip() for p in clean.split("\n\n") if p.strip()]
+        current_block: List[str] = []
+        current_len = 0
+        for p in paragraphs:
+            current_block.append(p)
+            current_len += len(p)
+            if current_len >= 1400:
+                block_content = "\n\n".join(current_block).strip()
+                chunks.append({
+                    "chunk_id": len(chunks) + 1,
+                    "title": f"Section {len(chunks) + 1}",
+                    "content": block_content,
+                    "char_count": len(block_content)
+                })
+                current_block = []
+                current_len = 0
+        if current_block:
+            block_content = "\n\n".join(current_block).strip()
+            chunks.append({
+                "chunk_id": len(chunks) + 1,
+                "title": f"Section {len(chunks) + 1}",
+                "content": block_content,
+                "char_count": len(block_content)
+            })
+
+    return chunks or [{
+        "chunk_id": 1,
+        "title": "Document Content",
+        "content": clean,
+        "char_count": len(clean)
+    }]
+
+
 def normalize_date_for_storage(val: Any, is_end_date: bool = False) -> Optional[datetime.date]:
     """
-    Robustly parses and normalizes diverse date representations found in CVs/PDFs.
+    Robustly parses and normalizes diverse date representations found in CVs/PDFs/DOCX.
     Handles:
     - '2022' -> 2022-01-01 (or 2022-12-31 for end_date)
     - '2022-05' -> 2022-05-01
     - 'May 2022', 'May, 2022', 'January 2024' -> 2022-05-01
     - '05/2022' -> 2022-05-01
     - '2022-05-14' -> 2022-05-14
+    - '6 months', '1 year' -> estimated start date
     - 'Present', 'Current', 'Ongoing', 'Now', '' -> None (for ongoing roles)
     """
     if not val:
@@ -39,6 +126,15 @@ def normalize_date_for_storage(val: Any, is_end_date: bool = False) -> Optional[
     val_str = str(val).strip()
     if not val_str or val_str.lower() in ("present", "current", "ongoing", "now", "none", "null", "active", "presently"):
         return None
+
+    # Handle relative duration strings (e.g. '6 months', '1 year')
+    m_dur = re.search(r"(\d+)\s*(month|year)", val_str, re.IGNORECASE)
+    if m_dur:
+        amount = int(m_dur.group(1))
+        unit = m_dur.group(2).lower()
+        days = amount * 30 if "month" in unit else amount * 365
+        approx_start = datetime.date.today() - datetime.timedelta(days=days)
+        return approx_start
 
     # Try ISO YYYY-MM-DD
     m_iso = re.search(r"(\d{4})[/-](\d{1,2})[/-](\d{1,2})", val_str)
@@ -88,12 +184,80 @@ def normalize_date_for_storage(val: Any, is_end_date: bool = False) -> Optional[
 
 def extract_text_from_file_bytes(content_bytes: bytes, filename: str) -> str:
     """
-    Extracts high-fidelity plain text from uploaded file bytes (PDF, TXT, MD).
-    For PDFs, utilizes dual-pass layout-aware parsing to preserve column structures,
-    sidebars, tables, and form fields from modern resumes.
+    Extracts high-fidelity plain text from uploaded file bytes (PDF, Word DOCX/DOC, TXT, MD).
+    - For Word (.docx / .doc / zip stream): extracts all paragraphs, section headers/footers,
+      and tables cell-by-cell with structural markdown formatting.
+    - For PDFs: utilizes dual-pass layout-aware parsing without OCR to preserve column structures,
+      sidebars, tables, and form fields from modern resumes.
+    - For plaintext / markdown: parses UTF-8 with latin-1 fallback.
     """
     filename_lower = filename.lower()
-    if filename_lower.endswith(".pdf"):
+    is_zip = content_bytes[:4] == b"PK\x03\x04"
+    is_docx = filename_lower.endswith((".docx", ".doc")) or (is_zip and not filename_lower.endswith(".pdf"))
+
+    if is_docx:
+        # Extract Microsoft Word document
+        extracted_lines: List[str] = []
+        try:
+            import docx
+            doc = docx.Document(io.BytesIO(content_bytes))
+            # 1. Section headers & footers
+            for sec in doc.sections:
+                try:
+                    for p in sec.header.paragraphs:
+                        if p.text.strip():
+                            extracted_lines.append(p.text.strip())
+                except Exception:
+                    pass
+
+            # 2. Body paragraphs
+            for p in doc.paragraphs:
+                txt = p.text.strip()
+                if txt:
+                    extracted_lines.append(txt)
+
+            # 3. Tables (formatted row by row)
+            for t in doc.tables:
+                for r in t.rows:
+                    row_cells = [c.text.strip() for c in r.cells if c.text.strip()]
+                    if row_cells:
+                        extracted_lines.append(" | ".join(row_cells))
+
+            # 4. Section footers
+            for sec in doc.sections:
+                try:
+                    for p in sec.footer.paragraphs:
+                        if p.text.strip():
+                            extracted_lines.append(p.text.strip())
+                except Exception:
+                    pass
+
+            full_text = "\n".join(extracted_lines).strip()
+            if full_text:
+                return full_text
+        except Exception as exc:
+            logger.warning("python-docx extraction failed for %s, trying XML parser: %s", filename, exc)
+
+        # Fallback: Extract directly from docx zip archive XML
+        try:
+            with zipfile.ZipFile(io.BytesIO(content_bytes)) as z:
+                xml_content = z.read("word/document.xml")
+                tree = ET.fromstring(xml_content)
+                xml_texts = [elem.text.strip() for elem in tree.iter() if elem.text and elem.text.strip()]
+                if xml_texts:
+                    return "\n".join(xml_texts).strip()
+        except Exception as xml_exc:
+            logger.warning("Direct docx XML extraction failed: %s", xml_exc)
+
+        # Legacy binary .doc fallback (extract printable text strings)
+        printable_runs = re.findall(rb"[\x20-\x7E\t\r\n]{4,}", content_bytes)
+        if printable_runs:
+            decoded_runs = [r.decode("latin-1", errors="ignore").strip() for r in printable_runs if r.strip()]
+            return "\n".join(decoded_runs).strip()
+
+        return ""
+
+    elif filename_lower.endswith(".pdf") or content_bytes[:4] == b"%PDF":
         from pypdf import PdfReader
         try:
             reader = PdfReader(io.BytesIO(content_bytes))
@@ -107,13 +271,13 @@ def extract_text_from_file_bytes(content_bytes: bytes, filename: str) -> str:
             # Pass 1: Try layout-aware extraction to preserve multi-column formatting
             try:
                 layout_txt = page.extract_text(extraction_mode="layout", orientations=(0, 90, 180, 270))
-            except Exception as e:
+            except Exception:
                 layout_txt = ""
 
             # Pass 2: Try standard plain extraction
             try:
                 plain_txt = page.extract_text(extraction_mode="plain", orientations=(0, 90, 180, 270))
-            except Exception as e:
+            except Exception:
                 plain_txt = ""
 
             # Choose the richer extraction while favoring layout
@@ -174,49 +338,150 @@ def _clean_extracted_strings(data: Any) -> Any:
     return data
 
 
+def merge_extracted_records(primary: Dict[str, Any], secondary: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Intelligently merges two extracted profile record sets:
+    - Merges personal_info non-null keys without overwriting existing primary data.
+    - Appends experiences with de-duplication on (company, job_title).
+    - Appends custom_fields with de-duplication on field_key.
+    """
+    merged_pi = dict(primary.get("personal_info") or {}) if primary.get("personal_info") else {}
+    sec_pi = dict(secondary.get("personal_info") or {}) if secondary.get("personal_info") else {}
+    for k, v in sec_pi.items():
+        if v and not merged_pi.get(k):
+            merged_pi[k] = v
+
+    if not any(merged_pi.values()):
+        merged_pi = None
+
+    merged_exps = list(primary.get("experiences") or [])
+    existing_exp_keys = set()
+    for e in merged_exps:
+        if isinstance(e, dict):
+            c = re.sub(r"[^a-z0-9]+", "", (e.get("company") or "").lower())
+            j = re.sub(r"[^a-z0-9]+", "", (e.get("job_title") or "").lower())
+            if c and j:
+                existing_exp_keys.add((c, j))
+
+    for e in (secondary.get("experiences") or []):
+        if isinstance(e, dict):
+            c = re.sub(r"[^a-z0-9]+", "", (e.get("company") or "").lower())
+            j = re.sub(r"[^a-z0-9]+", "", (e.get("job_title") or "").lower())
+            is_dup = False
+            for ec, ej in existing_exp_keys:
+                if (c == ec or c in ec or ec in c) and (j == ej or j in ej or ej in j):
+                    is_dup = True
+                    break
+            if not is_dup and c and j:
+                merged_exps.append(e)
+                existing_exp_keys.add((c, j))
+
+    merged_cfs = list(primary.get("custom_fields") or [])
+    existing_cf_keys = {cf.get("field_key") for cf in merged_cfs if isinstance(cf, dict) and cf.get("field_key")}
+    for cf in (secondary.get("custom_fields") or []):
+        if isinstance(cf, dict):
+            k = cf.get("field_key")
+            if k and k not in existing_cf_keys:
+                merged_cfs.append(cf)
+                existing_cf_keys.add(k)
+
+    return {
+        "personal_info": merged_pi,
+        "experiences": merged_exps,
+        "custom_fields": merged_cfs
+    }
+
+
 async def extract_structured_memory_from_text(
     raw_text: str,
     user_id: Optional[int] = None,
     db: Optional[Session] = None
 ) -> Dict[str, Any]:
-    """Uses configured AI provider (or Groq default) to parse unstructured text into structured profile records."""
-    if not raw_text or not raw_text.strip():
+    """
+    Uses configured AI provider (or Groq default) to parse unstructured text into structured profile records.
+    Workflow:
+    1. Splits extracted content into semantic chunks (Header, Summary, Skills, Experience, Projects, Education, Certifications).
+    2. Builds structured multi-chunk representation so LLM receives and analyzes all chunks.
+    3. Queries LLM with temperature=0.0 for deterministic, high-fidelity mapping.
+    4. Merges and verifies any chunk sections to prevent missing data.
+    5. Falls back to chunk-aware heuristic parsing if LLM is offline.
+    """
+    clean_text = (raw_text or "").strip()
+    if not clean_text:
         return {"personal_info": None, "experiences": [], "custom_fields": []}
 
     from app.ai.provider_manager import AIProviderManager
     user_config = AIProviderManager.get_user_ai_config(db, user_id) if db and user_id else None
 
-    # Support up to 40,000 characters for complete multi-page resumes and documents without truncation
-    text_to_process = raw_text.strip()[:40000]
+    # Step 1: Split into meaningful chunks
+    chunks = split_into_semantic_chunks(clean_text)
+
+    # Step 2: Format all chunks into structured prompt
+    chunk_blocks = []
+    for idx, c in enumerate(chunks, 1):
+        chunk_blocks.append(f"=== CHUNK {idx}: [{c['title']}] ===\n{c['content']}")
+    all_chunks_text = "\n\n".join(chunk_blocks)
 
     messages = [
         {"role": "system", "content": EXTRACTION_SYSTEM_PROMPT},
         {
             "role": "user",
-            "content": f"Extract structured personal memory as a JSON object from the following resume/document text:\n\n{text_to_process}"
+            "content": (
+                f"The following document contains {len(chunks)} distinct structured chunks. "
+                "Analyze EVERY chunk comprehensively and map all personal identity, contact details, education, "
+                "work experiences, projects, technical skills, and certifications into the specified JSON schema:\n\n"
+                f"{all_chunks_text[:40000]}"
+            )
         }
     ]
 
     # Temperature 0.0 for deterministic, repeatable extraction results across repeated uploads
     response = await query_groq_llm(messages=messages, temperature=0.0, config=user_config)
     if not response or not isinstance(response, dict):
-        # Fallback heuristic extraction if LLM is offline or unavailable
-        raw_res = _fallback_heuristic_extraction(raw_text)
+        raw_res = _fallback_heuristic_extraction(clean_text, chunks=chunks)
         return _clean_extracted_strings(raw_res)
 
     cleaned_response = _clean_extracted_strings(response)
-    return {
+    primary_result = {
         "personal_info": cleaned_response.get("personal_info"),
         "experiences": cleaned_response.get("experiences") or [],
         "custom_fields": cleaned_response.get("custom_fields") or [],
     }
 
+    # Step 3: Verification & completeness check
+    # Check if any major chunk section was missing in the LLM response
+    missing_experiences = not primary_result.get("experiences")
+    missing_pi = not primary_result.get("personal_info")
+    existing_cf_keys = {cf.get("field_key") for cf in primary_result.get("custom_fields", []) if isinstance(cf, dict)}
 
-def _fallback_heuristic_extraction(text: str) -> Dict[str, Any]:
-    """Enhanced regex & heuristic-based fallback extractor if external LLM is offline or unconfigured."""
+    if missing_experiences or missing_pi or "projects" not in existing_cf_keys or "certifications" not in existing_cf_keys:
+        heuristic_supplements = _fallback_heuristic_extraction(clean_text, chunks=chunks)
+        to_merge: Dict[str, Any] = {"personal_info": None, "experiences": [], "custom_fields": []}
+        if missing_pi:
+            to_merge["personal_info"] = heuristic_supplements.get("personal_info")
+        if missing_experiences:
+            to_merge["experiences"] = heuristic_supplements.get("experiences") or []
+        for cf in heuristic_supplements.get("custom_fields") or []:
+            if isinstance(cf, dict) and cf.get("field_key") not in existing_cf_keys:
+                to_merge["custom_fields"].append(cf)
+        final_merged = merge_extracted_records(primary_result, to_merge)
+    else:
+        final_merged = primary_result
+
+    return _clean_extracted_strings(final_merged)
+
+    return _clean_extracted_strings(final_merged)
+
+
+def _fallback_heuristic_extraction(text: str, chunks: Optional[List[Dict[str, Any]]] = None) -> Dict[str, Any]:
+    """Enhanced regex & chunk-aware fallback extractor if external LLM is offline or unconfigured."""
     clean_text = text.strip()
     custom_fields = []
     lines = [l.strip() for l in clean_text.splitlines() if l.strip()]
+
+    # If chunks not provided, compute them
+    if chunks is None:
+        chunks = split_into_semantic_chunks(clean_text)
 
     # Extract Name from top lines (only for multi-line resume-like documents, or explicit self-introduction)
     user_name = None
@@ -248,19 +513,63 @@ def _fallback_heuristic_extraction(text: str) -> Dict[str, Any]:
     university = univ_match.group(0).strip() if univ_match else None
 
     # Degree
-    deg_match = re.search(r"\b(bachelor(?:'s)?(?:\s+of\s+[A-Za-z\s]+)?|master(?:'s)?(?:\s+of\s+[A-Za-z\s]+)?|ph\.?d\.?|bs|ms|msc|bsc|bba|mba)\b", clean_text, re.IGNORECASE)
+    deg_match = re.search(r"\b(bachelor(?:'s)?(?:\s+of\s+[A-Za-z\s]+)?|master(?:'s)?(?:\s+of\s+[A-Za-z\s]+)?|ph\.?d\.?|bs|ms|msc|bsc|bba|mba|bscs)\b", clean_text, re.IGNORECASE)
     degree = deg_match.group(0).strip() if deg_match else None
 
-    # Technical Skills
-    skills_match = re.search(r"(?:technical\s*skills|skills|technologies|expertise|proficiencies)[\s:]+([^\n]+(?:\n[^\n]+){1,3})", clean_text, re.IGNORECASE)
-    if skills_match:
-        skills_text = re.sub(r"[\r\n]+", ", ", skills_match.group(1)).strip(" ,")
+    # Bio / Summary from chunks or text
+    bio = None
+    for c in chunks:
+        title = c.get("title", "").upper()
+        if "SUMMARY" in title or "OBJECTIVE" in title or "PROFILE" in title:
+            bio = c.get("content", "").strip()[:800]
+            break
+
+    # Technical Skills from chunks or text
+    skills_text = None
+    for c in chunks:
+        title = c.get("title", "").upper()
+        if "SKILL" in title or "TECHNOLOG" in title:
+            skills_text = c.get("content", "").strip().replace("\n", ", ")
+            break
+    if not skills_text:
+        skills_match = re.search(r"(?:technical\s*skills|skills|technologies|expertise|proficiencies)[\s:]+([^\n]+(?:\n[^\n]+){1,3})", clean_text, re.IGNORECASE)
+        if skills_match:
+            skills_text = re.sub(r"[\r\n]+", ", ", skills_match.group(1)).strip(" ,")
+    if skills_text:
         custom_fields.append({
             "field_key": "technical_skills",
             "field_label": "Technical Skills",
             "field_value": skills_text[:500],
             "category": "professional"
         })
+
+    # Projects from chunks
+    for c in chunks:
+        title = c.get("title", "").upper()
+        if "PROJECT" in title:
+            proj_text = c.get("content", "").strip().replace("\n", "; ")
+            if proj_text:
+                custom_fields.append({
+                    "field_key": "projects",
+                    "field_label": "Projects",
+                    "field_value": proj_text[:500],
+                    "category": "professional"
+                })
+            break
+
+    # Certifications from chunks
+    for c in chunks:
+        title = c.get("title", "").upper()
+        if "CERTIF" in title or "COURSE" in title or "LEARNING" in title:
+            cert_text = c.get("content", "").strip().replace("\n", "; ")
+            if cert_text:
+                custom_fields.append({
+                    "field_key": "certifications",
+                    "field_label": "Certifications",
+                    "field_value": cert_text[:500],
+                    "category": "professional"
+                })
+            break
 
     # Check for Friend's Name pattern (test compatibility)
     friend_match = re.search(r"friend(?:'?s)?\s*name\s*(?:is|:)?\s*([A-Za-z\s]+)", clean_text, re.IGNORECASE)
@@ -284,8 +593,39 @@ def _fallback_heuristic_extraction(text: str) -> Dict[str, Any]:
         })
 
     # LinkedIn / GitHub
-    li_match = re.search(r"https?://(?:www\.)?linkedin\.com/in/[\w\-]+", clean_text, re.IGNORECASE)
-    gh_match = re.search(r"https?://(?:www\.)?github\.com/[\w\-]+", clean_text, re.IGNORECASE)
+    li_match = re.search(r"(?:https?://)?(?:www\.)?linkedin\.com/in/[\w\-]+", clean_text, re.IGNORECASE)
+    gh_match = re.search(r"(?:https?://)?(?:www\.)?github\.com/[\w\-]+", clean_text, re.IGNORECASE)
+
+    # Heuristic experiences extraction from EXPERIENCE chunk
+    experiences = []
+    for c in chunks:
+        title = c.get("title", "").upper()
+        if "EXPERIENCE" in title or "EMPLOYMENT" in title:
+            exp_lines = [l.strip() for l in c.get("content", "").splitlines() if l.strip()]
+            for l in exp_lines:
+                # Look for company/title patterns with pipes or parentheses
+                if "|" in l or " - " in l or re.search(r"\b(intern|engineer|developer|lead|coordinator|manager)\b", l, re.IGNORECASE):
+                    parts = [p.strip() for p in re.split(r"[|\-–—]", l) if p.strip()]
+                    if len(parts) >= 2:
+                        comp_clean = re.sub(r"\b\d+\s*(?:months?|years?)\b", "", parts[1], flags=re.IGNORECASE).strip(" ,|")
+                        experiences.append({
+                            "company": comp_clean or parts[1],
+                            "job_title": parts[0],
+                            "start_date": "2023-01-01",
+                            "end_date": None,
+                            "description": l,
+                            "skills": None
+                        })
+                    elif len(parts) == 1:
+                        experiences.append({
+                            "company": "Organization",
+                            "job_title": parts[0],
+                            "start_date": "2023-01-01",
+                            "end_date": None,
+                            "description": l,
+                            "skills": None
+                        })
+            break
 
     personal_info = {
         "full_name": user_name,
@@ -296,6 +636,7 @@ def _fallback_heuristic_extraction(text: str) -> Dict[str, Any]:
         "degree": degree,
         "linkedin_url": li_match.group(0) if li_match else None,
         "github_url": gh_match.group(0) if gh_match else None,
+        "bio": bio,
     }
 
     if not any(personal_info.values()):
@@ -303,7 +644,7 @@ def _fallback_heuristic_extraction(text: str) -> Dict[str, Any]:
 
     return {
         "personal_info": personal_info,
-        "experiences": [],
+        "experiences": experiences,
         "custom_fields": custom_fields
     }
 

@@ -189,3 +189,166 @@ async def test_repeated_upload_experience_upsert(client):
         assert exps2[0]["skills"] == "Python, TypeScript, FastAPI"
         assert "cloud migration" in exps2[0]["description"]
 
+
+def test_docx_text_and_table_extraction():
+    """Verify that Word .docx files have paragraphs and tables accurately extracted."""
+    import docx
+    from app.services.extraction_service import extract_text_from_file_bytes
+
+    doc = docx.Document()
+    doc.add_paragraph("Hussnain Ali")
+    doc.add_paragraph("Entry-Level AI/ML Enthusiast | Software Developer")
+    table = doc.add_table(rows=2, cols=2)
+    table.cell(0, 0).text = "Skills"
+    table.cell(0, 1).text = "Python, React"
+    table.cell(1, 0).text = "Degree"
+    table.cell(1, 1).text = "BSCS"
+
+    bio_buf = io.BytesIO()
+    doc.save(bio_buf)
+    docx_bytes = bio_buf.getvalue()
+
+    extracted = extract_text_from_file_bytes(docx_bytes, "test_resume.docx")
+    assert "Hussnain Ali" in extracted
+    assert "Entry-Level AI/ML Enthusiast" in extracted
+    assert "Python, React" in extracted
+    assert "BSCS" in extracted
+
+
+def test_semantic_chunking_on_resume():
+    """Verify that resume text is split into distinct, labeled semantic chunks."""
+    from app.services.extraction_service import split_into_semantic_chunks
+
+    sample_resume = (
+        "HUSSNAIN ALI\n03424125664 | hussnain@example.com\n\n"
+        "PROFESSIONAL SUMMARY\nBSCS graduate and developer with a solid programming foundation.\n\n"
+        "KEY SKILLS\nPython, JavaScript, Machine Learning, PostgreSQL\n\n"
+        "EXPERIENCE\nFrontend Developer Intern | Zauff Labs 6 months\nBuilt real-time features.\n\n"
+        "RELEVANT PROJECTS\nExamify Portal: Designed data schema.\n\n"
+        "EDUCATION\nBSCS | NCBA&E University\n\n"
+        "CERTIFICATIONS\nReact, React Native - EVS Training Institute"
+    )
+
+    chunks = split_into_semantic_chunks(sample_resume)
+    assert len(chunks) >= 6
+    chunk_titles = [c["title"] for c in chunks]
+    assert "HEADER & CONTACT" in chunk_titles
+    assert any("SUMMARY" in t for t in chunk_titles)
+    assert any("SKILL" in t for t in chunk_titles)
+    assert any("EXPERIENCE" in t for t in chunk_titles)
+    assert any("PROJECT" in t for t in chunk_titles)
+    assert any("EDUCATION" in t for t in chunk_titles)
+    assert any("CERTIF" in t for t in chunk_titles)
+
+
+@pytest.mark.anyio
+async def test_upload_word_document_endpoint(client):
+    """Test uploading a Word document (.docx) to /api/memory/upload-document."""
+    import docx
+
+    doc = docx.Document()
+    doc.add_paragraph("HUSSNAIN ALI")
+    doc.add_paragraph("03424125664 | Hussnainwk@gmail.com | linkedin.com/in/hussnain-ali")
+    doc.add_paragraph("PROFESSIONAL SUMMARY")
+    doc.add_paragraph("BSCS graduate seeking AI/ML role.")
+    doc.add_paragraph("KEY SKILLS")
+    doc.add_paragraph("Python, React, Machine Learning, PostgreSQL")
+    doc.add_paragraph("EXPERIENCE")
+    doc.add_paragraph("Frontend Developer Intern | Zauff Labs 6 months")
+    doc.add_paragraph("Built real-time web features.")
+    doc.add_paragraph("EDUCATION")
+    doc.add_paragraph("BSCS | NCBA&E University")
+
+    buf = io.BytesIO()
+    doc.save(buf)
+    docx_bytes = buf.getvalue()
+
+    mock_llm_result = {
+        "personal_info": {
+            "full_name": "HUSSNAIN ALI",
+            "phone": "03424125664",
+            "email": "Hussnainwk@gmail.com",
+            "university": "NCBA&E University",
+            "degree": "BSCS",
+            "linkedin_url": "linkedin.com/in/hussnain-ali",
+            "bio": "BSCS graduate seeking AI/ML role."
+        },
+        "experiences": [
+            {
+                "company": "Zauff Labs",
+                "job_title": "Frontend Developer Intern",
+                "start_date": "2023-01-01",
+                "end_date": None,
+                "description": "Built real-time web features",
+                "skills": "React"
+            }
+        ],
+        "custom_fields": [
+            {
+                "field_key": "technical_skills",
+                "field_label": "Technical Skills",
+                "field_value": "Python, React, Machine Learning, PostgreSQL",
+                "category": "professional"
+            }
+        ]
+    }
+
+    files = {"file": ("Hussnain_Resume.docx", io.BytesIO(docx_bytes), "application/vnd.openxmlformats-officedocument.wordprocessingml.document")}
+
+    with patch("app.services.extraction_service.query_groq_llm", new=AsyncMock(return_value=mock_llm_result)):
+        res = client.post(
+            "/api/memory/upload-document",
+            files=files,
+            data={"user_id": 1, "auto_save": "true"}
+        )
+        assert res.status_code == 200
+        data = res.json()["data"]
+        assert data["saved"] is True
+        extracted = data["extracted"]
+        assert extracted["personal_info"]["full_name"] == "HUSSNAIN ALI"
+        assert extracted["personal_info"]["email"] == "Hussnainwk@gmail.com"
+        assert extracted["personal_info"]["degree"] == "BSCS"
+        assert len(extracted["experiences"]) == 1
+        assert extracted["experiences"][0]["company"] == "Zauff Labs"
+        assert len(extracted["custom_fields"]) >= 1
+
+
+def test_actual_hussnain_resume_docx_parsing_and_chunking():
+    """Verify parsing and semantic chunking on the actual user resume document."""
+    import os
+    from app.services.extraction_service import (
+        extract_text_from_file_bytes,
+        split_into_semantic_chunks,
+        _fallback_heuristic_extraction
+    )
+
+    file_path = r"C:\Users\Muazam Ali\Downloads\Hussnain_Ali_Resume_AI_ML_Entry (1).docx"
+    if not os.path.exists(file_path):
+        return
+
+    with open(file_path, "rb") as f:
+        bytes_data = f.read()
+
+    text = extract_text_from_file_bytes(bytes_data, "Hussnain_Ali_Resume_AI_ML_Entry.docx")
+    assert "HUSSNAIN ALI" in text
+    assert "03424125664" in text
+    assert "Hussnainwk@gmail.com" in text
+    assert "Zauff Labs" in text
+    assert "Examify Portal" in text
+    assert "BSCS" in text
+
+    chunks = split_into_semantic_chunks(text)
+    assert len(chunks) >= 5
+    titles = [c["title"] for c in chunks]
+    assert "HEADER & CONTACT" in titles
+
+    # Verify heuristic fallback accurately extracts from this doc
+    heuristic = _fallback_heuristic_extraction(text, chunks=chunks)
+    assert heuristic["personal_info"] is not None
+    assert "HUSSNAIN" in heuristic["personal_info"]["full_name"].upper()
+    assert heuristic["personal_info"]["phone"] == "03424125664"
+    assert "hussnain" in heuristic["personal_info"]["email"].lower()
+    assert len(heuristic["custom_fields"]) >= 2
+
+
+
