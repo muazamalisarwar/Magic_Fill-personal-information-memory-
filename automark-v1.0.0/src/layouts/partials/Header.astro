@@ -33,7 +33,7 @@ const { pathname } = Astro.url;
     <!-- 1. PUBLIC MARKETING MENU (Visible When Logged Out) -->
     <ul
       id="publicNavMenu"
-      class="navbar-nav hidden lg:flex items-center gap-1 p-1 rounded-xl bg-slate-50 border border-slate-200"
+      class="navbar-nav hidden lg:flex items-center gap-1.5 p-1.5 rounded-xl bg-slate-100/90 border border-slate-200 shadow-2xs"
     >
       {
         main.map((item) => {
@@ -42,11 +42,12 @@ const { pathname } = Astro.url;
             <li class="nav-item">
               <a
                 href={item.url}
-                class={`text-[13.5px] font-medium px-3.5 py-1.5 rounded-lg transition-all duration-150 cursor-pointer block ${
+                class={`nav-btn-link text-xs font-semibold px-3.5 py-1.5 rounded-lg transition-all duration-150 cursor-pointer block active:scale-95 ${
                   isActive
-                    ? "bg-white text-blue-600 font-semibold shadow-xs border border-slate-200"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
+                    ? "nav-btn-active bg-blue-600 text-white font-bold shadow-sm border border-blue-600"
+                    : "nav-btn-inactive text-slate-700 hover:text-blue-600 hover:bg-blue-50/70 hover:border-blue-200 border border-transparent"
                 }`}
+                aria-current={isActive ? "page" : undefined}
               >
                 {item.name}
               </a>
@@ -59,18 +60,19 @@ const { pathname } = Astro.url;
     <!-- 2. AUTHENTICATED PLATFORM MENU (Visible When Logged In) -->
     <ul
       id="authNavMenu"
-      class="navbar-nav hidden flex-row items-center gap-1 p-1 rounded-xl bg-slate-50 border border-slate-200"
+      class="navbar-nav hidden flex-row items-center gap-1.5 p-1.5 rounded-xl bg-slate-100/90 border border-slate-200 shadow-2xs"
     >
       <li class="nav-item">
         <a
           href="/dashboard"
-          class={`text-[13px] font-medium px-3 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-2 cursor-pointer ${
+          class={`nav-btn-link text-xs font-semibold px-3.5 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-2 cursor-pointer active:scale-95 ${
             pathname === "/dashboard" || pathname === "/dashboard/"
-              ? "bg-white text-blue-600 font-semibold shadow-xs border border-slate-200"
-              : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
+              ? "nav-btn-active bg-blue-600 text-white font-bold shadow-sm border border-blue-600"
+              : "nav-btn-inactive text-slate-700 hover:text-blue-600 hover:bg-blue-50/70 hover:border-blue-200 border border-transparent"
           }`}
+          aria-current={pathname === "/dashboard" || pathname === "/dashboard/" ? "page" : undefined}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
           <span>Dashboard</span>
         </a>
       </li>
@@ -78,13 +80,14 @@ const { pathname } = Astro.url;
       <li class="nav-item">
         <a
           href="/memory"
-          class={`text-[13px] font-medium px-3 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-2 cursor-pointer ${
+          class={`nav-btn-link text-xs font-semibold px-3.5 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-2 cursor-pointer active:scale-95 ${
             pathname === "/memory" || pathname === "/memory/"
-              ? "bg-white text-blue-600 font-semibold shadow-xs border border-slate-200"
-              : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
+              ? "nav-btn-active bg-blue-600 text-white font-bold shadow-sm border border-blue-600"
+              : "nav-btn-inactive text-slate-700 hover:text-blue-600 hover:bg-blue-50/70 hover:border-blue-200 border border-transparent"
           }`}
+          aria-current={pathname === "/memory" || pathname === "/memory/" ? "page" : undefined}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
           <span>Memory Vault</span>
         </a>
       </li>
@@ -92,13 +95,14 @@ const { pathname } = Astro.url;
       <li class="nav-item">
         <a
           href="/extract"
-          class={`text-[13px] font-medium px-3 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-2 cursor-pointer ${
+          class={`nav-btn-link text-xs font-semibold px-3.5 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-2 cursor-pointer active:scale-95 ${
             pathname === "/extract" || pathname === "/extract/"
-              ? "bg-white text-blue-600 font-semibold shadow-xs border border-slate-200"
-              : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
+              ? "nav-btn-active bg-blue-600 text-white font-bold shadow-sm border border-blue-600"
+              : "nav-btn-inactive text-slate-700 hover:text-blue-600 hover:bg-blue-50/70 hover:border-blue-200 border border-transparent"
           }`}
+          aria-current={pathname === "/extract" || pathname === "/extract/" ? "page" : undefined}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
           <span>AI Extraction</span>
         </a>
       </li>
@@ -106,13 +110,14 @@ const { pathname } = Astro.url;
       <li class="nav-item">
         <a
           href="/playground"
-          class={`text-[13px] font-medium px-3 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-2 cursor-pointer ${
+          class={`nav-btn-link text-xs font-semibold px-3.5 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-2 cursor-pointer active:scale-95 ${
             pathname === "/playground" || pathname === "/playground/"
-              ? "bg-white text-blue-600 font-semibold shadow-xs border border-slate-200"
-              : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
+              ? "nav-btn-active bg-blue-600 text-white font-bold shadow-sm border border-blue-600"
+              : "nav-btn-inactive text-slate-700 hover:text-blue-600 hover:bg-blue-50/70 hover:border-blue-200 border border-transparent"
           }`}
+          aria-current={pathname === "/playground" || pathname === "/playground/" ? "page" : undefined}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
           <span>Simulator</span>
         </a>
       </li>
@@ -120,13 +125,14 @@ const { pathname } = Astro.url;
       <li class="nav-item">
         <a
           href="/extension"
-          class={`text-[13px] font-medium px-3 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-2 cursor-pointer ${
+          class={`nav-btn-link text-xs font-semibold px-3.5 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-2 cursor-pointer active:scale-95 ${
             pathname === "/extension" || pathname === "/extension/"
-              ? "bg-white text-blue-600 font-semibold shadow-xs border border-slate-200"
-              : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
+              ? "nav-btn-active bg-blue-600 text-white font-bold shadow-sm border border-blue-600"
+              : "nav-btn-inactive text-slate-700 hover:text-blue-600 hover:bg-blue-50/70 hover:border-blue-200 border border-transparent"
           }`}
+          aria-current={pathname === "/extension" || pathname === "/extension/" ? "page" : undefined}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
           <span>Extension</span>
         </a>
       </li>
@@ -137,7 +143,7 @@ const { pathname } = Astro.url;
       <!-- Chrome Extension Quick Link -->
       <a
         href="/extension"
-        class="hidden sm:inline-flex items-center gap-2 h-9 px-3.5 rounded-lg text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 transition-all shadow-xs"
+        class="hidden sm:inline-flex items-center gap-2 h-9 px-3.5 rounded-lg text-xs font-bold text-slate-700 bg-slate-50 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300 border border-slate-200 transition-all shadow-xs active:scale-95 cursor-pointer"
         title="Get the Magic Fill Chrome Extension"
       >
         <svg class="size-4 shrink-0" viewBox="0 0 24 24" fill="none">
@@ -156,14 +162,14 @@ const { pathname } = Astro.url;
         <a
           href="/login"
           id="btnHeaderSignIn"
-          class="h-9 px-3.5 text-xs font-semibold rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-50 border border-slate-200 transition-all flex items-center justify-center cursor-pointer"
+          class="h-9 px-4 text-xs font-bold rounded-lg text-slate-700 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-300 border border-slate-200 transition-all flex items-center justify-center cursor-pointer active:scale-95"
         >
           Sign In
         </a>
         <a
           href="/register"
           id="btnHeaderGetStarted"
-          class="h-9 px-4 text-xs font-bold rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+          class="h-9 px-4 text-xs font-bold rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition-all flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95 border border-blue-700"
         >
           <span>Get Started</span>
           <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -174,7 +180,7 @@ const { pathname } = Astro.url;
       <div id="headerLoggedInArea" class="hidden items-center gap-2">
         <a
           href="/dashboard"
-          class="h-9 px-3.5 rounded-lg flex items-center gap-2 text-xs font-semibold bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 shadow-xs transition-all"
+          class="h-9 px-3.5 rounded-lg flex items-center gap-2 text-xs font-bold bg-slate-50 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300 text-slate-800 border border-slate-200 shadow-xs transition-all active:scale-95 cursor-pointer"
           title="Go to Dashboard"
         >
           <span class="size-2 rounded-full bg-blue-600 animate-pulse"></span>
@@ -184,7 +190,7 @@ const { pathname } = Astro.url;
         <button
           type="button"
           id="btnHeaderSignOut"
-          class="h-9 px-3 rounded-lg text-xs font-medium text-slate-500 hover:text-rose-600 hover:bg-rose-50 border border-transparent hover:border-rose-200 transition-colors cursor-pointer"
+          class="h-9 px-3.5 rounded-lg text-xs font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 hover:border-rose-300 border border-rose-200 transition-all cursor-pointer active:scale-95"
           title="Sign Out"
         >
           Sign Out
@@ -218,22 +224,22 @@ const { pathname } = Astro.url;
       </div>
 
       <!-- Mobile Logged Out Links -->
-      <div id="mobileLoggedOutLinks" class="flex flex-col gap-1">
-        <a href="/features" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Features</a>
-        <a href="/playground" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Live Simulator</a>
-        <a href="/integrations" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Supported Portals</a>
-        <a href="/pricing" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Pricing</a>
-        <a href="/about" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">How It Works</a>
-        <a href="/extension" class="px-3.5 py-2 text-xs font-semibold text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">Browser Extension</a>
+      <div id="mobileLoggedOutLinks" class="flex flex-col gap-1.5">
+        <a href="/features" class="nav-btn-link px-3.5 py-2 text-xs font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors border border-transparent">Features</a>
+        <a href="/playground" class="nav-btn-link px-3.5 py-2 text-xs font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors border border-transparent">Live Simulator</a>
+        <a href="/integrations" class="nav-btn-link px-3.5 py-2 text-xs font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors border border-transparent">Supported Portals</a>
+        <a href="/pricing" class="nav-btn-link px-3.5 py-2 text-xs font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors border border-transparent">Pricing</a>
+        <a href="/about" class="nav-btn-link px-3.5 py-2 text-xs font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors border border-transparent">How It Works</a>
+        <a href="/extension" class="nav-btn-link px-3.5 py-2 text-xs font-semibold text-blue-600 hover:bg-blue-50 rounded-lg transition-colors border border-transparent">Browser Extension</a>
       </div>
 
       <!-- Mobile Logged In Links -->
-      <div id="mobileLoggedInLinks" class="hidden flex-col gap-1">
-        <a href="/dashboard" class="px-3.5 py-2 text-xs font-semibold text-slate-800 hover:bg-slate-50 rounded-lg transition-colors">Dashboard</a>
-        <a href="/memory" class="px-3.5 py-2 text-xs font-semibold text-blue-600 bg-blue-50 rounded-lg transition-colors">Memory Vault</a>
-        <a href="/extract" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">AI Extraction</a>
-        <a href="/playground" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Live Simulator</a>
-        <a href="/extension" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Extension Setup</a>
+      <div id="mobileLoggedInLinks" class="hidden flex-col gap-1.5">
+        <a href="/dashboard" class="nav-btn-link px-3.5 py-2 text-xs font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors border border-transparent">Dashboard</a>
+        <a href="/memory" class="nav-btn-link px-3.5 py-2 text-xs font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors border border-transparent">Memory Vault</a>
+        <a href="/extract" class="nav-btn-link px-3.5 py-2 text-xs font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors border border-transparent">AI Extraction</a>
+        <a href="/playground" class="nav-btn-link px-3.5 py-2 text-xs font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors border border-transparent">Live Simulator</a>
+        <a href="/extension" class="nav-btn-link px-3.5 py-2 text-xs font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors border border-transparent">Extension Setup</a>
       </div>
     </div>
 
@@ -342,9 +348,36 @@ const { pathname } = Astro.url;
         }
       }
 
+      function syncActiveNavRoute() {
+        try {
+          const currentPath = (window.location.pathname || "/").replace(/\/$/, "") || "/";
+          const allLinks = document.querySelectorAll("#authNavMenu a, #publicNavMenu a, #mobileLoggedInLinks a, #mobileLoggedOutLinks a");
+          
+          allLinks.forEach(link => {
+            const rawHref = link.getAttribute("href") || "";
+            const cleanHref = rawHref.replace(/\/$/, "") || "/";
+            const isMatch = (cleanHref === currentPath) || (cleanHref !== "/" && currentPath.startsWith(cleanHref));
+            
+            if (isMatch) {
+              link.classList.add("nav-btn-active");
+              link.classList.remove("nav-btn-inactive");
+              link.setAttribute("aria-current", "page");
+            } else {
+              link.classList.remove("nav-btn-active");
+              link.classList.add("nav-btn-inactive");
+              link.removeAttribute("aria-current");
+            }
+          });
+        } catch(e) {}
+      }
+
       syncHeader();
+      syncActiveNavRoute();
       window.addEventListener("storage", syncHeader);
-      window.addEventListener("magic-fill-auth-change", syncHeader);
+      window.addEventListener("magic-fill-auth-change", () => {
+        syncHeader();
+        syncActiveNavRoute();
+      });
 
       // Sign out handlers
       function handleSignOut() {

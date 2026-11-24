@@ -219,24 +219,99 @@ strong, b {
   display: flex !important;
 }
 
-.nav-link,
+/* ==========================================================================
+   Header Navigation Button Pills — Prominent Fill & Active Highlighting
+   ========================================================================== */
+#publicNavMenu,
+#authNavMenu {
+  background-color: #F1F5F9 !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 12px !important;
+  padding: 5px !important;
+  gap: 6px !important;
+}
+
+/* Inactive Navigation Buttons */
+.nav-btn-link,
 .navbar-nav a {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  padding: 6px 13px !important;
+  border-radius: 8px !important;
+  font-size: 0.8125rem !important; /* 13px clean typography */
+  line-height: 1.25 !important;
+  font-weight: 600 !important;
+  color: #334155 !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.nav-btn-link svg,
+.navbar-nav a svg {
   color: #475569 !important;
-  font-size: 0.9375rem !important;
-  font-weight: 500 !important;
-  transition: color 0.15s ease, background-color 0.15s ease;
+  stroke: #475569 !important;
+  transition: stroke 0.15s ease, color 0.15s ease;
 }
 
-.nav-link:hover,
-.navbar-nav a:hover {
-  color: #0F172A !important;
-}
-
-.nav-link.active,
-.nav-link-active {
-  color: #2563EB !important;
+/* Inactive Hover State: Distinct Soft Blue Pill Fill */
+.nav-btn-link:not(.nav-btn-active):hover,
+.navbar-nav a:not(.nav-btn-active):hover {
   background-color: #EFF6FF !important;
-  border: 1px solid #DBEAFE !important;
+  color: #1D4ED8 !important;
+  border: 1px solid #BFDBFE !important;
+  transform: translateY(-1px);
+}
+
+.nav-btn-link:not(.nav-btn-active):hover svg,
+.navbar-nav a:not(.nav-btn-active):hover svg {
+  color: #1D4ED8 !important;
+  stroke: #1D4ED8 !important;
+}
+
+/* Active Navigation Button: Vibrant Solid Royal Blue Fill */
+.nav-btn-active,
+.navbar-nav a.nav-btn-active,
+.navbar-nav a[aria-current="page"] {
+  background-color: #2563EB !important; /* Prominent solid button fill */
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  font-weight: 700 !important;
+  border: 1px solid #1D4ED8 !important;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.28) !important;
+}
+
+.nav-btn-active *,
+.navbar-nav a.nav-btn-active *,
+.navbar-nav a[aria-current="page"] * {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
+.nav-btn-active svg,
+.navbar-nav a.nav-btn-active svg,
+.navbar-nav a[aria-current="page"] svg {
+  color: #FFFFFF !important;
+  stroke: #FFFFFF !important;
+}
+
+.nav-btn-active svg *,
+.navbar-nav a.nav-btn-active svg *,
+.navbar-nav a[aria-current="page"] svg * {
+  stroke: #FFFFFF !important;
+}
+
+.nav-btn-active:hover,
+.navbar-nav a.nav-btn-active:hover {
+  background-color: #1D4ED8 !important;
+  border-color: #1E40AF !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35) !important;
+}
+
+.nav-btn-link:active,
+.navbar-nav a:active {
+  transform: scale(0.97) !important;
 }
 
 /* ==========================================================================
