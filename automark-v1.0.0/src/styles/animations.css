@@ -243,19 +243,19 @@
   100% { transform: translateY(-8px); }
 }
 
-/* 4. Autofill Field Feedback (Subtle Lime & Rose) */
+/* 4. Autofill Field Feedback (Tactile Royal Blue) */
 @keyframes fieldFillPulse {
   0% {
-    box-shadow: 0 0 0 0 rgba(183, 243, 74, 0.6);
-    border-color: #B7F34A;
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.6);
+    border-color: #2563EB;
   }
   50% {
-    box-shadow: 0 0 0 4px rgba(183, 243, 74, 0.2);
-    border-color: #B7F34A;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.25);
+    border-color: #2563EB;
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(183, 243, 74, 0);
-    border-color: #B7F34A;
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+    border-color: #2563EB;
   }
 }
 .autofill-active {
@@ -268,8 +268,8 @@
 }
 .card-interactive:hover {
   transform: translateY(-2px);
-  border-color: #3A423C !important;
-  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.5) !important;
+  border-color: #CBD5E1 !important;
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.08) !important;
 }
 .card-interactive:active {
   transform: translateY(0);
@@ -281,7 +281,7 @@
   100% { background-position: 200% 0; }
 }
 .skeleton-shimmer {
-  background: linear-gradient(90deg, #141715 25%, #1D221F 50%, #141715 75%);
+  background: linear-gradient(90deg, #F1F5F9 25%, #E2E8F0 50%, #F1F5F9 75%);
   background-size: 200% 100%;
   animation: mfSkeletonShimmer 1.8s ease-in-out infinite;
   border-radius: 8px;
@@ -346,13 +346,13 @@
 
 /* Reading Scroll Progress Bar */
 #scrollProgressBar {
-  background: linear-gradient(90deg, #B7F34A, #C8FA6A);
-  box-shadow: 0 0 12px rgba(183, 243, 74, 0.6);
+  background: linear-gradient(90deg, #2563EB, #3B82F6);
+  box-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
 }
 html[data-theme="light"] #scrollProgressBar,
 html.light-theme #scrollProgressBar {
-  background: linear-gradient(90deg, #4D7C0F, #65A30D);
-  box-shadow: 0 0 8px rgba(77, 124, 15, 0.4);
+  background: linear-gradient(90deg, #2563EB, #3B82F6);
+  box-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
 }
 
 /* Spatial Background Clean Reset (Dot patterns removed) */

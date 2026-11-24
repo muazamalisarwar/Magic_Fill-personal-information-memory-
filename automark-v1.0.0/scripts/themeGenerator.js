@@ -119,19 +119,25 @@ function generateThemeCSS() {
         cssLines.push(`  --font-${toKebab(key)}: ${fontValue};`);
       });
 
-    // Add font sizes
+    // Add font sizes - Clean, attractive, balanced SaaS typography scale
     cssLines.push("", "  /* === Font Sizes === */");
     const baseSize = Number(themeConfig.fonts.font_size?.base || 16);
-    const scale = Number(themeConfig.fonts.font_size?.scale || 1.25);
-
     cssLines.push(`  --text-base: ${baseSize}px;`);
-    cssLines.push(`  --text-base-sm: ${baseSize * 0.8}px;`);
+    cssLines.push(`  --text-base-sm: 15px;`);
 
-    let currentSize = scale;
+    // Modular heading scale (H1: 40px/32px, H2: 32px/26px, H3: 24px/22px, H4: 20px/18px, H5: 18px/17px, H6: 16px/16px)
+    const headingSizes = {
+      1: { lg: "2.5rem", sm: "2rem" },
+      2: { lg: "2rem", sm: "1.625rem" },
+      3: { lg: "1.5rem", sm: "1.375rem" },
+      4: { lg: "1.25rem", sm: "1.125rem" },
+      5: { lg: "1.125rem", sm: "1.0625rem" },
+      6: { lg: "1rem", sm: "1rem" },
+    };
+
     for (let i = 6; i >= 1; i--) {
-      cssLines.push(`  --text-h${i}: ${currentSize}rem;`);
-      cssLines.push(`  --text-h${i}-sm: ${currentSize * 0.9}rem;`);
-      currentSize *= scale;
+      cssLines.push(`  --text-h${i}: ${headingSizes[i].lg};`);
+      cssLines.push(`  --text-h${i}-sm: ${headingSizes[i].sm};`);
     }
 
     cssLines.push("}");

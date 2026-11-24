@@ -1,46 +1,48 @@
 /* ==========================================================================
-   Magic Fill — Premium Browser Extension Interface (Clear & Big Redesign)
-   Design System: Midnight Black (#0B0D0C) & Signature Lime Green (#B7F34A)
-   Spacious 430px canvas with high contrast, large typography, and zero clutter
+   Magic Fill — Premium Browser Extension Interface (Clean Light Redesign)
+   Design System: Pure White Canvas (#FFFFFF) & Royal Blue Accent (#2563EB)
+   Spacious 430px canvas with high contrast, crisp typography, and zero clutter
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
    1. Design Tokens & Color Variables
    -------------------------------------------------------------------------- */
 :root,
+body,
+body.light-theme,
 body.dark-theme {
-  --bg-canvas: #0B0D0C;
-  --bg-card: #141715;
-  --bg-card-hover: #1c211e;
-  --bg-subcard: #191D1A;
-  --bg-input: #111412;
+  --bg-canvas: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F8FAFC;
+  --bg-subcard: #F8FAFC;
+  --bg-input: #FFFFFF;
 
-  --border-subtle: #242A26;
-  --border-medium: #353D37;
-  --border-focus: #B7F34A;
+  --border-subtle: #E2E8F0;
+  --border-medium: #CBD5E1;
+  --border-focus: #2563EB;
 
-  --text-primary: #FFFFFF;
-  --text-secondary: #E2E8E4;
-  --text-muted: #9BA39B;
-  --text-faint: #636D63;
+  --text-primary: #0F172A;
+  --text-secondary: #334155;
+  --text-muted: #64748B;
+  --text-faint: #94A3B8;
 
-  --primary-accent: #B7F34A;
-  --primary-btn: #B7F34A;
-  --primary-btn-hover: #c9f66d;
-  --primary-btn-text: #0B0D0C;
-  --primary-glow: rgba(183, 243, 74, 0.28);
+  --primary-accent: #2563EB;
+  --primary-btn: #2563EB;
+  --primary-btn-hover: #1D4ED8;
+  --primary-btn-text: #FFFFFF;
+  --primary-glow: rgba(37, 99, 235, 0.16);
 
-  --accent-emerald: #B7F34A;
-  --accent-emerald-bg: rgba(183, 243, 74, 0.12);
-  --accent-emerald-border: rgba(183, 243, 74, 0.28);
+  --accent-emerald: #16A34A;
+  --accent-emerald-bg: #F0FDF4;
+  --accent-emerald-border: #BBF7D0;
 
-  --accent-amber: #f59e0b;
-  --accent-amber-bg: rgba(245, 158, 11, 0.12);
-  --accent-amber-border: rgba(245, 158, 11, 0.25);
+  --accent-amber: #D97706;
+  --accent-amber-bg: #FFFBEB;
+  --accent-amber-border: #FDE68A;
 
-  --accent-rose: #f43f5e;
-  --accent-rose-bg: rgba(244, 63, 94, 0.12);
-  --accent-rose-border: rgba(244, 63, 94, 0.28);
+  --accent-rose: #E11D48;
+  --accent-rose-bg: #FFF1F2;
+  --accent-rose-border: #FECDD3;
 
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
@@ -51,9 +53,9 @@ body.dark-theme {
   --radius-lg: 18px;
   --radius-pill: 9999px;
 
-  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.45);
-  --shadow-hero: 0 4px 22px rgba(183, 243, 74, 0.3);
-  --shadow-hero-hover: 0 6px 30px rgba(183, 243, 74, 0.45);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.05), 0 8px 16px rgba(0, 0, 0, 0.03);
+  --shadow-hero: 0 4px 14px rgba(37, 99, 235, 0.22);
+  --shadow-hero-hover: 0 6px 20px rgba(37, 99, 235, 0.32);
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -75,11 +77,11 @@ body.light-theme {
   --text-muted: #58665E;
   --text-faint: #87968E;
 
-  --primary-accent: #65A30D;
-  --primary-btn: #B7F34A;
-  --primary-btn-hover: #a8ee2e;
-  --primary-btn-text: #0B0D0C;
-  --primary-glow: rgba(101, 163, 13, 0.2);
+  --primary-accent: #2563EB;
+  --primary-btn: #2563EB;
+  --primary-btn-hover: #1D4ED8;
+  --primary-btn-text: #FFFFFF;
+  --primary-glow: rgba(37, 99, 235, 0.2);
 
   --accent-emerald: #16A34A;
   --accent-emerald-bg: rgba(22, 163, 74, 0.1);
@@ -497,7 +499,7 @@ body.light-theme .logo-dark { display: none; }
 
 .btn-connect-code:hover {
   background: var(--primary-btn);
-  color: #0B0D0C;
+  color: #FFFFFF;
   border-color: var(--primary-btn);
   box-shadow: var(--shadow-hero);
 }
@@ -751,9 +753,9 @@ body.light-theme .logo-dark { display: none; }
   font-weight: 800;
   padding: 3px 8px;
   border-radius: var(--radius-xs);
-  background: rgba(11, 13, 12, 0.16);
-  color: #0B0D0C;
-  border: 1px solid rgba(11, 13, 12, 0.22);
+  background: #EFF6FF;
+  color: #1E3A8A;
+  border: 1px solid #BFDBFE;
   font-family: var(--font-mono);
 }
 
@@ -1023,7 +1025,7 @@ body.light-theme .logo-dark { display: none; }
 
 .toggle-switch input:checked + .toggle-slider::before {
   transform: translateX(20px);
-  background-color: #0B0D0C;
+  background-color: #FFFFFF;
 }
 
 /* --------------------------------------------------------------------------

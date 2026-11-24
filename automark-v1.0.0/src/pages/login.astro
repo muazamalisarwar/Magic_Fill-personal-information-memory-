@@ -8,19 +8,19 @@ import Logo from "@/components/Logo.astro";
   meta_title="Sign In to Magic Fill Personal Memory Vault"
   description="Sign in to your private personal memory vault and access intelligent browser form autofill."
 >
-  <section class="min-h-screen pt-28 sm:pt-36 pb-20 px-4 flex flex-col items-center justify-center relative overflow-hidden bg-[#0B0D0C]">
+  <section class="min-h-screen pt-28 sm:pt-36 pb-20 px-4 flex flex-col items-center justify-center relative overflow-hidden bg-white">
     <div class="w-full max-w-md mx-auto relative z-10">
       <!-- Card Container -->
-      <div data-card-spotlight data-tilt class="relative bg-[#191D1A] border border-[#2B312C] rounded-2xl p-7 sm:p-9 shadow-xl transition-all duration-200">
+      <div data-card-spotlight data-tilt class="relative bg-white border border-slate-200 rounded-2xl p-7 sm:p-9 shadow-xl transition-all duration-200">
         <!-- Brand Header with Official Magic Fill Logo -->
         <div class="flex flex-col items-center justify-center text-center mb-7">
-          <div class="p-3 rounded-xl bg-[#141715] border border-[#2B312C] mb-4 inline-flex items-center justify-center">
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 mb-4 inline-flex items-center justify-center">
             <Logo class="h-9 sm:h-10 w-auto" />
           </div>
-          <h1 class="text-2xl sm:text-3xl font-extrabold text-[#FFFFFF] mb-1.5 font-display tracking-tight">
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-1.5 font-display tracking-tight">
             Welcome Back
           </h1>
-          <p class="text-xs sm:text-sm text-[#A1AAA1] font-body max-w-xs leading-relaxed">
+          <p class="text-xs sm:text-sm text-slate-600 font-body max-w-xs leading-relaxed">
             Sign in to access your personal memory vault &amp; autofill copilot
           </p>
         </div>
@@ -31,7 +31,7 @@ import Logo from "@/components/Logo.astro";
             <button
               type="button"
               id="btnGoogleAuthFallback"
-              class="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl border border-[#2B312C] bg-[#141715] hover:bg-[#1E231F] text-[#FFFFFF] text-xs font-semibold transition cursor-pointer shadow-sm active:scale-[0.99]"
+              class="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-[#1E231F] text-slate-900 text-xs font-semibold transition cursor-pointer shadow-sm active:scale-[0.99]"
             >
               <svg width="18" height="18" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -46,28 +46,28 @@ import Logo from "@/components/Logo.astro";
 
         <!-- Divider -->
         <div class="flex items-center gap-3 my-5">
-          <span class="h-px bg-[#2B312C] flex-1"></span>
-          <span class="text-[11px] font-semibold text-[#5E665E] uppercase tracking-wider">or sign in with email</span>
-          <span class="h-px bg-[#2B312C] flex-1"></span>
+          <span class="h-px bg-slate-200 flex-1"></span>
+          <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">or sign in with email</span>
+          <span class="h-px bg-slate-200 flex-1"></span>
         </div>
 
         <!-- Sign In Form -->
         <form id="standaloneLoginForm" class="space-y-4" onsubmit="return false;">
           <div>
-            <label for="pageLoginEmail" class="block text-xs font-semibold text-[#A1AAA1] mb-1.5">Email Address</label>
+            <label for="pageLoginEmail" class="block text-xs font-semibold text-slate-600 mb-1.5">Email Address</label>
             <input
               type="email"
               id="pageLoginEmail"
               placeholder="you@domain.com"
               required
               autocomplete="email"
-              class="w-full bg-[#141715] border border-[#2B312C] rounded-xl px-4 py-2.5 text-[#FFFFFF] placeholder:text-[#5E665E] text-xs focus:border-[#B7F34A] focus:ring-1 focus:ring-[#B7F34A]/30 focus:outline-none transition"
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 placeholder:text-slate-400 text-xs focus:border-blue-500 focus:ring-1 focus:ring-blue-100 focus:outline-none transition"
             />
           </div>
 
           <div>
             <div class="flex items-center justify-between mb-1.5">
-              <label for="pageLoginPassword" class="block text-xs font-semibold text-[#A1AAA1]">Password</label>
+              <label for="pageLoginPassword" class="block text-xs font-semibold text-slate-600">Password</label>
             </div>
             <input
               type="password"
@@ -75,7 +75,7 @@ import Logo from "@/components/Logo.astro";
               placeholder="Enter your password"
               required
               autocomplete="current-password"
-              class="w-full bg-[#141715] border border-[#2B312C] rounded-xl px-4 py-2.5 text-[#FFFFFF] placeholder:text-[#5E665E] text-xs focus:border-[#B7F34A] focus:ring-1 focus:ring-[#B7F34A]/30 focus:outline-none transition"
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 placeholder:text-slate-400 text-xs focus:border-blue-500 focus:ring-1 focus:ring-blue-100 focus:outline-none transition"
             />
           </div>
 
@@ -85,17 +85,17 @@ import Logo from "@/components/Logo.astro";
           <button
             type="submit"
             id="pageLoginSubmitBtn"
-            class="w-full py-3 px-4 bg-[#B7F34A] hover:bg-[#C8FA6A] text-[#0B0D0C] text-xs font-bold rounded-xl text-center cursor-pointer transition hover:-translate-y-0.5 active:translate-y-0"
+            class="w-full py-3 px-4 bg-blue-600 hover:bg-[#C8FA6A] text-white text-xs font-bold rounded-xl text-center cursor-pointer transition hover:-translate-y-0.5 active:translate-y-0"
           >
             Sign In to Dashboard
           </button>
         </form>
 
         <!-- Redirect to Registration -->
-        <div class="mt-6 pt-5 border-t border-[#2B312C] text-center">
-          <p class="text-xs text-[#A1AAA1]">
+        <div class="mt-6 pt-5 border-t border-slate-200 text-center">
+          <p class="text-xs text-slate-600">
             New to Magic Fill?{" "}
-            <a href="/register" class="text-[#B7F34A] font-semibold hover:underline">
+            <a href="/register" class="text-blue-600 font-semibold hover:underline">
               Create a free account
             </a>
           </p>

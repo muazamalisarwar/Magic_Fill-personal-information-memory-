@@ -40,8 +40,8 @@ const { title, meta_title, description, image, noindex, canonical } =
     }
     <link rel="shortcut icon" href={config.site.favicon} />
     <meta name="theme-name" content="magic-fill" />
-    <meta name="theme-color" content="#0B0D0C" />
-    <meta name="msapplication-TileColor" content="#0B0D0C" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
     
     <!-- Google Fonts: Plus Jakarta Sans (Display) & Inter (Body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -54,13 +54,10 @@ const { title, meta_title, description, image, noindex, canonical } =
     <script is:inline>
       (function() {
         try {
-          const savedTheme = localStorage.getItem("magic_fill_theme") || "dark";
-          document.documentElement.setAttribute("data-theme", savedTheme);
-          if (savedTheme === "light") {
-            document.documentElement.classList.add("light-theme");
-          } else {
-            document.documentElement.classList.remove("light-theme");
-          }
+          document.documentElement.setAttribute("data-theme", "light");
+          document.documentElement.classList.add("light-theme");
+          document.documentElement.classList.remove("dark-theme");
+          localStorage.setItem("magic_fill_theme", "light");
         } catch(e) {}
       })();
     </script>
@@ -184,7 +181,7 @@ const { title, meta_title, description, image, noindex, canonical } =
     <button
       type="button"
       id="scrollToTopBtn"
-      class="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-40 size-11 rounded-full flex items-center justify-center bg-[#141715]/90 dark:bg-[#141715]/90 text-white border border-[#2B312C] shadow-xl backdrop-blur-md opacity-0 translate-y-4 pointer-events-none transition-all duration-300 hover:border-[#B7F34A]/50 hover:scale-105 active:scale-95 cursor-pointer group"
+      class="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-40 size-11 rounded-full flex items-center justify-center bg-white text-slate-800 border border-slate-200 shadow-md backdrop-blur-md opacity-0 translate-y-4 pointer-events-none transition-all duration-300 hover:border-blue-400 hover:text-blue-600 hover:scale-105 active:scale-95 cursor-pointer group"
       aria-label="Scroll back to top"
       title="Scroll to top"
     >
@@ -196,7 +193,7 @@ const { title, meta_title, description, image, noindex, canonical } =
           fill="none"
           stroke="currentColor"
           stroke-width="2.5"
-          class="text-white/10 dark:text-white/10"
+          class="text-slate-200"
         />
         <circle
           id="scrollRingProgress"
@@ -208,11 +205,11 @@ const { title, meta_title, description, image, noindex, canonical } =
           stroke-width="2.5"
           stroke-dasharray="113.097"
           stroke-dashoffset="113.097"
-          class="text-[#B7F34A] transition-all duration-75"
+          class="text-blue-600 transition-all duration-75"
         />
       </svg>
       <svg
-        class="size-4 text-white group-hover:-translate-y-0.5 transition-transform duration-200"
+        class="size-4 text-slate-700 group-hover:text-blue-600 group-hover:-translate-y-0.5 transition-transform duration-200"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"

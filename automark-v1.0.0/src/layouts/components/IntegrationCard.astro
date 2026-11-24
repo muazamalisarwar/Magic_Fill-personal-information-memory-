@@ -12,10 +12,10 @@ const { logo, title, category = "Universal Portal" } = Astro.props;
 
 <div
   data-card-spotlight
-  class="reveal-on-scroll bg-white dark:bg-[#191D1A] border border-slate-200 dark:border-[#2B312C] rounded-xl p-5 shadow-sm hover:border-[#2F6307]/50 dark:hover:border-[#B7F34A]/50 hover:shadow-[0_8px_24px_-4px_rgba(47,99,7,0.08)] dark:hover:shadow-[0_8px_24px_-4px_rgba(183,243,74,0.12)] transition-all duration-200 flex items-center justify-between group cursor-pointer"
+  class="reveal-on-scroll bg-white dark:bg-white border border-slate-200 dark:border-slate-200 rounded-xl p-5 shadow-sm hover:border-[#2F6307]/50 dark:hover:border-blue-500/50 hover:shadow-[0_8px_24px_-4px_rgba(47,99,7,0.08)] dark:hover:shadow-[0_8px_24px_-4px_rgba(183,243,74,0.12)] transition-all duration-200 flex items-center justify-between group cursor-pointer"
 >
   <div class="flex items-center gap-3.5 min-w-0">
-    <div class="w-10 h-10 rounded-lg border border-slate-200 dark:border-[#2B312C] bg-slate-50 dark:bg-[#141715] flex items-center justify-center p-2 shrink-0">
+    <div class="w-10 h-10 rounded-lg border border-slate-200 dark:border-slate-200 bg-slate-50 dark:bg-slate-50 flex items-center justify-center p-2 shrink-0">
       {logo ? (
         <img
           src={logo}
@@ -25,19 +25,19 @@ const { logo, title, category = "Universal Portal" } = Astro.props;
           height="24"
         />
       ) : (
-        <div class="w-5 h-5 rounded bg-[#B7F34A]/10 flex items-center justify-center text-[#B7F34A] font-bold text-xs font-mono">
+        <div class="w-5 h-5 rounded bg-blue-600/10 flex items-center justify-center text-blue-600 font-bold text-xs font-mono">
           {title.slice(0, 2).toUpperCase()}
         </div>
       )}
     </div>
     <div class="min-w-0">
-      <h3 class="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-[#2F6307] dark:group-hover:text-[#B7F34A] transition-colors truncate">
+      <h3 class="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-[#2F6307] dark:group-hover:text-blue-600 transition-colors truncate">
         {title}
       </h3>
-      <span class="text-xs text-slate-500 dark:text-[#A1AAA1] block truncate">
+      <span class="text-xs text-slate-500 dark:text-slate-600 block truncate">
         {category}
       </span>
     </div>
   </div>
-  <span class="size-1.5 rounded-full bg-[#B7F34A] shadow-[0_0_6px_rgba(183,243,74,0.6)] shrink-0 ml-2" title="Compatible"></span>
+  <span class="size-1.5 rounded-full bg-blue-600 shadow-[0_0_6px_rgba(183,243,74,0.6)] shrink-0 ml-2" title="Compatible"></span>
 </div>

@@ -22,7 +22,7 @@ const { pathname } = Astro.url;
 
 <header
   id="mainHeader"
-  class={`header z-50 w-full transition-all duration-200 ${settings.sticky_header ? "fixed top-0" : ""} bg-[#0B0D0C]/90 backdrop-blur-md border-b border-[#2B312C]`}
+  class={`header z-50 w-full transition-all duration-200 ${settings.sticky_header ? "fixed top-0" : ""} bg-white/95 backdrop-blur-md border-b border-slate-200`}
 >
   <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-30 flex items-center justify-between h-[68px]">
     <!-- Brand Logo -->
@@ -33,7 +33,7 @@ const { pathname } = Astro.url;
     <!-- 1. PUBLIC MARKETING MENU (Visible When Logged Out) -->
     <ul
       id="publicNavMenu"
-      class="navbar-nav hidden lg:flex items-center gap-1 p-1 rounded-xl bg-[#141715] border border-[#2B312C]"
+      class="navbar-nav hidden lg:flex items-center gap-1 p-1 rounded-xl bg-slate-50 border border-slate-200"
     >
       {
         main.map((item) => {
@@ -44,8 +44,8 @@ const { pathname } = Astro.url;
                 href={item.url}
                 class={`text-[13.5px] font-medium px-3.5 py-1.5 rounded-lg transition-all duration-150 cursor-pointer block ${
                   isActive
-                    ? "bg-[#191D1A] text-[#B7F34A] font-semibold border border-[#2B312C]"
-                    : "text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#191D1A]/50"
+                    ? "bg-white text-blue-600 font-semibold shadow-xs border border-slate-200"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
                 }`}
               >
                 {item.name}
@@ -59,15 +59,15 @@ const { pathname } = Astro.url;
     <!-- 2. AUTHENTICATED PLATFORM MENU (Visible When Logged In) -->
     <ul
       id="authNavMenu"
-      class="navbar-nav hidden items-center gap-1 p-1 rounded-xl bg-[#141715] border border-[#2B312C]"
+      class="navbar-nav hidden items-center gap-1 p-1 rounded-xl bg-slate-50 border border-slate-200"
     >
       <li class="nav-item">
         <a
           href="/dashboard"
           class={`text-[13px] font-medium px-3 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-2 cursor-pointer ${
             pathname === "/dashboard" || pathname === "/dashboard/"
-              ? "bg-[#191D1A] text-[#B7F34A] font-semibold border border-[#2B312C]"
-              : "text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#191D1A]/50"
+              ? "bg-white text-blue-600 font-semibold shadow-xs border border-slate-200"
+              : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
           }`}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
@@ -80,8 +80,8 @@ const { pathname } = Astro.url;
           href="/memory"
           class={`text-[13px] font-medium px-3 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-2 cursor-pointer ${
             pathname === "/memory" || pathname === "/memory/"
-              ? "bg-[#191D1A] text-[#B7F34A] font-semibold border border-[#2B312C]"
-              : "text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#191D1A]/50"
+              ? "bg-white text-blue-600 font-semibold shadow-xs border border-slate-200"
+              : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
           }`}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
@@ -94,8 +94,8 @@ const { pathname } = Astro.url;
           href="/extract"
           class={`text-[13px] font-medium px-3 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-2 cursor-pointer ${
             pathname === "/extract" || pathname === "/extract/"
-              ? "bg-[#191D1A] text-[#B7F34A] font-semibold border border-[#2B312C]"
-              : "text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#191D1A]/50"
+              ? "bg-white text-blue-600 font-semibold shadow-xs border border-slate-200"
+              : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
           }`}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
@@ -108,8 +108,8 @@ const { pathname } = Astro.url;
           href="/playground"
           class={`text-[13px] font-medium px-3 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-2 cursor-pointer ${
             pathname === "/playground" || pathname === "/playground/"
-              ? "bg-[#191D1A] text-[#B7F34A] font-semibold border border-[#2B312C]"
-              : "text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#191D1A]/50"
+              ? "bg-white text-blue-600 font-semibold shadow-xs border border-slate-200"
+              : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
           }`}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
@@ -122,8 +122,8 @@ const { pathname } = Astro.url;
           href="/extension"
           class={`text-[13px] font-medium px-3 py-1.5 rounded-lg transition-all duration-150 flex items-center gap-2 cursor-pointer ${
             pathname === "/extension" || pathname === "/extension/"
-              ? "bg-[#191D1A] text-[#B7F34A] font-semibold border border-[#2B312C]"
-              : "text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#191D1A]/50"
+              ? "bg-white text-blue-600 font-semibold shadow-xs border border-slate-200"
+              : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
           }`}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
@@ -132,62 +132,38 @@ const { pathname } = Astro.url;
       </li>
     </ul>
 
-    <!-- 3. RIGHT CONTROLS: Extension Quick Link, Universal Theme Switcher & Auth Controls -->
-    <div class="flex items-center gap-2 sm:gap-2.5 shrink-0">
-      <!-- Universal Theme Toggle Button (Always visible on Desktop & Tablet) -->
-      <button
-        type="button"
-        id="webThemeToggleBtn"
-        class="size-9 rounded-lg flex items-center justify-center text-[#A1AAA1] hover:text-[#FFFFFF] bg-[#141715] hover:bg-[#191D1A] border border-[#2B312C] hover:border-[#3A423C] transition-all duration-200 cursor-pointer shadow-xs group"
-        title="Toggle Theme (Light / Dark)"
-        aria-label="Toggle Theme"
-      >
-        <svg id="webIconSun" class="size-4 transition-transform duration-300 group-hover:rotate-45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="5"></circle>
-          <line x1="12" y1="1" x2="12" y2="3"></line>
-          <line x1="12" y1="21" x2="12" y2="23"></line>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-          <line x1="1" y1="12" x2="3" y2="12"></line>
-          <line x1="21" y1="12" x2="23" y2="12"></line>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-        </svg>
-        <svg id="webIconMoon" class="size-4 hidden transition-transform duration-300 group-hover:-rotate-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-        </svg>
-      </button>
-
-      <!-- Chrome Extension Quick Link (Live Product Style) -->
+    <!-- 3. RIGHT CONTROLS: Clean, uncluttered action buttons -->
+    <div class="flex items-center gap-2.5 shrink-0">
+      <!-- Chrome Extension Quick Link -->
       <a
         href="/extension"
-        class="hidden sm:inline-flex items-center gap-2 h-9 px-3.5 rounded-xl text-xs font-semibold text-slate-800 dark:text-white bg-slate-100 dark:bg-[#141715] hover:bg-slate-200 dark:hover:bg-[#191D1A] border border-slate-300 dark:border-[#2B312C] hover:border-[#2F6307] dark:hover:border-[#B7F34A]/40 transition-all duration-150 shadow-xs group"
+        class="hidden sm:inline-flex items-center gap-2 h-9 px-3.5 rounded-lg text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 transition-all shadow-xs"
         title="Get the Magic Fill Chrome Extension"
       >
         <svg class="size-4 shrink-0" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="10" stroke="#3b82f6" stroke-width="1.8" fill="none"/>
-          <circle cx="12" cy="12" r="4" fill="#3b82f6"/>
+          <circle cx="12" cy="12" r="10" stroke="#2563eb" stroke-width="1.8" fill="none"/>
+          <circle cx="12" cy="12" r="4" fill="#2563eb"/>
           <path d="M12 2a10 10 0 0 1 8.66 5l-4.33 7.5" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round"/>
           <path d="M20.66 7a10 10 0 0 1-5 13.66l-4.33-7.5" stroke="#eab308" stroke-width="1.8" stroke-linecap="round"/>
           <path d="M3.34 7a10 10 0 0 0 8.66 13.66l4.33-7.5" stroke="#22c55e" stroke-width="1.8" stroke-linecap="round"/>
         </svg>
         <span>Extension</span>
-        <span class="size-1.5 rounded-full bg-[#2F6307] dark:bg-[#B7F34A] animate-pulse"></span>
+        <span class="size-1.5 rounded-full bg-blue-600 animate-pulse"></span>
       </a>
 
       <!-- Logged Out Actions -->
-      <div id="headerLoggedOutArea" class="flex items-center gap-2 sm:gap-2.5">
+      <div id="headerLoggedOutArea" class="flex items-center gap-2">
         <a
           href="/login"
           id="btnHeaderSignIn"
-          class="h-9 px-3.5 text-xs font-semibold rounded-lg text-[#FFFFFF] hover:bg-[#141715] border border-[#2B312C] hover:border-[#3A423C] transition-all duration-150 flex items-center justify-center cursor-pointer"
+          class="h-9 px-3.5 text-xs font-semibold rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-50 border border-slate-200 transition-all flex items-center justify-center cursor-pointer"
         >
           Sign In
         </a>
         <a
           href="/register"
           id="btnHeaderGetStarted"
-          class="h-9 px-4 text-xs font-bold rounded-lg bg-[#B7F34A] hover:bg-[#C8FA6A] text-[#0B0D0C] transition-all duration-150 flex items-center gap-1.5 cursor-pointer shadow-sm"
+          class="h-9 px-4 text-xs font-bold rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
         >
           <span>Get Started</span>
           <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -198,17 +174,17 @@ const { pathname } = Astro.url;
       <div id="headerLoggedInArea" class="hidden items-center gap-2">
         <a
           href="/dashboard"
-          class="h-9 px-3.5 rounded-lg flex items-center gap-2 text-xs font-semibold bg-[#141715] hover:bg-[#191D1A] text-[#FFFFFF] border border-[#2B312C] hover:border-[#3A423C] transition-all duration-150"
+          class="h-9 px-3.5 rounded-lg flex items-center gap-2 text-xs font-semibold bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 shadow-xs transition-all"
           title="Go to Dashboard"
         >
-          <span class="size-2 rounded-full bg-[#B7F34A] animate-pulse"></span>
+          <span class="size-2 rounded-full bg-blue-600 animate-pulse"></span>
           <span id="headerUserDisplayName" class="truncate max-w-28 font-semibold">Account</span>
         </a>
 
         <button
           type="button"
           id="btnHeaderSignOut"
-          class="h-9 px-3 rounded-lg text-xs font-medium text-[#A1AAA1] hover:text-rose-400 hover:bg-rose-950/20 border border-transparent hover:border-rose-900/40 transition-colors cursor-pointer"
+          class="h-9 px-3 rounded-lg text-xs font-medium text-slate-500 hover:text-rose-600 hover:bg-rose-50 border border-transparent hover:border-rose-200 transition-colors cursor-pointer"
           title="Sign Out"
         >
           Sign Out
@@ -219,7 +195,7 @@ const { pathname } = Astro.url;
       <button
         type="button"
         id="mobileNavToggleBtn"
-        class="lg:hidden size-9 rounded-lg flex items-center justify-center text-[#A1AAA1] hover:text-[#FFFFFF] bg-[#141715] border border-[#2B312C]"
+        class="lg:hidden size-9 rounded-lg flex items-center justify-center text-slate-700 hover:text-slate-900 bg-white border border-slate-200 shadow-xs"
         aria-label="Toggle navigation"
       >
         <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -230,61 +206,45 @@ const { pathname } = Astro.url;
   </nav>
 
   <!-- 4. MOBILE SLIDEOUT DRAWER -->
-  <div id="mobileDrawerBackdrop" class="fixed inset-0 z-40 bg-black/70 backdrop-blur-xs hidden lg:hidden"></div>
+  <div id="mobileDrawerBackdrop" class="fixed inset-0 z-40 bg-slate-900/30 backdrop-blur-xs hidden lg:hidden"></div>
   <div
     id="mobileDrawer"
-    class="fixed inset-y-0 right-0 z-50 w-72 bg-[#0B0D0C] border-l border-[#2B312C] p-6 shadow-2xl transform translate-x-full transition-transform duration-200 lg:hidden flex flex-col justify-between"
+    class="fixed inset-y-0 right-0 z-50 w-72 bg-white border-l border-slate-200 p-6 shadow-2xl transform translate-x-full transition-transform duration-200 lg:hidden flex flex-col justify-between"
   >
     <div>
-      <div class="flex items-center justify-between pb-4 border-b border-[#2B312C] mb-5">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-200 mb-5">
         <Logo />
-        <button type="button" id="mobileDrawerCloseBtn" class="size-8 rounded-lg flex items-center justify-center text-lg font-bold text-[#A1AAA1] hover:text-[#FFFFFF] bg-[#141715] border border-[#2B312C]">&times;</button>
+        <button type="button" id="mobileDrawerCloseBtn" class="size-8 rounded-lg flex items-center justify-center text-lg font-bold text-slate-500 hover:text-slate-800 bg-slate-50 border border-slate-200">&times;</button>
       </div>
 
       <!-- Mobile Logged Out Links -->
       <div id="mobileLoggedOutLinks" class="flex flex-col gap-1">
-        <a href="/features" class="px-3.5 py-2 text-xs font-semibold text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#141715] rounded-lg transition-colors">Features</a>
-        <a href="/playground" class="px-3.5 py-2 text-xs font-semibold text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#141715] rounded-lg transition-colors">Live Simulator</a>
-        <a href="/integrations" class="px-3.5 py-2 text-xs font-semibold text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#141715] rounded-lg transition-colors">Supported Portals</a>
-        <a href="/pricing" class="px-3.5 py-2 text-xs font-semibold text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#141715] rounded-lg transition-colors">Pricing</a>
-        <a href="/about" class="px-3.5 py-2 text-xs font-semibold text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#141715] rounded-lg transition-colors">How It Works</a>
-        <a href="/extension" class="px-3.5 py-2 text-xs font-semibold text-[#B7F34A] hover:bg-[#141715] rounded-lg transition-colors">Browser Extension</a>
+        <a href="/features" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Features</a>
+        <a href="/playground" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Live Simulator</a>
+        <a href="/integrations" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Supported Portals</a>
+        <a href="/pricing" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Pricing</a>
+        <a href="/about" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">How It Works</a>
+        <a href="/extension" class="px-3.5 py-2 text-xs font-semibold text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">Browser Extension</a>
       </div>
 
       <!-- Mobile Logged In Links -->
       <div id="mobileLoggedInLinks" class="hidden flex-col gap-1">
-        <a href="/dashboard" class="px-3.5 py-2 text-xs font-semibold text-[#FFFFFF] hover:bg-[#141715] rounded-lg transition-colors">Dashboard</a>
-        <a href="/memory" class="px-3.5 py-2 text-xs font-semibold text-[#B7F34A] bg-[#141715] rounded-lg transition-colors">Memory Vault</a>
-        <a href="/extract" class="px-3.5 py-2 text-xs font-semibold text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#141715] rounded-lg transition-colors">AI Extraction</a>
-        <a href="/playground" class="px-3.5 py-2 text-xs font-semibold text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#141715] rounded-lg transition-colors">Live Simulator</a>
-        <a href="/extension" class="px-3.5 py-2 text-xs font-semibold text-[#A1AAA1] hover:text-[#FFFFFF] hover:bg-[#141715] rounded-lg transition-colors">Extension Setup</a>
+        <a href="/dashboard" class="px-3.5 py-2 text-xs font-semibold text-slate-800 hover:bg-slate-50 rounded-lg transition-colors">Dashboard</a>
+        <a href="/memory" class="px-3.5 py-2 text-xs font-semibold text-blue-600 bg-blue-50 rounded-lg transition-colors">Memory Vault</a>
+        <a href="/extract" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">AI Extraction</a>
+        <a href="/playground" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Live Simulator</a>
+        <a href="/extension" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Extension Setup</a>
       </div>
     </div>
 
     <!-- Mobile Drawer Bottom Actions -->
-    <div class="pt-4 border-t border-[#2B312C] space-y-3">
-      <!-- Mobile Theme Switcher Pill -->
-      <button
-        type="button"
-        id="mobileThemeToggleBtn"
-        class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-[#141715] hover:bg-[#191D1A] border border-[#2B312C] hover:border-[#3A423C] text-xs font-semibold text-[#A1AAA1] hover:text-white transition-all cursor-pointer"
-      >
-        <span class="flex items-center gap-2">
-          <svg class="size-4 text-[#B7F34A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="5"></circle>
-            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
-          </svg>
-          <span>Appearance</span>
-        </span>
-        <span id="mobileThemeLabel" class="text-[11px] font-mono px-2 py-0.5 rounded-md bg-[#191D1A] text-[#B7F34A] border border-[#2B312C]">Dark</span>
-      </button>
-
+    <div class="pt-4 border-t border-slate-200 space-y-3">
       <div id="mobileDrawerLoggedOutBtns" class="flex flex-col gap-2">
-        <a href="/login" class="w-full text-center py-2 text-xs font-semibold text-[#FFFFFF] bg-[#141715] hover:bg-[#191D1A] border border-[#2B312C] rounded-lg transition-colors">Sign In</a>
-        <a href="/register" class="w-full text-center py-2 text-xs font-bold text-[#0B0D0C] bg-[#B7F34A] hover:bg-[#C8FA6A] rounded-lg transition-colors">Get Started Free</a>
+        <a href="/login" class="w-full text-center py-2 text-xs font-semibold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg transition-colors">Sign In</a>
+        <a href="/register" class="w-full text-center py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-xs">Get Started Free</a>
       </div>
       <div id="mobileDrawerLoggedInBtns" class="hidden flex-col gap-2">
-        <button type="button" id="mobileDrawerSignOutBtn" class="w-full text-center py-2 text-xs font-semibold text-rose-400 bg-rose-950/20 border border-rose-900/30 rounded-lg transition-colors">Sign Out</button>
+        <button type="button" id="mobileDrawerSignOutBtn" class="w-full text-center py-2 text-xs font-semibold text-rose-600 bg-rose-50 border border-rose-200 rounded-lg transition-colors">Sign Out</button>
       </div>
     </div>
   </div>
@@ -407,57 +367,6 @@ const { pathname } = Astro.url;
       if (mobileToggle) mobileToggle.addEventListener("click", openDrawer);
       if (mobileClose) mobileClose.addEventListener("click", closeDrawer);
       if (backdrop) backdrop.addEventListener("click", closeDrawer);
-
-      // Universal Web App Theme Controller (Desktop + Mobile)
-      const webThemeToggleBtn = document.getElementById("webThemeToggleBtn");
-      const mobileThemeToggleBtn = document.getElementById("mobileThemeToggleBtn");
-      const webIconSun = document.getElementById("webIconSun");
-      const webIconMoon = document.getElementById("webIconMoon");
-      const mobileThemeLabel = document.getElementById("mobileThemeLabel");
-
-      function syncWebThemeIcon() {
-        const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
-        if (currentTheme === "light") {
-          if (webIconSun) webIconSun.classList.add("hidden");
-          if (webIconMoon) webIconMoon.classList.remove("hidden");
-          if (mobileThemeLabel) {
-            mobileThemeLabel.textContent = "Light";
-            mobileThemeLabel.className = "text-[11px] font-mono px-2 py-0.5 rounded-md bg-white text-[#2F6307] border border-[#CBD5E1]";
-          }
-        } else {
-          if (webIconSun) webIconSun.classList.remove("hidden");
-          if (webIconMoon) webIconMoon.classList.add("hidden");
-          if (mobileThemeLabel) {
-            mobileThemeLabel.textContent = "Dark";
-            mobileThemeLabel.className = "text-[11px] font-mono px-2 py-0.5 rounded-md bg-[#191D1A] text-[#B7F34A] border border-[#2B312C]";
-          }
-        }
-      }
-
-      function toggleWebTheme() {
-        const current = document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
-        const next = current === "light" ? "dark" : "light";
-        localStorage.setItem("magic_fill_theme", next);
-        document.documentElement.setAttribute("data-theme", next);
-        if (next === "light") {
-          document.documentElement.classList.add("light-theme");
-          if (document.body) document.body.classList.add("light-theme");
-        } else {
-          document.documentElement.classList.remove("light-theme");
-          if (document.body) document.body.classList.remove("light-theme");
-        }
-        syncWebThemeIcon();
-        window.dispatchEvent(new CustomEvent("themechange", { detail: { theme: next } }));
-        window.dispatchEvent(new CustomEvent("magic-fill-theme-change", { detail: { theme: next } }));
-      }
-
-      if (webThemeToggleBtn) {
-        webThemeToggleBtn.addEventListener("click", toggleWebTheme);
-      }
-      if (mobileThemeToggleBtn) {
-        mobileThemeToggleBtn.addEventListener("click", toggleWebTheme);
-      }
-      syncWebThemeIcon();
     })();
   </script>
 </header>

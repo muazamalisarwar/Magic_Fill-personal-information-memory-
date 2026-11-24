@@ -19,15 +19,15 @@ const aboutData: About = about.data;
 
 <Base {...aboutData}>
   <!-- Page Header -->
-  <section class="section-ph pb-20 overflow-hidden bg-[#0B0D0C]">
+  <section class="section-ph pb-20 overflow-hidden bg-white">
     <div class="container relative z-10">
       <div class="lg:max-w-4xl mx-auto text-center">
         <h1
           class="hasHighlight mb-6 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white"
           set:html={markdownify(aboutData.page_header.title)}
         />
-        <p class="mb-5 text-lg text-slate-600 dark:text-[#A1AAA1] leading-relaxed">{aboutData.page_header.subtitle}</p>
-        <div class="border border-[#2B312C] rounded-3xl overflow-hidden mt-12 bg-[#191D1A] p-2 shadow-xl">
+        <p class="mb-5 text-lg text-slate-600 dark:text-slate-600 leading-relaxed">{aboutData.page_header.subtitle}</p>
+        <div class="border border-slate-200 rounded-3xl overflow-hidden mt-12 bg-white p-2 shadow-xl">
           <ImageMod
             src={aboutData.page_header.image}
             alt="Team collaboration meeting"
@@ -39,7 +39,7 @@ const aboutData: About = about.data;
   </section>
 
   <div class="container">
-    <div class="h-px w-full bg-[#2B312C] my-4"></div>
+    <div class="h-px w-full bg-slate-200 my-4"></div>
   </div>
 
   <!-- Trusted By Section -->
@@ -48,15 +48,15 @@ const aboutData: About = about.data;
   <!-- Stats Section -->
   {
     aboutData.stats.enable && (
-      <section class="section relative py-20 bg-[#0B0D0C]">
+      <section class="section relative py-20 bg-white">
         <div class="container">
           <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {aboutData.stats.items.map((stat: any) => (
-              <div class="text-center p-8 lg:p-10 rounded-2xl bg-[#191D1A] border border-[#2B312C]">
-                <div class="text-3xl lg:text-4xl font-extrabold text-[#2F6307] dark:text-[#B7F34A] font-mono mb-2">
+              <div class="text-center p-8 lg:p-10 rounded-2xl bg-white border border-slate-200">
+                <div class="text-3xl lg:text-4xl font-extrabold text-[#2F6307] dark:text-blue-600 font-mono mb-2">
                   {stat.value}
                 </div>
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-[#A1AAA1]">{stat.label}</p>
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-600">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -71,11 +71,11 @@ const aboutData: About = about.data;
   <!-- Meet Our Team Section -->
   {
     aboutData.our_team.enable && (
-      <section class="section relative isolate overflow-hidden py-24 bg-[#0B0D0C]">
+      <section class="section relative isolate overflow-hidden py-24 bg-white">
         <div class="container">
           <div class="section-container">
             <div class="section-intro centralize text-center mb-16">
-              <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[#2F6307] dark:text-[#B7F34A] mb-2 font-mono">
+              <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[#2F6307] dark:text-blue-600 mb-2 font-mono">
                 {aboutData.our_team.badge || "Our Team"}
               </p>
               <h2

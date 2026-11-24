@@ -130,34 +130,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const WEBSITE_BASE_URL = "http://localhost:4321";
 
-  function applyTheme(theme) {
-    if (theme === "light") {
-      document.body.classList.remove("dark-theme");
-      document.body.classList.add("light-theme");
-      document.documentElement.setAttribute("data-theme", "light");
-      if (iconSun) iconSun.classList.add("hidden");
-      if (iconMoon) iconMoon.classList.remove("hidden");
-    } else {
-      document.body.classList.remove("light-theme");
-      document.body.classList.add("dark-theme");
-      document.documentElement.setAttribute("data-theme", "dark");
-      if (iconSun) iconSun.classList.remove("hidden");
-      if (iconMoon) iconMoon.classList.add("hidden");
-    }
-  }
-
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener("click", () => {
-      const isLight = document.body.classList.contains("light-theme");
-      const nextTheme = isLight ? "dark" : "light";
-      applyTheme(nextTheme);
-      try {
-        localStorage.setItem("magic_fill_theme", nextTheme);
-      } catch (e) { }
-      if (chrome.storage && chrome.storage.local) {
-        chrome.storage.local.set({ magic_fill_theme: nextTheme });
-      }
-    });
+  function applyTheme(_theme) {
+    document.body.classList.remove("dark-theme");
+    document.body.classList.add("light-theme");
+    document.documentElement.setAttribute("data-theme", "light");
   }
 
   function updateDetectionToggleUI(enabled) {
@@ -507,9 +483,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       chrome.storage.local.get(
         ["magic_fill_token", "magic_fill_user", "magic_fill_theme", "cached_profile", "new_data_detection_enabled"],
         (items) => {
-          // A. Synchronously apply theme
-          const theme = items.magic_fill_theme || "dark";
-          applyTheme(theme);
+          // A. Synchronously apply clean light theme
+          applyTheme("light");
 
           // B. Apply New Data Detection toggle state (default: ON / true)
           const isDetectionOn = items.new_data_detection_enabled !== false;

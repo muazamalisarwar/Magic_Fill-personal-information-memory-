@@ -38,20 +38,20 @@ const {
                   return (
                     <Container
                       href={Container === "a" ? href : undefined}
-                      class={`flex flex-col gap-4 p-7 md:p-8 bg-[#191D1A] border border-[#2B312C] rounded-2xl cursor-pointer hover:border-[#B7F34A]/40 transition-all duration-300 group`}
+                      class={`flex flex-col gap-4 p-7 md:p-8 bg-white border border-slate-200 rounded-2xl cursor-pointer hover:border-blue-500/40 transition-all duration-300 group`}
                       data-ghl-trigger={item.type === "calendar" ? "true" : undefined}
                     >
-                    <div class="w-10 h-10 rounded-xl bg-[#141715] border border-[#2B312C] flex items-center justify-center text-[#B7F34A]">
+                    <div class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center text-blue-600">
                       <DynamicIcon
                         icon={item.icon ?? ""}
-                        className="w-5 h-5 text-[#B7F34A]"
+                        className="w-5 h-5 text-blue-600"
                       />
                     </div>
                     <div class="flex flex-col gap-1.5">
-                      <h3 class="font-bold text-lg text-slate-900 dark:text-white group-hover:text-[#2F6307] dark:group-hover:text-[#B7F34A] transition-colors">
+                      <h3 class="font-bold text-lg text-slate-900 dark:text-white group-hover:text-[#2F6307] dark:group-hover:text-blue-600 transition-colors">
                         {item.title}
                       </h3>
-                      <p class="text-slate-600 dark:text-[#A1AAA1] text-sm">{item.detail}</p>
+                      <p class="text-slate-600 dark:text-slate-600 text-sm">{item.detail}</p>
                     </div>
                     </Container>
                   );
@@ -62,7 +62,7 @@ const {
 
         <!-- Right Column - Contact Form -->
         <div class="col-12 lg:col-7">
-          <div class="p-8 md:p-10 bg-[#191D1A] border border-[#2B312C] rounded-2xl">
+          <div class="p-8 md:p-10 bg-white border border-slate-200 rounded-2xl">
             <form id="contact-form" novalidate class="flex flex-col gap-8">
               <div class="flex flex-col gap-4">
                 <div class="relative">
@@ -71,7 +71,7 @@ const {
                     name="name"
                     placeholder="Name"
                     required
-                    class="w-full rounded-xl bg-[#141715] px-4 py-3 border border-[#2B312C] text-sm text-white placeholder:text-[#5E665E] focus:border-[#B7F34A] focus:outline-none transition-colors"
+                    class="w-full rounded-xl bg-slate-50 px-4 py-3 border border-slate-200 text-sm text-white placeholder:text-slate-400 focus:border-blue-500 focus:outline-none transition-colors"
                   />
                 </div>
                 <div class="relative">
@@ -80,7 +80,7 @@ const {
                     name="email"
                     placeholder="Email Address"
                     required
-                    class="w-full rounded-xl bg-[#141715] px-4 py-3 border border-[#2B312C] text-sm text-white placeholder:text-[#5E665E] focus:border-[#B7F34A] focus:outline-none transition-colors"
+                    class="w-full rounded-xl bg-slate-50 px-4 py-3 border border-slate-200 text-sm text-white placeholder:text-slate-400 focus:border-blue-500 focus:outline-none transition-colors"
                   />
                 </div>
                 <div class="relative">
@@ -89,7 +89,7 @@ const {
                     name="phone"
                     placeholder="Phone number"
                     required
-                    class="w-full rounded-xl bg-[#141715] px-4 py-3 border border-[#2B312C] text-sm text-white placeholder:text-[#5E665E] focus:border-[#B7F34A] focus:outline-none transition-colors"
+                    class="w-full rounded-xl bg-slate-50 px-4 py-3 border border-slate-200 text-sm text-white placeholder:text-slate-400 focus:border-blue-500 focus:outline-none transition-colors"
                   />
                 </div>
                 <div class="relative">
@@ -98,7 +98,7 @@ const {
                     placeholder="Write your message..."
                     rows={4}
                     required
-                    class="w-full rounded-xl bg-[#141715] px-4 py-3 border border-[#2B312C] text-sm text-white placeholder:text-[#5E665E] focus:border-[#B7F34A] focus:outline-none transition-colors resize-none"
+                    class="w-full rounded-xl bg-slate-50 px-4 py-3 border border-slate-200 text-sm text-white placeholder:text-slate-400 focus:border-blue-500 focus:outline-none transition-colors resize-none"
                   ></textarea>
                 </div>
               </div>
@@ -106,7 +106,7 @@ const {
                 <!-- Status messages -->
                 <div
                   id="form-success"
-                  class="hidden rounded-xl bg-[#B7F34A]/10 border border-[#B7F34A]/30 px-5 py-3 text-white text-xs font-semibold"
+                  class="hidden rounded-xl bg-blue-600/10 border border-blue-500/30 px-5 py-3 text-white text-xs font-semibold"
                 >
                   Message sent! We'll be in touch shortly.
                 </div>

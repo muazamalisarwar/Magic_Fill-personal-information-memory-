@@ -1,47 +1,47 @@
 /* ==========================================================================
-   Surface & Component Utility Mappings
-   Anchored strictly to Magic Fill's Dark Minimalist Identity:
-   Midnight Black (#0B0D0C) | Secondary (#141715) | Card (#191D1A) | Border (#2B312C)
+   Surface & Component Utility Mappings — Clean Light Theme
+   White (#FFFFFF) | Slate Canvas (#F8FAFC) | Border (#E2E8F0) | Accent (#2563EB)
    ========================================================================== */
 
 :root {
-  --neu-bg: #191D1A;
-  --neu-fg: #FFFFFF;
-  --neu-muted: #A1AAA1;
-  --neu-accent: #B7F34A;
-  --neu-border: #2B312C;
+  --neu-bg: #FFFFFF;
+  --neu-fg: #0F172A;
+  --neu-muted: #64748B;
+  --neu-accent: #2563EB;
+  --neu-border: #E2E8F0;
 }
 
 /* Neutralized Surfaces: Clean 1px Hairline Borders, Minimal Elevation */
 .neu-card,
 .neu-card-static,
 .glass-card-interactive {
-  background-color: #191D1A !important;
-  border: 1px solid #2B312C !important;
+  background-color: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
   border-radius: 1rem !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
-  transition: border-color 0.15s ease, transform 0.15s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .neu-card:hover,
 .glass-card-interactive:hover {
-  border-color: #3A423C !important;
+  border-color: #CBD5E1 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07) !important;
   transform: translateY(-1px);
 }
 
 .neu-well,
 .neu-well-sm,
 .neu-icon-well {
-  background-color: #141715 !important;
-  border: 1px solid #2B312C !important;
+  background-color: #F8FAFC !important;
+  border: 1px solid #E2E8F0 !important;
   border-radius: 0.75rem !important;
   box-shadow: none !important;
 }
 
 /* Neutralized Button */
 .neu-btn-primary {
-  background-color: #B7F34A !important;
-  color: #0B0D0C !important;
+  background-color: #2563EB !important;
+  color: #FFFFFF !important;
   font-weight: 600 !important;
   border-radius: 0.75rem !important;
   border: 1px solid transparent !important;
@@ -55,9 +55,9 @@
 }
 
 .neu-btn-primary:hover {
-  background-color: #C8FA6A !important;
+  background-color: #1D4ED8 !important;
   transform: translateY(-1px) !important;
-  box-shadow: 0 4px 12px rgba(183, 243, 74, 0.2) !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2) !important;
 }
 
 .neu-btn-primary:active {

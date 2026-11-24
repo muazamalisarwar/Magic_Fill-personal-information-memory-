@@ -7,27 +7,27 @@ import Base from "@/layouts/Base.astro";
   meta_title="Live Form Autofill Simulator & Testing Lab"
   description="Test Magic Fill intelligent AI form matching and autofill on a comprehensive multi-type application form."
 >
-  <section class="pt-28 pb-20 relative overflow-hidden min-h-screen bg-[#0B0D0C]">
+  <section class="pt-28 pb-20 relative overflow-hidden min-h-screen bg-white">
     <div class="container mx-auto px-4 max-w-5xl relative z-10">
       
       <!-- Top Navigation Bar -->
-      <div class="flex items-center justify-between mb-8 pb-4 border-b border-[#2B312C]">
+      <div class="flex items-center justify-between mb-8 pb-4 border-b border-slate-200">
         <div class="flex items-center gap-2.5 text-xs font-semibold">
-          <a href="/dashboard" class="text-[#A1AAA1] hover:text-[#B7F34A] flex items-center gap-1.5 transition-colors">
+          <a href="/dashboard" class="text-slate-600 hover:text-blue-600 flex items-center gap-1.5 transition-colors">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             <span>Dashboard</span>
           </a>
-          <span class="text-[#5E665E]">/</span>
-          <span class="text-white font-medium">Form Simulator</span>
+          <span class="text-slate-400">/</span>
+          <span class="text-slate-900 font-semibold">Form Simulator</span>
         </div>
 
         <div class="flex items-center gap-2.5">
-          <a href="/memory" class="rounded-lg px-3 py-1.5 text-xs font-medium bg-[#141715] text-[#A1AAA1] border border-[#2B312C] hover:text-white hover:border-[#B7F34A]/40 transition-all">
+          <a href="/memory" class="rounded-lg px-3 py-1.5 text-xs font-medium bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100 transition-all">
             Inspect Vault
           </a>
-          <a href="/extension" class="rounded-lg px-3 py-1.5 text-xs font-medium bg-[#141715] text-[#A1AAA1] border border-[#2B312C] hover:text-white hover:border-[#B7F34A]/40 transition-all">
+          <a href="/extension" class="rounded-lg px-3 py-1.5 text-xs font-medium bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100 transition-all">
             Extension Setup
           </a>
         </div>
@@ -36,13 +36,13 @@ import Base from "@/layouts/Base.astro";
       <!-- Header & Intro -->
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
         <div>
-          <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[#B7F34A] mb-2 font-mono">
+          <p class="text-xs font-semibold uppercase tracking-[0.12em] text-blue-600 mb-2 font-mono">
             Testing Environment &bull; 10 Input Types
           </p>
-          <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white">
+          <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900">
             Form Autofill Simulator
           </h1>
-          <p class="text-sm text-[#A1AAA1] max-w-xl mt-2 leading-relaxed">
+          <p class="text-sm text-slate-600 max-w-xl mt-2 leading-relaxed">
             Test how Magic Fill maps and fills complex inputs across text fields, dropdowns, radios, sliders, checkboxes, and custom questions.
           </p>
         </div>
@@ -54,9 +54,9 @@ import Base from "@/layouts/Base.astro";
             id="clearFormBtn"
             data-magic-fill-ignore="true"
             data-no-learn="true"
-            class="px-3.5 py-2.5 rounded-xl text-xs font-medium text-[#A1AAA1] bg-[#141715] border border-[#2B312C] hover:bg-[#191D1A] hover:text-white transition-all cursor-pointer flex items-center gap-1.5"
+            class="px-3.5 py-2.5 rounded-xl text-xs font-medium text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 hover:text-slate-900 transition-all cursor-pointer flex items-center gap-1.5 shadow-xs"
           >
-            <svg class="w-3.5 h-3.5 text-[#5E665E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
             </svg>
             <span>Reset Form</span>
@@ -67,64 +67,64 @@ import Base from "@/layouts/Base.astro";
             id="simulateAutofillBtn"
             data-magic-fill-ignore="true"
             data-no-learn="true"
-            class="px-4 py-2.5 rounded-xl text-xs font-bold text-[#0B0D0C] bg-[#B7F34A] hover:bg-[#c9f66d] shadow-[0_0_20px_rgba(183,243,74,0.15)] transition-all cursor-pointer flex items-center gap-2"
+            class="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-xs hover:shadow-sm transition-all cursor-pointer flex items-center gap-2"
           >
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="currentColor"></polygon>
             </svg>
             <span id="autofillBtnText">Simulate Autofill</span>
-            <span class="hidden sm:inline-block px-1.5 py-0.5 rounded bg-black/20 text-[#0B0D0C] text-[10px] font-mono font-semibold">Alt+F</span>
+            <span class="hidden sm:inline-block px-1.5 py-0.5 rounded bg-white/20 text-white text-[10px] font-mono font-semibold">Alt+F</span>
           </button>
         </div>
       </div>
 
       <!-- Live Match Summary Banner -->
-      <div id="matchSummaryBanner" class="p-4 rounded-xl bg-[#141715] border border-[#2B312C] mb-8 flex flex-wrap items-center justify-between gap-4">
+      <div id="matchSummaryBanner" class="p-4 rounded-xl bg-slate-50 border border-slate-200 mb-8 flex flex-wrap items-center justify-between gap-4">
         <div class="flex items-center gap-5">
-          <span class="text-xs font-semibold text-[#5E665E] uppercase tracking-wider font-mono">Status:</span>
-          <span class="inline-flex items-center gap-1.5 text-xs font-medium text-white">
-            <span class="w-2 h-2 rounded-full bg-[#B7F34A] shadow-[0_0_8px_rgba(183,243,74,0.6)]"></span>
+          <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider font-mono">Status:</span>
+          <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-700">
+            <span class="w-2 h-2 rounded-full bg-blue-600 shadow-xs"></span>
             Matched from Vault
           </span>
-          <span class="inline-flex items-center gap-1.5 text-xs font-medium text-[#A1AAA1]">
-            <span class="w-2 h-2 rounded-full bg-[#2B312C]"></span>
+          <span class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500">
+            <span class="w-2 h-2 rounded-full bg-slate-300"></span>
             Unmapped / Optional
           </span>
         </div>
-        <div id="statsBadge" class="text-xs text-[#A1AAA1]">
-          Ready to test. Click <strong class="text-white">Simulate Autofill</strong> or press <kbd class="px-1.5 py-0.5 rounded bg-[#191D1A] text-white font-mono text-[10px] border border-[#2B312C]">Alt + F</kbd>.
+        <div id="statsBadge" class="text-xs text-slate-600 font-medium">
+          Ready to test. Click <strong class="text-slate-900">Simulate Autofill</strong> or press <kbd class="px-1.5 py-0.5 rounded bg-white text-slate-800 font-mono text-[11px] border border-slate-300">Alt + F</kbd>.
         </div>
       </div>
 
       <!-- The Simulated Form Container -->
-      <form id="jobAppForm" class="bg-[#191D1A] border border-[#2B312C] rounded-2xl p-6 sm:p-9 shadow-sm space-y-9">
+      <form id="jobAppForm" class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-9 shadow-sm space-y-9">
         
         <!-- Section 1: Personal & Contact Information (Text Inputs) -->
         <div>
-          <div class="flex items-center gap-2.5 mb-5 pb-3 border-b border-[#2B312C]">
-            <span class="w-6 h-6 rounded-md bg-[#B7F34A]/10 text-[#B7F34A] font-bold text-xs flex items-center justify-center border border-[#B7F34A]/30 font-mono">1</span>
-            <h2 class="text-sm font-bold text-white">Applicant Identity &amp; Contact</h2>
+          <div class="flex items-center gap-2.5 mb-5 pb-3 border-b border-slate-200">
+            <span class="w-6 h-6 rounded-md bg-blue-50 text-blue-600 font-bold text-xs flex items-center justify-center border border-blue-200 font-mono">1</span>
+            <h2 class="text-sm font-bold text-slate-900">Applicant Identity &amp; Contact</h2>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <!-- Field: Full Name -->
             <div class="space-y-1.5">
-              <label for="applicant_legal_name" class="block text-xs font-semibold text-white">
-                Legal Full Name <span class="text-[#B7F34A]">*</span>
+              <label for="applicant_legal_name" class="block text-xs font-semibold text-slate-800">
+                Legal Full Name <span class="text-blue-600">*</span>
               </label>
               <input
                 type="text"
                 id="applicant_legal_name"
                 name="applicant_legal_name"
                 placeholder="e.g. Johnathan Doe"
-                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-[#2B312C] bg-[#141715] text-sm text-white placeholder-[#5E665E] focus:outline-none focus:border-[#B7F34A] focus:ring-1 focus:ring-[#B7F34A]/30 transition-all"
+                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all"
               />
-              <span class="field-hint text-[11px] text-[#5E665E] block font-mono">Vault target: personal_info.full_name</span>
+              <span class="field-hint text-[11px] text-slate-500 block font-mono">Vault target: personal_info.full_name</span>
             </div>
 
             <!-- Field: Father Name -->
             <div class="space-y-1.5">
-              <label for="parent_guardian_name" class="block text-xs font-semibold text-white">
+              <label for="parent_guardian_name" class="block text-xs font-semibold text-slate-800">
                 Father / Guardian Name
               </label>
               <input
@@ -132,29 +132,29 @@ import Base from "@/layouts/Base.astro";
                 id="parent_guardian_name"
                 name="parent_guardian_name"
                 placeholder="e.g. Robert Doe"
-                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-[#2B312C] bg-[#141715] text-sm text-white placeholder-[#5E665E] focus:outline-none focus:border-[#B7F34A] focus:ring-1 focus:ring-[#B7F34A]/30 transition-all"
+                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all"
               />
-              <span class="field-hint text-[11px] text-[#5E665E] block font-mono">Vault target: personal_info.father_name</span>
+              <span class="field-hint text-[11px] text-slate-500 block font-mono">Vault target: personal_info.father_name</span>
             </div>
 
             <!-- Field: Email -->
             <div class="space-y-1.5">
-              <label for="applicant_email_address" class="block text-xs font-semibold text-white">
-                Contact Email Address <span class="text-[#B7F34A]">*</span>
+              <label for="applicant_email_address" class="block text-xs font-semibold text-slate-800">
+                Contact Email Address <span class="text-blue-600">*</span>
               </label>
               <input
                 type="email"
                 id="applicant_email_address"
                 name="applicant_email_address"
                 placeholder="you@domain.com"
-                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-[#2B312C] bg-[#141715] text-sm text-white placeholder-[#5E665E] focus:outline-none focus:border-[#B7F34A] focus:ring-1 focus:ring-[#B7F34A]/30 transition-all"
+                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all"
               />
-              <span class="field-hint text-[11px] text-[#5E665E] block font-mono">Vault target: personal_info.email</span>
+              <span class="field-hint text-[11px] text-slate-500 block font-mono">Vault target: personal_info.email</span>
             </div>
 
             <!-- Field: Phone Number -->
             <div class="space-y-1.5">
-              <label for="contact_telephone" class="block text-xs font-semibold text-white">
+              <label for="contact_telephone" class="block text-xs font-semibold text-slate-800">
                 Mobile / Primary Phone
               </label>
               <input
@@ -162,14 +162,14 @@ import Base from "@/layouts/Base.astro";
                 id="contact_telephone"
                 name="contact_telephone"
                 placeholder="+1 (555) 000-0000"
-                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-[#2B312C] bg-[#141715] text-sm text-white placeholder-[#5E665E] focus:outline-none focus:border-[#B7F34A] focus:ring-1 focus:ring-[#B7F34A]/30 transition-all"
+                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all"
               />
-              <span class="field-hint text-[11px] text-[#5E665E] block font-mono">Vault target: personal_info.phone</span>
+              <span class="field-hint text-[11px] text-slate-500 block font-mono">Vault target: personal_info.phone</span>
             </div>
 
             <!-- Field: National ID / CNIC -->
             <div class="space-y-1.5">
-              <label for="national_identity_number" class="block text-xs font-semibold text-white">
+              <label for="national_identity_number" class="block text-xs font-semibold text-slate-800">
                 National ID / CNIC / Government ID
               </label>
               <input
@@ -177,124 +177,124 @@ import Base from "@/layouts/Base.astro";
                 id="national_identity_number"
                 name="national_identity_number"
                 placeholder="35201-1234567-1"
-                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-[#2B312C] bg-[#141715] text-sm text-white placeholder-[#5E665E] focus:outline-none focus:border-[#B7F34A] focus:ring-1 focus:ring-[#B7F34A]/30 transition-all"
+                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all"
               />
-              <span class="field-hint text-[11px] text-[#5E665E] block font-mono">Vault target: personal_info.cnic</span>
+              <span class="field-hint text-[11px] text-slate-500 block font-mono">Vault target: personal_info.cnic</span>
             </div>
 
             <!-- Field: Date of Birth (Date Picker) -->
             <div class="space-y-1.5">
-              <label for="date_of_birth" class="block text-xs font-semibold text-white">
+              <label for="date_of_birth" class="block text-xs font-semibold text-slate-800">
                 Date of Birth
               </label>
               <input
                 type="date"
                 id="date_of_birth"
                 name="date_of_birth"
-                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-[#2B312C] bg-[#141715] text-sm text-white placeholder-[#5E665E] focus:outline-none focus:border-[#B7F34A] focus:ring-1 focus:ring-[#B7F34A]/30 transition-all"
+                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all"
               />
-              <span class="field-hint text-[11px] text-[#5E665E] block font-mono">ISO date standard (YYYY-MM-DD)</span>
+              <span class="field-hint text-[11px] text-slate-500 block font-mono">ISO date standard (YYYY-MM-DD)</span>
             </div>
 
             <!-- Field: Preferred Interview Time (Time Picker) -->
             <div class="space-y-1.5">
-              <label for="interview_time" class="block text-xs font-semibold text-white">
+              <label for="interview_time" class="block text-xs font-semibold text-slate-800">
                 Preferred Interview Time
               </label>
               <input
                 type="time"
                 id="interview_time"
                 name="interview_time"
-                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-[#2B312C] bg-[#141715] text-sm text-white placeholder-[#5E665E] focus:outline-none focus:border-[#B7F34A] focus:ring-1 focus:ring-[#B7F34A]/30 transition-all"
+                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all"
               />
-              <span class="field-hint text-[11px] text-[#5E665E] block font-mono">Standard 24-hr time (HH:MM)</span>
+              <span class="field-hint text-[11px] text-slate-500 block font-mono">Standard 24-hr time (HH:MM)</span>
             </div>
           </div>
         </div>
 
         <!-- Section 2: Dropdowns & Radios (Select & Radio Options) -->
         <div>
-          <div class="flex items-center gap-2.5 mb-5 pb-3 border-b border-[#2B312C]">
-            <span class="w-6 h-6 rounded-md bg-[#B7F34A]/10 text-[#B7F34A] font-bold text-xs flex items-center justify-center border border-[#B7F34A]/30 font-mono">2</span>
-            <h2 class="text-sm font-bold text-white">Academic Level &amp; Demographics</h2>
+          <div class="flex items-center gap-2.5 mb-5 pb-3 border-b border-slate-200">
+            <span class="w-6 h-6 rounded-md bg-blue-50 text-blue-600 font-bold text-xs flex items-center justify-center border border-blue-200 font-mono">2</span>
+            <h2 class="text-sm font-bold text-slate-900">Academic Level &amp; Demographics</h2>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             
             <!-- Dropdown: Highest Completed Degree -->
             <div class="space-y-1.5">
-              <label for="highest_degree_level" class="block text-xs font-semibold text-white">
+              <label for="highest_degree_level" class="block text-xs font-semibold text-slate-800">
                 Highest Completed Degree
               </label>
               <select
                 id="highest_degree_level"
                 name="highest_degree_level"
-                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-[#2B312C] bg-[#141715] text-sm text-white focus:outline-none focus:border-[#B7F34A] focus:ring-1 focus:ring-[#B7F34A]/30 transition-all"
+                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all"
               >
-                <option value="" class="bg-[#141715] text-[#A1AAA1]">-- Choose Degree Level --</option>
-                <option value="High School" class="bg-[#141715] text-white">High School / Matriculation</option>
-                <option value="Associate Degree" class="bg-[#141715] text-white">Associate Degree / Diploma</option>
-                <option value="Bachelor of Science" class="bg-[#141715] text-white">Bachelor of Science / BS</option>
-                <option value="Master of Science" class="bg-[#141715] text-white">Master of Science / MS</option>
-                <option value="Doctorate" class="bg-[#141715] text-white">Doctorate / Ph.D.</option>
+                <option value="" class="text-slate-500">-- Choose Degree Level --</option>
+                <option value="High School">High School / Matriculation</option>
+                <option value="Associate Degree">Associate Degree / Diploma</option>
+                <option value="Bachelor of Science">Bachelor of Science / BS</option>
+                <option value="Master of Science">Master of Science / MS</option>
+                <option value="Doctorate">Doctorate / Ph.D.</option>
               </select>
-              <span class="field-hint text-[11px] text-[#5E665E] block font-mono">Exact &amp; semantic option matching</span>
+              <span class="field-hint text-[11px] text-slate-500 block font-mono">Exact &amp; semantic option matching</span>
             </div>
 
             <!-- Dropdown: Country of Residence -->
             <div class="space-y-1.5">
-              <label for="country_residence" class="block text-xs font-semibold text-white">
+              <label for="country_residence" class="block text-xs font-semibold text-slate-800">
                 Country of Residence
               </label>
               <select
                 id="country_residence"
                 name="country_residence"
-                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-[#2B312C] bg-[#141715] text-sm text-white focus:outline-none focus:border-[#B7F34A] focus:ring-1 focus:ring-[#B7F34A]/30 transition-all"
+                class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all"
               >
-                <option value="" class="bg-[#141715] text-[#A1AAA1]">-- Select Country --</option>
-                <option value="Pakistan" class="bg-[#141715] text-white">Pakistan</option>
-                <option value="United States" class="bg-[#141715] text-white">United States</option>
-                <option value="United Kingdom" class="bg-[#141715] text-white">United Kingdom</option>
-                <option value="Canada" class="bg-[#141715] text-white">Canada</option>
-                <option value="Germany" class="bg-[#141715] text-white">Germany</option>
-                <option value="United Arab Emirates" class="bg-[#141715] text-white">United Arab Emirates</option>
+                <option value="" class="text-slate-500">-- Select Country --</option>
+                <option value="Pakistan">Pakistan</option>
+                <option value="United States">United States</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="Canada">Canada</option>
+                <option value="Germany">Germany</option>
+                <option value="United Arab Emirates">United Arab Emirates</option>
               </select>
-              <span class="field-hint text-[11px] text-[#5E665E] block font-mono">Vault target: personal_info.country</span>
+              <span class="field-hint text-[11px] text-slate-500 block font-mono">Vault target: personal_info.country</span>
             </div>
 
             <!-- Radio: Gender Selection -->
-            <div class="space-y-2 p-4 rounded-xl bg-[#141715] border border-[#2B312C]">
-              <label class="block text-xs font-semibold text-white mb-1">
+            <div class="space-y-2 p-4 rounded-xl bg-slate-50 border border-slate-200">
+              <label class="block text-xs font-semibold text-slate-800 mb-1">
                 Gender Identification
               </label>
               <div class="flex items-center gap-6">
-                <label class="flex items-center gap-2 cursor-pointer text-xs text-[#A1AAA1] hover:text-white transition-colors">
-                  <input type="radio" name="gender" value="Male" class="sim-radio accent-[#B7F34A] cursor-pointer" />
+                <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-700 hover:text-slate-900 transition-colors">
+                  <input type="radio" name="gender" value="Male" class="sim-radio accent-blue-600 cursor-pointer" />
                   <span>Male</span>
                 </label>
-                <label class="flex items-center gap-2 cursor-pointer text-xs text-[#A1AAA1] hover:text-white transition-colors">
-                  <input type="radio" name="gender" value="Female" class="sim-radio accent-[#B7F34A] cursor-pointer" />
+                <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-700 hover:text-slate-900 transition-colors">
+                  <input type="radio" name="gender" value="Female" class="sim-radio accent-blue-600 cursor-pointer" />
                   <span>Female</span>
                 </label>
-                <label class="flex items-center gap-2 cursor-pointer text-xs text-[#A1AAA1] hover:text-white transition-colors">
-                  <input type="radio" name="gender" value="Other" class="sim-radio accent-[#B7F34A] cursor-pointer" />
+                <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-700 hover:text-slate-900 transition-colors">
+                  <input type="radio" name="gender" value="Other" class="sim-radio accent-blue-600 cursor-pointer" />
                   <span>Other</span>
                 </label>
               </div>
             </div>
 
             <!-- Radio: Work Authorization -->
-            <div class="space-y-2 p-4 rounded-xl bg-[#141715] border border-[#2B312C]">
-              <label class="block text-xs font-semibold text-white mb-1">
+            <div class="space-y-2 p-4 rounded-xl bg-slate-50 border border-slate-200">
+              <label class="block text-xs font-semibold text-slate-800 mb-1">
                 Legally Authorized to Work?
               </label>
               <div class="flex items-center gap-6">
-                <label class="flex items-center gap-2 cursor-pointer text-xs text-[#A1AAA1] hover:text-white transition-colors">
-                  <input type="radio" name="work_auth" value="Yes" class="sim-radio accent-[#B7F34A] cursor-pointer" />
+                <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-700 hover:text-slate-900 transition-colors">
+                  <input type="radio" name="work_auth" value="Yes" class="sim-radio accent-blue-600 cursor-pointer" />
                   <span>Yes, Authorized</span>
                 </label>
-                <label class="flex items-center gap-2 cursor-pointer text-xs text-[#A1AAA1] hover:text-white transition-colors">
-                  <input type="radio" name="work_auth" value="No" class="sim-radio accent-[#B7F34A] cursor-pointer" />
+                <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-700 hover:text-slate-900 transition-colors">
+                  <input type="radio" name="work_auth" value="No" class="sim-radio accent-blue-600 cursor-pointer" />
                   <span>Requires Sponsorship</span>
                 </label>
               </div>
@@ -305,20 +305,20 @@ import Base from "@/layouts/Base.astro";
 
         <!-- Section 3: Sliders, Checkboxes, Toggles & Files -->
         <div>
-          <div class="flex items-center gap-2.5 mb-5 pb-3 border-b border-[#2B312C]">
-            <span class="w-6 h-6 rounded-md bg-[#B7F34A]/10 text-[#B7F34A] font-bold text-xs flex items-center justify-center border border-[#B7F34A]/30 font-mono">3</span>
-            <h2 class="text-sm font-bold text-white">Experience, Preferences &amp; Files</h2>
+          <div class="flex items-center gap-2.5 mb-5 pb-3 border-b border-slate-200">
+            <span class="w-6 h-6 rounded-md bg-blue-50 text-blue-600 font-bold text-xs flex items-center justify-center border border-blue-200 font-mono">3</span>
+            <h2 class="text-sm font-bold text-slate-900">Experience, Preferences &amp; Files</h2>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             
             <!-- Slider: Years of Experience -->
-            <div class="space-y-2 p-4 rounded-xl bg-[#141715] border border-[#2B312C]">
+            <div class="space-y-2 p-4 rounded-xl bg-slate-50 border border-slate-200">
               <div class="flex items-center justify-between">
-                <label for="years_experience" class="text-xs font-semibold text-white">
+                <label for="years_experience" class="text-xs font-semibold text-slate-800">
                   Years of Experience
                 </label>
-                <span id="expDisplay" class="font-mono text-xs font-bold text-[#B7F34A]">0 Years</span>
+                <span id="expDisplay" class="font-mono text-xs font-bold text-blue-600">0 Years</span>
               </div>
               <input
                 type="range"
@@ -327,9 +327,9 @@ import Base from "@/layouts/Base.astro";
                 min="0"
                 max="15"
                 value="0"
-                class="sim-input w-full accent-[#B7F34A] cursor-pointer"
+                class="sim-input w-full accent-blue-600 cursor-pointer"
               />
-              <div class="flex justify-between text-[10px] text-[#5E665E] font-mono">
+              <div class="flex justify-between text-[11px] text-slate-500 font-mono">
                 <span>0 yrs</span>
                 <span>5 yrs</span>
                 <span>10 yrs</span>
@@ -338,40 +338,40 @@ import Base from "@/layouts/Base.astro";
             </div>
 
             <!-- Toggle Switch: Willingness to Relocate -->
-            <div class="space-y-2 p-4 rounded-xl bg-[#141715] border border-[#2B312C] flex flex-col justify-between">
+            <div class="space-y-2 p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col justify-between">
               <div>
-                <label class="block text-xs font-semibold text-white mb-1">
+                <label class="block text-xs font-semibold text-slate-800 mb-1">
                   Willing to Relocate or Travel?
                 </label>
-                <p class="text-[11px] text-[#5E665E]">
+                <p class="text-[11px] text-slate-500">
                   Open to hybrid or relocated employment opportunities.
                 </p>
               </div>
               <label class="relative inline-flex items-center cursor-pointer mt-2">
                 <input type="checkbox" id="relocate_toggle" name="relocate_toggle" class="sr-only peer" />
-                <div class="w-10 h-5 bg-[#2B312C] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[#0B0D0C] after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#B7F34A]"></div>
-                <span class="ml-2.5 text-xs text-[#A1AAA1] font-medium">Relocation Permitted</span>
+                <div class="w-10 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+                <span class="ml-2.5 text-xs text-slate-700 font-medium">Relocation Permitted</span>
               </label>
             </div>
 
             <!-- Checkbox: Remote Preference -->
-            <div class="space-y-3 p-4 rounded-xl bg-[#141715] border border-[#2B312C]">
-              <label class="block text-xs font-semibold text-white mb-1">
+            <div class="space-y-3 p-4 rounded-xl bg-slate-50 border border-slate-200">
+              <label class="block text-xs font-semibold text-slate-800 mb-1">
                 Candidate Preferences
               </label>
-              <label class="flex items-center gap-2 cursor-pointer text-xs text-[#A1AAA1] hover:text-white transition-colors">
-                <input type="checkbox" id="remote_preference" name="remote_preference" class="sim-checkbox rounded border-[#2B312C] accent-[#B7F34A] cursor-pointer" />
+              <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-700 hover:text-slate-900 transition-colors">
+                <input type="checkbox" id="remote_preference" name="remote_preference" class="sim-checkbox rounded border-slate-300 accent-blue-600 cursor-pointer" />
                 <span>Prefer fully remote or flexible work environment</span>
               </label>
-              <label class="flex items-center gap-2 cursor-pointer text-xs text-[#A1AAA1] hover:text-white transition-colors">
-                <input type="checkbox" id="immediate_joiner" name="immediate_joiner" class="sim-checkbox rounded border-[#2B312C] accent-[#B7F34A] cursor-pointer" />
+              <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-700 hover:text-slate-900 transition-colors">
+                <input type="checkbox" id="immediate_joiner" name="immediate_joiner" class="sim-checkbox rounded border-slate-300 accent-blue-600 cursor-pointer" />
                 <span>Available to start immediately (within 2 weeks)</span>
               </label>
             </div>
 
             <!-- File Upload: Resume -->
-            <div class="space-y-1.5 p-4 rounded-xl bg-[#141715] border border-[#2B312C] relative" id="resumeFileCell">
-              <label for="applicant_resume_file" class="block text-xs font-semibold text-white">
+            <div class="space-y-1.5 p-4 rounded-xl bg-slate-50 border border-slate-200 relative" id="resumeFileCell">
+              <label for="applicant_resume_file" class="block text-xs font-semibold text-slate-800">
                 Resume / CV Document
               </label>
               <input
@@ -379,35 +379,35 @@ import Base from "@/layouts/Base.astro";
                 id="applicant_resume_file"
                 name="applicant_resume_file"
                 accept=".pdf,.doc,.docx"
-                class="sim-input block w-full text-xs text-[#A1AAA1] file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#B7F34A]/10 file:text-[#B7F34A] hover:file:bg-[#B7F34A]/20 cursor-pointer"
+                class="sim-input block w-full text-xs text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
               />
-              <span class="field-hint text-[11px] text-[#5E665E] block font-mono">Pulls from stored user resumes</span>
+              <span class="field-hint text-[11px] text-slate-500 block font-mono">Pulls from stored user resumes</span>
 
               <!-- Live Resume Preview -->
-              <div id="resumePreviewContainer" class="hidden mt-3 p-3 rounded-xl bg-[#0B0D0C] border border-[#2B312C] flex items-center justify-between gap-3 animate-[magicFillSlideUp_0.25s_cubic-bezier(0.16,1,0.3,1)]">
+              <div id="resumePreviewContainer" class="hidden mt-3 p-3 rounded-xl bg-white border border-slate-200 flex items-center justify-between gap-3 shadow-xs animate-[magicFillSlideUp_0.25s_cubic-bezier(0.16,1,0.3,1)]">
                 <div class="flex items-center gap-3 min-w-0">
-                  <div class="w-10 h-10 rounded-lg border border-[#B7F34A]/30 bg-[#141715] flex items-center justify-center text-[#B7F34A] shrink-0">
+                  <div class="w-10 h-10 rounded-lg border border-blue-200 bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
                   </div>
                   <div class="min-w-0">
                     <div class="flex items-center gap-1.5">
-                      <span class="text-xs font-semibold text-white truncate max-w-[170px]" id="resumePreviewName">applicant_resume.pdf</span>
-                      <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-[#B7F34A]/10 text-[#B7F34A] border border-[#B7F34A]/30">Attached</span>
+                      <span class="text-xs font-semibold text-slate-900 truncate max-w-[170px]" id="resumePreviewName">applicant_resume.pdf</span>
+                      <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-50 text-blue-700 border border-blue-200">Attached</span>
                     </div>
-                    <span class="text-[11px] text-[#A1AAA1] block truncate font-mono">Memory Vault Document</span>
+                    <span class="text-[11px] text-slate-500 block truncate font-mono">Memory Vault Document</span>
                   </div>
                 </div>
-                <button type="button" id="resumePreviewRemove" class="px-2 py-1 text-xs text-[#A1AAA1] hover:text-[#f43f5e] hover:bg-[#f43f5e]/10 rounded-lg transition-colors cursor-pointer" title="Remove attachment">
+                <button type="button" id="resumePreviewRemove" class="px-2 py-1 text-xs text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer" title="Remove attachment">
                   &times; Remove
                 </button>
               </div>
             </div>
 
             <!-- File Upload: Profile Picture -->
-            <div class="space-y-1.5 p-4 rounded-xl bg-[#141715] border border-[#2B312C] relative" id="photoFileCell">
-              <label for="applicant_profile_photo" class="block text-xs font-semibold text-white">
+            <div class="space-y-1.5 p-4 rounded-xl bg-slate-50 border border-slate-200 relative" id="photoFileCell">
+              <label for="applicant_profile_photo" class="block text-xs font-semibold text-slate-800">
                 Profile Photo / Headshot
               </label>
               <input
@@ -415,25 +415,25 @@ import Base from "@/layouts/Base.astro";
                 id="applicant_profile_photo"
                 name="applicant_profile_photo"
                 accept="image/*"
-                class="sim-input block w-full text-xs text-[#A1AAA1] file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#B7F34A]/10 file:text-[#B7F34A] hover:file:bg-[#B7F34A]/20 cursor-pointer"
+                class="sim-input block w-full text-xs text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
               />
-              <span class="field-hint text-[11px] text-[#5E665E] block font-mono">Pulls from stored profile photos</span>
+              <span class="field-hint text-[11px] text-slate-500 block font-mono">Pulls from stored profile photos</span>
 
               <!-- Live Photo Preview -->
-              <div id="photoPreviewContainer" class="hidden mt-3 p-3 rounded-xl bg-[#0B0D0C] border border-[#2B312C] flex items-center justify-between gap-3 animate-[magicFillSlideUp_0.25s_cubic-bezier(0.16,1,0.3,1)]">
+              <div id="photoPreviewContainer" class="hidden mt-3 p-3 rounded-xl bg-white border border-slate-200 flex items-center justify-between gap-3 shadow-xs animate-[magicFillSlideUp_0.25s_cubic-bezier(0.16,1,0.3,1)]">
                 <div class="flex items-center gap-3 min-w-0">
-                  <div class="w-12 h-12 rounded-lg border border-[#B7F34A]/40 overflow-hidden shrink-0 bg-[#141715] flex items-center justify-center shadow-[0_0_12px_rgba(183,243,74,0.15)]">
+                  <div class="w-12 h-12 rounded-lg border border-slate-200 overflow-hidden shrink-0 bg-slate-100 flex items-center justify-center">
                     <img id="photoPreviewImg" src="" alt="Attached Profile Photo" class="w-full h-full object-cover" />
                   </div>
                   <div class="min-w-0">
                     <div class="flex items-center gap-1.5">
-                      <span class="text-xs font-semibold text-white truncate max-w-[170px]" id="photoPreviewName">profile_picture.png</span>
-                      <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-[#B7F34A]/10 text-[#B7F34A] border border-[#B7F34A]/30">Attached</span>
+                      <span class="text-xs font-semibold text-slate-900 truncate max-w-[170px]" id="photoPreviewName">profile_picture.png</span>
+                      <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-50 text-blue-700 border border-blue-200">Attached</span>
                     </div>
-                    <span class="text-[11px] text-[#A1AAA1] block truncate font-mono" id="photoPreviewSize">Memory Vault Asset</span>
+                    <span class="text-[11px] text-slate-500 block truncate font-mono" id="photoPreviewSize">Memory Vault Asset</span>
                   </div>
                 </div>
-                <button type="button" id="photoPreviewRemove" class="px-2 py-1 text-xs text-[#A1AAA1] hover:text-[#f43f5e] hover:bg-[#f43f5e]/10 rounded-lg transition-colors cursor-pointer" title="Remove attachment">
+                <button type="button" id="photoPreviewRemove" class="px-2 py-1 text-xs text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer" title="Remove attachment">
                   &times; Remove
                 </button>
               </div>
@@ -444,13 +444,13 @@ import Base from "@/layouts/Base.astro";
 
         <!-- Section 4: Professional Summary (Text Area) -->
         <div>
-          <div class="flex items-center gap-2.5 mb-5 pb-3 border-b border-[#2B312C]">
-            <span class="w-6 h-6 rounded-md bg-[#B7F34A]/10 text-[#B7F34A] font-bold text-xs flex items-center justify-center border border-[#B7F34A]/30 font-mono">4</span>
-            <h2 class="text-sm font-bold text-white">Professional Summary</h2>
+          <div class="flex items-center gap-2.5 mb-5 pb-3 border-b border-slate-200">
+            <span class="w-6 h-6 rounded-md bg-blue-50 text-blue-600 font-bold text-xs flex items-center justify-center border border-blue-200 font-mono">4</span>
+            <h2 class="text-sm font-bold text-slate-900">Professional Summary</h2>
           </div>
 
           <div class="space-y-1.5">
-            <label for="applicant_cover_note" class="block text-xs font-semibold text-white">
+            <label for="applicant_cover_note" class="block text-xs font-semibold text-slate-800">
               Cover Note &amp; Executive Summary
             </label>
             <textarea
@@ -458,15 +458,15 @@ import Base from "@/layouts/Base.astro";
               name="applicant_cover_note"
               rows="4"
               placeholder="A brief 2-3 sentence overview of your career, skills, and background..."
-              class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-[#2B312C] bg-[#141715] text-sm text-white placeholder-[#5E665E] focus:outline-none focus:border-[#B7F34A] focus:ring-1 focus:ring-[#B7F34A]/30 transition-all resize-none leading-relaxed"
+              class="sim-input w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all resize-none leading-relaxed"
             ></textarea>
-            <span class="field-hint text-[11px] text-[#5E665E] block font-mono">Synthesizes professional experience and skills</span>
+            <span class="field-hint text-[11px] text-slate-500 block font-mono">Synthesizes professional experience and skills</span>
           </div>
         </div>
 
         <!-- Form Submit & Test Action -->
-        <div class="pt-5 border-t border-[#2B312C] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p class="text-xs text-[#A1AAA1]">
+        <div class="pt-5 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p class="text-xs text-slate-600 font-medium">
             Submit form to test continuous memory learning confirmation.
           </p>
 
@@ -474,7 +474,7 @@ import Base from "@/layouts/Base.astro";
             type="submit"
             data-magic-fill-ignore="true"
             data-no-learn="true"
-            class="px-5 py-2.5 rounded-xl text-xs font-semibold text-white bg-[#141715] hover:bg-[#191D1A] border border-[#2B312C] hover:border-[#B7F34A]/40 transition-all cursor-pointer"
+            class="px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 transition-all cursor-pointer shadow-xs hover:shadow-sm"
           >
             Simulate Form Submit
           </button>
@@ -484,33 +484,33 @@ import Base from "@/layouts/Base.astro";
 
       <!-- In-Page Themed Consent & Changes Prompt Card -->
       <div id="simPromptModal" class="fixed bottom-6 right-6 z-50 max-w-sm w-full hidden">
-        <div class="bg-[#191D1A] border border-[#2B312C] rounded-2xl p-5 shadow-[0_20px_45px_-10px_rgba(0,0,0,0.7),0_4px_12px_rgba(0,0,0,0.4)] space-y-3.5 animate-[magicFillSlideUp_0.25s_cubic-bezier(0.16,1,0.3,1)]">
-          <div class="flex items-center justify-between pb-3 border-b border-[#2B312C]">
+        <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-2xl space-y-3.5 animate-[magicFillSlideUp_0.25s_cubic-bezier(0.16,1,0.3,1)]">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-200">
             <div class="flex items-center gap-2.5">
-              <span class="w-6 h-6 rounded-md bg-[#B7F34A]/10 text-[#B7F34A] flex items-center justify-center border border-[#B7F34A]/25 text-xs font-mono">
+              <span class="w-6 h-6 rounded-md bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-200 text-xs font-mono">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
               </span>
               <div>
-                <span id="simPromptTitle" class="text-xs font-bold text-white block">Update Saved Information</span>
-                <span id="simPromptBadge" class="text-[10px] font-mono text-[#B7F34A] font-semibold flex items-center gap-1">
+                <span id="simPromptTitle" class="text-xs font-bold text-slate-900 block">Update Saved Information</span>
+                <span id="simPromptBadge" class="text-[11px] font-mono text-blue-600 font-semibold flex items-center gap-1">
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 2v6h-6"></path><path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path><path d="M3 22v-6h6"></path><path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path></svg>
                   <span>Changed Data Detected</span>
                 </span>
               </div>
             </div>
-            <button type="button" id="closeSimPrompt" class="text-[#5E665E] hover:text-white text-xl leading-none cursor-pointer">&times;</button>
+            <button type="button" id="closeSimPrompt" class="text-slate-400 hover:text-slate-700 text-xl leading-none cursor-pointer">&times;</button>
           </div>
-          <p id="simPromptDesc" class="text-xs text-white leading-relaxed">
-            Your previously saved information is '<span id="descOldVal" class="font-bold text-[#f43f5e]"></span>'. Do you want to update it to '<span id="descNewVal" class="font-bold text-[#B7F34A]"></span>'?
+          <p id="simPromptDesc" class="text-xs text-slate-700 leading-relaxed">
+            Your previously saved information is '<span id="descOldVal" class="font-bold text-rose-600"></span>'. Do you want to update it to '<span id="descNewVal" class="font-bold text-emerald-600"></span>'?
           </p>
-          <div id="simPromptDiff" class="bg-[#141715] border border-[#2B312C] rounded-lg p-2.5 text-xs space-y-1.5 font-mono">
+          <div id="simPromptDiff" class="bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs space-y-1.5 font-mono">
             <!-- Diff details -->
           </div>
           <div class="flex items-center justify-end gap-2 pt-1">
-            <button type="button" id="dismissSimPrompt" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[#A1AAA1] bg-[#141715] border border-[#2B312C] hover:text-white hover:border-[#B7F34A] transition-all cursor-pointer">
+            <button type="button" id="dismissSimPrompt" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 transition-all cursor-pointer">
               No
             </button>
-            <button type="button" id="confirmSimPrompt" class="px-4 py-1.5 rounded-lg text-xs font-bold text-[#0B0D0C] bg-[#B7F34A] hover:bg-[#c9f66d] cursor-pointer shadow-[0_2px_10px_rgba(183,243,74,0.18)] transition-all">
+            <button type="button" id="confirmSimPrompt" class="px-4 py-1.5 rounded-lg text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 cursor-pointer shadow-xs transition-all">
               Yes, Update
             </button>
           </div>
@@ -523,30 +523,30 @@ import Base from "@/layouts/Base.astro";
   <!-- Interactive Simulator Logic & Custom Feedback Styles -->
   <style>
     @keyframes magicFillSuccessPop {
-      0% { transform: scale(0.99); box-shadow: 0 0 0 0 rgba(183, 243, 74, 0.6); }
-      50% { transform: scale(1.006); box-shadow: 0 0 0 5px rgba(183, 243, 74, 0.25); }
-      100% { transform: scale(1); box-shadow: 0 0 0 3px rgba(183, 243, 74, 0.25); }
+      0% { transform: scale(0.99); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+      50% { transform: scale(1.008); box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.25); }
+      100% { transform: scale(1); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.18); }
     }
     @keyframes magicFillMissingPulse {
-      0% { transform: scale(0.99); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.6); }
-      50% { transform: scale(1.006); box-shadow: 0 0 0 5px rgba(244, 63, 94, 0.25); }
-      100% { transform: scale(1); box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.25); }
+      0% { transform: scale(0.99); box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.4); }
+      50% { transform: scale(1.008); box-shadow: 0 0 0 5px rgba(225, 29, 72, 0.2); }
+      100% { transform: scale(1); box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.15); }
     }
     @keyframes magicFillSlideUp {
       from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
     .magic-fill-matched {
-      border-color: #B7F34A !important;
-      background-color: rgba(183, 243, 74, 0.05) !important;
-      box-shadow: 0 0 0 3px rgba(183, 243, 74, 0.25) !important;
+      border: 2px solid #2563EB !important;
+      background-color: #EFF6FF !important;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.18) !important;
       animation: magicFillSuccessPop 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
       transition: all 0.3s ease !important;
     }
     .magic-fill-missing {
-      border-color: #f43f5e !important;
-      background-color: rgba(244, 63, 94, 0.05) !important;
-      box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.25) !important;
+      border: 2px solid #E11D48 !important;
+      background-color: #FFF1F2 !important;
+      box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.15) !important;
       animation: magicFillMissingPulse 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
       transition: all 0.3s ease !important;
     }
@@ -597,6 +597,7 @@ import Base from "@/layouts/Base.astro";
           el.classList.remove("magic-fill-matched", "magic-fill-missing");
           el.removeAttribute("data-magic-fill-status");
         });
+        document.querySelectorAll(".magic-fill-matched-pill").forEach((p) => p.remove());
       }
 
       function highlightField(el, isMatched) {
@@ -606,6 +607,21 @@ import Base from "@/layouts/Base.astro";
         if (isMatched) {
           el.classList.add("magic-fill-matched");
           el.setAttribute("data-magic-fill-status", "matched");
+
+          // Add tactile autofilled pill next to field label
+          const parent = el.closest(".space-y-1\\.5, .space-y-2, .space-y-3") || el.parentElement;
+          if (parent) {
+            const existingPill = parent.querySelector(".magic-fill-matched-pill");
+            if (!existingPill) {
+              const label = parent.querySelector("label");
+              if (label) {
+                const pill = document.createElement("span");
+                pill.className = "magic-fill-matched-pill ml-2 text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200 inline-flex items-center gap-1";
+                pill.innerHTML = `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>Autofilled</span>`;
+                label.appendChild(pill);
+              }
+            }
+          }
         } else {
           el.classList.add("magic-fill-missing");
           el.setAttribute("data-magic-fill-status", "missing");
@@ -696,7 +712,7 @@ import Base from "@/layouts/Base.astro";
         if (existing) existing.remove();
 
         const suggestion = document.createElement("div");
-        suggestion.className = "sim-file-suggestion mt-2.5 flex items-center justify-between gap-3 px-3 py-2 bg-[#191D1A] border border-[#2B312C] rounded-xl text-xs shadow-lg";
+        suggestion.className = "sim-file-suggestion mt-2.5 flex items-center justify-between gap-3 px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs shadow-md";
         suggestion.style.animation = "magicFillSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1)";
         
         const isPhoto = labelText.toLowerCase().includes("photo") || labelText.toLowerCase().includes("picture");
@@ -705,15 +721,15 @@ import Base from "@/layouts/Base.astro";
           : "Resume (PDF) found. Do you want to attach it?";
 
         suggestion.innerHTML = `
-          <div class="flex items-center gap-2 text-[#B7F34A]">
+          <div class="flex items-center gap-2 text-blue-600">
             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
             </svg>
-            <span class="text-white text-xs font-medium">${promptText}</span>
+            <span class="text-slate-800 text-xs font-semibold">${promptText}</span>
           </div>
           <div class="flex items-center gap-1.5">
-            <button type="button" class="btn-attach-now px-2.5 py-1 bg-[#B7F34A] text-[#0B0D0C] font-bold text-[11px] rounded-lg hover:bg-[#c9f66d] transition-all cursor-pointer shadow-[0_2px_8px_rgba(183,243,74,0.2)]">Attach</button>
-            <button type="button" class="btn-attach-cancel px-1.5 py-0.5 text-[#5E665E] hover:text-white text-base leading-none cursor-pointer">&times;</button>
+            <button type="button" class="btn-attach-now px-2.5 py-1 bg-blue-600 text-white font-bold text-[11px] rounded-lg hover:bg-blue-700 transition-all cursor-pointer shadow-xs">Attach</button>
+            <button type="button" class="btn-attach-cancel px-1.5 py-0.5 text-slate-400 hover:text-slate-700 text-base leading-none cursor-pointer">&times;</button>
           </div>
         `;
 
@@ -747,7 +763,7 @@ import Base from "@/layouts/Base.astro";
                   img.src = `data:image/jpeg;base64,${fileData}`;
                 } else {
                   // Elegant SVG user avatar fallback
-                  img.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%23141715'/><circle cx='50' cy='38' r='18' fill='%23B7F34A'/><path d='M20 84c0-16.5 13.5-30 30-30s30 13.5 30 30' fill='%23B7F34A' opacity='0.75'/></svg>";
+                  img.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%23F1F5F9'/><circle cx='50' cy='38' r='18' fill='%232563EB'/><path d='M20 84c0-16.5 13.5-30 30-30s30 13.5 30 30' fill='%232563EB' opacity='0.75'/></svg>";
                 }
               }
               if (nameEl) nameEl.textContent = fileName || "profile_picture.png";
@@ -761,8 +777,8 @@ import Base from "@/layouts/Base.astro";
             }
 
             btnAttach.textContent = "Attached";
-            btnAttach.classList.remove("bg-[#B7F34A]");
-            btnAttach.classList.add("bg-[#B7F34A]/80");
+            btnAttach.classList.remove("bg-blue-600");
+            btnAttach.classList.add("bg-emerald-600");
             highlightField(inputEl, true);
             highlightField(cell, true);
             setTimeout(() => {
@@ -980,7 +996,7 @@ import Base from "@/layouts/Base.astro";
               });
 
               if (statsBadge) {
-                statsBadge.innerHTML = `<span class="text-[#B7F34A] font-bold font-mono">${filledCount} Fields Completed</span> from Vault &bull; <span class="inline-flex items-center gap-1.5"><span class="size-1.5 rounded-full bg-[#B7F34A]"></span><span class="text-xs text-[#FFFFFF]">Matched</span></span> &bull; <span class="inline-flex items-center gap-1.5"><span class="size-1.5 rounded-full bg-[#f43f5e]"></span><span class="text-xs text-[#FFFFFF]">Missing</span></span> &bull; <span class="text-[#5E665E]">${fields.length - filledCount} Unmapped</span>`;
+                statsBadge.innerHTML = `<span class="text-blue-600 font-bold font-mono">${filledCount} Fields Completed</span> from Vault &bull; <span class="inline-flex items-center gap-1.5"><span class="size-1.5 rounded-full bg-blue-600"></span><span class="text-xs text-[#FFFFFF]">Matched</span></span> &bull; <span class="inline-flex items-center gap-1.5"><span class="size-1.5 rounded-full bg-[#f43f5e]"></span><span class="text-xs text-[#FFFFFF]">Missing</span></span> &bull; <span class="text-slate-400">${fields.length - filledCount} Unmapped</span>`;
               }
             } else {
               showSimPrompt({
@@ -1111,9 +1127,9 @@ import Base from "@/layouts/Base.astro";
           if (desc) {
             descEl.innerHTML = desc;
           } else if (savedVal && enteredVal) {
-            descEl.innerHTML = `Your previously saved information is '<strong class="text-[#f43f5e]">${savedVal}</strong>'. Do you want to update it to '<strong class="text-[#B7F34A]">${enteredVal}</strong>'?`;
+            descEl.innerHTML = `Your previously saved information is '<strong class="text-[#f43f5e]">${savedVal}</strong>'. Do you want to update it to '<strong class="text-blue-600">${enteredVal}</strong>'?`;
           } else {
-            descEl.innerHTML = `Do you want to save '<strong class="text-[#B7F34A]">${enteredVal}</strong>' to your personal memory vault?`;
+            descEl.innerHTML = `Do you want to save '<strong class="text-blue-600">${enteredVal}</strong>' to your personal memory vault?`;
           }
         }
 
@@ -1128,16 +1144,16 @@ import Base from "@/layouts/Base.astro";
                 <span class="text-[#f43f5e]/80 line-through truncate">${savedVal}</span>
               </div>
               <div class="flex items-center gap-2">
-                <span class="text-[#B7F34A] font-bold text-[10px] uppercase w-14 shrink-0">Entered:</span>
-                <span class="text-[#B7F34A] font-semibold truncate">${enteredVal || ''}</span>
+                <span class="text-blue-600 font-bold text-[10px] uppercase w-14 shrink-0">Entered:</span>
+                <span class="text-blue-600 font-semibold truncate">${enteredVal || ''}</span>
               </div>
             `;
           } else {
             diffEl.classList.remove("hidden");
             diffEl.innerHTML = `
               <div class="flex items-center gap-2">
-                <span class="text-[#B7F34A] font-bold text-[10px] uppercase w-14 shrink-0">New:</span>
-                <span class="text-[#B7F34A] font-semibold truncate">${enteredVal || ''}</span>
+                <span class="text-blue-600 font-bold text-[10px] uppercase w-14 shrink-0">New:</span>
+                <span class="text-blue-600 font-semibold truncate">${enteredVal || ''}</span>
               </div>
             `;
           }
@@ -1219,8 +1235,8 @@ import Base from "@/layouts/Base.astro";
                   const title = isUpdate ? "Update Saved Information" : "New Data Detected";
                   const badge = isUpdate ? "Changed Data Detected" : "New Information";
                   const desc = isUpdate
-                    ? `Your previously saved information is '<strong class="text-[#f43f5e]">${evalData.existing_value || "Empty"}</strong>'. Do you want to update it to '<strong class="text-[#B7F34A]">${evalData.new_value}</strong>'?`
-                    : `Magic Fill detected new information for <strong>${evalData.field_label || labelName}</strong>: '<strong class="text-[#B7F34A]">${evalData.new_value}</strong>'. Do you want to save it to your memory?`;
+                    ? `Your previously saved information is '<strong class="text-[#f43f5e]">${evalData.existing_value || "Empty"}</strong>'. Do you want to update it to '<strong class="text-blue-600">${evalData.new_value}</strong>'?`
+                    : `Magic Fill detected new information for <strong>${evalData.field_label || labelName}</strong>: '<strong class="text-blue-600">${evalData.new_value}</strong>'. Do you want to save it to your memory?`;
 
                   showSimPrompt({
                     title: title,
@@ -1260,7 +1276,7 @@ import Base from "@/layouts/Base.astro";
             showSimPrompt({
               title: "Update Saved Information",
               badge: "Changed Data Detected",
-              desc: `Your previously saved information is '<strong class="text-[#f43f5e]">${prevVal}</strong>'. Do you want to update it to '<strong class="text-[#B7F34A]">${currentVal}</strong>'?`,
+              desc: `Your previously saved information is '<strong class="text-[#f43f5e]">${prevVal}</strong>'. Do you want to update it to '<strong class="text-blue-600">${currentVal}</strong>'?`,
               savedVal: prevVal,
               enteredVal: currentVal,
               btnText: "Yes, Update",
@@ -1276,7 +1292,7 @@ import Base from "@/layouts/Base.astro";
             showSimPrompt({
               title: "New Data Detected",
               badge: "New Information",
-              desc: `Magic Fill detected new information for <strong>${labelName}</strong>: '<strong class="text-[#B7F34A]">${currentVal}</strong>'. Do you want to save it to your memory?`,
+              desc: `Magic Fill detected new information for <strong>${labelName}</strong>: '<strong class="text-blue-600">${currentVal}</strong>'. Do you want to save it to your memory?`,
               savedVal: "",
               enteredVal: currentVal,
               btnText: "Yes, Save",
@@ -1303,7 +1319,7 @@ import Base from "@/layouts/Base.astro";
           showSimPrompt({
             title: "Update Saved Information",
             badge: "Changed Data Detected",
-            desc: `Your previously saved information is '<strong class="text-[#f43f5e]">${prevName}</strong>'. Do you want to update it to '<strong class="text-[#B7F34A]">${name}</strong>'?`,
+            desc: `Your previously saved information is '<strong class="text-[#f43f5e]">${prevName}</strong>'. Do you want to update it to '<strong class="text-blue-600">${name}</strong>'?`,
             savedVal: prevName,
             enteredVal: name,
             btnText: "Yes, Update",

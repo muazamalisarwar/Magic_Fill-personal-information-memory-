@@ -29,46 +29,47 @@
     style.id = "magic-fill-status-styles";
     style.textContent = `
       @keyframes magicFillSuccessPop {
-        0% { transform: scale(0.99); box-shadow: 0 0 0 0 rgba(183, 243, 74, 0.6); }
-        50% { transform: scale(1.006); box-shadow: 0 0 0 5px rgba(183, 243, 74, 0.25); }
-        100% { transform: scale(1); box-shadow: 0 0 0 3px rgba(183, 243, 74, 0.25); }
+        0% { transform: scale(0.985); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.45); }
+        45% { transform: scale(1.012); box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.28), 0 4px 12px rgba(37, 99, 235, 0.16); }
+        100% { transform: scale(1); box-shadow: 0 0 0 3.5px rgba(37, 99, 235, 0.22), 0 2px 6px rgba(37, 99, 235, 0.1); }
       }
       @keyframes magicFillMissingPulse {
-        0% { transform: scale(0.99); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.6); }
-        50% { transform: scale(1.006); box-shadow: 0 0 0 5px rgba(244, 63, 94, 0.25); }
-        100% { transform: scale(1); box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.25); }
+        0% { transform: scale(0.99); box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.4); }
+        50% { transform: scale(1.008); box-shadow: 0 0 0 5px rgba(225, 29, 72, 0.2); }
+        100% { transform: scale(1); box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.15); }
       }
       @keyframes magicFillSlideUp {
         from { opacity: 0; transform: translateY(6px); }
         to { opacity: 1; transform: translateY(0); }
       }
       [data-magic-fill-status="matched"] {
-        border: 2px solid #B7F34A !important;
-        box-shadow: 0 0 0 3px rgba(183, 243, 74, 0.25) !important;
-        background-color: rgba(183, 243, 74, 0.05) !important;
-        transition: border-color 0.35s ease, box-shadow 0.35s ease, background-color 0.35s ease !important;
+        border: 2px solid #2563EB !important;
+        box-shadow: 0 0 0 3.5px rgba(37, 99, 235, 0.22), 0 2px 6px rgba(37, 99, 235, 0.1) !important;
+        background-color: #EFF6FF !important;
+        color: #0F172A !important;
+        transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease !important;
         animation: magicFillSuccessPop 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
       }
       [data-magic-fill-status="missing"] {
-        border: 2px solid #f43f5e !important;
-        box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.25) !important;
-        background-color: rgba(244, 63, 94, 0.05) !important;
+        border: 2px solid #E11D48 !important;
+        box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.18) !important;
+        background-color: rgba(225, 29, 72, 0.05) !important;
         transition: border-color 0.35s ease, box-shadow 0.35s ease, background-color 0.35s ease !important;
         animation: magicFillMissingPulse 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
       }
       .modern-radio-group[data-magic-fill-status="matched"],
       .modern-checkbox-wrap[data-magic-fill-status="matched"],
       fieldset[data-magic-fill-status="matched"] {
-        border: 1px solid #B7F34A !important;
-        box-shadow: 0 0 0 2px rgba(183, 243, 74, 0.2) !important;
-        background-color: rgba(183, 243, 74, 0.03) !important;
+        border: 1px solid #2563EB !important;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+        background-color: rgba(37, 99, 235, 0.04) !important;
       }
       .modern-radio-group[data-magic-fill-status="missing"],
       .modern-checkbox-wrap[data-magic-fill-status="missing"],
       fieldset[data-magic-fill-status="missing"] {
-        border: 1px solid #f43f5e !important;
-        box-shadow: 0 0 0 2px rgba(244, 63, 94, 0.2) !important;
-        background-color: rgba(244, 63, 94, 0.03) !important;
+        border: 1px solid #E11D48 !important;
+        box-shadow: 0 0 0 2px rgba(225, 29, 72, 0.15) !important;
+        background-color: rgba(225, 29, 72, 0.03) !important;
       }
     `;
     (document.head || document.documentElement).appendChild(style);
@@ -635,37 +636,37 @@
       align-items: center;
       gap: 10px;
       padding: 7px 12px;
-      background: #191D1A;
-      border: 1px solid #2B312C;
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
       border-radius: 10px;
       margin-top: 8px;
       font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
       font-size: 12px;
-      color: #FFFFFF;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+      color: #0F172A;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
       animation: magicFillSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 9999;
     `;
     suggestion.innerHTML = `
-      <div style="color: #B7F34A; display: flex; align-items: center; flex-shrink: 0;">${iconSvg}</div>
-      <span style="color: #A1AAA1; line-height: 1.3;"><strong style="color: #FFFFFF;">${escapeHtml(promptText)}</strong></span>
+      <div style="color: #2563EB; display: flex; align-items: center; flex-shrink: 0;">${iconSvg}</div>
+      <span style="color: #475569; line-height: 1.3;"><strong style="color: #0F172A;">${escapeHtml(promptText)}</strong></span>
       <div style="display: flex; align-items: center; gap: 6px; margin-left: 4px;">
         <button type="button" class="btn-attach-confirm" style="
-          background: #B7F34A;
-          color: #0B0D0C;
-          border: 1px solid #B7F34A;
+          background: #2563EB;
+          color: #FFFFFF;
+          border: 1px solid #2563EB;
           border-radius: 6px;
           padding: 4px 11px;
           font-size: 11.5px;
           font-weight: 700;
           cursor: pointer;
-          box-shadow: 0 2px 8px rgba(183, 243, 74, 0.2);
+          box-shadow: 0 1px 3px rgba(37, 99, 235, 0.2);
           transition: all 0.15s ease;
         ">Attach</button>
         <button type="button" class="btn-attach-dismiss" title="Dismiss" style="
           background: none;
           border: none;
-          color: #5E665E;
+          color: #64748B;
           font-size: 16px;
           cursor: pointer;
           line-height: 1;
@@ -683,8 +684,8 @@
       confirmBtn.textContent = "Attaching...";
       try {
         attachFileToInput(el, mapping);
-        confirmBtn.style.background = "#B7F34A";
-        confirmBtn.style.color = "#0B0D0C";
+        confirmBtn.style.background = "#2563EB";
+        confirmBtn.style.color = "#FFFFFF";
         confirmBtn.textContent = "✓ Attached!";
         el.setAttribute("data-magic-fill-status", "matched");
         const wrap = el.closest(".form-input-group, .portal-file-cell, div");
@@ -758,13 +759,13 @@
         previewEl = document.createElement("div");
         previewEl.id = `mf-img-prev-${mapping.field_id}`;
         previewEl.className = "magic-fill-preview-thumbnail";
-        previewEl.style.cssText = "display:inline-flex; align-items:center; gap:10px; margin-top:8px; padding:6px 10px; background:#191D1A; border:1px solid #2B312C; border-radius:10px; font-family:'Plus Jakarta Sans',sans-serif; font-size:11.5px; color:#FFFFFF; box-shadow:0 4px 12px rgba(0,0,0,0.3);";
+        previewEl.style.cssText = "display:inline-flex; align-items:center; gap:10px; margin-top:8px; padding:6px 10px; background:#FFFFFF; border:1px solid #CBD5E1; border-radius:10px; font-family:'Plus Jakarta Sans',sans-serif; font-size:11.5px; color:#0F172A; box-shadow:0 2px 8px rgba(0,0,0,0.06);";
         const imgSrc = rawVal.startsWith("data:") ? rawVal : `data:${mime};base64,${base64Data}`;
         previewEl.innerHTML = `
-          <img src="${imgSrc}" style="width:40px; height:40px; border-radius:8px; object-fit:cover; border:1px solid #2B312C; background:#0B0D0C;" alt="Attached preview" />
+          <img src="${imgSrc}" style="width:40px; height:40px; border-radius:8px; object-fit:cover; border:1px solid #E2E8F0; background:#F8FAFC;" alt="Attached preview" />
           <div>
-            <span style="color:#B7F34A; font-weight:700; display:block; font-size:11px;">✓ Attached from Memory</span>
-            <span style="color:#A1AAA1; font-size:10px; font-family:monospace;">${escapeHtml(filename)}</span>
+            <span style="color:#2563EB; font-weight:700; display:block; font-size:11.5px;">✓ Attached from Memory</span>
+            <span style="color:#64748B; font-size:11px; font-family:monospace;">${escapeHtml(filename)}</span>
           </div>
         `;
         if (el.nextSibling) {
@@ -1236,13 +1237,13 @@
           font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
         .prompt-card {
-          background: #191D1A;
-          border: 1px solid #2B312C;
+          background: #FFFFFF;
+          border: 1px solid #CBD5E1;
           border-radius: 16px;
-          box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.65), 0 4px 12px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.05);
           padding: 16px 18px;
           width: 360px;
-          color: #FFFFFF;
+          color: #0F172A;
           animation: mfSlideIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
         }
         @keyframes mfSlideIn {
@@ -1261,15 +1262,15 @@
           gap: 8px;
         }
         .logo-icon {
-          background: rgba(183, 243, 74, 0.12);
-          border: 1px solid rgba(183, 243, 74, 0.25);
+          background: #EFF6FF;
+          border: 1px solid #DBEAFE;
           width: 24px;
           height: 24px;
           border-radius: 6px;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #B7F34A;
+          color: #2563EB;
           flex-shrink: 0;
         }
         .badge {
@@ -1281,28 +1282,28 @@
           font-family: 'JetBrains Mono', ui-monospace, monospace;
         }
         .badge-update {
-          background: rgba(183, 243, 74, 0.12);
-          color: #B7F34A;
-          border: 1px solid rgba(183, 243, 74, 0.25);
+          background: #EFF6FF;
+          color: #2563EB;
+          border: 1px solid #DBEAFE;
         }
         .badge-new {
-          background: rgba(183, 243, 74, 0.12);
-          color: #B7F34A;
-          border: 1px solid rgba(183, 243, 74, 0.25);
+          background: #EFF6FF;
+          color: #2563EB;
+          border: 1px solid #DBEAFE;
         }
         .text-old {
-          color: #f43f5e;
+          color: #E11D48;
           font-weight: 600;
         }
         .text-new {
-          color: #B7F34A;
+          color: #16A34A;
           font-weight: 600;
         }
         .close-btn {
           background: transparent;
           border: 1px solid transparent;
           border-radius: 6px;
-          color: #7A857A;
+          color: #64748B;
           width: 24px;
           height: 24px;
           display: flex;
@@ -1312,22 +1313,22 @@
           transition: all 0.15s ease;
         }
         .close-btn:hover {
-          color: #FFFFFF;
-          background: rgba(255, 255, 255, 0.06);
-          border-color: #2B312C;
+          color: #0F172A;
+          background: #F1F5F9;
+          border-color: #E2E8F0;
         }
         .close-btn:active {
           transform: scale(0.92);
         }
         .desc-text {
           font-size: 12.5px;
-          color: #A1AAA1;
+          color: #475569;
           margin-bottom: 10px;
           line-height: 1.45;
         }
         .diff-card {
-          background: #141715;
-          border: 1px solid #2B312C;
+          background: #F8FAFC;
+          border: 1px solid #E2E8F0;
           border-radius: 8px;
           padding: 8px 10px;
           margin-bottom: 12px;
@@ -1348,24 +1349,24 @@
           width: 48px;
           flex-shrink: 0;
         }
-        .old-tag { color: #f43f5e; }
-        .new-tag { color: #B7F34A; }
+        .old-tag { color: #E11D48; }
+        .new-tag { color: #16A34A; }
         .old-val {
-          color: #f43f5e;
+          color: #E11D48;
           opacity: 0.8;
           text-decoration: line-through;
           font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
           word-break: break-all;
         }
         .new-val {
-          color: #B7F34A;
+          color: #16A34A;
           font-weight: 700;
           font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
           word-break: break-all;
         }
         .info-card {
-          background: #141715;
-          border: 1px solid #2B312C;
+          background: #F8FAFC;
+          border: 1px solid #E2E8F0;
           border-radius: 8px;
           padding: 8px 10px;
           margin-bottom: 12px;
@@ -1373,18 +1374,18 @@
         .field-title {
           font-weight: 700;
           font-size: 12px;
-          color: #FFFFFF;
+          color: #0F172A;
           margin-bottom: 2px;
         }
         .field-value {
-          color: #B7F34A;
+          color: #2563EB;
           font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
           font-size: 11.5px;
           word-break: break-all;
         }
         .helper-text {
           font-size: 11.5px;
-          color: #A1AAA1;
+          color: #64748B;
           margin-bottom: 12px;
         }
         .btn-row {
@@ -1394,9 +1395,9 @@
           align-items: center;
         }
         .btn-secondary {
-          background: #141715;
-          border: 1px solid #2B312C;
-          color: #A1AAA1;
+          background: #FFFFFF;
+          border: 1px solid #CBD5E1;
+          color: #475569;
           border-radius: 8px;
           padding: 7px 14px;
           font-size: 12px;
@@ -1405,28 +1406,28 @@
           transition: all 0.15s ease;
         }
         .btn-secondary:hover {
-          background: #191D1A;
-          color: #FFFFFF;
-          border-color: #B7F34A;
+          background: #F1F5F9;
+          color: #0F172A;
+          border-color: #94A3B8;
         }
         .btn-secondary:active, .btn-primary:active {
           transform: scale(0.98);
         }
         .btn-primary {
-          background: #B7F34A;
-          border: 1px solid #B7F34A;
-          color: #0B0D0C;
+          background: #2563EB;
+          border: 1px solid #2563EB;
+          color: #FFFFFF;
           border-radius: 8px;
           padding: 7px 16px;
           font-size: 12px;
           font-weight: 700;
           cursor: pointer;
-          box-shadow: 0 2px 10px rgba(183, 243, 74, 0.2);
+          box-shadow: 0 1px 3px rgba(37, 99, 235, 0.25);
           transition: all 0.15s ease;
         }
         .btn-primary:hover {
-          background: #c9f66d;
-          border-color: #c9f66d;
+          background: #1D4ED8;
+          border-color: #1D4ED8;
         }
       </style>
       <div class="prompt-card">
@@ -1513,9 +1514,9 @@
                 });
               }
 
-              saveBtn.style.background = "#B7F34A";
-              saveBtn.style.borderColor = "#B7F34A";
-              saveBtn.style.color = "#0B0D0C";
+              saveBtn.style.background = "#2563EB";
+              saveBtn.style.borderColor = "#2563EB";
+              saveBtn.style.color = "#FFFFFF";
               saveBtn.innerText = isUpdate ? "✓ Updated Memory!" : "✓ Saved to Memory!";
               setTimeout(closePrompt, 1600);
             } else {

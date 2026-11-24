@@ -2,42 +2,42 @@
 // Live Interactive Form Autofill Simulator for Magic Fill
 ---
 
-<section id="live-simulator" class="section relative overflow-hidden py-24 bg-transparent scroll-mt-20">
+<section id="live-simulator" class="section relative overflow-hidden py-20 bg-transparent scroll-mt-20">
   <div class="container">
     <div class="section-container">
-      <div class="section-intro centralize text-center mb-16">
-        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[#2F6307] dark:text-[#B7F34A] mb-2 font-mono">
+      <div class="section-intro centralize text-center mb-14">
+        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-blue-600 mb-2 font-mono">
           Interactive Form Simulator
         </p>
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white hasHighlight mb-4">
-          Experience Instant <strong class="text-[#2F6307] dark:text-[#B7F34A]">1-Click Form Autofill</strong>
+        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 hasHighlight mb-3">
+          Experience Instant <strong>1-Click Form Autofill</strong>
         </h2>
-        <p class="text-slate-600 dark:text-[#A1AAA1] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+        <p class="text-slate-600 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
           Test Magic Fill on a simulated engineering job application. See how personal identity, credentials, and custom career experiences map with exact accuracy.
         </p>
       </div>
 
       <div class="section-content max-w-4xl mx-auto">
         <!-- Simulator Card Container -->
-        <div data-card-spotlight class="reveal-on-scroll bg-[#191D1A] border border-[#2B312C] rounded-2xl shadow-xl relative overflow-hidden transition-all duration-300 hover:border-[#B7F34A]/40">
+        <div data-card-spotlight class="reveal-on-scroll bg-white border border-slate-200 rounded-2xl shadow-xl relative overflow-hidden transition-all duration-300 hover:border-slate-300">
           
           <!-- Top simulated browser navigation bar -->
-          <div class="flex items-center justify-between px-5 py-3.5 border-b border-[#2B312C] bg-[#141715] flex-wrap gap-3">
+          <div class="flex items-center justify-between px-5 py-3.5 border-b border-slate-200 bg-slate-50 flex-wrap gap-3">
             <div class="flex items-center gap-3">
               <!-- Window dots -->
               <div class="flex gap-1.5 items-center">
-                <span class="w-2.5 h-2.5 rounded-full bg-slate-400 dark:bg-[#2B312C]"></span>
-                <span class="w-2.5 h-2.5 rounded-full bg-slate-400 dark:bg-[#2B312C]"></span>
-                <span class="w-2.5 h-2.5 rounded-full bg-slate-400 dark:bg-[#2B312C]"></span>
+                <span class="w-3 h-3 rounded-full bg-slate-300"></span>
+                <span class="w-3 h-3 rounded-full bg-slate-300"></span>
+                <span class="w-3 h-3 rounded-full bg-slate-300"></span>
               </div>
               
               <!-- Address Well -->
-              <div class="bg-white dark:bg-[#0B0D0C] border border-slate-200 dark:border-[#2B312C] rounded-lg px-3 py-1 text-xs text-slate-700 dark:text-white font-mono flex items-center gap-2">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-[#2F6307] dark:text-[#B7F34A]">
+              <div class="bg-white border border-slate-200 rounded-lg px-3 py-1 text-xs text-slate-700 font-mono flex items-center gap-2 shadow-xs">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-blue-600">
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                   <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                 </svg>
-                <span class="text-slate-600 dark:text-[#A1AAA1]">careers.acme-cloud.io/apply/platform-architect</span>
+                <span class="text-slate-600">careers.acme-cloud.io/apply/platform-architect</span>
               </div>
             </div>
 
@@ -46,9 +46,9 @@
               <button
                 type="button"
                 id="btnSimulateAutofill"
-                class="rounded-xl px-4 py-2 text-xs font-bold bg-[#B7F34A] hover:bg-[#c9f66d] text-[#0B0D0C] shadow-[0_0_15px_rgba(183,243,74,0.15)] transition-all cursor-pointer flex items-center gap-1.5 group"
+                class="rounded-xl px-4 py-2 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-xs hover:shadow-sm active:scale-95 transition-all cursor-pointer flex items-center gap-1.5 group"
               >
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="group-hover:rotate-12 transition-transform">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="group-hover:rotate-12 transition-transform">
                   <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="currentColor"></polygon>
                 </svg>
                 <span>Run Autofill</span>
@@ -57,7 +57,7 @@
               <button
                 type="button"
                 id="btnClearSimForm"
-                class="rounded-xl px-3.5 py-2 text-xs font-medium bg-white dark:bg-[#141715] text-slate-700 dark:text-[#A1AAA1] border border-slate-300 dark:border-[#2B312C] hover:bg-slate-100 dark:hover:bg-[#191D1A] hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer"
+                class="rounded-xl px-3.5 py-2 text-xs font-semibold bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 hover:text-slate-900 transition-all cursor-pointer shadow-xs"
               >
                 Reset
               </button>
@@ -65,23 +65,23 @@
           </div>
 
           <!-- Status Banner -->
-          <div id="simAutofillSuccess" class="hidden px-5 py-3 border-b border-emerald-500/30 dark:border-[#B7F34A]/30 bg-emerald-500/10 dark:bg-[#B7F34A]/10 text-emerald-950 dark:text-white text-xs flex items-center justify-between">
+          <div id="simAutofillSuccess" class="hidden px-5 py-3 border-b border-emerald-200 bg-emerald-50 text-emerald-900 text-xs flex items-center justify-between transition-all">
             <div class="flex items-center gap-2 font-medium">
-              <span class="w-4 h-4 rounded-full bg-[#B7F34A] text-[#0B0D0C] grid place-items-center">
+              <span class="w-4 h-4 rounded-full bg-emerald-600 text-white grid place-items-center">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
               </span>
-              <span>All 7 fields completed from verified personal memory vault.</span>
+              <span class="font-semibold text-emerald-900">All 7 fields completed from verified personal memory vault.</span>
             </div>
-            <span class="text-[11px] font-mono font-bold text-[#2F6307] dark:text-[#B7F34A]">0.12s execution</span>
+            <span class="text-xs font-mono font-bold text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-md border border-emerald-200">0.12s execution</span>
           </div>
 
           <!-- Simulated Application Form Body -->
           <div class="p-6 sm:p-8">
-            <div class="mb-6 pb-4 border-b border-slate-200 dark:border-[#2B312C]">
-              <h3 class="text-lg font-bold text-slate-900 dark:text-white">
+            <div class="mb-6 pb-4 border-b border-slate-200">
+              <h3 class="text-lg font-bold text-slate-900">
                 Application for Senior Platform Architect
               </h3>
-              <p class="text-xs text-slate-500 dark:text-[#A1AAA1] mt-1">
+              <p class="text-xs text-slate-500 mt-1">
                 San Francisco, CA &bull; Full-time &bull; Platform Engineering
               </p>
             </div>
@@ -90,142 +90,164 @@
               <!-- Full Name -->
               <div class="relative">
                 <div class="flex justify-between items-center mb-1.5">
-                  <label for="simName" class="block text-xs font-semibold text-slate-800 dark:text-white">
-                    Legal Full Name <span class="text-[#2F6307] dark:text-[#B7F34A]">*</span>
+                  <label for="simName" class="block text-xs font-semibold text-slate-800">
+                    Legal Full Name <span class="text-blue-600">*</span>
                   </label>
-                  <span id="badge-simName" class="hidden text-[10px] font-bold text-[#2F6307] dark:text-[#B7F34A] font-mono inline-flex items-center gap-1"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>Matched</span></span>
+                  <span id="badge-simName" class="hidden text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200 font-mono inline-flex items-center gap-1">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span>Autofilled from Vault</span>
+                  </span>
                 </div>
                 <input
                   type="text"
                   id="simName"
                   placeholder="e.g. Alex Morgan"
-                  class="sim-input-field w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-[#2B312C] bg-white dark:bg-[#141715] text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#5E665E] focus:outline-none focus:border-[#2F6307] dark:focus:border-[#B7F34A] focus:ring-1 focus:ring-[#2F6307]/30 dark:focus:ring-[#B7F34A]/30 transition-all font-sans"
+                  class="sim-input-field w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all font-sans"
                 />
               </div>
 
               <!-- Email Address -->
               <div class="relative">
                 <div class="flex justify-between items-center mb-1.5">
-                  <label for="simEmail" class="block text-xs font-semibold text-slate-800 dark:text-white">
-                    Email Address <span class="text-[#2F6307] dark:text-[#B7F34A]">*</span>
+                  <label for="simEmail" class="block text-xs font-semibold text-slate-800">
+                    Email Address <span class="text-blue-600">*</span>
                   </label>
-                  <span id="badge-simEmail" class="hidden text-[10px] font-bold text-[#2F6307] dark:text-[#B7F34A] font-mono inline-flex items-center gap-1"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>Matched</span></span>
+                  <span id="badge-simEmail" class="hidden text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200 font-mono inline-flex items-center gap-1">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span>Autofilled from Vault</span>
+                  </span>
                 </div>
                 <input
                   type="email"
                   id="simEmail"
                   placeholder="alex.morgan@domain.com"
-                  class="sim-input-field w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-[#2B312C] bg-white dark:bg-[#141715] text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#5E665E] focus:outline-none focus:border-[#2F6307] dark:focus:border-[#B7F34A] focus:ring-1 focus:ring-[#2F6307]/30 dark:focus:ring-[#B7F34A]/30 transition-all font-sans"
+                  class="sim-input-field w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all font-sans"
                 />
               </div>
 
               <!-- Phone Number -->
               <div class="relative">
                 <div class="flex justify-between items-center mb-1.5">
-                  <label for="simPhone" class="block text-xs font-semibold text-slate-800 dark:text-white">
-                    Phone Number <span class="text-[#2F6307] dark:text-[#B7F34A]">*</span>
+                  <label for="simPhone" class="block text-xs font-semibold text-slate-800">
+                    Phone Number <span class="text-blue-600">*</span>
                   </label>
-                  <span id="badge-simPhone" class="hidden text-[10px] font-bold text-[#2F6307] dark:text-[#B7F34A] font-mono inline-flex items-center gap-1"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>Matched</span></span>
+                  <span id="badge-simPhone" class="hidden text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200 font-mono inline-flex items-center gap-1">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span>Autofilled from Vault</span>
+                  </span>
                 </div>
                 <input
                   type="tel"
                   id="simPhone"
                   placeholder="+1 (555) 349-2041"
-                  class="sim-input-field w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-[#2B312C] bg-white dark:bg-[#141715] text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#5E665E] focus:outline-none focus:border-[#2F6307] dark:focus:border-[#B7F34A] focus:ring-1 focus:ring-[#2F6307]/30 dark:focus:ring-[#B7F34A]/30 transition-all font-sans"
+                  class="sim-input-field w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all font-sans"
                 />
               </div>
 
               <!-- Education -->
               <div class="relative">
                 <div class="flex justify-between items-center mb-1.5">
-                  <label for="simEducation" class="block text-xs font-semibold text-slate-800 dark:text-white">
-                    Degree &amp; Institution <span class="text-[#2F6307] dark:text-[#B7F34A]">*</span>
+                  <label for="simEducation" class="block text-xs font-semibold text-slate-800">
+                    Degree &amp; Institution <span class="text-blue-600">*</span>
                   </label>
-                  <span id="badge-simEducation" class="hidden text-[10px] font-bold text-[#2F6307] dark:text-[#B7F34A] font-mono inline-flex items-center gap-1"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>Matched</span></span>
+                  <span id="badge-simEducation" class="hidden text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200 font-mono inline-flex items-center gap-1">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span>Autofilled from Vault</span>
+                  </span>
                 </div>
                 <input
                   type="text"
                   id="simEducation"
                   placeholder="M.S. in Computer Science — Stanford University"
-                  class="sim-input-field w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-[#2B312C] bg-white dark:bg-[#141715] text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#5E665E] focus:outline-none focus:border-[#2F6307] dark:focus:border-[#B7F34A] focus:ring-1 focus:ring-[#2F6307]/30 dark:focus:ring-[#B7F34A]/30 transition-all font-sans"
+                  class="sim-input-field w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all font-sans"
                 />
               </div>
 
               <!-- Recent Experience -->
               <div class="relative sm:col-span-2">
                 <div class="flex justify-between items-center mb-1.5">
-                  <label for="simExperience" class="block text-xs font-semibold text-slate-800 dark:text-white">
-                    Current / Most Recent Organization <span class="text-[#2F6307] dark:text-[#B7F34A]">*</span>
+                  <label for="simExperience" class="block text-xs font-semibold text-slate-800">
+                    Current / Most Recent Organization <span class="text-blue-600">*</span>
                   </label>
-                  <span id="badge-simExperience" class="hidden text-[10px] font-bold text-[#2F6307] dark:text-[#B7F34A] font-mono inline-flex items-center gap-1"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>Matched</span></span>
+                  <span id="badge-simExperience" class="hidden text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200 font-mono inline-flex items-center gap-1">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span>Autofilled from Vault</span>
+                  </span>
                 </div>
                 <input
                   type="text"
                   id="simExperience"
                   placeholder="Staff Distributed Systems Architect at Stripe (2022 – Present)"
-                  class="sim-input-field w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-[#2B312C] bg-white dark:bg-[#141715] text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#5E665E] focus:outline-none focus:border-[#2F6307] dark:focus:border-[#B7F34A] focus:ring-1 focus:ring-[#2F6307]/30 dark:focus:ring-[#B7F34A]/30 transition-all font-sans"
+                  class="sim-input-field w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all font-sans"
                 />
               </div>
 
               <!-- Portfolio / GitHub URL -->
               <div class="relative">
                 <div class="flex justify-between items-center mb-1.5">
-                  <label for="simPortfolio" class="block text-xs font-semibold text-slate-800 dark:text-white">
+                  <label for="simPortfolio" class="block text-xs font-semibold text-slate-800">
                     GitHub / Portfolio URL
                   </label>
-                  <span id="badge-simPortfolio" class="hidden text-[10px] font-bold text-[#2F6307] dark:text-[#B7F34A] font-mono inline-flex items-center gap-1"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>Matched</span></span>
+                  <span id="badge-simPortfolio" class="hidden text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200 font-mono inline-flex items-center gap-1">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span>Autofilled from Vault</span>
+                  </span>
                 </div>
                 <input
                   type="url"
                   id="simPortfolio"
                   placeholder="https://github.com/alexmorgan-dev"
-                  class="sim-input-field w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-[#2B312C] bg-white dark:bg-[#141715] text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#5E665E] focus:outline-none focus:border-[#2F6307] dark:focus:border-[#B7F34A] focus:ring-1 focus:ring-[#2F6307]/30 dark:focus:ring-[#B7F34A]/30 transition-all font-sans"
+                  class="sim-input-field w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all font-sans"
                 />
               </div>
 
               <!-- LinkedIn Profile -->
               <div class="relative">
                 <div class="flex justify-between items-center mb-1.5">
-                  <label for="simLinkedin" class="block text-xs font-semibold text-slate-800 dark:text-white">
+                  <label for="simLinkedin" class="block text-xs font-semibold text-slate-800">
                     LinkedIn Profile
                   </label>
-                  <span id="badge-simLinkedin" class="hidden text-[10px] font-bold text-[#2F6307] dark:text-[#B7F34A] font-mono inline-flex items-center gap-1"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>Matched</span></span>
+                  <span id="badge-simLinkedin" class="hidden text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200 font-mono inline-flex items-center gap-1">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span>Autofilled from Vault</span>
+                  </span>
                 </div>
                 <input
                   type="url"
                   id="simLinkedin"
                   placeholder="https://linkedin.com/in/alexmorgan"
-                  class="sim-input-field w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-[#2B312C] bg-white dark:bg-[#141715] text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#5E665E] focus:outline-none focus:border-[#2F6307] dark:focus:border-[#B7F34A] focus:ring-1 focus:ring-[#2F6307]/30 dark:focus:ring-[#B7F34A]/30 transition-all font-sans"
+                  class="sim-input-field w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all font-sans"
                 />
               </div>
 
               <!-- Custom Question -->
               <div class="relative sm:col-span-2">
                 <div class="flex justify-between items-center mb-1.5">
-                  <label for="simCustomQuestion" class="block text-xs font-semibold text-slate-800 dark:text-white">
+                  <label for="simCustomQuestion" class="block text-xs font-semibold text-slate-800">
                     Custom Prompt: Describe high-throughput architecture experience
                   </label>
-                  <span id="badge-simCustomQuestion" class="hidden text-[10px] font-bold text-[#2F6307] dark:text-[#B7F34A] font-mono">
-                    <span class="inline-flex items-center gap-1"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>Matched from Custom Q&amp;A</span></span>
+                  <span id="badge-simCustomQuestion" class="hidden text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200 font-mono inline-flex items-center gap-1">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span>Autofilled from Vault</span>
                   </span>
                 </div>
                 <textarea
                   id="simCustomQuestion"
                   rows="3"
                   placeholder="Over 7 years leading distributed architectures processing 15,000+ RPS..."
-                  class="sim-input-field w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-[#2B312C] bg-white dark:bg-[#141715] text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#5E665E] focus:outline-none focus:border-[#2F6307] dark:focus:border-[#B7F34A] focus:ring-1 focus:ring-[#2F6307]/30 dark:focus:ring-[#B7F34A]/30 transition-all resize-none font-sans"
+                  class="sim-input-field w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all resize-none font-sans"
                 ></textarea>
               </div>
             </form>
           </div>
 
           <!-- Bottom Footnote -->
-          <div class="px-6 py-3.5 bg-slate-100 dark:bg-[#141715] border-t border-slate-200 dark:border-[#2B312C] flex items-center justify-between text-xs text-slate-600 dark:text-[#A1AAA1] flex-wrap gap-3">
-            <span class="flex items-center gap-1.5">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-[#2F6307] dark:text-[#B7F34A]"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div class="px-6 py-3.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-600 flex-wrap gap-3">
+            <span class="flex items-center gap-1.5 font-medium">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
               <span>Personal data remains private and local to your vault</span>
             </span>
-            <a href="/playground" class="font-semibold text-[#2F6307] dark:text-[#B7F34A] hover:underline flex items-center gap-1">
+            <a href="/playground" class="font-semibold text-blue-600 hover:text-blue-700 hover:underline flex items-center gap-1">
               <span>Open full 10-field testing lab</span>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
@@ -264,12 +286,13 @@
             const badge = document.getElementById(`badge-${id}`);
             if (input) {
               input.value = sampleData[id];
-              input.style.borderColor = "#B7F34A";
-              input.style.backgroundColor = "rgba(183, 243, 74, 0.05)";
-              setTimeout(() => {
-                input.style.borderColor = "";
-                input.style.backgroundColor = "";
-              }, 1200);
+              // Persistent tactile highlight
+              input.classList.add("autofill-highlighted");
+              // Clear highlight when user modifies field
+              input.addEventListener("input", () => {
+                input.classList.remove("autofill-highlighted");
+                if (badge) badge.classList.add("hidden");
+              }, { once: true });
             }
             if (badge) {
               badge.classList.remove("hidden");
@@ -281,7 +304,7 @@
               }
             }
           }, delay);
-          delay += 60;
+          delay += 70;
         });
       });
     }
@@ -295,6 +318,7 @@
           const input = document.getElementById(id);
           if (badge) badge.classList.add("hidden");
           if (input) {
+            input.classList.remove("autofill-highlighted");
             input.style.borderColor = "";
             input.style.backgroundColor = "";
           }

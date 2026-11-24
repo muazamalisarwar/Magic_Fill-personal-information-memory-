@@ -31,13 +31,13 @@ const {
 <div
   data-card-spotlight
   data-tilt
-  class={`reveal-on-scroll bg-white dark:bg-[#191D1A] border ${is_featured ? "border-[#2F6307] dark:border-[#B7F34A] shadow-[0_0_30px_rgba(47,99,7,0.12)] dark:shadow-[0_0_30px_rgba(183,243,74,0.18)] ring-1 ring-[#2F6307]/30 dark:ring-[#B7F34A]/30" : "border-slate-200 dark:border-[#2B312C]"} rounded-2xl p-8 sm:p-10 text-left relative flex flex-col justify-between transition-all duration-300 hover:border-[#2F6307]/50 dark:hover:border-[#B7F34A]/50`}
+  class={`reveal-on-scroll bg-white dark:bg-white border ${is_featured ? "border-blue-500 shadow-md ring-1 ring-blue-500/20" : "border-slate-200 dark:border-slate-200"} rounded-2xl p-8 sm:p-10 text-left relative flex flex-col justify-between transition-all duration-300 hover:border-[#2F6307]/50 dark:hover:border-blue-500/50`}
 >
   <div>
     {
       is_featured && (
         <div class="absolute top-8 right-8">
-          <span class="rounded-lg px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-[#2F6307] dark:text-[#B7F34A] bg-[#2F6307]/10 dark:bg-[#B7F34A]/10 border border-[#2F6307]/30 dark:border-[#B7F34A]/30 font-mono">
+          <span class="rounded-lg px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-[#2F6307] dark:text-blue-600 bg-[#2F6307]/10 dark:bg-blue-600/10 border border-[#2F6307]/30 dark:border-blue-500/30 font-mono">
             {offer_text ?? "Most Popular"}
           </span>
         </div>
@@ -52,19 +52,19 @@ const {
         data-price-tag-monthly
       >
         ${price}
-        <span class="text-xs font-medium text-slate-500 dark:text-[#A1AAA1]">/ Month</span>
+        <span class="text-xs font-medium text-slate-500 dark:text-slate-600">/ Month</span>
       </span>
       <span
         class="text-slate-900 dark:text-white text-4xl sm:text-5xl font-extrabold opacity-0 absolute left-0 top-0 flex items-baseline gap-1"
         data-price-tag-yearly
       >
         ${yearly_price}
-        <span class="text-xs font-medium text-slate-500 dark:text-[#A1AAA1]">/ Month</span>
+        <span class="text-xs font-medium text-slate-500 dark:text-slate-600">/ Month</span>
       </span>
     </div>
 
     <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">{title}</h3>
-    <p class="text-slate-600 dark:text-[#A1AAA1] text-sm leading-relaxed mb-8">{description}</p>
+    <p class="text-slate-600 dark:text-slate-600 text-sm leading-relaxed mb-8">{description}</p>
 
     <!-- Checkout Action Button -->
     <div class="mb-8">
@@ -82,25 +82,25 @@ const {
       }
     </div>
 
-    <div class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-[#5E665E] font-mono mb-5">
+    <div class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 font-mono mb-5">
       Included Capabilities
     </div>
 
     <!-- Feature list -->
-    <ul class="space-y-3.5 text-sm text-slate-600 dark:text-[#A1AAA1]">
+    <ul class="space-y-3.5 text-sm text-slate-600 dark:text-slate-600">
       {
         (features || []).map((f) => (
           <li class="flex items-start gap-3">
             {f.included ? (
-              <span class="w-5 h-5 rounded-md bg-[#B7F34A]/10 border border-[#B7F34A]/30 flex items-center justify-center shrink-0 mt-0.5 text-[#2F6307] dark:text-[#B7F34A]">
+              <span class="w-5 h-5 rounded-md bg-blue-600/10 border border-blue-500/30 flex items-center justify-center shrink-0 mt-0.5 text-[#2F6307] dark:text-blue-600">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
               </span>
             ) : (
-              <span class="w-5 h-5 rounded-md bg-slate-100 dark:bg-[#141715] border border-slate-300 dark:border-[#2B312C] flex items-center justify-center shrink-0 mt-0.5 text-slate-400 dark:text-[#5E665E]">
+              <span class="w-5 h-5 rounded-md bg-slate-100 dark:bg-slate-50 border border-slate-300 dark:border-slate-200 flex items-center justify-center shrink-0 mt-0.5 text-slate-400 dark:text-slate-400">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
               </span>
             )}
-            <span class={f.included ? "text-slate-900 dark:text-white font-medium" : "text-slate-400 dark:text-[#5E665E]"}>
+            <span class={f.included ? "text-slate-900 dark:text-white font-medium" : "text-slate-400 dark:text-slate-400"}>
               {f.label}
             </span>
           </li>

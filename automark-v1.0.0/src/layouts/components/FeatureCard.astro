@@ -12,18 +12,18 @@ const { logo, title, content, is_starred } = Astro.props;
 <div
   data-card-spotlight
   data-tilt
-  class="reveal-on-scroll bg-white dark:bg-[#191D1A] border border-slate-200 dark:border-[#2B312C] rounded-2xl p-8 shadow-sm hover:border-[#2F6307]/50 dark:hover:border-[#B7F34A]/50 hover:shadow-[0_12px_32px_-8px_rgba(47,99,7,0.08)] dark:hover:shadow-[0_12px_32px_-8px_rgba(183,243,74,0.15)] transition-all duration-300 group relative flex flex-col items-center text-center h-full cursor-pointer"
+  class="reveal-on-scroll bg-white dark:bg-white border border-slate-200 dark:border-slate-200 rounded-2xl p-8 shadow-sm hover:border-[#2F6307]/50 dark:hover:border-blue-500/50 hover:shadow-[0_12px_32px_-8px_rgba(47,99,7,0.08)] dark:hover:shadow-[0_12px_32px_-8px_rgba(183,243,74,0.15)] transition-all duration-300 group relative flex flex-col items-center text-center h-full cursor-pointer"
 >
   <!-- Clean Flat Icon Container -->
-  <div class="w-14 h-14 rounded-xl border border-slate-200 dark:border-[#2B312C] bg-slate-50 dark:bg-[#141715] flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-300">
+  <div class="w-14 h-14 rounded-xl border border-slate-200 dark:border-slate-200 bg-slate-50 dark:bg-slate-50 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-300">
     <ImageMod src={logo} alt={`${title} icon`} class="size-7 object-contain light-mode-icon" />
   </div>
 
-  <h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-[#2F6307] dark:group-hover:text-[#B7F34A] transition-colors mb-3">
+  <h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-[#2F6307] dark:group-hover:text-blue-600 transition-colors mb-3">
     {title}
   </h3>
 
-  <p class="text-sm text-slate-600 dark:text-[#A1AAA1] leading-relaxed">
+  <p class="text-sm text-slate-600 dark:text-slate-600 leading-relaxed">
     {content || "Proactively matches your verified personal memory to complex form fields with zero errors."}
   </p>
 </div>

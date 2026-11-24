@@ -10,24 +10,24 @@ import Base from "@/layouts/Base.astro";
   <div class="pt-24 md:pt-28 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8 min-h-[85vh]">
 
     <!-- 1. Top Welcome & Identity Hero Card -->
-    <div class="bg-[#191D1A] border border-[#2B312C] rounded-2xl p-6 sm:p-8 shadow-lg relative overflow-hidden">
+    <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-lg relative overflow-hidden">
       <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div class="flex items-center gap-4 sm:gap-5">
           <!-- Avatar -->
-          <div id="userAvatarContainer" class="size-14 rounded-xl bg-[#141715] border border-[#2B312C] flex items-center justify-center shrink-0">
-            <span id="userAvatarInitials" class="text-lg font-bold font-display text-[#B7F34A]">MF</span>
+          <div id="userAvatarContainer" class="size-14 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center shrink-0">
+            <span id="userAvatarInitials" class="text-lg font-bold font-display text-blue-600">MF</span>
           </div>
           <div>
             <div class="flex items-center gap-3 mb-1 flex-wrap">
               <h1 id="dashUserGreeting" class="text-xl sm:text-2xl font-bold font-display text-[#FFFFFF]">
                 Welcome back!
               </h1>
-              <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#B7F34A]/10 text-[#B7F34A] border border-[#B7F34A]/25">
-                <span class="size-1.5 rounded-full bg-[#B7F34A] animate-pulse"></span>
+              <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-600/10 text-blue-600 border border-blue-500/25">
+                <span class="size-1.5 rounded-full bg-blue-600 animate-pulse"></span>
                 Vault Active
               </span>
             </div>
-            <p id="dashUserEmail" class="text-xs text-[#A1AAA1] font-mono">Loading profile...</p>
+            <p id="dashUserEmail" class="text-xs text-slate-600 font-mono">Loading profile...</p>
           </div>
         </div>
 
@@ -43,7 +43,7 @@ import Base from "@/layouts/Base.astro";
 
           <a
             href="/extract"
-            class="btn btn-outline btn-sm rounded-lg bg-[#141715] border-[#2B312C]"
+            class="btn btn-outline btn-sm rounded-lg bg-slate-50 border-slate-200"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
             <span>Upload Resume</span>
@@ -61,49 +61,49 @@ import Base from "@/layouts/Base.astro";
       </div>
 
       <!-- Live Vault Metrics Counter Strip -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 sm:gap-4 mt-8 pt-6 border-t border-[#2B312C]">
-        <div data-card-spotlight data-tilt class="reveal-on-scroll bg-[#141715] border border-[#2B312C] hover:border-[#B7F34A]/50 rounded-xl p-4 sm:p-5 transition-all duration-200 group cursor-pointer">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 sm:gap-4 mt-8 pt-6 border-t border-slate-200">
+        <div data-card-spotlight data-tilt class="reveal-on-scroll bg-slate-50 border border-slate-200 hover:border-blue-500/50 rounded-xl p-4 sm:p-5 transition-all duration-200 group cursor-pointer">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-[11px] font-semibold uppercase tracking-wider text-[#A1AAA1]">Identity Fields</span>
-            <div class="size-7 rounded-md bg-[#191D1A] border border-[#2B312C] text-[#B7F34A] flex items-center justify-center shrink-0">
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-600">Identity Fields</span>
+            <div class="size-7 rounded-md bg-white border border-slate-200 text-blue-600 flex items-center justify-center shrink-0">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             </div>
           </div>
           <span id="metricIdentityCount" class="text-2xl sm:text-3xl font-extrabold font-display text-[#FFFFFF] tracking-tight block">--</span>
-          <span class="text-[10px] text-[#5E665E] block mt-1 font-mono">Name, Contact, Education</span>
+          <span class="text-[10px] text-slate-400 block mt-1 font-mono">Name, Contact, Education</span>
         </div>
 
-        <div data-card-spotlight data-tilt class="reveal-on-scroll bg-[#141715] border border-[#2B312C] hover:border-[#B7F34A]/50 rounded-xl p-4 sm:p-5 transition-all duration-200 group cursor-pointer">
+        <div data-card-spotlight data-tilt class="reveal-on-scroll bg-slate-50 border border-slate-200 hover:border-blue-500/50 rounded-xl p-4 sm:p-5 transition-all duration-200 group cursor-pointer">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-[11px] font-semibold uppercase tracking-wider text-[#A1AAA1]">Work Experiences</span>
-            <div class="size-7 rounded-md bg-[#191D1A] border border-[#2B312C] text-[#B7F34A] flex items-center justify-center shrink-0">
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-600">Work Experiences</span>
+            <div class="size-7 rounded-md bg-white border border-slate-200 text-blue-600 flex items-center justify-center shrink-0">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
             </div>
           </div>
           <span id="metricExperienceCount" class="text-2xl sm:text-3xl font-extrabold font-display text-[#FFFFFF] tracking-tight block">--</span>
-          <span class="text-[10px] text-[#5E665E] block mt-1 font-mono">Roles, Companies, Skills</span>
+          <span class="text-[10px] text-slate-400 block mt-1 font-mono">Roles, Companies, Skills</span>
         </div>
 
-        <div data-card-spotlight data-tilt class="reveal-on-scroll bg-[#141715] border border-[#2B312C] hover:border-[#B7F34A]/50 rounded-xl p-4 sm:p-5 transition-all duration-200 group cursor-pointer">
+        <div data-card-spotlight data-tilt class="reveal-on-scroll bg-slate-50 border border-slate-200 hover:border-blue-500/50 rounded-xl p-4 sm:p-5 transition-all duration-200 group cursor-pointer">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-[11px] font-semibold uppercase tracking-wider text-[#A1AAA1]">Custom Q&amp;A</span>
-            <div class="size-7 rounded-md bg-[#191D1A] border border-[#2B312C] text-[#B7F34A] flex items-center justify-center shrink-0">
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-600">Custom Q&amp;A</span>
+            <div class="size-7 rounded-md bg-white border border-slate-200 text-blue-600 flex items-center justify-center shrink-0">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
             </div>
           </div>
           <span id="metricCustomCount" class="text-2xl sm:text-3xl font-extrabold font-display text-[#FFFFFF] tracking-tight block">--</span>
-          <span class="text-[10px] text-[#5E665E] block mt-1 font-mono">Learned &amp; Manual</span>
+          <span class="text-[10px] text-slate-400 block mt-1 font-mono">Learned &amp; Manual</span>
         </div>
 
-        <div data-card-spotlight data-tilt class="reveal-on-scroll bg-[#141715] border border-[#2B312C] hover:border-[#B7F34A]/50 rounded-xl p-4 sm:p-5 transition-all duration-200 group cursor-pointer">
+        <div data-card-spotlight data-tilt class="reveal-on-scroll bg-slate-50 border border-slate-200 hover:border-blue-500/50 rounded-xl p-4 sm:p-5 transition-all duration-200 group cursor-pointer">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-[11px] font-semibold uppercase tracking-wider text-[#A1AAA1]">Stored Documents</span>
-            <div class="size-7 rounded-md bg-[#191D1A] border border-[#2B312C] text-[#B7F34A] flex items-center justify-center shrink-0">
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-600">Stored Documents</span>
+            <div class="size-7 rounded-md bg-white border border-slate-200 text-blue-600 flex items-center justify-center shrink-0">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
             </div>
           </div>
           <span id="metricDocCount" class="text-2xl sm:text-3xl font-extrabold font-display text-[#FFFFFF] tracking-tight block">--</span>
-          <span class="text-[10px] text-[#5E665E] block mt-1 font-mono">Resumes &amp; Identity</span>
+          <span class="text-[10px] text-slate-400 block mt-1 font-mono">Resumes &amp; Identity</span>
         </div>
       </div>
     </div>
@@ -114,7 +114,7 @@ import Base from "@/layouts/Base.astro";
         <h2 class="text-lg font-bold font-display text-[#FFFFFF]">
           Platform Features &amp; Workflows
         </h2>
-        <p class="text-xs text-[#A1AAA1]">
+        <p class="text-xs text-slate-600">
           Access verified personal memory tools and automation modules
         </p>
       </div>
@@ -123,20 +123,20 @@ import Base from "@/layouts/Base.astro";
         <!-- Card 1: Personal Memory Studio -->
         <a
           href="/memory"
-          class="bg-[#191D1A] border border-[#2B312C] hover:border-[#3A423C] rounded-xl p-5 shadow-sm transition-all duration-150 flex flex-col justify-between group cursor-pointer hover:-translate-y-0.5"
+          class="bg-white border border-slate-200 hover:border-slate-300 rounded-xl p-5 shadow-sm transition-all duration-150 flex flex-col justify-between group cursor-pointer hover:-translate-y-0.5"
         >
           <div>
-            <div class="size-10 rounded-lg bg-[#141715] border border-[#2B312C] flex items-center justify-center mb-4 text-[#B7F34A]">
+            <div class="size-10 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center mb-4 text-blue-600">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
             </div>
-            <h3 class="text-sm font-bold font-display text-[#FFFFFF] mb-1.5 group-hover:text-[#B7F34A] transition-colors">
+            <h3 class="text-sm font-bold font-display text-[#FFFFFF] mb-1.5 group-hover:text-blue-600 transition-colors">
               Personal Memory Vault
             </h3>
-            <p class="text-xs font-body text-[#A1AAA1] leading-relaxed mb-4">
+            <p class="text-xs font-body text-slate-600 leading-relaxed mb-4">
               Inspect, edit, search, and organize all your verified credentials, education records, and custom answers.
             </p>
           </div>
-          <div class="flex items-center text-xs font-semibold text-[#B7F34A] gap-1.5 pt-3 border-t border-[#2B312C]">
+          <div class="flex items-center text-xs font-semibold text-blue-600 gap-1.5 pt-3 border-t border-slate-200">
             <span>Manage Vault</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </div>
@@ -145,20 +145,20 @@ import Base from "@/layouts/Base.astro";
         <!-- Card 2: AI Document Extraction -->
         <a
           href="/extract"
-          class="bg-[#191D1A] border border-[#2B312C] hover:border-[#3A423C] rounded-xl p-5 shadow-sm transition-all duration-150 flex flex-col justify-between group cursor-pointer hover:-translate-y-0.5"
+          class="bg-white border border-slate-200 hover:border-slate-300 rounded-xl p-5 shadow-sm transition-all duration-150 flex flex-col justify-between group cursor-pointer hover:-translate-y-0.5"
         >
           <div>
-            <div class="size-10 rounded-lg bg-[#141715] border border-[#2B312C] flex items-center justify-center mb-4 text-[#B7F34A]">
+            <div class="size-10 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center mb-4 text-blue-600">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
             </div>
-            <h3 class="text-sm font-bold font-display text-[#FFFFFF] mb-1.5 group-hover:text-[#B7F34A] transition-colors">
+            <h3 class="text-sm font-bold font-display text-[#FFFFFF] mb-1.5 group-hover:text-blue-600 transition-colors">
               AI Document Extraction
             </h3>
-            <p class="text-xs font-body text-[#A1AAA1] leading-relaxed mb-4">
+            <p class="text-xs font-body text-slate-600 leading-relaxed mb-4">
               Upload CV/Resume or talk to the AI memory copilot. Review and approve extracted information before saving.
             </p>
           </div>
-          <div class="flex items-center text-xs font-semibold text-[#B7F34A] gap-1.5 pt-3 border-t border-[#2B312C]">
+          <div class="flex items-center text-xs font-semibold text-blue-600 gap-1.5 pt-3 border-t border-slate-200">
             <span>Extract &amp; Review</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </div>
@@ -167,20 +167,20 @@ import Base from "@/layouts/Base.astro";
         <!-- Card 3: Browser Extension Pairing -->
         <a
           href="/extension"
-          class="bg-[#191D1A] border border-[#2B312C] hover:border-[#3A423C] rounded-xl p-5 shadow-sm transition-all duration-150 flex flex-col justify-between group cursor-pointer hover:-translate-y-0.5"
+          class="bg-white border border-slate-200 hover:border-slate-300 rounded-xl p-5 shadow-sm transition-all duration-150 flex flex-col justify-between group cursor-pointer hover:-translate-y-0.5"
         >
           <div>
-            <div class="size-10 rounded-lg bg-[#141715] border border-[#2B312C] flex items-center justify-center mb-4 text-[#B7F34A]">
+            <div class="size-10 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center mb-4 text-blue-600">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
             </div>
-            <h3 class="text-sm font-bold font-display text-[#FFFFFF] mb-1.5 group-hover:text-[#B7F34A] transition-colors">
+            <h3 class="text-sm font-bold font-display text-[#FFFFFF] mb-1.5 group-hover:text-blue-600 transition-colors">
               Extension Setup &amp; Sync
             </h3>
-            <p class="text-xs font-body text-[#A1AAA1] leading-relaxed mb-4">
+            <p class="text-xs font-body text-slate-600 leading-relaxed mb-4">
               Generate 1-click pairing codes, check extension connectivity, and synchronize across any Chromium browser.
             </p>
           </div>
-          <div class="flex items-center text-xs font-semibold text-[#B7F34A] gap-1.5 pt-3 border-t border-[#2B312C]">
+          <div class="flex items-center text-xs font-semibold text-blue-600 gap-1.5 pt-3 border-t border-slate-200">
             <span>Pair Extension</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </div>
@@ -189,20 +189,20 @@ import Base from "@/layouts/Base.astro";
         <!-- Card 4: Form Simulator -->
         <a
           href="/playground"
-          class="bg-[#191D1A] border border-[#2B312C] hover:border-[#3A423C] rounded-xl p-5 shadow-sm transition-all duration-150 flex flex-col justify-between group cursor-pointer hover:-translate-y-0.5"
+          class="bg-white border border-slate-200 hover:border-slate-300 rounded-xl p-5 shadow-sm transition-all duration-150 flex flex-col justify-between group cursor-pointer hover:-translate-y-0.5"
         >
           <div>
-            <div class="size-10 rounded-lg bg-[#141715] border border-[#2B312C] flex items-center justify-center mb-4 text-[#B7F34A]">
+            <div class="size-10 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center mb-4 text-blue-600">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
             </div>
-            <h3 class="text-sm font-bold font-display text-[#FFFFFF] mb-1.5 group-hover:text-[#B7F34A] transition-colors">
+            <h3 class="text-sm font-bold font-display text-[#FFFFFF] mb-1.5 group-hover:text-blue-600 transition-colors">
               Live Form Simulator
             </h3>
-            <p class="text-xs font-body text-[#A1AAA1] leading-relaxed mb-4">
+            <p class="text-xs font-body text-slate-600 leading-relaxed mb-4">
               Test autofill on 10 input types with real-time semantic visual feedback and consent-based learning.
             </p>
           </div>
-          <div class="flex items-center text-xs font-semibold text-[#B7F34A] gap-1.5 pt-3 border-t border-[#2B312C]">
+          <div class="flex items-center text-xs font-semibold text-blue-600 gap-1.5 pt-3 border-t border-slate-200">
             <span>Launch Simulator</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </div>
@@ -213,13 +213,13 @@ import Base from "@/layouts/Base.astro";
     <!-- 3. Memory Snapshot & Recent Activity Section -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <!-- Left 2 Cols: Stored Attributes Table -->
-      <div class="lg:col-span-2 bg-[#191D1A] border border-[#2B312C] rounded-2xl p-5 sm:p-7 shadow-sm">
-        <div class="flex items-center justify-between mb-5 pb-3 border-b border-[#2B312C]">
+      <div class="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-5 sm:p-7 shadow-sm">
+        <div class="flex items-center justify-between mb-5 pb-3 border-b border-slate-200">
           <div>
             <h3 class="text-base font-bold font-display text-[#FFFFFF]">Active Memory Overview</h3>
-            <p class="text-xs text-[#A1AAA1]">Verified records ready for instantaneous browser autofill</p>
+            <p class="text-xs text-slate-600">Verified records ready for instantaneous browser autofill</p>
           </div>
-          <a href="/memory" class="text-xs text-[#B7F34A] font-semibold hover:underline flex items-center gap-1">
+          <a href="/memory" class="text-xs text-blue-600 font-semibold hover:underline flex items-center gap-1">
             <span>View All</span>
             <span aria-hidden="true">&rarr;</span>
           </a>
@@ -228,17 +228,17 @@ import Base from "@/layouts/Base.astro";
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs">
             <thead>
-              <tr class="border-b border-[#2B312C] text-[#A1AAA1] uppercase tracking-wider text-[11px] font-semibold">
+              <tr class="border-b border-slate-200 text-slate-600 uppercase tracking-wider text-[11px] font-semibold">
                 <th class="pb-3 pr-4">Field / Attribute</th>
                 <th class="pb-3 pr-4">Stored Value</th>
                 <th class="pb-3 pr-4">Category</th>
                 <th class="pb-3">Source</th>
               </tr>
             </thead>
-            <tbody id="dashMemoryTableBody" class="font-body text-[#A1AAA1] divide-y divide-[#2B312C]/60">
+            <tbody id="dashMemoryTableBody" class="font-body text-slate-600 divide-y divide-slate-200/60">
               <tr>
-                <td colspan="4" class="py-8 text-center text-[#A1AAA1]">
-                  <div class="inline-block size-5 border-2 border-[#B7F34A] border-t-transparent rounded-full animate-spin mb-2"></div>
+                <td colspan="4" class="py-8 text-center text-slate-600">
+                  <div class="inline-block size-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-2"></div>
                   <div>Loading verified memory records...</div>
                 </td>
               </tr>
@@ -248,31 +248,31 @@ import Base from "@/layouts/Base.astro";
       </div>
 
       <!-- Right 1 Col: Quick Browser Connection Card -->
-      <div class="bg-[#191D1A] border border-[#2B312C] rounded-2xl p-5 sm:p-7 shadow-sm flex flex-col justify-between">
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-7 shadow-sm flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between mb-3">
-            <span class="text-xs font-semibold uppercase tracking-wider text-[#A1AAA1]">Browser Extension</span>
-            <span class="inline-flex items-center gap-1 text-[11px] font-medium text-[#B7F34A]">
-              <span class="size-1.5 rounded-full bg-[#B7F34A]"></span>
+            <span class="text-xs font-semibold uppercase tracking-wider text-slate-600">Browser Extension</span>
+            <span class="inline-flex items-center gap-1 text-[11px] font-medium text-blue-600">
+              <span class="size-1.5 rounded-full bg-blue-600"></span>
               Ready
             </span>
           </div>
 
           <h4 class="text-base font-bold font-display text-[#FFFFFF] mb-1.5">Pair Browser Extension</h4>
-          <p class="text-xs text-[#A1AAA1] leading-relaxed mb-5">
+          <p class="text-xs text-slate-600 leading-relaxed mb-5">
             Use this authorization code to securely connect your Magic Fill Chromium extension in seconds.
           </p>
 
           <!-- Pairing Code Box -->
-          <div class="bg-[#141715] border border-[#2B312C] rounded-xl p-4 text-center mb-5">
-            <span class="text-[10px] text-[#5E665E] uppercase tracking-wider font-semibold block mb-1">Single-Use Link Code</span>
-            <div id="dashPairingCode" class="text-2xl font-mono font-bold text-[#B7F34A] tracking-wider select-all">
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center mb-5">
+            <span class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold block mb-1">Single-Use Link Code</span>
+            <div id="dashPairingCode" class="text-2xl font-mono font-bold text-blue-600 tracking-wider select-all">
               Generating...
             </div>
             <button
               type="button"
               id="dashCopyCodeBtn"
-              class="mt-3 w-full rounded-lg py-2 px-3 text-xs font-semibold bg-[#191D1A] hover:bg-[#222723] text-[#FFFFFF] border border-[#2B312C] flex items-center justify-center gap-2 transition cursor-pointer"
+              class="mt-3 w-full rounded-lg py-2 px-3 text-xs font-semibold bg-white hover:bg-slate-100 text-[#FFFFFF] border border-slate-200 flex items-center justify-center gap-2 transition cursor-pointer"
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
               <span>Copy Connection Code</span>
@@ -280,8 +280,8 @@ import Base from "@/layouts/Base.astro";
           </div>
         </div>
 
-        <div class="pt-3 border-t border-[#2B312C]">
-          <a href="/extension" class="text-xs font-medium text-[#A1AAA1] hover:text-[#B7F34A] flex items-center justify-between transition-colors">
+        <div class="pt-3 border-t border-slate-200">
+          <a href="/extension" class="text-xs font-medium text-slate-600 hover:text-blue-600 flex items-center justify-between transition-colors">
             <span>Installation &amp; setup guide</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
           </a>
@@ -384,16 +384,16 @@ import Base from "@/layouts/Base.astro";
           });
 
           if (rows.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="4" class="py-6 text-center text-[#A1AAA1]">No memory records saved yet. <a href="/extract" class="text-[#B7F34A] font-semibold hover:underline">Upload your resume</a> to start!</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="4" class="py-6 text-center text-slate-600">No memory records saved yet. <a href="/extract" class="text-blue-600 font-semibold hover:underline">Upload your resume</a> to start!</td></tr>`;
           } else {
             rows.forEach(r => {
               const tr = document.createElement("tr");
-              tr.className = "hover:bg-[#141715] transition-colors";
+              tr.className = "hover:bg-slate-50 transition-colors";
               tr.innerHTML = `
                 <td class="py-3 pr-4 font-semibold text-[#FFFFFF]">${r.label}</td>
-                <td class="py-3 pr-4 text-[#A1AAA1] truncate max-w-xs font-mono text-[11px]">${r.val}</td>
-                <td class="py-3 pr-4"><span class="rounded-md px-2 py-0.5 text-[11px] font-medium bg-[#141715] text-[#A1AAA1] border border-[#2B312C]">${r.cat}</span></td>
-                <td class="py-3 text-[#5E665E] text-[11px]">${r.src}</td>
+                <td class="py-3 pr-4 text-slate-600 truncate max-w-xs font-mono text-[11px]">${r.val}</td>
+                <td class="py-3 pr-4"><span class="rounded-md px-2 py-0.5 text-[11px] font-medium bg-slate-50 text-slate-600 border border-slate-200">${r.cat}</span></td>
+                <td class="py-3 text-slate-400 text-[11px]">${r.src}</td>
               `;
               tbody.appendChild(tr);
             });
@@ -415,7 +415,7 @@ import Base from "@/layouts/Base.astro";
           if (copyBtn && codeData) {
             copyBtn.addEventListener("click", () => {
               navigator.clipboard.writeText(codeData);
-              copyBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B7F34A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="text-[#B7F34A]">Copied to Clipboard</span>`;
+              copyBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="text-blue-600">Copied to Clipboard</span>`;
               setTimeout(() => {
                 copyBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg><span>Copy Connection Code</span>`;
               }, 2000);

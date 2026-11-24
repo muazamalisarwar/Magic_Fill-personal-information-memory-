@@ -18,24 +18,24 @@ const {
 const { main: socialLinks } = social as SocialType;
 ---
 
-<footer class="border-t border-[#2B312C] bg-[#141715] pt-16 pb-12 relative overflow-hidden">
+<footer class="border-t border-slate-200 bg-slate-50 pt-16 pb-12 relative overflow-hidden">
   <div class="container pb-10">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
       <!-- Column 1 - Logo & Contact -->
-      <div class="lg:col-span-2 text-sm text-[#A1AAA1] font-body">
+      <div class="lg:col-span-2 text-sm text-slate-600 font-body">
         <Logo />
-        <p class="mt-4 text-xs sm:text-sm leading-relaxed max-w-sm text-[#A1AAA1]">
+        <p class="mt-4 text-xs sm:text-sm leading-relaxed max-w-sm text-slate-600">
           {config.params.footer_tagline}
         </p>
         <div class="mt-5 space-y-1.5 text-xs font-mono">
           <a
-            class="block text-[#FFFFFF] hover:text-[#B7F34A] transition-colors"
+            class="block text-[#FFFFFF] hover:text-blue-600 transition-colors"
             href={`mailto:${config.params.footer_email}`}
           >
             {config.params.footer_email}
           </a>
           <a
-            class="block text-[#A1AAA1] hover:text-[#FFFFFF] transition-colors"
+            class="block text-slate-600 hover:text-slate-900 transition-colors"
             href={`tel:${config.params.footer_phone}`}
           >
             {config.params.footer_phone}
@@ -52,7 +52,7 @@ const { main: socialLinks } = social as SocialType;
           {
             footer_primary?.map((item) => (
               <li>
-                <a href={item.url} class="text-[#A1AAA1] hover:text-[#B7F34A] transition-colors">
+                <a href={item.url} class="text-slate-600 hover:text-blue-600 transition-colors">
                   {item.name}
                 </a>
               </li>
@@ -70,7 +70,7 @@ const { main: socialLinks } = social as SocialType;
           {
             footer_resource?.map((item) => (
               <li>
-                <a href={item.url} class="text-[#A1AAA1] hover:text-[#B7F34A] transition-colors">
+                <a href={item.url} class="text-slate-600 hover:text-blue-600 transition-colors">
                   {item.name}
                 </a>
               </li>
@@ -88,7 +88,7 @@ const { main: socialLinks } = social as SocialType;
           {
             footer_legal?.map((item) => (
               <li>
-                <a href={item.url} class="text-[#A1AAA1] hover:text-[#B7F34A] transition-colors">
+                <a href={item.url} class="text-slate-600 hover:text-blue-600 transition-colors">
                   {item.name}
                 </a>
               </li>
@@ -101,14 +101,14 @@ const { main: socialLinks } = social as SocialType;
 
   <!-- Divider Strip -->
   <div class="container">
-    <div class="border-t border-[#2B312C] my-4"></div>
+    <div class="border-t border-slate-200 my-4"></div>
   </div>
 
   <!-- Bottom Area -->
   <div class="container py-2">
     <div class="flex justify-between items-center flex-col sm:flex-row gap-y-3 w-full">
       <p
-        class="text-xs font-body text-[#5E665E]"
+        class="text-xs font-body text-slate-400"
         set:html={markdownify(config.params.copyright)}
       />
 
