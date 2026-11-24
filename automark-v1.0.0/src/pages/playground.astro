@@ -996,7 +996,7 @@ import Base from "@/layouts/Base.astro";
               });
 
               if (statsBadge) {
-                statsBadge.innerHTML = `<span class="text-blue-600 font-bold font-mono">${filledCount} Fields Completed</span> from Vault &bull; <span class="inline-flex items-center gap-1.5"><span class="size-1.5 rounded-full bg-blue-600"></span><span class="text-xs text-[#FFFFFF]">Matched</span></span> &bull; <span class="inline-flex items-center gap-1.5"><span class="size-1.5 rounded-full bg-[#f43f5e]"></span><span class="text-xs text-[#FFFFFF]">Missing</span></span> &bull; <span class="text-slate-400">${fields.length - filledCount} Unmapped</span>`;
+                statsBadge.innerHTML = `<span class="text-blue-600 font-bold font-mono">${filledCount} Fields Completed</span> from Vault &bull; <span class="inline-flex items-center gap-1.5"><span class="size-1.5 rounded-full bg-blue-600"></span><span class="text-xs text-slate-900">Matched</span></span> &bull; <span class="inline-flex items-center gap-1.5"><span class="size-1.5 rounded-full bg-[#f43f5e]"></span><span class="text-xs text-slate-900">Missing</span></span> &bull; <span class="text-slate-400">${fields.length - filledCount} Unmapped</span>`;
               }
             } else {
               showSimPrompt({

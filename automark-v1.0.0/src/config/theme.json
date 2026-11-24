@@ -19,12 +19,12 @@
   },
   "fonts": {
     "font_family": {
-      "primary": "Plus+Jakarta+Sans:wght@400;500;600;700;800",
-      "primary_type": "sans-serif",
-      "secondary": "Inter:wght@400;500;600;700",
-      "secondary_type": "sans-serif",
-      "display": "Plus+Jakarta+Sans:wght@600;700;800",
-      "display_type": "sans-serif"
+      "primary": "Times+New+Roman",
+      "primary_type": "Times, serif",
+      "secondary": "Times+New+Roman",
+      "secondary_type": "Times, serif",
+      "display": "Times+New+Roman",
+      "display_type": "Times, serif"
     },
     "font_size": { "base": "16", "scale": "1.2" }
   }

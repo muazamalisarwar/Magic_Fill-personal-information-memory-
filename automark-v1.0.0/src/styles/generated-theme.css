@@ -18,9 +18,9 @@
   --color-text-light: #1E293B;
 
   /* === Font Families === */
-  --font-primary: Plus Jakarta Sans, sans-serif;
-  --font-secondary: Inter, sans-serif;
-  --font-display: Plus Jakarta Sans, sans-serif;
+  --font-primary: Times New Roman, Times, serif;
+  --font-secondary: Times New Roman, Times, serif;
+  --font-display: Times New Roman, Times, serif;
 
   /* === Font Sizes === */
   --text-base: 16px;

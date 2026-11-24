@@ -59,7 +59,7 @@ const { pathname } = Astro.url;
     <!-- 2. AUTHENTICATED PLATFORM MENU (Visible When Logged In) -->
     <ul
       id="authNavMenu"
-      class="navbar-nav hidden items-center gap-1 p-1 rounded-xl bg-slate-50 border border-slate-200"
+      class="navbar-nav hidden flex-row items-center gap-1 p-1 rounded-xl bg-slate-50 border border-slate-200"
     >
       <li class="nav-item">
         <a
@@ -273,15 +273,23 @@ const { pathname } = Astro.url;
           if (publicMenu) {
             publicMenu.classList.remove("active-desktop-menu");
             publicMenu.classList.add("hidden");
+            publicMenu.classList.add("hide-public-menu");
+            publicMenu.style.setProperty("display", "none", "important");
           }
           if (authMenu) {
             authMenu.classList.add("active-desktop-menu");
+            authMenu.classList.add("active-auth-menu");
             authMenu.classList.remove("hidden");
+            authMenu.style.setProperty("display", "flex", "important");
           }
-          if (loggedOutArea) loggedOutArea.classList.add("hidden");
+          if (loggedOutArea) {
+            loggedOutArea.classList.add("hidden");
+            loggedOutArea.style.setProperty("display", "none", "important");
+          }
           if (loggedInArea) {
             loggedInArea.classList.remove("hidden");
             loggedInArea.classList.add("flex");
+            loggedInArea.style.setProperty("display", "flex", "important");
           }
 
           if (mobileLoggedOut) mobileLoggedOut.classList.add("hidden");
@@ -302,16 +310,24 @@ const { pathname } = Astro.url;
           if (publicMenu) {
             publicMenu.classList.add("active-desktop-menu");
             publicMenu.classList.remove("hidden");
+            publicMenu.classList.remove("hide-public-menu");
+            publicMenu.style.setProperty("display", "flex", "important");
           }
           if (authMenu) {
             authMenu.classList.remove("active-desktop-menu");
+            authMenu.classList.remove("active-auth-menu");
             authMenu.classList.add("hidden");
+            authMenu.style.setProperty("display", "none", "important");
           }
           if (loggedOutArea) {
             loggedOutArea.classList.remove("hidden");
             loggedOutArea.classList.add("flex");
+            loggedOutArea.style.setProperty("display", "flex", "important");
           }
-          if (loggedInArea) loggedInArea.classList.add("hidden");
+          if (loggedInArea) {
+            loggedInArea.classList.add("hidden");
+            loggedInArea.style.setProperty("display", "none", "important");
+          }
 
           if (mobileLoggedOut) {
             mobileLoggedOut.classList.remove("hidden");
