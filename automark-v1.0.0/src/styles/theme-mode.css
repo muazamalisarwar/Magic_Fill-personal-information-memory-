@@ -121,21 +121,21 @@ h6, .text-h6 {
 p, .text-base {
   font-size: 1rem !important;
   line-height: 1.65 !important;
-  color: #334155 !important;
+}
+
+p:not([class*="text-"]):not(.btn *):not([class*="bg-blue"] *) {
+  color: #334155;
 }
 
 .text-sm {
   font-size: 0.875rem !important;
   line-height: 1.5 !important;
-  color: #475569 !important;
 }
 
 /* Guard against overly tiny or faint text */
 .text-xs {
   font-size: 0.8125rem !important; /* 13px clean readable baseline */
   line-height: 1.45 !important;
-  color: #475569 !important;
-  font-weight: 500 !important;
 }
 
 .text-\[10px\],
@@ -251,9 +251,9 @@ strong, b {
 /* ==========================================================================
    Color Contrast Overrides & Dark-Theme Remnant Cleansing
    ========================================================================== */
-/* Fix invisible white text on white backgrounds */
-[class*="text-[#FFFFFF]"],
-[class*="text-white"]:not(.btn-primary):not(.btn):not([class*="bg-blue"]):not([class*="bg-slate-900"]):not([class*="bg-black"]):not([class*="bg-emerald"]):not([class*="bg-rose"]):not([class*="bg-red"]) {
+/* Fix invisible white text on white backgrounds (only for non-buttons, non-links, non-colored containers) */
+[class*="text-[#FFFFFF]"]:not(.btn):not(button):not(a):not([class*="bg-blue"]):not([class*="bg-slate"]):not([class*="bg-black"]),
+[class*="text-white"]:not(.btn-primary):not(.btn):not(button):not(a):not([role="button"]):not([class*="bg-"]):not([aria-selected="true"]):not([data-active="true"]) {
   color: #0F172A !important;
 }
 
@@ -311,6 +311,133 @@ strong, b {
   background-color: #1D4ED8 !important;
   border-color: #1D4ED8 !important;
   color: #FFFFFF !important;
+}
+
+/* ==========================================================================
+   Universal High-Contrast Button & Active Tab Styling
+   Guarantees that all active/highlighted/blue buttons have crystal-clear
+   crisp white text (#FFFFFF) and white icons (stroke: #FFFFFF)
+   ========================================================================== */
+.btn-primary,
+button.btn-primary,
+a.btn-primary,
+.bg-blue-600,
+.bg-blue-700,
+.bg-blue-800,
+[class*="bg-blue-600"],
+[class*="bg-blue-700"],
+[class*="bg-blue-800"],
+button[class*="bg-blue-600"],
+button[class*="bg-blue-700"],
+a[class*="bg-blue-600"],
+a[class*="bg-blue-700"],
+.btn-proceed-mem-preview,
+.btn-proceed-extract-preview,
+.btn-attach-now,
+[aria-selected="true"].bg-blue-600,
+[data-active="true"].bg-blue-600 {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
+.btn-primary *,
+button.btn-primary *,
+a.btn-primary *,
+.bg-blue-600 *,
+.bg-blue-700 *,
+.bg-blue-800 *,
+[class*="bg-blue-600"] *,
+[class*="bg-blue-700"] *,
+[class*="bg-blue-800"] *,
+button[class*="bg-blue-600"] *,
+button[class*="bg-blue-700"] *,
+a[class*="bg-blue-600"] *,
+a[class*="bg-blue-700"] *,
+.btn-proceed-mem-preview *,
+.btn-proceed-extract-preview *,
+.btn-attach-now * {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
+.btn-primary svg,
+button.btn-primary svg,
+a.btn-primary svg,
+.bg-blue-600 svg,
+.bg-blue-700 svg,
+.bg-blue-800 svg,
+[class*="bg-blue-600"] svg,
+[class*="bg-blue-700"] svg,
+[class*="bg-blue-800"] svg,
+button[class*="bg-blue-600"] svg,
+button[class*="bg-blue-700"] svg,
+a[class*="bg-blue-600"] svg,
+a[class*="bg-blue-700"] svg {
+  color: #FFFFFF !important;
+  stroke: #FFFFFF !important;
+}
+
+.btn-primary svg path,
+.btn-primary svg polyline,
+.btn-primary svg circle,
+.btn-primary svg rect,
+.btn-primary svg line,
+.bg-blue-600 svg path,
+.bg-blue-600 svg polyline,
+.bg-blue-600 svg circle,
+.bg-blue-600 svg rect,
+.bg-blue-600 svg line,
+[class*="bg-blue-600"] svg path,
+[class*="bg-blue-600"] svg polyline,
+[class*="bg-blue-600"] svg circle,
+[class*="bg-blue-600"] svg rect,
+[class*="bg-blue-600"] svg line {
+  stroke: #FFFFFF !important;
+}
+
+/* Explicit text-white on interactive elements */
+button.text-white,
+button.text-white *,
+a.text-white,
+a.text-white *,
+button[class*="text-white"],
+button[class*="text-white"] *,
+a[class*="text-white"],
+a[class*="text-white"] * {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
+button.text-white svg,
+a.text-white svg,
+button[class*="text-white"] svg,
+a[class*="text-white"] svg {
+  color: #FFFFFF !important;
+  stroke: #FFFFFF !important;
+}
+
+button.text-white svg *,
+a.text-white svg *,
+button[class*="text-white"] svg *,
+a[class*="text-white"] svg * {
+  stroke: #FFFFFF !important;
+}
+
+/* Active navigation tabs (e.g. Memory category bar) */
+.tab-item[class*="border-blue-"],
+.tab-item[class*="text-blue-"],
+.tab-item[aria-selected="true"],
+.tab-item.active {
+  color: #1D4ED8 !important;
+  font-weight: 700 !important;
+  background-color: #EFF6FF !important;
+}
+
+.tab-item[class*="border-blue-"] *,
+.tab-item[class*="text-blue-"] *,
+.tab-item[aria-selected="true"] *,
+.tab-item.active * {
+  color: #1D4ED8 !important;
 }
 
 /* Remove all AI neon glow shadows */

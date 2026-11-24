@@ -35,11 +35,13 @@ import Base from "@/layouts/Base.astro";
     </div>
 
     <!-- 2. Method Selector Tabs -->
-    <div class="flex gap-1.5 p-1 rounded-xl bg-slate-100 border border-slate-200 max-w-2xl">
+    <div class="flex gap-1.5 p-1 rounded-xl bg-slate-100 border border-slate-200 max-w-2xl" role="tablist">
       <button
         type="button"
         id="tabDocUploadBtn"
-        class="flex-1 py-2 px-3 sm:px-4 text-xs font-semibold rounded-lg text-white bg-blue-600 transition cursor-pointer flex items-center justify-center gap-2"
+        role="tab"
+        aria-selected="true"
+        class="flex-1 py-2 px-3 sm:px-4 text-xs font-bold rounded-lg text-white bg-blue-600 transition cursor-pointer flex items-center justify-center gap-2 shadow-sm"
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
         <span>Resume &amp; CV Parser</span>
@@ -47,7 +49,9 @@ import Base from "@/layouts/Base.astro";
       <button
         type="button"
         id="tabMediaUploadBtn"
-        class="flex-1 py-2 px-3 sm:px-4 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center justify-center gap-2"
+        role="tab"
+        aria-selected="false"
+        class="flex-1 py-2 px-3 sm:px-4 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-200/50 transition cursor-pointer flex items-center justify-center gap-2"
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="9" cy="10" r="2"></circle><line x1="15" y1="8" x2="17" y2="8"></line><line x1="15" y1="12" x2="17" y2="12"></line><line x1="7" y1="16" x2="17" y2="16"></line></svg>
         <span>ID Photos &amp; Assets</span>
@@ -55,7 +59,9 @@ import Base from "@/layouts/Base.astro";
       <button
         type="button"
         id="tabChatbotBtn"
-        class="flex-1 py-2 px-3 sm:px-4 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center justify-center gap-2"
+        role="tab"
+        aria-selected="false"
+        class="flex-1 py-2 px-3 sm:px-4 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-200/50 transition cursor-pointer flex items-center justify-center gap-2"
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
         <span>AI Memory Copilot</span>
@@ -160,7 +166,7 @@ import Base from "@/layouts/Base.astro";
             <button
               type="button"
               id="btnResetCopilotChat"
-              class="px-3 py-1.5 text-xs text-slate-600 hover:text-white bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg transition cursor-pointer flex items-center gap-1.5"
+              class="px-3 py-1.5 text-xs text-slate-600 hover:text-slate-900 bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-slate-300 rounded-lg transition cursor-pointer flex items-center gap-1.5"
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
@@ -177,23 +183,23 @@ import Base from "@/layouts/Base.astro";
         <div>
           <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-2 font-mono">Suggested Questions &amp; Commands</span>
           <div class="flex flex-wrap gap-2" id="copilotChipContainer">
-            <button type="button" class="copilot-chip px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-blue-500/50 text-xs text-slate-600 hover:text-white transition cursor-pointer flex items-center gap-1.5" data-prompt="What are my educational experiences?">
+            <button type="button" class="copilot-chip px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-500/50 text-xs text-slate-700 hover:text-blue-600 transition cursor-pointer flex items-center gap-1.5" data-prompt="What are my educational experiences?">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
               <span>What are my educational experiences?</span>
             </button>
-            <button type="button" class="copilot-chip px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-blue-500/50 text-xs text-slate-600 hover:text-white transition cursor-pointer flex items-center gap-1.5" data-prompt="What contact details are in my vault?">
+            <button type="button" class="copilot-chip px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-500/50 text-xs text-slate-700 hover:text-blue-600 transition cursor-pointer flex items-center gap-1.5" data-prompt="What contact details are in my vault?">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
               <span>What contact details are saved?</span>
             </button>
-            <button type="button" class="copilot-chip px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-blue-500/50 text-xs text-slate-600 hover:text-white transition cursor-pointer flex items-center gap-1.5" data-prompt="What technical skills do I have?">
+            <button type="button" class="copilot-chip px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-500/50 text-xs text-slate-700 hover:text-blue-600 transition cursor-pointer flex items-center gap-1.5" data-prompt="What technical skills do I have?">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
               <span>What technical skills are stored?</span>
             </button>
-            <button type="button" class="copilot-chip px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-blue-500/50 text-xs text-slate-600 hover:text-white transition cursor-pointer flex items-center gap-1.5" data-prompt="Update my name to Muazam Ali Sarwar">
+            <button type="button" class="copilot-chip px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-500/50 text-xs text-slate-700 hover:text-blue-600 transition cursor-pointer flex items-center gap-1.5" data-prompt="Update my name to Muazam Ali Sarwar">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
               <span>Update my legal name</span>
             </button>
-            <button type="button" class="copilot-chip px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-blue-500/50 text-xs text-slate-600 hover:text-white transition cursor-pointer flex items-center gap-1.5" data-prompt="Change my phone number to 0326-8848703">
+            <button type="button" class="copilot-chip px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-500/50 text-xs text-slate-700 hover:text-blue-600 transition cursor-pointer flex items-center gap-1.5" data-prompt="Change my phone number to 0326-8848703">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
               <span>Update my phone number</span>
             </button>
@@ -499,22 +505,37 @@ import Base from "@/layouts/Base.astro";
       const secMedia = document.getElementById("sectionMediaUpload");
       const secChat = document.getElementById("sectionChatbot");
 
+      const activeTabClass = "flex-1 py-2 px-3 sm:px-4 text-xs font-bold rounded-lg text-white bg-blue-600 transition cursor-pointer flex items-center justify-center gap-2 shadow-sm";
+      const inactiveTabClass = "flex-1 py-2 px-3 sm:px-4 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-200/50 transition cursor-pointer flex items-center justify-center gap-2";
+
       function activateTab(tab) {
         [tabUpload, tabMedia, tabChat].forEach(t => {
-          if (t) t.className = "flex-1 py-2 px-3 sm:px-4 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition cursor-pointer";
+          if (t) {
+            t.className = inactiveTabClass;
+            t.setAttribute("aria-selected", "false");
+          }
         });
         [secUpload, secMedia, secChat].forEach(s => {
           if (s) s.classList.add("hidden");
         });
 
         if (tab === "media") {
-          if (tabMedia) tabMedia.className = "flex-1 py-2 px-3 sm:px-4 text-xs font-semibold rounded-lg text-white bg-blue-600 transition cursor-pointer";
+          if (tabMedia) {
+            tabMedia.className = activeTabClass;
+            tabMedia.setAttribute("aria-selected", "true");
+          }
           if (secMedia) secMedia.classList.remove("hidden");
         } else if (tab === "chat") {
-          if (tabChat) tabChat.className = "flex-1 py-2 px-3 sm:px-4 text-xs font-semibold rounded-lg text-white bg-blue-600 transition cursor-pointer";
+          if (tabChat) {
+            tabChat.className = activeTabClass;
+            tabChat.setAttribute("aria-selected", "true");
+          }
           if (secChat) secChat.classList.remove("hidden");
         } else {
-          if (tabUpload) tabUpload.className = "flex-1 py-2 px-3 sm:px-4 text-xs font-semibold rounded-lg text-white bg-blue-600 transition cursor-pointer";
+          if (tabUpload) {
+            tabUpload.className = activeTabClass;
+            tabUpload.setAttribute("aria-selected", "true");
+          }
           if (secUpload) secUpload.classList.remove("hidden");
         }
       }
@@ -1089,7 +1110,7 @@ import Base from "@/layouts/Base.astro";
                 </button>
                 <button
                   type="button"
-                  class="btn-cancel-extract-preview px-3 py-1.5 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-slate-500 hover:text-white text-xs font-medium transition-all"
+                  class="btn-cancel-extract-preview px-3 py-1.5 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 hover:text-slate-900 text-xs font-semibold transition-all"
                 >
                   Cancel
                 </button>

@@ -139,26 +139,26 @@ import Base from "@/layouts/Base.astro";
       </div>
 
       <!-- Navigation Tabs -->
-      <div id="categoryTabsBar" class="flex items-center gap-1 overflow-x-auto pb-1 border-b border-slate-200 text-xs font-medium">
-        <button type="button" class="tab-item py-2 px-3 rounded-lg border-b-2 border-blue-500 text-blue-600 bg-slate-50 transition cursor-pointer" data-tab="all">
+      <div id="categoryTabsBar" class="flex items-center gap-1 overflow-x-auto pb-1 border-b border-slate-200 text-xs font-medium" role="tablist">
+        <button type="button" class="tab-item py-2 px-3 rounded-lg border-b-2 border-blue-600 text-blue-700 bg-blue-50 font-bold transition cursor-pointer" data-tab="all" role="tab" aria-selected="true">
           All Records (<span id="tabCountAll">0</span>)
         </button>
-        <button type="button" class="tab-item py-2 px-3 rounded-lg border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer" data-tab="identity">
+        <button type="button" class="tab-item py-2 px-3 rounded-lg border-b-2 border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer" data-tab="identity" role="tab" aria-selected="false">
           Identity &amp; Contact (<span id="tabCountIdentity">0</span>)
         </button>
-        <button type="button" class="tab-item py-2 px-3 rounded-lg border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer" data-tab="education">
+        <button type="button" class="tab-item py-2 px-3 rounded-lg border-b-2 border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer" data-tab="education" role="tab" aria-selected="false">
           Education (<span id="tabCountEducation">0</span>)
         </button>
-        <button type="button" class="tab-item py-2 px-3 rounded-lg border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer" data-tab="experience">
+        <button type="button" class="tab-item py-2 px-3 rounded-lg border-b-2 border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer" data-tab="experience" role="tab" aria-selected="false">
           Experiences (<span id="tabCountExperience">0</span>)
         </button>
-        <button type="button" class="tab-item py-2 px-3 rounded-lg border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer" data-tab="custom">
+        <button type="button" class="tab-item py-2 px-3 rounded-lg border-b-2 border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer" data-tab="custom" role="tab" aria-selected="false">
           Custom Q&amp;A (<span id="tabCountCustom">0</span>)
         </button>
-        <button type="button" class="tab-item py-2 px-3 rounded-lg border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer" data-tab="chat">
+        <button type="button" class="tab-item py-2 px-3 rounded-lg border-b-2 border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer" data-tab="chat" role="tab" aria-selected="false">
           AI Copilot Assistant
         </button>
-        <button type="button" class="tab-item py-2 px-3 rounded-lg border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition cursor-pointer" data-tab="documents">
+        <button type="button" class="tab-item py-2 px-3 rounded-lg border-b-2 border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer" data-tab="documents" role="tab" aria-selected="false">
           Documents (<span id="tabCountDocs">0</span>)
         </button>
       </div>
@@ -231,7 +231,7 @@ import Base from "@/layouts/Base.astro";
             <button
               type="button"
               id="btnResetMemCopilotChat"
-              class="px-3 py-1.5 text-xs text-slate-600 hover:text-white bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg transition cursor-pointer flex items-center gap-1.5"
+              class="px-3 py-1.5 text-xs text-slate-600 hover:text-slate-900 bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-slate-300 rounded-lg transition cursor-pointer flex items-center gap-1.5"
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
@@ -248,23 +248,23 @@ import Base from "@/layouts/Base.astro";
         <div>
           <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-2 font-mono">Suggested Questions &amp; Commands</span>
           <div class="flex flex-wrap gap-2" id="memCopilotChipContainer">
-            <button type="button" class="mem-copilot-chip px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-blue-500/50 text-xs text-slate-600 hover:text-white transition cursor-pointer flex items-center gap-1.5" data-prompt="What are my educational experiences?">
+            <button type="button" class="mem-copilot-chip px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-500/50 text-xs text-slate-700 hover:text-blue-600 transition cursor-pointer flex items-center gap-1.5" data-prompt="What are my educational experiences?">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
               <span>What are my educational experiences?</span>
             </button>
-            <button type="button" class="mem-copilot-chip px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-blue-500/50 text-xs text-slate-600 hover:text-white transition cursor-pointer flex items-center gap-1.5" data-prompt="What contact details are in my vault?">
+            <button type="button" class="mem-copilot-chip px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-500/50 text-xs text-slate-700 hover:text-blue-600 transition cursor-pointer flex items-center gap-1.5" data-prompt="What contact details are in my vault?">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
               <span>What contact details are saved?</span>
             </button>
-            <button type="button" class="mem-copilot-chip px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-blue-500/50 text-xs text-slate-600 hover:text-white transition cursor-pointer flex items-center gap-1.5" data-prompt="What technical skills do I have?">
+            <button type="button" class="mem-copilot-chip px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-500/50 text-xs text-slate-700 hover:text-blue-600 transition cursor-pointer flex items-center gap-1.5" data-prompt="What technical skills do I have?">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
               <span>What technical skills are stored?</span>
             </button>
-            <button type="button" class="mem-copilot-chip px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-blue-500/50 text-xs text-slate-600 hover:text-white transition cursor-pointer flex items-center gap-1.5" data-prompt="Update my name to Muazam Ali Sarwar">
+            <button type="button" class="mem-copilot-chip px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-500/50 text-xs text-slate-700 hover:text-blue-600 transition cursor-pointer flex items-center gap-1.5" data-prompt="Update my name to Muazam Ali Sarwar">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
               <span>Update my legal name</span>
             </button>
-            <button type="button" class="mem-copilot-chip px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-blue-500/50 text-xs text-slate-600 hover:text-white transition cursor-pointer flex items-center gap-1.5" data-prompt="Change my phone number to 0326-8848703">
+            <button type="button" class="mem-copilot-chip px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-500/50 text-xs text-slate-700 hover:text-blue-600 transition cursor-pointer flex items-center gap-1.5" data-prompt="Change my phone number to 0326-8848703">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
               <span>Update my phone number</span>
             </button>
@@ -893,11 +893,13 @@ import Base from "@/layouts/Base.astro";
       tabItems.forEach(btn => {
         btn.addEventListener("click", () => {
           tabItems.forEach(b => {
-            b.classList.remove("border-blue-500", "text-blue-600", "bg-slate-50");
-            b.classList.add("border-transparent", "text-slate-600");
+            b.classList.remove("border-blue-600", "border-blue-500", "text-blue-700", "text-blue-600", "bg-blue-50", "bg-slate-50", "font-bold", "shadow-xs");
+            b.classList.add("border-transparent", "text-slate-600", "font-medium");
+            b.setAttribute("aria-selected", "false");
           });
-          btn.classList.add("border-blue-500", "text-blue-600", "bg-slate-50");
-          btn.classList.remove("border-transparent", "text-slate-600");
+          btn.classList.add("border-blue-600", "text-blue-700", "bg-blue-50", "font-bold", "shadow-xs");
+          btn.classList.remove("border-transparent", "text-slate-600", "font-medium");
+          btn.setAttribute("aria-selected", "true");
 
           const tab = btn.getAttribute("data-tab");
           activeCategory = tab;
@@ -1331,7 +1333,7 @@ import Base from "@/layouts/Base.astro";
                 </button>
                 <button
                   type="button"
-                  class="btn-cancel-mem-preview px-3 py-1.5 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-slate-500 hover:text-white text-xs font-medium transition-all"
+                  class="btn-cancel-mem-preview px-3 py-1.5 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 hover:text-slate-900 text-xs font-semibold transition-all"
                 >
                   Cancel
                 </button>
