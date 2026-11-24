@@ -32,17 +32,35 @@ body,
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Enforce Times New Roman typography hierarchy */
+/* Universal Times New Roman typography hierarchy */
+*,
+*::before,
+*::after,
 h1, h2, h3, h4, h5, h6,
 .font-display,
-.font-heading {
+.font-heading,
+p, span:not(.font-mono), a, button, input:not(.font-mono), textarea, select, label,
+.font-body,
+.font-sans,
+[class*="font-display"],
+[class*="font-heading"],
+[class*="font-body"],
+[class*="font-sans"] {
   font-family: 'Times New Roman', Times, Baskerville, Georgia, serif !important;
 }
 
-p, span:not(.font-mono), a, button, input:not(.font-mono), textarea, select, label,
-.font-body,
-.font-sans {
-  font-family: 'Times New Roman', Times, Baskerville, Georgia, serif !important;
+/* Monospace exception only for code/pre/mono */
+code,
+code *,
+pre,
+pre *,
+kbd,
+samp,
+.font-mono,
+.font-mono *,
+[class*="font-mono"],
+[class*="font-mono"] * {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
 }
 
 /* Base Canvas & Selection */
@@ -689,4 +707,26 @@ footer a,
 footer a:hover,
 .footer a:hover {
   color: #0F172A !important;
+}
+
+/* ==========================================================================
+   Final Absolute Font Override — Guarantees Times New Roman Everywhere
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  font-family: 'Times New Roman', Times, Baskerville, Georgia, serif !important;
+}
+
+code,
+code *,
+pre,
+pre *,
+kbd,
+samp,
+.font-mono,
+.font-mono *,
+[class*="font-mono"],
+[class*="font-mono"] * {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
 }

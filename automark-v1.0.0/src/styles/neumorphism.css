@@ -64,11 +64,10 @@
   transform: translateY(0) !important;
 }
 
-/* Typography Helpers */
-.font-display {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-}
-
-.font-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+/* Typography Helpers — Universal Times New Roman */
+.font-display,
+.font-heading,
+.font-body,
+.font-sans {
+  font-family: 'Times New Roman', Times, Baskerville, Georgia, serif !important;
 }

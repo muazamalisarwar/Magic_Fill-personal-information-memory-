@@ -640,8 +640,8 @@
       border: 1px solid #CBD5E1;
       border-radius: 10px;
       margin-top: 8px;
-      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
-      font-size: 12px;
+      font-family: 'Times New Roman', Times, Baskerville, Georgia, serif;
+      font-size: 13px;
       color: #0F172A;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
       animation: magicFillSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -759,7 +759,7 @@
         previewEl = document.createElement("div");
         previewEl.id = `mf-img-prev-${mapping.field_id}`;
         previewEl.className = "magic-fill-preview-thumbnail";
-        previewEl.style.cssText = "display:inline-flex; align-items:center; gap:10px; margin-top:8px; padding:6px 10px; background:#FFFFFF; border:1px solid #CBD5E1; border-radius:10px; font-family:'Plus Jakarta Sans',sans-serif; font-size:11.5px; color:#0F172A; box-shadow:0 2px 8px rgba(0,0,0,0.06);";
+        previewEl.style.cssText = "display:inline-flex; align-items:center; gap:10px; margin-top:8px; padding:6px 10px; background:#FFFFFF; border:1px solid #CBD5E1; border-radius:10px; font-family:'Times New Roman',Times,Baskerville,Georgia,serif; font-size:12.5px; color:#0F172A; box-shadow:0 2px 8px rgba(0,0,0,0.06);";
         const imgSrc = rawVal.startsWith("data:") ? rawVal : `data:${mime};base64,${base64Data}`;
         previewEl.innerHTML = `
           <img src="${imgSrc}" style="width:40px; height:40px; border-radius:8px; object-fit:cover; border:1px solid #E2E8F0; background:#F8FAFC;" alt="Attached preview" />
@@ -1234,7 +1234,7 @@
           box-sizing: border-box;
           margin: 0;
           padding: 0;
-          font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+          font-family: 'Times New Roman', Times, Baskerville, Georgia, serif;
         }
         .prompt-card {
           background: #FFFFFF;
